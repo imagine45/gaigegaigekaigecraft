@@ -1,0 +1,41 @@
+package org.imgaine.gaigegaigekaigecraft.potion;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.imgaine.gaigegaigekaigecraft.procedures.SukunaEffectEffectExpiresProcedure;
+import org.imgaine.gaigegaigekaigecraft.procedures.SukunaEffectEffectStartedappliedProcedure;
+import org.imgaine.gaigegaigekaigecraft.procedures.SukunaEffectOnEffectActiveTickProcedure;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.item.ItemStack;
+
+public class SukunaEffectMobEffect extends MobEffect {
+   public SukunaEffectMobEffect() {
+      super(MobEffectCategory.HARMFUL, -13434829);
+   }
+
+   public List<ItemStack> getCurativeItems() {
+      ArrayList<ItemStack> cures = new ArrayList();
+      return cures;
+   }
+
+   public void m_6385_(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+      super.m_6385_(entity, attributeMap, amplifier);
+      SukunaEffectEffectStartedappliedProcedure.execute(entity.m_9236_(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity);
+   }
+
+   public void m_6742_(LivingEntity entity, int amplifier) {
+      SukunaEffectOnEffectActiveTickProcedure.execute(entity);
+   }
+
+   public void m_6386_(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+      super.m_6386_(entity, attributeMap, amplifier);
+      SukunaEffectEffectExpiresProcedure.execute(entity.m_9236_(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity);
+   }
+
+   public boolean m_6584_(int duration, int amplifier) {
+      return true;
+   }
+}

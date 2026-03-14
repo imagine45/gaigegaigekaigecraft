@@ -1,0 +1,7 @@
+{
+  "parent": "jujutsucraft:custom/gavel_big",
+  "textures": {
+    "0": "jujutsucraft:block/gavel",
+    "particle": "jujutsucraft:item/gavel"
+  }
+}

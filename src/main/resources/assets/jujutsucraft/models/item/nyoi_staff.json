@@ -1,0 +1,7 @@
+{
+  "parent": "jujutsucraft:custom/weapon_kashimo",
+  "textures": {
+    "0": "jujutsucraft:block/sword_okkotsu",
+    "particle": "jujutsucraft:item/icon_sword"
+  }
+}

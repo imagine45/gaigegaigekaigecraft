@@ -1,0 +1,172 @@
+package org.imgaine.gaigegaigekaigecraft.client.model;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+
+public class Modelmahoraga<T extends Entity> extends EntityModel<T> {
+   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("jujutsucraft", "modelmahoraga"), "main");
+   public final ModelPart head;
+   public final ModelPart wheel;
+   public final ModelPart bone5;
+   public final ModelPart bone;
+   public final ModelPart bone2;
+   public final ModelPart bone3;
+   public final ModelPart bone4;
+   public final ModelPart bone6;
+   public final ModelPart body;
+   public final ModelPart right_arm;
+   public final ModelPart left_arm;
+   public final ModelPart left_leg;
+   public final ModelPart left_leg_leggins;
+   public final ModelPart right_leg;
+   public final ModelPart right_leg_leggins;
+
+   public Modelmahoraga(ModelPart root) {
+      this.head = root.m_171324_("head");
+      this.wheel = this.head.m_171324_("wheel");
+      this.bone5 = this.head.m_171324_("bone5");
+      this.bone = this.bone5.m_171324_("bone");
+      this.bone2 = this.bone5.m_171324_("bone2");
+      this.bone3 = this.bone5.m_171324_("bone3");
+      this.bone4 = this.bone5.m_171324_("bone4");
+      this.bone6 = this.head.m_171324_("bone6");
+      this.body = root.m_171324_("body");
+      this.right_arm = root.m_171324_("right_arm");
+      this.left_arm = root.m_171324_("left_arm");
+      this.left_leg = root.m_171324_("left_leg");
+      this.left_leg_leggins = this.left_leg.m_171324_("left_leg_leggins");
+      this.right_leg = root.m_171324_("right_leg");
+      this.right_leg_leggins = this.right_leg.m_171324_("right_leg_leggins");
+   }
+
+   public static LayerDefinition createBodyLayer() {
+      MeshDefinition meshdefinition = new MeshDefinition();
+      PartDefinition partdefinition = meshdefinition.m_171576_();
+      PartDefinition head = partdefinition.m_171599_("head", CubeListBuilder.m_171558_().m_171514_(0, 0).m_171488_(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).m_171514_(2, 39).m_171488_(-2.0F, -6.0F, -5.0F, 4.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).m_171514_(5, 44).m_171488_(-1.5F, -6.8F, -4.0F, 3.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)).m_171514_(21, 35).m_171488_(-2.0F, -2.4F, -4.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(-0.1F)).m_171514_(18, 50).m_171488_(-3.0F, -5.6F, -6.8F, 6.0F, 6.0F, 6.0F, new CubeDeformation(-1.9F)).m_171514_(26, 42).m_171488_(-2.0F, -3.0F, -4.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
+      head.m_171599_("cube_r1", CubeListBuilder.m_171558_().m_171514_(22, 37).m_171480_().m_171488_(0.8F, -0.8F, -0.8F, 1.0F, 2.0F, 2.0F, new CubeDeformation(-0.05F)).m_171555_(false).m_171514_(22, 37).m_171488_(-1.8F, -0.8F, -0.8F, 1.0F, 2.0F, 2.0F, new CubeDeformation(-0.05F)), PartPose.m_171423_(0.0F, -1.5536F, -3.9293F, 1.0472F, 0.0F, 0.0F));
+      head.m_171599_("cube_r2", CubeListBuilder.m_171558_().m_171514_(0, 49).m_171488_(-2.0F, -1.3F, -1.2F, 4.0F, 2.0F, 3.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(0.0F, -0.8F, -4.0F, 0.1745F, 0.0F, 0.0F));
+      PartDefinition wheel = head.m_171599_("wheel", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-1.0F, -0.5F, -3.8191F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)).m_171514_(44, 62).m_171488_(-4.5F, -0.5F, -0.5F, 9.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)).m_171514_(44, 62).m_171488_(-5.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).m_171514_(44, 62).m_171488_(4.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).m_171514_(44, 62).m_171488_(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.m_171419_(0.0F, -11.5F, 0.0F));
+      wheel.m_171599_("wheel_r1", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-2.6596F, -0.5F, -3.6928F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 3.1416F, 0.0F));
+      wheel.m_171599_("wheel_r2", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(0.5816F, -0.5F, -3.3008F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 0.3927F, 0.0F));
+      wheel.m_171599_("wheel_r3", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-0.8737F, -0.5F, -2.1596F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 1.5708F, 0.0F));
+      wheel.m_171599_("wheel_r4", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-0.2482F, -0.5F, -2.3342F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 1.1781F, 0.0F));
+      wheel.m_171599_("wheel_r5", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(0.2628F, -0.5F, -2.735F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 0.7854F, 0.0F));
+      wheel.m_171599_("wheel_r6", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-1.5184F, -0.5F, -2.2376F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 1.9635F, 0.0F));
+      wheel.m_171599_("wheel_r7", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-2.0842F, -0.5F, -2.5563F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 2.3562F, 0.0F));
+      wheel.m_171599_("wheel_r8", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-2.4849F, -0.5F, -3.0673F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(-1.6596F, 0.0F, 0.1263F, 0.0F, 2.7489F, 0.0F));
+      wheel.m_171599_("wheel_r9", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(0.5816F, -0.5F, -3.3008F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(1.6596F, 0.0F, -0.1263F, 0.0F, -2.7489F, 0.0F));
+      wheel.m_171599_("wheel_r10", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-0.8737F, -0.5F, -2.1596F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)), PartPose.m_171423_(1.6596F, 0.0F, -0.1263F, 0.0F, -1.5708F, 0.0F));
+      wheel.m_171599_("wheel_r11", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-0.2482F, -0.5F, -2.3342F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(1.6596F, 0.0F, -0.1263F, 0.0F, -1.9635F, 0.0F));
+      wheel.m_171599_("wheel_r12", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(0.2628F, -0.5F, -2.735F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)), PartPose.m_171423_(1.6596F, 0.0F, -0.1263F, 0.0F, -2.3562F, 0.0F));
+      wheel.m_171599_("wheel_r13", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-1.5184F, -0.5F, -2.2376F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(1.6596F, 0.0F, -0.1263F, 0.0F, -1.1781F, 0.0F));
+      wheel.m_171599_("wheel_r14", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-2.0842F, -0.5F, -2.5563F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.29F)), PartPose.m_171423_(1.6596F, 0.0F, -0.1263F, 0.0F, -0.7854F, 0.0F));
+      wheel.m_171599_("wheel_r15", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-2.4849F, -0.5F, -3.0673F, 2.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(1.6596F, 0.0F, -0.1263F, 0.0F, -0.3927F, 0.0F));
+      wheel.m_171599_("wheel_r16", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-5.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).m_171514_(44, 62).m_171488_(-4.5F, -0.5F, -0.5F, 9.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)).m_171514_(44, 62).m_171488_(4.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.m_171423_(0.0F, 0.0F, 0.0F, 0.0F, -0.7854F, 0.0F));
+      wheel.m_171599_("wheel_r17", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-4.5F, -0.5F, -0.5F, 9.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)).m_171514_(44, 62).m_171488_(-5.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).m_171514_(44, 62).m_171488_(4.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.m_171423_(0.0F, 0.0F, 0.0F, 0.0F, -2.3562F, 0.0F));
+      wheel.m_171599_("wheel_r18", CubeListBuilder.m_171558_().m_171514_(44, 62).m_171488_(-4.5F, -0.5F, -0.5F, 9.0F, 1.0F, 1.0F, new CubeDeformation(-0.3F)).m_171514_(44, 62).m_171488_(-5.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).m_171514_(44, 62).m_171488_(4.0F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.m_171423_(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
+      PartDefinition bone5 = head.m_171599_("bone5", CubeListBuilder.m_171558_(), PartPose.m_171419_(0.0F, 0.0F, 0.2F));
+      PartDefinition bone = bone5.m_171599_("bone", CubeListBuilder.m_171558_(), PartPose.m_171419_(0.6843F, -5.2168F, -4.8294F));
+      bone.m_171599_("cube_r3", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.0F, -0.5F, -0.5F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.15F)), PartPose.m_171423_(3.7337F, -1.6432F, -0.564F, 0.0F, -0.6981F, -0.3927F));
+      bone.m_171599_("cube_r4", CubeListBuilder.m_171558_().m_171514_(54, 52).m_171488_(-2.0F, -1.4F, -0.43F, 4.0F, 3.0F, 1.0F, new CubeDeformation(-0.25F)), PartPose.m_171423_(3.8763F, -1.0719F, 0.6574F, 0.9599F, -0.6545F, -0.3491F));
+      bone.m_171599_("cube_r5", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.7125F, -0.7292F, -0.8527F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(5.604F, -2.3789F, 1.9782F, 0.0815F, -0.9164F, -0.6627F));
+      bone.m_171599_("cube_r6", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-1.5F, -1.1F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(5.5494F, -1.9829F, 2.3927F, 1.0409F, -0.8005F, -0.7103F));
+      bone.m_171599_("cube_r7", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-0.6F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(0.6837F, -0.2832F, -0.464F, 0.9888F, 0.0555F, -0.3031F));
+      bone.m_171599_("cube_r8", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.0F, -0.5F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.m_171423_(0.6837F, -0.3832F, -0.564F, 0.0F, 0.1745F, -0.3927F));
+      PartDefinition bone2 = bone5.m_171599_("bone2", CubeListBuilder.m_171558_(), PartPose.m_171423_(0.6843F, -3.9168F, -4.8294F, 0.0F, 0.0F, 0.3927F));
+      bone2.m_171599_("cube_r9", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.0643F, -0.6F, -0.5766F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.15F)), PartPose.m_171423_(3.7337F, -1.5432F, -0.464F, 0.0F, -0.6981F, -0.3927F));
+      bone2.m_171599_("cube_r10", CubeListBuilder.m_171558_().m_171514_(54, 52).m_171488_(-2.0F, -1.4F, -0.43F, 4.0F, 3.0F, 1.0F, new CubeDeformation(-0.25F)), PartPose.m_171423_(3.8763F, -1.0719F, 0.6574F, 0.9599F, -0.6545F, -0.3491F));
+      bone2.m_171599_("cube_r11", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.7756F, -0.8319F, -0.9266F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(5.604F, -2.2789F, 2.0782F, 0.0815F, -0.9164F, -0.6627F));
+      bone2.m_171599_("cube_r12", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-1.5F, -1.1F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(5.5494F, -1.9829F, 2.3927F, 1.0409F, -0.8005F, -0.7103F));
+      bone2.m_171599_("cube_r13", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-0.6F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(0.6837F, -0.2832F, -0.464F, 0.9888F, 0.0555F, -0.3031F));
+      bone2.m_171599_("cube_r14", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-0.9826F, -0.6F, -0.5985F, 4.0F, 1.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.m_171423_(0.6837F, -0.2832F, -0.464F, 0.0F, 0.1745F, -0.3927F));
+      PartDefinition bone3 = bone5.m_171599_("bone3", CubeListBuilder.m_171558_(), PartPose.m_171419_(-0.6843F, -5.2168F, -4.8294F));
+      bone3.m_171599_("cube_r15", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-2.0F, -0.5F, -0.5F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.15F)), PartPose.m_171423_(-3.7337F, -1.6432F, -0.564F, 0.0F, 0.6981F, 0.3927F));
+      bone3.m_171599_("cube_r16", CubeListBuilder.m_171558_().m_171514_(54, 52).m_171488_(-2.0F, -1.4F, -0.43F, 4.0F, 3.0F, 1.0F, new CubeDeformation(-0.25F)), PartPose.m_171423_(-3.8763F, -1.0719F, 0.6574F, 0.9599F, 0.6545F, 0.3491F));
+      bone3.m_171599_("cube_r17", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.2875F, -0.7292F, -0.8527F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(-5.604F, -2.3789F, 1.9782F, 0.0815F, 0.9164F, 0.6627F));
+      bone3.m_171599_("cube_r18", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-1.5F, -1.1F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(-5.5494F, -1.9829F, 2.3927F, 1.0409F, 0.8005F, 0.7103F));
+      bone3.m_171599_("cube_r19", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-2.4F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(-0.6837F, -0.2832F, -0.464F, 0.9888F, -0.0555F, 0.3031F));
+      bone3.m_171599_("cube_r20", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-3.0F, -0.5F, -0.5F, 4.0F, 1.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.m_171423_(-0.6837F, -0.3832F, -0.564F, 0.0F, -0.1745F, 0.3927F));
+      PartDefinition bone4 = bone5.m_171599_("bone4", CubeListBuilder.m_171558_(), PartPose.m_171423_(-0.6843F, -3.9168F, -4.8294F, 0.0F, 0.0F, -0.3927F));
+      bone4.m_171599_("cube_r21", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.9357F, -0.6F, -0.5766F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.15F)), PartPose.m_171423_(-3.7337F, -1.5432F, -0.464F, 0.0F, 0.6981F, 0.3927F));
+      bone4.m_171599_("cube_r22", CubeListBuilder.m_171558_().m_171514_(54, 52).m_171488_(-2.0F, -1.4F, -0.43F, 4.0F, 3.0F, 1.0F, new CubeDeformation(-0.25F)), PartPose.m_171423_(-3.8763F, -1.0719F, 0.6574F, 0.9599F, 0.6545F, 0.3491F));
+      bone4.m_171599_("cube_r23", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-1.2244F, -0.8319F, -0.9266F, 3.0F, 1.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(-5.604F, -2.2789F, 2.0782F, 0.0815F, 0.9164F, 0.6627F));
+      bone4.m_171599_("cube_r24", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-1.5F, -1.1F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(-5.5494F, -1.9829F, 2.3927F, 1.0409F, 0.8005F, 0.7103F));
+      bone4.m_171599_("cube_r25", CubeListBuilder.m_171558_().m_171514_(54, 56).m_171488_(-2.4F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(-0.6837F, -0.2832F, -0.464F, 0.9888F, -0.0555F, 0.3031F));
+      bone4.m_171599_("cube_r26", CubeListBuilder.m_171558_().m_171514_(54, 59).m_171488_(-3.0174F, -0.6F, -0.5985F, 4.0F, 1.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.m_171423_(-0.6837F, -0.2832F, -0.464F, 0.0F, -0.1745F, 0.3927F));
+      PartDefinition bone6 = head.m_171599_("bone6", CubeListBuilder.m_171558_(), PartPose.m_171419_(0.0F, 12.6947F, 17.2018F));
+      bone6.m_171599_("cube_r27", CubeListBuilder.m_171558_().m_171514_(2, 55).m_171488_(-1.5F, 6.9685F, 3.5002F, 3.0F, 3.0F, 4.0F, new CubeDeformation(-0.9F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, 0.6981F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r28", CubeListBuilder.m_171558_().m_171514_(2, 55).m_171488_(-1.5F, 5.5263F, 3.4182F, 3.0F, 3.0F, 4.0F, new CubeDeformation(-0.8F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, 0.4363F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r29", CubeListBuilder.m_171558_().m_171514_(2, 55).m_171488_(-1.5F, 4.2168F, 2.7892F, 3.0F, 3.0F, 4.0F, new CubeDeformation(-0.7F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, 0.1745F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r30", CubeListBuilder.m_171558_().m_171514_(2, 55).m_171488_(-1.5F, 3.0433F, 1.67F, 3.0F, 3.0F, 4.0F, new CubeDeformation(-0.6F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, -0.0873F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r31", CubeListBuilder.m_171558_().m_171514_(1, 55).m_171488_(-2.0F, 0.8232F, -0.8766F, 4.0F, 3.0F, 4.0F, new CubeDeformation(-0.5F)).m_171514_(1, 55).m_171488_(-2.0F, -0.0768F, -6.4766F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, -0.8727F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r32", CubeListBuilder.m_171558_().m_171514_(2, 55).m_171488_(-1.5F, 1.5022F, 0.8721F, 3.0F, 3.0F, 4.0F, new CubeDeformation(-0.5F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, -0.5236F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r33", CubeListBuilder.m_171558_().m_171514_(1, 55).m_171488_(-2.0F, 0.649F, -2.9875F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.4F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, -1.1345F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r34", CubeListBuilder.m_171558_().m_171514_(1, 55).m_171488_(-2.0F, -1.6018F, -9.8134F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.2F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, -0.6109F, 0.0F, 0.0F));
+      bone6.m_171599_("cube_r35", CubeListBuilder.m_171558_().m_171514_(1, 55).m_171488_(-2.0F, -4.7591F, -12.5162F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.02F)), PartPose.m_171423_(0.0F, -10.8519F, -5.4007F, -0.2618F, 0.0F, 0.0F));
+      PartDefinition body = partdefinition.m_171599_("body", CubeListBuilder.m_171558_().m_171514_(0, 32).m_171488_(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).m_171514_(0, 0).m_171488_(-5.0F, 0.0F, -2.9F, 10.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)).m_171514_(1, 13).m_171488_(-2.5F, -3.4F, -2.4F, 5.0F, 4.0F, 5.0F, new CubeDeformation(-0.05F)).m_171514_(22, 12).m_171488_(-3.5F, 5.0F, -2.5F, 7.0F, 7.0F, 5.0F, new CubeDeformation(0.0F)).m_171514_(0, 25).m_171480_().m_171488_(-3.5F, 10.0F, -2.5F, 7.0F, 2.0F, 5.0F, new CubeDeformation(0.25F)).m_171555_(false).m_171514_(0, 24).m_171488_(-1.5F, 10.2F, -3.0F, 3.0F, 2.0F, 1.0F, new CubeDeformation(0.1F)).m_171514_(32, 0).m_171488_(-1.0F, 8.5F, -2.4F, 2.0F, 5.0F, 1.0F, new CubeDeformation(0.3F)), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
+      body.m_171599_("body_r1", CubeListBuilder.m_171558_().m_171514_(24, 24).m_171488_(-1.5F, -0.5F, -0.5F, 3.0F, 7.0F, 1.0F, new CubeDeformation(-0.4F)), PartPose.m_171423_(-0.4F, 11.7F, -2.7F, -0.1309F, 0.0F, 0.1309F));
+      body.m_171599_("body_r2", CubeListBuilder.m_171558_().m_171514_(24, 24).m_171488_(-1.5F, -1.0F, -0.5F, 3.0F, 6.0F, 1.0F, new CubeDeformation(-0.4F)), PartPose.m_171423_(0.4F, 12.2F, -2.6F, -0.1309F, 0.0F, -0.1309F));
+      body.m_171599_("body_r3", CubeListBuilder.m_171558_().m_171514_(33, 1).m_171488_(-0.7F, -2.7F, -3.0F, 4.0F, 5.0F, 5.0F, new CubeDeformation(-0.11F)), PartPose.m_171423_(-3.5F, -1.0F, 0.6F, 0.0F, 0.0F, 0.7854F));
+      body.m_171599_("body_r4", CubeListBuilder.m_171558_().m_171514_(33, 1).m_171488_(-3.3F, -2.7F, -3.0F, 4.0F, 5.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.m_171423_(3.5F, -1.0F, 0.6F, 0.0F, 0.0F, -0.7854F));
+      partdefinition.m_171599_("right_arm", CubeListBuilder.m_171558_().m_171514_(48, 7).m_171488_(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).m_171514_(40, 23).m_171488_(-4.0F, 7.0F, -3.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(-0.75F)).m_171514_(55, 8).m_171488_(-3.5F, -1.0F, -1.5F, 1.0F, 5.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.m_171419_(-5.0F, 2.0F, 0.0F));
+      partdefinition.m_171599_("left_arm", CubeListBuilder.m_171558_().m_171514_(48, 7).m_171480_().m_171488_(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).m_171555_(false).m_171514_(55, 8).m_171488_(2.5F, -1.5F, -1.5F, 1.0F, 5.0F, 3.0F, new CubeDeformation(0.0F)).m_171514_(40, 23).m_171480_().m_171488_(-2.0F, 7.0F, -3.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(-0.75F)).m_171555_(false), PartPose.m_171419_(5.0F, 2.0F, 0.0F));
+      PartDefinition left_leg = partdefinition.m_171599_("left_leg", CubeListBuilder.m_171558_().m_171514_(6, 0).m_171488_(-1.9F, 0.1F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(-0.1F)).m_171514_(41, 24).m_171480_().m_171488_(-2.4F, 9.4F, -2.5F, 5.0F, 1.0F, 5.0F, new CubeDeformation(-0.4F)).m_171555_(false).m_171514_(41, 24).m_171480_().m_171488_(-2.4F, 9.2F, -2.5F, 5.0F, 1.0F, 5.0F, new CubeDeformation(-0.4F)).m_171555_(false), PartPose.m_171419_(2.0F, 12.0F, 0.0F));
+      PartDefinition left_leg_leggins = left_leg.m_171599_("left_leg_leggins", CubeListBuilder.m_171558_(), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r1", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(3.3187F, -11.3883F, -7.3F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.21F)).m_171555_(false), PartPose.m_171423_(-3.9233F, 12.4681F, -5.1187F, 0.0F, -1.5708F, -0.1309F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r2", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(3.1059F, -11.7254F, -2.1077F, 2.0F, 7.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false), PartPose.m_171423_(-1.6415F, 12.2139F, -4.2669F, -0.1396F, -0.7854F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r3", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(2.7F, -11.7799F, -1.8931F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.2F)).m_171555_(false), PartPose.m_171423_(-2.0F, 12.7506F, -1.4885F, -0.1309F, 0.0F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r4", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(-1.3637F, -11.7254F, -2.0077F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false), PartPose.m_171423_(-1.3624F, 12.2139F, -1.5208F, -0.1396F, 0.7854F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r5", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(-0.5766F, -11.3883F, -7.3F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)).m_171555_(false), PartPose.m_171423_(3.7654F, 12.4681F, -1.4766F, 0.0F, 1.5708F, 0.1309F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r6", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(-1.3637F, -11.7254F, 2.0077F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false), PartPose.m_171423_(-1.3624F, 12.2139F, 1.5208F, 0.1396F, -0.7854F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r7", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(-1.9282F, -11.3883F, 7.3117F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false), PartPose.m_171423_(3.7654F, 12.4681F, 1.2766F, 0.0F, -1.5708F, 0.1309F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r8", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(-0.5766F, -11.3883F, 7.3F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)).m_171555_(false), PartPose.m_171423_(3.7654F, 12.4681F, 1.3766F, 0.0F, -1.5708F, 0.1309F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r9", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(-0.0718F, -10.9844F, 11.1539F, 2.0F, 7.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false), PartPose.m_171423_(-7.6654F, 12.4681F, 1.3766F, 0.0F, 1.5708F, -0.1309F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r10", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(0.3999F, -11.8344F, 2.0915F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false), PartPose.m_171423_(-2.0F, 12.1354F, 1.4409F, 0.1309F, 0.0F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r11", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(2.7F, -11.7799F, 1.9931F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.2F)).m_171555_(false), PartPose.m_171423_(-2.0F, 12.3506F, 1.4885F, 0.1309F, 0.0F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r12", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(0.0422F, -11.7799F, 1.9931F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)).m_171555_(false), PartPose.m_171423_(-2.0F, 12.1506F, 1.4885F, 0.1309F, 0.0F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r13", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(3.1059F, -11.7254F, 2.1077F, 2.0F, 7.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false), PartPose.m_171423_(-1.6415F, 12.2139F, 4.2669F, 0.1396F, 0.7854F, 0.0F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r14", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(3.3187F, -11.3883F, 7.3F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.21F)).m_171555_(false), PartPose.m_171423_(-3.9233F, 12.4681F, 5.1187F, 0.0F, 1.5708F, -0.1309F));
+      left_leg_leggins.m_171599_("left_leg_leggins_r15", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171480_().m_171488_(-0.1118F, -11.8344F, -1.9915F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)).m_171555_(false).m_171514_(1, 3).m_171480_().m_171488_(0.3999F, -11.8344F, -1.9915F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)).m_171555_(false), PartPose.m_171423_(-2.0F, 12.1354F, -1.4409F, -0.1309F, 0.0F, 0.0F));
+      PartDefinition right_leg = partdefinition.m_171599_("right_leg", CubeListBuilder.m_171558_().m_171514_(6, 0).m_171480_().m_171488_(-2.1F, 0.1F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(-0.1F)).m_171555_(false).m_171514_(41, 24).m_171488_(-2.6F, 9.4F, -2.5F, 5.0F, 1.0F, 5.0F, new CubeDeformation(-0.4F)).m_171514_(41, 24).m_171488_(-2.6F, 9.2F, -2.5F, 5.0F, 1.0F, 5.0F, new CubeDeformation(-0.4F)), PartPose.m_171419_(-2.0F, 12.0F, 0.0F));
+      PartDefinition right_leg_leggins = right_leg.m_171599_("right_leg_leggins", CubeListBuilder.m_171558_(), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r1", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-4.3187F, -11.3883F, -7.3F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.21F)), PartPose.m_171423_(3.9233F, 12.4681F, -5.1187F, 0.0F, 1.5708F, 0.1309F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r2", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-5.1059F, -11.7254F, -2.1077F, 2.0F, 7.0F, 0.0F, new CubeDeformation(0.1F)), PartPose.m_171423_(1.6415F, 12.2139F, -4.2669F, -0.1396F, 0.7854F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r3", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-3.7F, -11.7799F, -1.8931F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.2F)), PartPose.m_171423_(2.0F, 12.7506F, -1.4885F, -0.1309F, 0.0F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r4", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-0.6363F, -11.7254F, -2.0077F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)), PartPose.m_171423_(1.3624F, 12.2139F, -1.5208F, -0.1396F, -0.7854F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r5", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-0.4234F, -11.3883F, -7.3F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)), PartPose.m_171423_(-3.7654F, 12.4681F, -1.4766F, 0.0F, -1.5708F, -0.1309F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r6", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-0.6363F, -11.7254F, 2.0077F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)), PartPose.m_171423_(1.3624F, 12.2139F, 1.5208F, 0.1396F, 0.7854F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r7", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-0.0718F, -11.3883F, 7.3117F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)), PartPose.m_171423_(-3.7654F, 12.4681F, 1.2766F, 0.0F, 1.5708F, -0.1309F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r8", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-0.4234F, -11.3883F, 7.3F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)), PartPose.m_171423_(-3.7654F, 12.4681F, 1.3766F, 0.0F, 1.5708F, -0.1309F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r9", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-1.9282F, -10.9844F, 11.1539F, 2.0F, 7.0F, 0.0F, new CubeDeformation(0.1F)), PartPose.m_171423_(7.6654F, 12.4681F, 1.3766F, 0.0F, -1.5708F, 0.1309F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r10", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-2.3999F, -11.8344F, 2.0915F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)), PartPose.m_171423_(2.0F, 12.1354F, 1.4409F, 0.1309F, 0.0F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r11", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-3.7F, -11.7799F, 1.9931F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.2F)), PartPose.m_171423_(2.0F, 12.3506F, 1.4885F, 0.1309F, 0.0F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r12", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-1.0422F, -11.7799F, 1.9931F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)), PartPose.m_171423_(2.0F, 12.1506F, 1.4885F, 0.1309F, 0.0F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r13", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-5.1059F, -11.7254F, 2.1077F, 2.0F, 7.0F, 0.0F, new CubeDeformation(0.1F)), PartPose.m_171423_(1.6415F, 12.2139F, 4.2669F, 0.1396F, -0.7854F, 0.0F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r14", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-4.3187F, -11.3883F, 7.3F, 1.0F, 7.0F, 0.0F, new CubeDeformation(0.21F)), PartPose.m_171423_(3.9233F, 12.4681F, 5.1187F, 0.0F, -1.5708F, 0.1309F));
+      right_leg_leggins.m_171599_("right_leg_leggins_r15", CubeListBuilder.m_171558_().m_171514_(1, 4).m_171488_(-0.8882F, -11.8344F, -1.9915F, 1.0F, 8.0F, 0.0F, new CubeDeformation(0.1F)).m_171514_(1, 3).m_171488_(-2.3999F, -11.8344F, -1.9915F, 2.0F, 8.0F, 0.0F, new CubeDeformation(0.2F)), PartPose.m_171423_(2.0F, 12.1354F, -1.4409F, -0.1309F, 0.0F, 0.0F));
+      return LayerDefinition.m_171565_(meshdefinition, 64, 64);
+   }
+
+   public void m_7695_(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      this.head.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.body.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.right_arm.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.left_arm.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.left_leg.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.right_leg.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+   }
+
+   public void m_6973_(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+   }
+}
