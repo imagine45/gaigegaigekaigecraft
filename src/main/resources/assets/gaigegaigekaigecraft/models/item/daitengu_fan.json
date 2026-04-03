@@ -1,7 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/cursedtool_fan_of_daitengu",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/cursedtool_fan_of_daitengu",
-    "particle": "gaigegaigekaigecraft:item/icon_sword"
-  }
-}

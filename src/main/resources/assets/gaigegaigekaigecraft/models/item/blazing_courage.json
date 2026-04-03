@@ -1,8 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/blazing_courage",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/blazing_courage",
-    "1": "gaigegaigekaigecraft:block/flame_anime",
-    "particle": "gaigegaigekaigecraft:item/icon_sword"
-  }
-}

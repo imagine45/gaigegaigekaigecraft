@@ -1,7 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/pendant_todo",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/pendant_todo",
-    "particle": "gaigegaigekaigecraft:item/icon_item"
-  }
-}

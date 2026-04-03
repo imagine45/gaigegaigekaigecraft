@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "gaigegaigekaigecraft:block/coffin_of_the_iron_mountain_1",
-    "particle": "gaigegaigekaigecraft:block/coffin_of_the_iron_mountain_1"
-  },
-  "render_type": "solid"
-}

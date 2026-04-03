@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "gaigegaigekaigecraft:block/dark_netherrack",
-    "particle": "gaigegaigekaigecraft:block/dark_netherrack"
-  },
-  "render_type": "solid"
-}

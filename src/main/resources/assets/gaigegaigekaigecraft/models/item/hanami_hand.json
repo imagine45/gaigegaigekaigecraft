@@ -1,7 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/hanami_hand",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/hanami_hand",
-    "particle": "gaigegaigekaigecraft:item/icon_item"
-  }
-}

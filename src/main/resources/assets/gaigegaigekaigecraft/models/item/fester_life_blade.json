@@ -1,7 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/fester_life_blade",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/fester_life_blade",
-    "particle": "gaigegaigekaigecraft:item/icon_sword"
-  }
-}

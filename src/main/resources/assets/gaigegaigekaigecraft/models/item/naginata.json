@@ -1,7 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/naginata",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/naginata",
-    "particle": "gaigegaigekaigecraft:item/icon_sword"
-  }
-}

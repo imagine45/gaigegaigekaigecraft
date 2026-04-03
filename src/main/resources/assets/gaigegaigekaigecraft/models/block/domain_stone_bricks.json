@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "gaigegaigekaigecraft:block/tex_stone_bricks",
-    "particle": "gaigegaigekaigecraft:block/tex_stone_bricks"
-  },
-  "render_type": "solid"
-}

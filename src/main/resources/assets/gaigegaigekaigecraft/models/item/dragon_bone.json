@@ -1,7 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/dragon_bone",
-  "textures": {
-    "1": "gaigegaigekaigecraft:block/dragon_bone",
-    "particle": "gaigegaigekaigecraft:item/icon_sword"
-  }
-}

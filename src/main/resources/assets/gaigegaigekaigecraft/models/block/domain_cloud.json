@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "gaigegaigekaigecraft:block/domain_kashimo",
-    "particle": "gaigegaigekaigecraft:block/domain_kashimo"
-  },
-  "render_type": "solid"
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/mythicalbeastamber_head",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/mythicalbeastamber_head",
-    "1": "gaigegaigekaigecraft:block/clear",
-    "particle": "gaigegaigekaigecraft:item/mythical_beast_amber_head"
-  }
-}

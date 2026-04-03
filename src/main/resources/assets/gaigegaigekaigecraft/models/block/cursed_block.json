@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "gaigegaigekaigecraft:block/cursed_block",
-    "particle": "gaigegaigekaigecraft:block/cursed_block"
-  },
-  "render_type": "translucent"
-}

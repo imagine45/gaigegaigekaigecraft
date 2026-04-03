@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "gaigegaigekaigecraft:block/domain_planks",
-    "particle": "gaigegaigekaigecraft:block/domain_planks"
-  },
-  "render_type": "solid"
-}

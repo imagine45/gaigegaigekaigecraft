@@ -1,7 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/itadori_hand",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/itadori_hand",
-    "particle": "gaigegaigekaigecraft:item/icon_sword"
-  }
-}

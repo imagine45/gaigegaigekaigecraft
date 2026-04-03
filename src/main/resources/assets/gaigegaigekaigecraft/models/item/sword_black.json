@@ -1,8 +1,0 @@
-{
-  "parent": "gaigegaigekaigecraft:custom/sword_black",
-  "textures": {
-    "0": "gaigegaigekaigecraft:block/sword_okkotsu",
-    "1": "gaigegaigekaigecraft:block/playful_cloud",
-    "particle": "gaigegaigekaigecraft:item/icon_sword"
-  }
-}
