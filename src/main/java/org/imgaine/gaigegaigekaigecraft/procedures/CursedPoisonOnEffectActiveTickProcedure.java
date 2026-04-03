@@ -30,13 +30,26 @@ public class CursedPoisonOnEffectActiveTickProcedure {
          double tick = 0.0;
          double playerTechnique1 = 0.0;
          double playerTechnique2 = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             double var10000;
-            label73: {
+            label78: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get())) {
-                     var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get()).m_19564_();
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get())) {
+                     var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get()).getAmplifier();
+                     break label78;
+                  }
+               }
+
+               var10000 = 0.0;
+            }
+
+            label73: {
+               level = var10000;
+               if (entity instanceof LivingEntity) {
+                  LivingEntity _livEnt = (LivingEntity)entity;
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get())) {
+                     var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get()).getDuration();
                      break label73;
                   }
                }
@@ -44,62 +57,52 @@ public class CursedPoisonOnEffectActiveTickProcedure {
                var10000 = 0.0;
             }
 
-            label68: {
-               level = var10000;
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get())) {
-                     var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.CURSED_POISON.get()).m_19557_();
-                     break label68;
-                  }
-               }
-
-               var10000 = 0.0;
-            }
-
             tick = var10000;
-            playerTechnique1 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
-            playerTechnique2 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2;
-            damage = true;
-            if (!(entity instanceof Player)) {
-               if (entity instanceof ItadoriYujiEntity || entity instanceof ItadoriYujiShibuyaEntity || entity instanceof ItadoriYujiShinjukuEntity) {
-                  damage = false;
-               }
-            } else {
-               if (playerTechnique1 == 21.0 || playerTechnique2 == 21.0) {
-                  damage = false;
-               }
-
-               if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerFormer == 0.0) {
-                  damage = false;
-               }
-            }
-
-            if (entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:no_curse_power")))) {
-               damage = false;
-            }
-
-            if (damage) {
-               if (tick % 200.0 == 0.0) {
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 80, 0, false, false));
-                     }
+            if (tick % 10.0 == 0.0) {
+               damage = true;
+               if (!(entity instanceof Player)) {
+                  if (entity instanceof ItadoriYujiEntity || entity instanceof ItadoriYujiShibuyaEntity || entity instanceof ItadoriYujiShinjukuEntity) {
+                     damage = false;
+                  }
+               } else {
+                  JujutsucraftModVariables.PlayerVariables cap = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse((JujutsucraftModVariables.PlayerVariables)null);
+                  playerTechnique1 = cap.PlayerCurseTechnique;
+                  playerTechnique2 = cap.PlayerCurseTechnique2;
+                  if (playerTechnique1 == 21.0 || playerTechnique2 == 21.0) {
+                     damage = false;
                   }
 
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 20, 1, false, false));
-                     }
+                  if (cap.PlayerCursePowerFormer == 0.0) {
+                     damage = false;
                   }
-
-                  entity.m_6469_(new DamageSource(world.m_9598_().m_175515_(Registries.f_268580_).m_246971_(ResourceKey.m_135785_(Registries.f_268580_, new ResourceLocation("jujutsucraft:damage_combat")))), (float)(9.0 * (1.0 + level)));
                }
-            } else if (entity instanceof LivingEntity) {
-               LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get());
+
+               if (damage && entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:no_curse_power")))) {
+                  damage = false;
+               }
+
+               if (damage) {
+                  if (tick % 200.0 == 0.0) {
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entity;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 0, false, false));
+                        }
+                     }
+
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entity;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 1, false, false));
+                        }
+                     }
+
+                     entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("gaigegaigekaigecraft:damage_combat")))), (float)(9.0 * (1.0 + level)));
+                  }
+               } else if (entity instanceof LivingEntity) {
+                  LivingEntity _entity = (LivingEntity)entity;
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get());
+               }
             }
          }
 

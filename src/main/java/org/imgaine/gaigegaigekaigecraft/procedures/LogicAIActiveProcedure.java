@@ -18,7 +18,7 @@ public class LogicAIActiveProcedure {
             label22: {
                if (entity instanceof GojoSatoruSchoolDaysEntity) {
                   GojoSatoruSchoolDaysEntity _datEntL1 = (GojoSatoruSchoolDaysEntity)entity;
-                  if ((Boolean)_datEntL1.m_20088_().m_135370_(GojoSatoruSchoolDaysEntity.DATA_dying)) {
+                  if ((Boolean)_datEntL1.getEntityData().get(GojoSatoruSchoolDaysEntity.DATA_dying)) {
                      var10000 = true;
                      break label22;
                   }

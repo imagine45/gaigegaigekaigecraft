@@ -57,58 +57,58 @@ public class RenderEntityProcedure {
    }
 
    public static void renderBackground(String texts, double x, double y, double z, float yaw, float pitch, float roll, float scale, int color) {
-      Minecraft minecraft = Minecraft.m_91087_();
-      Font font = minecraft.f_91062_;
-      MultiBufferSource.BufferSource bufferSource = minecraft.m_91269_().m_110104_();
-      Vec3 pos = provider.getCamera().m_90583_();
+      Minecraft minecraft = Minecraft.getInstance();
+      Font font = minecraft.font;
+      MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+      Vec3 pos = provider.getCamera().getPosition();
       PoseStack poseStack = provider.getPoseStack();
-      poseStack.m_85836_();
-      poseStack.m_85837_(x - pos.m_7096_(), y - pos.m_7098_(), z - pos.m_7094_());
-      poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-      poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-      poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-      poseStack.m_85841_(scale, -scale, 1.0F);
-      float var10001 = (float)(font.m_92895_(texts) - 1) * -0.5F;
+      poseStack.pushPose();
+      poseStack.translate(x - pos.x(), y - pos.y(), z - pos.z());
+      poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+      poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+      poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+      poseStack.scale(scale, -scale, 1.0F);
+      float var10001 = (float)(font.width(texts) - 1) * -0.5F;
       Objects.requireNonNull(font);
-      poseStack.m_252880_(var10001, (float)(9 - 1) * -0.5F, 0.0F);
-      Matrix4f matrix4f = poseStack.m_85850_().m_252922_();
+      poseStack.translate(var10001, (float)(9 - 1) * -0.5F, 0.0F);
+      Matrix4f matrix4f = poseStack.last().pose();
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      font.m_271703_(texts, 0.0F, 0.0F, 0, false, matrix4f, bufferSource, DisplayMode.SEE_THROUGH, color, 15728880);
+      font.drawInBatch(texts, 0.0F, 0.0F, 0, false, matrix4f, bufferSource, DisplayMode.SEE_THROUGH, color, 15728880);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    public static void renderBlock(BlockState blockState, double x, double y, double z, float yaw, float pitch, float roll, float scale, boolean glowing) {
-      BlockPos blockPos = BlockPos.m_274561_(x, y, z);
-      Vec3 pos = provider.getCamera().m_90583_();
-      int packedLight = glowing ? 15728880 : LevelRenderer.m_109541_(Minecraft.m_91087_().f_91073_, blockPos);
+      BlockPos blockPos = BlockPos.containing(x, y, z);
+      Vec3 pos = provider.getCamera().getPosition();
+      int packedLight = glowing ? 15728880 : LevelRenderer.getLightColor(Minecraft.getInstance().level, blockPos);
       PoseStack poseStack = provider.getPoseStack();
-      poseStack.m_85836_();
-      poseStack.m_85837_(x - pos.m_7096_(), y - pos.m_7098_(), z - pos.m_7094_());
-      poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-      poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-      poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-      poseStack.m_85841_(scale, scale, scale);
-      poseStack.m_252880_(-0.5F, -0.5F, -0.5F);
+      poseStack.pushPose();
+      poseStack.translate(x - pos.x(), y - pos.y(), z - pos.z());
+      poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+      poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+      poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+      poseStack.scale(scale, scale, scale);
+      poseStack.translate(-0.5F, -0.5F, -0.5F);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
       renderBlockModel(blockState, blockPos, poseStack, packedLight);
       renderBlockEntity(blockState, blockPos, poseStack, packedLight);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    private static void renderBlockEntity(BlockState blockState, BlockPos blockPos, PoseStack poseStack, int packedLight) {
-      Block var5 = blockState.m_60734_();
+      Block var5 = blockState.getBlock();
       if (var5 instanceof EntityBlock entityBlock) {
-         Minecraft minecraft = Minecraft.m_91087_();
-         ClientLevel level = minecraft.f_91073_;
-         BlockEntity blockEntity = entityBlock.m_142194_(blockPos, blockState);
+         Minecraft minecraft = Minecraft.getInstance();
+         ClientLevel level = minecraft.level;
+         BlockEntity blockEntity = entityBlock.newBlockEntity(blockPos, blockState);
          if (blockEntity != null) {
-            BlockEntityRenderer blockEntityRenderer = minecraft.m_167982_().m_112265_(blockEntity);
+            BlockEntityRenderer blockEntityRenderer = minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity);
             if (blockEntityRenderer != null) {
-               MultiBufferSource.BufferSource bufferSource = minecraft.m_91269_().m_110104_();
-               blockEntity.m_142339_(level);
-               blockEntityRenderer.m_6922_(blockEntity, 0.0F, poseStack, bufferSource, packedLight, OverlayTexture.f_118083_);
+               MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+               blockEntity.setLevel(level);
+               blockEntityRenderer.render(blockEntity, 0.0F, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
             }
          }
       }
@@ -116,22 +116,22 @@ public class RenderEntityProcedure {
    }
 
    private static void renderBlockModel(BlockState blockState, BlockPos blockPos, PoseStack poseStack, int packedLight) {
-      if (blockState.m_60799_() == RenderShape.MODEL) {
-         Minecraft minecraft = Minecraft.m_91087_();
-         ClientLevel level = minecraft.f_91073_;
-         MultiBufferSource.BufferSource bufferSource = minecraft.m_91269_().m_110104_();
-         BlockRenderDispatcher dispatcher = minecraft.m_91289_();
-         ModelBlockRenderer renderer = dispatcher.m_110937_();
-         BakedModel bakedModel = dispatcher.m_110910_(blockState);
+      if (blockState.getRenderShape() == RenderShape.MODEL) {
+         Minecraft minecraft = Minecraft.getInstance();
+         ClientLevel level = minecraft.level;
+         MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+         BlockRenderDispatcher dispatcher = minecraft.getBlockRenderer();
+         ModelBlockRenderer renderer = dispatcher.getModelRenderer();
+         BakedModel bakedModel = dispatcher.getBlockModel(blockState);
          ModelData modelData = bakedModel.getModelData(level, blockPos, blockState, ModelData.builder().build());
-         PoseStack.Pose pose = poseStack.m_85850_();
-         int color = minecraft.m_91298_().m_92582_(blockState, level, blockPos);
+         PoseStack.Pose pose = poseStack.last();
+         int color = minecraft.getBlockColors().getColor(blockState, level, blockPos);
          float red = (float)(color >> 16 & 255) / 255.0F;
          float green = (float)(color >> 8 & 255) / 255.0F;
          float blue = (float)(color & 255) / 255.0F;
 
-         for(RenderType renderType : bakedModel.getRenderTypes(blockState, RandomSource.m_216335_(42L), modelData)) {
-            renderer.renderModel(pose, bufferSource.m_6299_(Sheets.m_110792_()), blockState, bakedModel, red, green, blue, packedLight, OverlayTexture.f_118083_, modelData, renderType);
+         for(RenderType renderType : bakedModel.getRenderTypes(blockState, RandomSource.create(42L), modelData)) {
+            renderer.renderModel(pose, bufferSource.getBuffer(Sheets.translucentCullBlockSheet()), blockState, bakedModel, red, green, blue, packedLight, OverlayTexture.NO_OVERLAY, modelData, renderType);
          }
       }
 
@@ -139,110 +139,110 @@ public class RenderEntityProcedure {
 
    public static void renderEntity(EntityType type, double x, double y, double z, float yaw, float pitch, float roll, float scale, boolean glowing) {
       if (type != null) {
-         ClientLevel level = Minecraft.m_91087_().f_91073_;
+         ClientLevel level = Minecraft.getInstance().level;
          Entity entity;
          if (data.containsKey(type)) {
             entity = (Entity)data.get(type);
-            if (entity.m_9236_() != level) {
-               entity = type.m_20615_(level);
+            if (entity.level() != level) {
+               entity = type.create(level);
                data.put(type, entity);
             }
          } else {
-            entity = type.m_20615_(level);
+            entity = type.create(level);
             data.put(type, entity);
          }
 
-         renderEntity(entity, 0.0F, x, y, z, yaw, pitch, roll, scale, glowing ? 15728880 : LevelRenderer.m_109541_(level, BlockPos.m_274561_(x, y, z)));
+         renderEntity(entity, 0.0F, x, y, z, yaw, pitch, roll, scale, glowing ? 15728880 : LevelRenderer.getLightColor(level, BlockPos.containing(x, y, z)));
       }
    }
 
    public static void renderEntity(Entity entity, double x, double y, double z, float yaw, float pitch, float roll, float scale, boolean glowing) {
       float partialTick = provider.getPartialTick();
-      int packedLight = glowing ? 15728880 : Minecraft.m_91087_().m_91290_().m_114394_(entity, partialTick);
+      int packedLight = glowing ? 15728880 : Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(entity, partialTick);
       renderEntity(entity, partialTick, x, y, z, yaw, pitch, roll, scale, packedLight);
    }
 
    private static void renderEntity(Entity entity, float partialTick, double x, double y, double z, float yaw, float pitch, float roll, float scale, int packedLight) {
       if (entity != null) {
-         Minecraft minecraft = Minecraft.m_91087_();
-         MultiBufferSource.BufferSource bufferSource = minecraft.m_91269_().m_110104_();
-         EntityRenderer renderer = minecraft.m_91290_().m_114382_(entity);
-         Vec3 pos = provider.getCamera().m_90583_();
-         float offset = entity.m_20206_() / 2.0F * scale;
+         Minecraft minecraft = Minecraft.getInstance();
+         MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+         EntityRenderer renderer = minecraft.getEntityRenderDispatcher().getRenderer(entity);
+         Vec3 pos = provider.getCamera().getPosition();
+         float offset = entity.getBbHeight() / 2.0F * scale;
          PoseStack poseStack = provider.getPoseStack();
-         poseStack.m_85836_();
-         poseStack.m_85837_(x - pos.m_7096_(), y + (double)offset - pos.m_7098_(), z - pos.m_7094_());
-         poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-         poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-         poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-         poseStack.m_252880_(0.0F, -offset, 0.0F);
-         poseStack.m_85841_(scale, scale, scale);
+         poseStack.pushPose();
+         poseStack.translate(x - pos.x(), y + (double)offset - pos.y(), z - pos.z());
+         poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+         poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+         poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+         poseStack.translate(0.0F, -offset, 0.0F);
+         poseStack.scale(scale, scale, scale);
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         renderer.m_7392_(entity, entity.m_5675_(partialTick), partialTick, poseStack, bufferSource, packedLight);
+         renderer.render(entity, entity.getViewYRot(partialTick), partialTick, poseStack, bufferSource, packedLight);
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         poseStack.m_85849_();
+         poseStack.popPose();
       }
    }
 
    public static void renderItem(ItemStack itemStack, double x, double y, double z, float yaw, float pitch, float roll, float scale, boolean flipping, boolean glowing) {
-      Minecraft minecraft = Minecraft.m_91087_();
-      MultiBufferSource.BufferSource bufferSource = minecraft.m_91269_().m_110104_();
-      ItemRenderer renderer = minecraft.m_91291_();
-      Vec3 pos = provider.getCamera().m_90583_();
-      int packedLight = glowing ? 15728880 : LevelRenderer.m_109541_(minecraft.f_91073_, BlockPos.m_274561_(x, y, z));
+      Minecraft minecraft = Minecraft.getInstance();
+      MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+      ItemRenderer renderer = minecraft.getItemRenderer();
+      Vec3 pos = provider.getCamera().getPosition();
+      int packedLight = glowing ? 15728880 : LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(x, y, z));
       PoseStack poseStack = provider.getPoseStack();
-      poseStack.m_85836_();
-      poseStack.m_85837_(x - pos.m_7096_(), y - pos.m_7098_(), z - pos.m_7094_());
-      poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-      poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-      poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.pushPose();
+      poseStack.translate(x - pos.x(), y - pos.y(), z - pos.z());
+      poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+      poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+      poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+      poseStack.scale(scale, scale, scale);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      renderer.m_269491_((LivingEntity)null, itemStack, ItemDisplayContext.FIXED, flipping, poseStack, bufferSource, minecraft.f_91073_, packedLight, OverlayTexture.f_118083_, 0);
+      renderer.renderStatic((LivingEntity)null, itemStack, ItemDisplayContext.FIXED, flipping, poseStack, bufferSource, minecraft.level, packedLight, OverlayTexture.NO_OVERLAY, 0);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    public static void renderLine(double x1, double y1, double z1, double x2, double y2, double z2, int color) {
-      MultiBufferSource.BufferSource bufferSource = Minecraft.m_91087_().m_91269_().m_110104_();
-      Vec3 pos = provider.getCamera().m_90583_();
-      Vector3f normal = (new Vec3(x2 - x1, y2 - y1, z2 - z1)).m_82541_().m_252839_();
-      Matrix4f matrix4f = provider.getPoseStack().m_85850_().m_252922_();
-      VertexConsumer vertexConsumer = bufferSource.m_6299_(RenderType.m_110504_());
-      vertexConsumer.m_252986_(matrix4f, (float)(x1 - pos.m_7096_()), (float)(y1 - pos.m_7098_()), (float)(z1 - pos.m_7094_())).m_193479_(color).m_5601_(normal.x(), normal.y(), normal.z()).m_5752_();
-      vertexConsumer.m_252986_(matrix4f, (float)(x2 - pos.m_7096_()), (float)(y2 - pos.m_7098_()), (float)(z2 - pos.m_7094_())).m_193479_(color).m_5601_(normal.x(), normal.y(), normal.z()).m_5752_();
+      MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+      Vec3 pos = provider.getCamera().getPosition();
+      Vector3f normal = (new Vec3(x2 - x1, y2 - y1, z2 - z1)).normalize().toVector3f();
+      Matrix4f matrix4f = provider.getPoseStack().last().pose();
+      VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lines());
+      vertexConsumer.vertex(matrix4f, (float)(x1 - pos.x()), (float)(y1 - pos.y()), (float)(z1 - pos.z())).color(color).normal(normal.x(), normal.y(), normal.z()).endVertex();
+      vertexConsumer.vertex(matrix4f, (float)(x2 - pos.x()), (float)(y2 - pos.y()), (float)(z2 - pos.z())).color(color).normal(normal.x(), normal.y(), normal.z()).endVertex();
    }
 
    public static void renderTexts(String texts, double x, double y, double z, float yaw, float pitch, float roll, float scale, int color, boolean glowing) {
-      Minecraft minecraft = Minecraft.m_91087_();
-      Font font = minecraft.f_91062_;
-      MultiBufferSource.BufferSource bufferSource = minecraft.m_91269_().m_110104_();
-      Vec3 pos = provider.getCamera().m_90583_();
-      int packedLight = glowing ? 15728880 : LevelRenderer.m_109541_(minecraft.f_91073_, BlockPos.m_274561_(x, y, z));
+      Minecraft minecraft = Minecraft.getInstance();
+      Font font = minecraft.font;
+      MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+      Vec3 pos = provider.getCamera().getPosition();
+      int packedLight = glowing ? 15728880 : LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(x, y, z));
       PoseStack poseStack = provider.getPoseStack();
-      poseStack.m_85836_();
-      poseStack.m_85837_(x - pos.m_7096_(), y - pos.m_7098_(), z - pos.m_7094_());
-      poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-      poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-      poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-      poseStack.m_85841_(scale, -scale, 1.0F);
-      float var10001 = (float)(font.m_92895_(texts) - 1) * -0.5F;
+      poseStack.pushPose();
+      poseStack.translate(x - pos.x(), y - pos.y(), z - pos.z());
+      poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+      poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+      poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+      poseStack.scale(scale, -scale, 1.0F);
+      float var10001 = (float)(font.width(texts) - 1) * -0.5F;
       Objects.requireNonNull(font);
-      poseStack.m_252880_(var10001, (float)(9 - 1) * -0.5F, 0.0F);
-      Matrix4f matrix4f = poseStack.m_85850_().m_252922_();
+      poseStack.translate(var10001, (float)(9 - 1) * -0.5F, 0.0F);
+      Matrix4f matrix4f = poseStack.last().pose();
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      font.m_271703_(texts, 0.0F, 0.0F, color, false, matrix4f, bufferSource, DisplayMode.NORMAL, 0, packedLight);
+      font.drawInBatch(texts, 0.0F, 0.0F, color, false, matrix4f, bufferSource, DisplayMode.NORMAL, 0, packedLight);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    @SubscribeEvent
    public static void renderModels(RenderLevelStageEvent event) {
       provider = event;
       if (provider.getStage() == Stage.AFTER_ENTITIES) {
-         ClientLevel level = Minecraft.m_91087_().f_91073_;
-         Entity entity = provider.getCamera().m_90592_();
-         Vec3 pos = entity.m_20318_(provider.getPartialTick());
+         ClientLevel level = Minecraft.getInstance().level;
+         Entity entity = provider.getCamera().getEntity();
+         Vec3 pos = entity.getPosition(provider.getPartialTick());
          execute(provider, level, (double)provider.getPartialTick());
          RenderSystem.defaultBlendFunc();
          RenderSystem.disableBlend();
@@ -262,11 +262,11 @@ public class RenderEntityProcedure {
       double size_height = 0.0;
       Entity entity_a = null;
       if (world instanceof ClientLevel) {
-         for(Entity entityiterator : ((ClientLevel)world).m_104735_()) {
-            if (entityiterator instanceof LivingEntity && entityiterator.m_146889_() * 100.0F >= 5.0F) {
-               size_width = 0.25 * ((double)entityiterator.m_20205_() / 0.6);
-               size_height = 0.25 * ((double)entityiterator.m_20206_() / 1.8);
-               renderEntity((EntityType)JujutsucraftModEntities.ICE_SPEAR_2.get(), entityiterator.m_20185_(), entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.5 - size_height * 0.625, entityiterator.m_20189_(), entityiterator.m_5675_((float)partialTick), 0.0F, 0.0F, (float)(0.4 * (size_width + size_height)), false);
+         for(Entity entityiterator : ((ClientLevel)world).entitiesForRendering()) {
+            if (entityiterator instanceof LivingEntity && entityiterator.getPercentFrozen() * 100.0F >= 5.0F) {
+               size_width = 0.25 * ((double)entityiterator.getBbWidth() / 0.6);
+               size_height = 0.25 * ((double)entityiterator.getBbHeight() / 1.8);
+               renderEntity((EntityType)JujutsucraftModEntities.ICE_SPEAR_2.get(), entityiterator.getX(), entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5 - size_height * 0.625, entityiterator.getZ(), entityiterator.getViewYRot((float)partialTick), 0.0F, 0.0F, (float)(0.4 * (size_width + size_height)), false);
             }
          }
       }

@@ -43,133 +43,133 @@ public class Toad2Entity extends Monster {
 
    public Toad2Entity(EntityType<Toad2Entity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21346_.m_25352_(1, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(2, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = Toad2Entity.this.m_20185_();
-            double y = Toad2Entity.this.m_20186_();
-            double z = Toad2Entity.this.m_20189_();
+   protected void registerGoals() {
+      super.registerGoals();
+      this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = Toad2Entity.this.getX();
+            double y = Toad2Entity.this.getY();
+            double z = Toad2Entity.this.getZ();
             Entity entity = Toad2Entity.this;
-            Level world = Toad2Entity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = Toad2Entity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = Toad2Entity.this.m_20185_();
-            double y = Toad2Entity.this.m_20186_();
-            double z = Toad2Entity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = Toad2Entity.this.getX();
+            double y = Toad2Entity.this.getY();
+            double z = Toad2Entity.this.getZ();
             Entity entity = Toad2Entity.this;
-            Level world = Toad2Entity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = Toad2Entity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = Toad2Entity.this.m_20185_();
-            double y = Toad2Entity.this.m_20186_();
-            double z = Toad2Entity.this.m_20189_();
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = Toad2Entity.this.getX();
+            double y = Toad2Entity.this.getY();
+            double z = Toad2Entity.this.getZ();
             Entity entity = Toad2Entity.this;
-            Level world = Toad2Entity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = Toad2Entity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = Toad2Entity.this.m_20185_();
-            double y = Toad2Entity.this.m_20186_();
-            double z = Toad2Entity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = Toad2Entity.this.getX();
+            double y = Toad2Entity.this.getY();
+            double z = Toad2Entity.this.getZ();
             Entity entity = Toad2Entity.this;
-            Level world = Toad2Entity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = Toad2Entity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public void m_6667_(DamageSource source) {
-      super.m_6667_(source);
-      DieTenShadowsTechniqueProcedure.execute(this.m_9236_(), this);
+   public void die(DamageSource source) {
+      super.die(source);
+      DieTenShadowsTechniqueProcedure.execute(this.level(), this);
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
-      SetTagJujutsuSorcererProcedure.execute(world, this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
+      SetTagJujutsuSorcererProcedure.execute(world, this.getX(), this.getY(), this.getZ(), this);
       return retval;
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      super.m_6071_(sourceentity, hand);
-      sourceentity.m_20329_(this);
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      super.mobInteract(sourceentity, hand);
+      sourceentity.startRiding(this);
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       TenShadowsTechniqueProcedure.execute(world, x, y, z, this, sourceentity);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIToadProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AIToadProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
    }
 
-   public void m_7023_(Vec3 dir) {
-      Entity entity = this.m_20197_().isEmpty() ? null : (Entity)this.m_20197_().get(0);
-      if (this.m_20160_()) {
-         this.m_146922_(entity.m_146908_());
-         this.f_19859_ = this.m_146908_();
-         this.m_146926_(entity.m_146909_() * 0.5F);
-         this.m_19915_(this.m_146908_(), this.m_146909_());
-         this.f_20883_ = entity.m_146908_();
-         this.f_20885_ = entity.m_146908_();
+   public void travel(Vec3 dir) {
+      Entity entity = this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+      if (this.isVehicle()) {
+         this.setYRot(entity.getYRot());
+         this.yRotO = this.getYRot();
+         this.setXRot(entity.getXRot() * 0.5F);
+         this.setRot(this.getYRot(), this.getXRot());
+         this.yBodyRot = entity.getYRot();
+         this.yHeadRot = entity.getYRot();
          if (entity instanceof LivingEntity) {
             LivingEntity passenger = (LivingEntity)entity;
-            this.m_7910_((float)this.m_21133_(Attributes.f_22279_));
-            float forward = passenger.f_20902_;
+            this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            float forward = passenger.zza;
             float strafe = 0.0F;
-            super.m_7023_(new Vec3((double)strafe, 0.0, (double)forward));
+            super.travel(new Vec3((double)strafe, 0.0, (double)forward));
          }
 
-         double d1 = this.m_20185_() - this.f_19854_;
-         double d0 = this.m_20189_() - this.f_19856_;
+         double d1 = this.getX() - this.xo;
+         double d0 = this.getZ() - this.zo;
          float f1 = (float)Math.sqrt(d1 * d1 + d0 * d0) * 4.0F;
          if (f1 > 1.0F) {
             f1 = 1.0F;
          }
 
-         this.f_267362_.m_267771_(this.f_267362_.m_267731_() + (f1 - this.f_267362_.m_267731_()) * 0.4F);
-         this.f_267362_.m_267590_(this.f_267362_.m_267756_() + this.f_267362_.m_267731_());
-         this.m_267651_(true);
+         this.walkAnimation.setSpeed(this.walkAnimation.speed() + (f1 - this.walkAnimation.speed()) * 0.4F);
+         this.walkAnimation.position(this.walkAnimation.position() + this.walkAnimation.speed());
+         this.calculateEntityAnimation(true);
       } else {
-         super.m_7023_(dir);
+         super.travel(dir);
       }
    }
 
@@ -177,14 +177,14 @@ public class Toad2Entity extends Monster {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22276_, 80.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 6.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 2.0);
-      builder = builder.m_22268_(Attributes.f_22282_, 0.5);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.0);
+      builder = builder.add(Attributes.MAX_HEALTH, 80.0);
+      builder = builder.add(Attributes.ARMOR, 6.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 2.0);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 0.5);
       return builder;
    }
 }

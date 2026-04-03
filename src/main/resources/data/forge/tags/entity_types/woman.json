@@ -1,21 +1,22 @@
 {
   "replace": false,
   "values": [
-    "jujutsucraft:hoshi_kirara",
-    "jujutsucraft:kurusu_hana",
-    "jujutsucraft:mei_mei",
-    "jujutsucraft:mimiko",
-    "jujutsucraft:miwa_kasumi",
-    "jujutsucraft:nanako",
-    "jujutsucraft:nishimiya_momo",
-    "jujutsucraft:nobara_kugisaki",
-    "jujutsucraft:ogami",
-    "jujutsucraft:takada",
-    "jujutsucraft:tsukumo_yuki",
-    "jujutsucraft:uraume",
-    "jujutsucraft:uro_takako",
-    "jujutsucraft:yorozu",
+    "gaigegaigekaigecraft:hoshi_kirara",
+    "gaigegaigekaigecraft:kurusu_hana",
+    "gaigegaigekaigecraft:mei_mei",
+    "gaigegaigekaigecraft:mimiko",
+    "gaigegaigekaigecraft:miwa_kasumi",
+    "gaigegaigekaigecraft:nanako",
+    "gaigegaigekaigecraft:nishimiya_momo",
+    "gaigegaigekaigecraft:nobara_kugisaki",
+    "gaigegaigekaigecraft:ogami",
+    "gaigegaigekaigecraft:takada",
+    "gaigegaigekaigecraft:tsukumo_yuki",
+    "gaigegaigekaigecraft:uraume",
+    "gaigegaigekaigecraft:uro_takako",
+    "gaigegaigekaigecraft:yorozu",
     "witch",
-    "jujutsucraft:hanyu"
+    "gaigegaigekaigecraft:hanyu",
+    "gaigegaigekaigecraft:suda_manami"
   ]
 }

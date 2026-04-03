@@ -25,76 +25,76 @@ public class TechniqueWingKingProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-         if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+         if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
             ItemStack var10000;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == JujutsucraftModItems.WING_KING_CHESTPLATE.get()) {
-               entity.getPersistentData().m_128347_("cnt5", 1.0);
+            if (var10000.getItem() == JujutsucraftModItems.WING_KING_CHESTPLATE.get()) {
+               entity.getPersistentData().putDouble("cnt5", 1.0);
             } else {
-               entity.getPersistentData().m_128347_("cnt5", 0.0);
+               entity.getPersistentData().putDouble("cnt5", 0.0);
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                   } else {
-                     _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                   }
                }
 
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_RED.get(), x, y + (double)entity.m_20206_() * 0.5, z, 40, 0.2, 0.2, 0.2, 1.0);
+                  _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_RED.get(), x, y + (double)entity.getBbHeight() * 0.5, z, 40, 0.2, 0.2, 0.2, 1.0);
                }
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt5") == 0.0) {
+         if (entity.getPersistentData().getDouble("cnt5") == 0.0) {
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_RED.get(), x, y + (double)entity.m_20206_() * 0.5, z, 5, 0.2, 0.2, 0.2, 0.25);
+               _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_RED.get(), x, y + (double)entity.getBbHeight() * 0.5, z, 5, 0.2, 0.2, 0.2, 0.25);
             }
 
-            if (entity.getPersistentData().m_128459_("cnt1") > 10.0) {
+            if (entity.getPersistentData().getDouble("cnt1") > 10.0) {
                ItemStack var18;
                if (entity instanceof LivingEntity) {
                   LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var18 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                  var18 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                } else {
-                  var18 = ItemStack.f_41583_;
+                  var18 = ItemStack.EMPTY;
                }
 
-               if (var18.m_41720_() != JujutsucraftModItems.WING_KING_CHESTPLATE.get() && entity instanceof Player) {
+               if (var18.getItem() != JujutsucraftModItems.WING_KING_CHESTPLATE.get() && entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var18 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                     var18 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                   } else {
-                     var18 = ItemStack.f_41583_;
+                     var18 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var18.m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var18.copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(2, new ItemStack((ItemLike)JujutsucraftModItems.WING_KING_CHESTPLATE.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(2, new ItemStack((ItemLike)JujutsucraftModItems.WING_KING_CHESTPLATE.get()));
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.WING_KING_CHESTPLATE.get()));
+                  _living.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.WING_KING_CHESTPLATE.get()));
                }
 
-               entity.getPersistentData().m_128347_("cnt1", 0.0);
-               entity.getPersistentData().m_128347_("cnt5", 1.0);
+               entity.getPersistentData().putDouble("cnt1", 0.0);
+               entity.getPersistentData().putDouble("cnt5", 1.0);
             }
          } else {
             WingKingAttackProcedure.execute(world, x, y, z, entity);

@@ -9,14 +9,14 @@ public class TakadaModel extends GeoModel<TakadaEntity> {
    }
 
    public ResourceLocation getAnimationResource(TakadaEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/takada.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/takada.animation.json");
    }
 
    public ResourceLocation getModelResource(TakadaEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/takada.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/takada.geo.json");
    }
 
    public ResourceLocation getTextureResource(TakadaEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

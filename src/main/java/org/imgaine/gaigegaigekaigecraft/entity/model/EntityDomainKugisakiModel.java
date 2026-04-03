@@ -9,14 +9,14 @@ public class EntityDomainKugisakiModel extends GeoModel<EntityDomainKugisakiEnti
    }
 
    public ResourceLocation getAnimationResource(EntityDomainKugisakiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/kugisaki_domain.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/kugisaki_domain.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityDomainKugisakiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/kugisaki_domain.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/kugisaki_domain.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityDomainKugisakiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

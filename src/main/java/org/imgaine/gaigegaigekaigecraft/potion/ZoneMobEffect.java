@@ -20,16 +20,16 @@ public class ZoneMobEffect extends MobEffect {
       return cures;
    }
 
-   public void m_6385_(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-      super.m_6385_(entity, attributeMap, amplifier);
+   public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+      super.addAttributeModifiers(entity, attributeMap, amplifier);
       ZoneEffectStartedappliedProcedure.execute(entity);
    }
 
-   public void m_6742_(LivingEntity entity, int amplifier) {
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
       ZoneOnEffectActiveTickProcedure.execute(entity);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

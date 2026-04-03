@@ -20,19 +20,19 @@ public class CommandVillagersCommand {
 
    @SubscribeEvent
    public static void registerCommand(RegisterCommandsEvent event) {
-      event.getDispatcher().register((LiteralArgumentBuilder)((LiteralArgumentBuilder)Commands.m_82127_("villagers").requires((s) -> s.m_6761_(2))).executes((arguments) -> {
+      event.getDispatcher().register((LiteralArgumentBuilder)((LiteralArgumentBuilder)Commands.literal("villagers").requires((s) -> s.hasPermission(2))).executes((arguments) -> {
          Level world = ((CommandSourceStack)arguments.getSource()).getUnsidedLevel();
-         double x = ((CommandSourceStack)arguments.getSource()).m_81371_().m_7096_();
-         double y = ((CommandSourceStack)arguments.getSource()).m_81371_().m_7098_();
-         double z = ((CommandSourceStack)arguments.getSource()).m_81371_().m_7094_();
-         Entity entity = ((CommandSourceStack)arguments.getSource()).m_81373_();
+         double x = ((CommandSourceStack)arguments.getSource()).getPosition().x();
+         double y = ((CommandSourceStack)arguments.getSource()).getPosition().y();
+         double z = ((CommandSourceStack)arguments.getSource()).getPosition().z();
+         Entity entity = ((CommandSourceStack)arguments.getSource()).getEntity();
          if (entity == null && world instanceof ServerLevel _servLevel) {
             entity = FakePlayerFactory.getMinecraft(_servLevel);
          }
 
          Direction direction = Direction.DOWN;
          if (entity != null) {
-            direction = entity.m_6350_();
+            direction = entity.getDirection();
          }
 
          SummonVillagersProcedure.execute(world, x, y, z);

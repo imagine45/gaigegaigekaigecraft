@@ -13,7 +13,7 @@ public class OCostProcedure {
       if (entity == null) {
          return "";
       } else {
-         String var10000 = Component.m_237115_("jujutsu.overlay.cost").getString();
+         String var10000 = Component.translatable("jujutsu.overlay.cost").getString();
          return var10000 + ": " + Math.round(((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechniqueCost);
       }
    }

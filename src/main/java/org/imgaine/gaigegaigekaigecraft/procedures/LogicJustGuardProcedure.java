@@ -13,15 +13,15 @@ public class LogicJustGuardProcedure {
       if (entity == null) {
          return false;
       } else {
-         boolean var10000;
+         int var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
+            if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
                label22: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
-                        var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.GUARD.get()).m_19564_();
+                     if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
+                        var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.GUARD.get()).getAmplifier();
                         break label22;
                      }
                   }
@@ -29,13 +29,13 @@ public class LogicJustGuardProcedure {
                   var10000 = 0;
                }
 
-               var10000 = var10000 > 0;
-               return var10000;
+               var10000 = var10000 > 0 ? 1 : 0;
+               return var10000 != 0;
             }
          }
 
          var10000 = 0;
-         return (boolean)var10000;
+         return var10000 != 0;
       }
    }
 }

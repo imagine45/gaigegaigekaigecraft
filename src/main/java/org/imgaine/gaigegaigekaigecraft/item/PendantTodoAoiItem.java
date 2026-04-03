@@ -9,15 +9,15 @@ import net.minecraft.world.item.UseAnim;
 
 public class PendantTodoAoiItem extends Item {
    public PendantTodoAoiItem() {
-      super((new Item.Properties()).m_41487_(1).m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).stacksTo(1).rarity(Rarity.COMMON));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.EAT;
    }
 
    public boolean onDroppedByPlayer(ItemStack itemstack, Player entity) {
-      PendantTodoAoiItemIsDroppedByPlayerProcedure.execute(entity.m_9236_(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity);
+      PendantTodoAoiItemIsDroppedByPlayerProcedure.execute(entity.level(), entity.getX(), entity.getY(), entity.getZ(), entity);
       return true;
    }
 }

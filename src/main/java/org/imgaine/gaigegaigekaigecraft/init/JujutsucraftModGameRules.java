@@ -19,8 +19,8 @@ public class JujutsucraftModGameRules {
    }
 
    static {
-      JUJUTSUPVP = GameRules.m_46189_("jujutsuPVP", Category.PLAYER, BooleanValue.m_46250_(true));
-      JUJUTSUUPGRADEDIFFICULTY = GameRules.m_46189_("jujutsuUpgradeDifficulty", Category.PLAYER, IntegerValue.m_46312_(2));
-      JUJUTSU_GAIN_FAME = GameRules.m_46189_("jujutsuGainFame", Category.PLAYER, BooleanValue.m_46250_(true));
+      JUJUTSUPVP = GameRules.register("jujutsuPVP", Category.PLAYER, BooleanValue.create(true));
+      JUJUTSUUPGRADEDIFFICULTY = GameRules.register("jujutsuUpgradeDifficulty", Category.PLAYER, IntegerValue.create(2));
+      JUJUTSU_GAIN_FAME = GameRules.register("jujutsuGainFame", Category.PLAYER, BooleanValue.create(true));
    }
 }

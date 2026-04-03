@@ -12,7 +12,7 @@ public class OSwitchProcedure {
          return "";
       } else {
          String var10000 = OverlayKeyCProcedure.execute(entity);
-         return var10000 + ": " + Component.m_237115_("jujutsu.overlay.switch").getString();
+         return var10000 + ": " + Component.translatable("jujutsu.overlay.switch").getString();
       }
    }
 }

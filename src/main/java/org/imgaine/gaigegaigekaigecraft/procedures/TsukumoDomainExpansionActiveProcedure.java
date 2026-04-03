@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.core.particles.ParticleTypes;
@@ -43,13 +42,13 @@ public class TsukumoDomainExpansionActiveProcedure {
             double y_pos = 0.0;
             double y_knockback = 0.0;
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
-            x_center = entity.getPersistentData().m_128459_("x_pos_doma");
-            y_center = entity.getPersistentData().m_128459_("y_pos_doma");
-            z_center = entity.getPersistentData().m_128459_("z_pos_doma");
+            x_center = entity.getPersistentData().getDouble("x_pos_doma");
+            y_center = entity.getPersistentData().getDouble("y_pos_doma");
+            z_center = entity.getPersistentData().getDouble("z_pos_doma");
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label96;
                }
             }
@@ -57,51 +56,51 @@ public class TsukumoDomainExpansionActiveProcedure {
             var10000 = 0;
          }
 
-         if (var10000 % 5 == 0 && !entity.getPersistentData().m_128471_("Failed")) {
+         if (var10000 % 5 == 0 && !entity.getPersistentData().getBoolean("Failed")) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get(), 10, 11, true, true));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get(), 10, 11, true, true));
                }
             }
 
             Vec3 _center = new Vec3(x_center, y_center, z_center);
 
-            for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
+            for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
                if (entity != entityiterator && LogicAttackDomainProcedure.execute(world, entity, entityiterator)) {
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityiterator;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 20, 6, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 6, false, false));
                      }
                   }
 
-                  double var46 = entityiterator.m_20185_() - entityiterator.m_20185_();
-                  double var55 = entityiterator.m_20186_() - 5.0 - entityiterator.m_20186_();
-                  double var51 = entityiterator.m_20189_() - entityiterator.m_20189_();
+                  double var46 = entityiterator.getX() - entityiterator.getX();
+                  double var55 = entityiterator.getY() - 5.0 - entityiterator.getY();
+                  double var51 = entityiterator.getZ() - entityiterator.getZ();
                   double var44 = Math.sqrt(Math.pow(var46, 2.0) + Math.pow(var55, 2.0) + Math.pow(var51, 2.0));
                   var46 = var46 / var44 * 3.0;
                   var55 = var55 / var44 * 3.0;
                   var51 = var51 / var44 * 3.0;
-                  if (!(var46 * 1.1 < entityiterator.m_20184_().m_7096_()) && !(var46 * 0.9 > entityiterator.m_20184_().m_7096_())) {
-                     var46 = entityiterator.m_20184_().m_7096_();
+                  if (!(var46 * 1.1 < entityiterator.getDeltaMovement().x()) && !(var46 * 0.9 > entityiterator.getDeltaMovement().x())) {
+                     var46 = entityiterator.getDeltaMovement().x();
                   } else {
-                     var46 = entityiterator.m_20184_().m_7096_() + var46 * 0.1;
+                     var46 = entityiterator.getDeltaMovement().x() + var46 * 0.1;
                   }
 
-                  if (!(var55 * 1.1 < entityiterator.m_20184_().m_7098_()) && !(var55 * 0.9 > entityiterator.m_20184_().m_7098_())) {
-                     var55 = entityiterator.m_20184_().m_7098_();
+                  if (!(var55 * 1.1 < entityiterator.getDeltaMovement().y()) && !(var55 * 0.9 > entityiterator.getDeltaMovement().y())) {
+                     var55 = entityiterator.getDeltaMovement().y();
                   } else {
-                     var55 = entityiterator.m_20184_().m_7098_() + var55 * 0.1;
+                     var55 = entityiterator.getDeltaMovement().y() + var55 * 0.1;
                   }
 
-                  if (!(var51 * 1.1 < entityiterator.m_20184_().m_7094_()) && !(var51 * 0.9 > entityiterator.m_20184_().m_7094_())) {
-                     var51 = entityiterator.m_20184_().m_7094_();
+                  if (!(var51 * 1.1 < entityiterator.getDeltaMovement().z()) && !(var51 * 0.9 > entityiterator.getDeltaMovement().z())) {
+                     var51 = entityiterator.getDeltaMovement().z();
                   } else {
-                     var51 = entityiterator.m_20184_().m_7094_() + var51 * 0.1;
+                     var51 = entityiterator.getDeltaMovement().z() + var51 * 0.1;
                   }
 
-                  entityiterator.m_20256_(new Vec3(var46, var55, var51));
+                  entityiterator.setDeltaMovement(new Vec3(var46, var55, var51));
                }
             }
          }
@@ -128,7 +127,7 @@ public class TsukumoDomainExpansionActiveProcedure {
 
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123760_, var40, var54, var42, 1, 0.5, 0.5, 0.5, 0.0);
+                  _level.sendParticles(ParticleTypes.PORTAL, var40, var54, var42, 1, 0.5, 0.5, 0.5, 0.0);
                }
             }
 

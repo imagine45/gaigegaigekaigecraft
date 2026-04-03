@@ -21,27 +21,27 @@ public class ParticleWiFiParticle extends TextureSheetParticle {
    protected ParticleWiFiParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(20.0F, 20.0F);
-      this.f_107663_ *= 20.0F;
-      this.f_107225_ = 40;
-      this.f_107226_ = -0.05F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 0.0;
-      this.f_107216_ = vy * 0.0;
-      this.f_107217_ = vz * 0.0;
-      this.m_108335_(spriteSet);
+      this.setSize(20.0F, 20.0F);
+      this.quadSize *= 20.0F;
+      this.lifetime = 40;
+      this.gravity = -0.05F;
+      this.hasPhysics = false;
+      this.xd = vx * 0.0;
+      this.yd = vy * 0.0;
+      this.zd = vz * 0.0;
+      this.pickSprite(spriteSet);
    }
 
-   public int m_6355_(float partialTick) {
+   public int getLightColor(float partialTick) {
       return 15728880;
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107432_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_LIT;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
+   public void tick() {
+      super.tick();
    }
 
    public static class ParticleWiFiParticleProvider implements ParticleProvider<SimpleParticleType> {

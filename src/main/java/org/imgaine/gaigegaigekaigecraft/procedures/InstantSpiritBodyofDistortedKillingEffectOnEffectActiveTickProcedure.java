@@ -2,6 +2,8 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import net.minecraftforge.common.util.NonNullConsumer;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.core.Direction;
@@ -19,6 +21,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedure {
    public InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedure() {
@@ -31,7 +34,7 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
          label274: {
             Player = false;
             boolean kashimo = false;
-            ItemStack item_a = ItemStack.f_41583_;
+            ItemStack item_a = ItemStack.EMPTY;
             double amount = 0.0;
             double x_pos = 0.0;
             double z_pos = 0.0;
@@ -46,8 +49,8 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
             Player = entity instanceof Player;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get()).getDuration();
                   break label274;
                }
             }
@@ -60,57 +63,62 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
             ItemStack var87;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var87 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var87 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var87 = ItemStack.f_41583_;
+               var87 = ItemStack.EMPTY;
             }
 
-            if (var87.m_41720_() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()) {
-               ItemStack var35 = (new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get())).m_41777_();
-               var35.m_41784_().m_128379_("effect_item", true);
+            if (var87.getItem() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()) {
+               ItemStack var35 = (new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get())).copy();
+               var35.getOrCreateTag().putBoolean("effect_item", true);
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var87 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                     var87 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                   } else {
-                     var87 = ItemStack.f_41583_;
+                     var87 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var87.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var87.copy().copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(3, var35.m_41777_());
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, var35.copy());
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.HEAD, var35.m_41777_());
+                  _living.setItemSlot(EquipmentSlot.HEAD, var35.copy());
                }
 
                AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                LazyOptional var89 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                Objects.requireNonNull(_iitemhandlerref);
-               var89.ifPresent(_iitemhandlerref::set);
+               var89.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                if (_iitemhandlerref.get() != null) {
                   for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                     if (itemstackiterator.m_41720_() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()) {
+                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                     if (itemstackiterator.getItem() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()) {
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_150109_().f_35975_.set(3, itemstackiterator.m_41777_());
-                           _player.m_150109_().m_6596_();
+                           _player.getInventory().armor.set(3, itemstackiterator.copy());
+                           _player.getInventory().setChanged();
                         } else if (entity instanceof LivingEntity) {
                            LivingEntity _living = (LivingEntity)entity;
-                           _living.m_8061_(EquipmentSlot.HEAD, itemstackiterator.m_41777_());
+                           _living.setItemSlot(EquipmentSlot.HEAD, itemstackiterator.copy());
                         }
 
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_150109_().m_36022_((p) -> itemstackiterator.m_41720_() == p.m_41720_(), 1, _player.f_36095_.m_39730_());
+                           _player.getInventory().clearOrCountMatchingItems((p) -> itemstackiterator.getItem() == p.getItem(), 1, _player.inventoryMenu.getCraftSlots());
                         }
                         break;
                      }
@@ -120,57 +128,62 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var87 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var87 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var87 = ItemStack.f_41583_;
+               var87 = ItemStack.EMPTY;
             }
 
-            if (var87.m_41720_() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()) {
-               ItemStack var36 = (new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get())).m_41777_();
-               var36.m_41784_().m_128379_("effect_item", true);
+            if (var87.getItem() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()) {
+               ItemStack var36 = (new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get())).copy();
+               var36.getOrCreateTag().putBoolean("effect_item", true);
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var87 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                     var87 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                   } else {
-                     var87 = ItemStack.f_41583_;
+                     var87 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var87.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var87.copy().copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(2, var36.m_41777_());
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(2, var36.copy());
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.CHEST, var36.m_41777_());
+                  _living.setItemSlot(EquipmentSlot.CHEST, var36.copy());
                }
 
                AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                LazyOptional var92 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                Objects.requireNonNull(_iitemhandlerref);
-               var92.ifPresent(_iitemhandlerref::set);
+               var92.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                if (_iitemhandlerref.get() != null) {
                   for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                     if (itemstackiterator.m_41720_() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()) {
+                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                     if (itemstackiterator.getItem() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()) {
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_150109_().f_35975_.set(2, itemstackiterator.m_41777_());
-                           _player.m_150109_().m_6596_();
+                           _player.getInventory().armor.set(2, itemstackiterator.copy());
+                           _player.getInventory().setChanged();
                         } else if (entity instanceof LivingEntity) {
                            LivingEntity _living = (LivingEntity)entity;
-                           _living.m_8061_(EquipmentSlot.CHEST, itemstackiterator.m_41777_());
+                           _living.setItemSlot(EquipmentSlot.CHEST, itemstackiterator.copy());
                         }
 
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_150109_().m_36022_((p) -> itemstackiterator.m_41720_() == p.m_41720_(), 1, _player.f_36095_.m_39730_());
+                           _player.getInventory().clearOrCountMatchingItems((p) -> itemstackiterator.getItem() == p.getItem(), 1, _player.inventoryMenu.getCraftSlots());
                         }
                         break;
                      }
@@ -180,57 +193,62 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var87 = _entGetArmor.m_6844_(EquipmentSlot.LEGS);
+               var87 = _entGetArmor.getItemBySlot(EquipmentSlot.LEGS);
             } else {
-               var87 = ItemStack.f_41583_;
+               var87 = ItemStack.EMPTY;
             }
 
-            if (var87.m_41720_() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()) {
-               ItemStack var37 = (new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get())).m_41777_();
-               var37.m_41784_().m_128379_("effect_item", true);
+            if (var87.getItem() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()) {
+               ItemStack var37 = (new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get())).copy();
+               var37.getOrCreateTag().putBoolean("effect_item", true);
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var87 = _entGetArmor.m_6844_(EquipmentSlot.LEGS);
+                     var87 = _entGetArmor.getItemBySlot(EquipmentSlot.LEGS);
                   } else {
-                     var87 = ItemStack.f_41583_;
+                     var87 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var87.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var87.copy().copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(1, var37.m_41777_());
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(1, var37.copy());
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.LEGS, var37.m_41777_());
+                  _living.setItemSlot(EquipmentSlot.LEGS, var37.copy());
                }
 
                AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                LazyOptional var95 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                Objects.requireNonNull(_iitemhandlerref);
-               var95.ifPresent(_iitemhandlerref::set);
+               var95.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                if (_iitemhandlerref.get() != null) {
                   for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                     if (itemstackiterator.m_41720_() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()) {
+                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                     if (itemstackiterator.getItem() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()) {
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_150109_().f_35975_.set(1, itemstackiterator.m_41777_());
-                           _player.m_150109_().m_6596_();
+                           _player.getInventory().armor.set(1, itemstackiterator.copy());
+                           _player.getInventory().setChanged();
                         } else if (entity instanceof LivingEntity) {
                            LivingEntity _living = (LivingEntity)entity;
-                           _living.m_8061_(EquipmentSlot.LEGS, itemstackiterator.m_41777_());
+                           _living.setItemSlot(EquipmentSlot.LEGS, itemstackiterator.copy());
                         }
 
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_150109_().m_36022_((p) -> itemstackiterator.m_41720_() == p.m_41720_(), 1, _player.f_36095_.m_39730_());
+                           _player.getInventory().clearOrCountMatchingItems((p) -> itemstackiterator.getItem() == p.getItem(), 1, _player.inventoryMenu.getCraftSlots());
                         }
                         break;
                      }
@@ -241,70 +259,71 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
             ItemStack var96;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var96 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var96 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var96 = ItemStack.f_41583_;
+               var96 = ItemStack.EMPTY;
             }
 
-            if (var96.m_41720_() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()) {
+            if (var96.getItem() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(3, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()));
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()));
+                  _living.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_HELMET.get()));
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var96 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var96 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var96 = ItemStack.f_41583_;
+               var96 = ItemStack.EMPTY;
             }
 
-            if (var96.m_41720_() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()) {
+            if (var96.getItem() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(2, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(2, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()));
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()));
+                  _living.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get()));
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var96 = _entGetArmor.m_6844_(EquipmentSlot.LEGS);
+               var96 = _entGetArmor.getItemBySlot(EquipmentSlot.LEGS);
             } else {
-               var96 = ItemStack.f_41583_;
+               var96 = ItemStack.EMPTY;
             }
 
-            if (var96.m_41720_() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()) {
+            if (var96.getItem() != JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(1, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(1, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()));
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()));
+                  _living.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_LEGGINGS.get()));
                }
             }
          }
 
-         if (!entity.m_6084_()) {
+         if (!entity.isAlive()) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get());
             }
          } else {
+            int var99;
             label220: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get())) {
-                     var99 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get()).m_19564_();
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get())) {
+                     var99 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get()).getAmplifier();
                      break label220;
                   }
                }
@@ -316,8 +335,8 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
             label215: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                     var10001 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                  if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                     var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                      break label215;
                   }
                }
@@ -328,23 +347,23 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
             if (var99 < var10001) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get());
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
+                  if (!_entity.level().isClientSide()) {
                      MobEffect var10003;
                      int var10004;
                      int var10005;
+                     MobEffectInstance var100;
                      label208: {
-                        var100 = new MobEffectInstance;
                         var10003 = (MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get();
                         var10004 = (int)var38;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                              var10005 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var10005 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                               break label208;
                            }
                         }
@@ -352,30 +371,30 @@ public class InstantSpiritBodyofDistortedKillingEffectOnEffectActiveTickProcedur
                         var10005 = 0;
                      }
 
-                     var100.<init>(var10003, var10004, var10005, true, true);
-                     _entity.m_7292_(var100);
+                     var100 = new MobEffectInstance(var10003, var10004, var10005, true, true);
+                     _entity.addEffect(var100);
                   }
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt66 = (LivingEntity)entity;
-               if (_livEnt66.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+               if (_livEnt66.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
                   return;
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19596_, 2, 2, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, 2, false, false));
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19603_, 2, 1, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, 1, false, false));
                }
             }
          }

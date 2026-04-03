@@ -11,19 +11,19 @@ import net.minecraft.world.level.Level;
 
 public class Gravestone3Renderer extends MobRenderer<Gravestone3Entity, Modelgravestone3<Gravestone3Entity>> {
    public Gravestone3Renderer(EntityRendererProvider.Context context) {
-      super(context, new Modelgravestone3(context.m_174023_(Modelgravestone3.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelgravestone3(context.bakeLayer(Modelgravestone3.LAYER_LOCATION)), 0.0F);
    }
 
    protected void scale(Gravestone3Entity entity, PoseStack poseStack, float f) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.scale(scale, scale, scale);
    }
 
    public ResourceLocation getTextureLocation(Gravestone3Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/gravestone.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/gravestone.png");
    }
 }

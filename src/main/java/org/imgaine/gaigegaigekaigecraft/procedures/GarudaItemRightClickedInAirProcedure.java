@@ -21,58 +21,58 @@ public class GarudaItemRightClickedInAirProcedure {
          ItemStack var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         if (var10000.m_41720_() == itemstack.m_41720_()) {
+         if (var10000.getItem() == itemstack.getItem()) {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var10000 = _livEnt.m_21205_();
+               var10000 = _livEnt.getMainHandItem();
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == JujutsucraftModItems.GARUDA_ITEM.get()) {
+            if (var10000.getItem() == JujutsucraftModItems.GARUDA_ITEM.get()) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.GARUDA_ITEM_BALL.get())).m_41777_();
-                  _setstack.m_41764_(1);
-                  _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.GARUDA_ITEM_BALL.get())).copy();
+                  _setstack.setCount(1);
+                  _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                   if (_entity instanceof Player) {
                      Player _player = (Player)_entity;
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().setChanged();
                   }
                }
             } else {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  var10000 = _livEnt.m_21205_();
+                  var10000 = _livEnt.getMainHandItem();
                } else {
-                  var10000 = ItemStack.f_41583_;
+                  var10000 = ItemStack.EMPTY;
                }
 
-               if (var10000.m_41720_() == JujutsucraftModItems.GARUDA_ITEM_BALL.get() && entity instanceof LivingEntity) {
+               if (var10000.getItem() == JujutsucraftModItems.GARUDA_ITEM_BALL.get() && entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.GARUDA_ITEM.get())).m_41777_();
-                  _setstack.m_41764_(1);
-                  _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.GARUDA_ITEM.get())).copy();
+                  _setstack.setCount(1);
+                  _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                   if (_entity instanceof Player) {
                      Player _player = (Player)_entity;
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().setChanged();
                   }
                }
             }
 
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               _player.m_36335_().m_41524_((Item)JujutsucraftModItems.GARUDA_ITEM_BALL.get(), 20);
+               _player.getCooldowns().addCooldown((Item)JujutsucraftModItems.GARUDA_ITEM_BALL.get(), 20);
             }
 
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               _player.m_36335_().m_41524_((Item)JujutsucraftModItems.GARUDA_ITEM.get(), 20);
+               _player.getCooldowns().addCooldown((Item)JujutsucraftModItems.GARUDA_ITEM.get(), 20);
             }
 
             boolean _setval = true;

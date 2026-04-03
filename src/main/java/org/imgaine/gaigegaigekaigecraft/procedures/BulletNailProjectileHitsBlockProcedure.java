@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -14,11 +15,22 @@ public class BulletNailProjectileHitsBlockProcedure {
    }
 
    public static void execute(LevelAccessor world, double x, double y, double z) {
-      if (world instanceof Level _level) {
-         if (!_level.m_5776_()) {
-            _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:gavel")), SoundSource.NEUTRAL, 0.5F, 1.5F);
+      double d = 0.0;
+      if (world.getBlockState(BlockPos.containing(x, y, z)).is(BlockTags.create(new ResourceLocation("minecraft:ores/iron")))) {
+         if (world instanceof Level) {
+            Level _level = (Level)world;
+            if (!_level.isClientSide()) {
+               _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            } else {
+               _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+            }
+         }
+      } else if (world instanceof Level) {
+         Level _level = (Level)world;
+         if (!_level.isClientSide()) {
+            _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:gavel")), SoundSource.NEUTRAL, 0.5F, 1.5F);
          } else {
-            _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:gavel")), SoundSource.NEUTRAL, 0.5F, 1.5F, false);
+            _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:gavel")), SoundSource.NEUTRAL, 0.5F, 1.5F, false);
          }
       }
 

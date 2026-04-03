@@ -10,8 +10,8 @@ public class OSixEye1Procedure {
       if (entity == null) {
          return "";
       } else {
-         String var10000 = entity.getPersistentData().m_128461_("DataSixEyes1");
-         return var10000 + " " + entity.getPersistentData().m_128461_("DataSixEyes10");
+         String var10000 = entity.getPersistentData().getString("DataSixEyes1");
+         return var10000 + " " + entity.getPersistentData().getString("DataSixEyes10");
       }
    }
 }

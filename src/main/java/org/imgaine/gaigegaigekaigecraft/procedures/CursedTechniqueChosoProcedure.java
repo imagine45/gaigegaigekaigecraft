@@ -15,7 +15,7 @@ public class CursedTechniqueChosoProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          double skill = 0.0;
-         skill = entity.getPersistentData().m_128459_("skill");
+         skill = entity.getPersistentData().getDouble("skill");
          if (skill == 1005.0) {
             TechniqueSlicingExorcismProcedure.execute(world, entity);
          } else if (skill == 1006.0) {
@@ -37,14 +37,14 @@ public class CursedTechniqueChosoProcedure {
          } else {
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_("WIP Choso"), false);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal("WIP Choso"), false);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          }
 

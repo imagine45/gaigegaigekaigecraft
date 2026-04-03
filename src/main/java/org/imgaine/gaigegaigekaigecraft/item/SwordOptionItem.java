@@ -35,7 +35,7 @@ public class SwordOptionItem extends Item implements GeoItem {
    String prevAnim = "empty";
 
    public SwordOptionItem() {
-      super((new Item.Properties()).m_41487_(1).m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).stacksTo(1).rarity(Rarity.COMMON));
    }
 
    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
@@ -48,9 +48,9 @@ public class SwordOptionItem extends Item implements GeoItem {
          private final BlockEntityWithoutLevelRenderer renderer = new SwordOptionItemRenderer();
          private static final HumanoidModel.ArmPose SwordOptionPose = ArmPose.create("SwordOption", false, (model, entity, arm) -> {
             if (arm == HumanoidArm.LEFT) {
-               model.f_102812_.f_104203_ += -45.0F;
+               model.leftArm.xRot += -45.0F;
             } else {
-               model.f_102811_.f_104203_ += -45.0F;
+               model.rightArm.xRot += -45.0F;
             }
 
          });
@@ -60,7 +60,7 @@ public class SwordOptionItem extends Item implements GeoItem {
          }
 
          public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            return !itemStack.m_41619_() && entityLiving.m_7655_() == hand ? SwordOptionPose : ArmPose.EMPTY;
+            return !itemStack.isEmpty() && entityLiving.getUsedItemHand() == hand ? SwordOptionPose : ArmPose.EMPTY;
          }
       });
    }
@@ -105,15 +105,15 @@ public class SwordOptionItem extends Item implements GeoItem {
       return this.cache;
    }
 
-   public Multimap<Attribute, AttributeModifier> m_7167_(EquipmentSlot equipmentSlot) {
+   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
       if (equipmentSlot == EquipmentSlot.MAINHAND) {
          ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-         builder.putAll(super.m_7167_(equipmentSlot));
-         builder.put(Attributes.f_22281_, new AttributeModifier(f_41374_, "Item modifier", 4.0, Operation.ADDITION));
-         builder.put(Attributes.f_22283_, new AttributeModifier(f_41375_, "Item modifier", -2.4, Operation.ADDITION));
+         builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
+         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", 4.0, Operation.ADDITION));
+         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", -2.4, Operation.ADDITION));
          return builder.build();
       } else {
-         return super.m_7167_(equipmentSlot);
+         return super.getDefaultAttributeModifiers(equipmentSlot);
       }
    }
 }

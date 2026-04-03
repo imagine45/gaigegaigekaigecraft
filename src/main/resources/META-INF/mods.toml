@@ -3,44 +3,44 @@ loaderVersion="[47,)"
 license="All Rights Reserved"
 
 [[mods]]
-modId="jujutsucraft"
-version="46.1"
+modId="gaigegaigekaigecraft"
+version="1.0"
 displayName="Jujutsu Craft"
 displayURL="https://mcreator.net"
-credits="Created using mod maker imgaine - https://imgaine.net/about"
-authors="orca, imgaine"
+credits="Created using mod maker MCreator - https://mcreator.net/about"
+authors="orca, MCreator"
 description="Jujutsu Craft Mod"
 
 # Start of user code block mod configuration
 # End of user code block mod configuration
 
-[[dependencies.jujutsucraft]]
+[[dependencies.gaigegaigekaigecraft]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.20.1]"
     ordering="AFTER"
     side="BOTH"
 
-[[dependencies.jujutsucraft]]
+[[dependencies.gaigegaigekaigecraft]]
     modId="geckolib"
     mandatory=true
     versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.jujutsucraft]]
+[[dependencies.gaigegaigekaigecraft]]
     modId="playeranimator"
     mandatory=true
     versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.jujutsucraft]]
+[[dependencies.gaigegaigekaigecraft]]
     modId="geckolib"
     mandatory=false
     versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.jujutsucraft]]
+[[dependencies.gaigegaigekaigecraft]]
     modId="playeranimator"
     mandatory=false
     versionRange="[0,)"

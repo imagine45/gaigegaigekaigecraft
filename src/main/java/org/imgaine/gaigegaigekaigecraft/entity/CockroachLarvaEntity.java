@@ -37,63 +37,63 @@ public class CockroachLarvaEntity extends Monster {
 
    public CockroachLarvaEntity(EntityType<CockroachLarvaEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
-      this.m_6210_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
+      this.refreshDimensions();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new RandomStrollGoal(this, 2.0));
-      this.f_21345_.m_25352_(2, new RandomLookAroundGoal(this));
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new RandomStrollGoal(this, 2.0));
+      this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public void m_7355_(BlockPos pos, BlockState blockIn) {
-      this.m_5496_((SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.spider.step")), 0.15F, 1.0F);
+   public void playStepSound(BlockPos pos, BlockState blockIn) {
+      this.playSound((SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.spider.step")), 0.15F, 1.0F);
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.slime.hurt"));
    }
 
-   public SoundEvent m_5592_() {
-      return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:crush"));
+   public SoundEvent getDeathSound() {
+      return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:crush"));
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public EntityDimensions m_6972_(Pose pose) {
-      return super.m_6972_(pose).m_20388_(0.7F);
+   public EntityDimensions getDimensions(Pose pose) {
+      return super.getDimensions(pose).scale(0.7F);
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 5.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 5.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 }

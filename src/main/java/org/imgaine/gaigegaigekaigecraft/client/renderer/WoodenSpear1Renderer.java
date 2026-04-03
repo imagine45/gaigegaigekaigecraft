@@ -17,18 +17,18 @@ import net.minecraft.world.level.Level;
 
 public class WoodenSpear1Renderer extends MobRenderer<WoodenSpear1Entity, Modelwooden_spear1<WoodenSpear1Entity>> {
    public WoodenSpear1Renderer(EntityRendererProvider.Context context) {
-      super(context, new Modelwooden_spear1(context.m_174023_(Modelwooden_spear1.LAYER_LOCATION)), 0.0F);
-      this.m_115326_(new RenderLayer<WoodenSpear1Entity, Modelwooden_spear1<WoodenSpear1Entity>>(this) {
-         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("jujutsucraft:textures/entities/hand.png");
+      super(context, new Modelwooden_spear1(context.bakeLayer(Modelwooden_spear1.LAYER_LOCATION)), 0.0F);
+      this.addLayer(new RenderLayer<WoodenSpear1Entity, Modelwooden_spear1<WoodenSpear1Entity>>(this) {
+         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("gaigegaigekaigecraft:textures/entities/hand.png");
 
          public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, WoodenSpear1Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            Level world = entity.m_9236_();
-            double x = entity.m_20185_();
-            double y = entity.m_20186_();
-            double z = entity.m_20189_();
+            Level world = entity.level();
+            double x = entity.getX();
+            double y = entity.getY();
+            double z = entity.getZ();
             if (WoodenSpear1DisplayConditionProcedure.execute(entity)) {
-               VertexConsumer vertexConsumer = bufferSource.m_6299_(RenderType.m_110458_(this.LAYER_TEXTURE));
-               ((Modelwooden_spear1)this.m_117386_()).m_7695_(poseStack, vertexConsumer, light, LivingEntityRenderer.m_115338_(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+               VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(this.LAYER_TEXTURE));
+               ((Modelwooden_spear1)this.getParentModel()).renderToBuffer(poseStack, vertexConsumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             }
 
          }
@@ -36,6 +36,6 @@ public class WoodenSpear1Renderer extends MobRenderer<WoodenSpear1Entity, Modelw
    }
 
    public ResourceLocation getTextureLocation(WoodenSpear1Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/tex_wood.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/tex_wood.png");
    }
 }

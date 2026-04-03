@@ -10,7 +10,7 @@ public class EffectProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entityiterator) {
       if (entity != null && entityiterator != null) {
          double effect = 0.0;
-         effect = entity.getPersistentData().m_128459_("effect");
+         effect = entity.getPersistentData().getDouble("effect");
          EffectCharactorProcedure.execute(world, entity, entityiterator);
          if (effect != 0.0) {
             if (effect <= 5.0) {

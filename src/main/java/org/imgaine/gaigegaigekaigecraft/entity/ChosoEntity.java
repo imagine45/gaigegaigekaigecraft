@@ -81,190 +81,190 @@ public class ChosoEntity extends Monster implements GeoEntity {
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 30;
-      this.m_21557_(false);
-      this.m_274367_(0.6F);
-      this.m_8061_(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_CHOSO_HELMET.get()));
-      this.m_8061_(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_CHOSO_CHESTPLATE.get()));
-      this.m_8061_(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_LEGGINGS.get()));
-      this.m_8061_(EquipmentSlot.FEET, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_NORMAL_BOOTS.get()));
+      this.xpReward = 30;
+      this.setNoAi(false);
+      this.setMaxUpStep(0.6F);
+      this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_CHOSO_HELMET.get()));
+      this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_CHOSO_CHESTPLATE.get()));
+      this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_LEGGINGS.get()));
+      this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_NORMAL_BOOTS.get()));
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "choso");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "choso");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new MeleeAttackGoal(this, 1.2, true) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = ChosoEntity.this.m_20185_();
-            double y = ChosoEntity.this.m_20186_();
-            double z = ChosoEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = ChosoEntity.this.getX();
+            double y = ChosoEntity.this.getY();
+            double z = ChosoEntity.this.getZ();
             Entity entity = ChosoEntity.this;
-            Level world = ChosoEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = ChosoEntity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(2, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = ChosoEntity.this.m_20185_();
-            double y = ChosoEntity.this.m_20186_();
-            double z = ChosoEntity.this.m_20189_();
+      this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = ChosoEntity.this.getX();
+            double y = ChosoEntity.this.getY();
+            double z = ChosoEntity.this.getZ();
             Entity entity = ChosoEntity.this;
-            Level world = ChosoEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ChosoEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = ChosoEntity.this.m_20185_();
-            double y = ChosoEntity.this.m_20186_();
-            double z = ChosoEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = ChosoEntity.this.getX();
+            double y = ChosoEntity.this.getY();
+            double z = ChosoEntity.this.getZ();
             Entity entity = ChosoEntity.this;
-            Level world = ChosoEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
-         }
-      });
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = ChosoEntity.this.m_20185_();
-            double y = ChosoEntity.this.m_20186_();
-            double z = ChosoEntity.this.m_20189_();
-            Entity entity = ChosoEntity.this;
-            Level world = ChosoEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
-         }
-
-         public boolean m_8045_() {
-            double x = ChosoEntity.this.m_20185_();
-            double y = ChosoEntity.this.m_20186_();
-            double z = ChosoEntity.this.m_20189_();
-            Entity entity = ChosoEntity.this;
-            Level world = ChosoEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ChosoEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(5, new RandomStrollGoal(this, 1.0));
-      this.f_21345_.m_25352_(6, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(7, new FloatGoal(this));
-      this.f_21345_.m_25352_(8, new MoveBackToVillageGoal(this, 0.6, false));
-      this.f_21345_.m_25352_(9, new OpenDoorGoal(this, true));
-      this.f_21345_.m_25352_(10, new OpenDoorGoal(this, false));
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = ChosoEntity.this.getX();
+            double y = ChosoEntity.this.getY();
+            double z = ChosoEntity.this.getZ();
+            Entity entity = ChosoEntity.this;
+            Level world = ChosoEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
+         }
+
+         public boolean canContinueToUse() {
+            double x = ChosoEntity.this.getX();
+            double y = ChosoEntity.this.getY();
+            double z = ChosoEntity.this.getZ();
+            Entity entity = ChosoEntity.this;
+            Level world = ChosoEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
+         }
+      });
+      this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
+      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(7, new FloatGoal(this));
+      this.goalSelector.addGoal(8, new MoveBackToVillageGoal(this, 0.6, false));
+      this.goalSelector.addGoal(9, new OpenDoorGoal(this, true));
+      this.goalSelector.addGoal(10, new OpenDoorGoal(this, false));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   protected void m_7472_(DamageSource source, int looting, boolean recentlyHitIn) {
-      super.m_7472_(source, looting, recentlyHitIn);
-      this.m_19983_(new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get()));
+   protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
+      super.dropCustomDeathLoot(source, looting, recentlyHitIn);
+      this.spawnAtLocation(new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get()));
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIChosoProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIChosoProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      return super.m_6972_(p_33597_).m_20388_(1.0F);
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      return super.getDimensions(p_33597_).scale(1.0F);
    }
 
    public static void init() {
-      SpawnPlacements.m_21754_((EntityType)JujutsucraftModEntities.CHOSO.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
-         int x = pos.m_123341_();
-         int y = pos.m_123342_();
-         int z = pos.m_123343_();
+      SpawnPlacements.register((EntityType)JujutsucraftModEntities.CHOSO.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
+         int x = pos.getX();
+         int y = pos.getY();
+         int z = pos.getZ();
          return SpawnLevel4Procedure.execute(world);
       });
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 200.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 5.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 0.5);
-      builder = builder.m_22268_(Attributes.f_22282_, 0.5);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 200.0);
+      builder = builder.add(Attributes.ARMOR, 5.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 0.5);
       return builder;
    }
 
    private PlayState movementPredicate(AnimationState event) {
       if (!this.animationprocedure.equals("empty")) {
          return PlayState.STOP;
-      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.m_5912_() && !this.m_20142_()) {
+      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.isAggressive() && !this.isSprinting()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
-      } else if (this.m_21224_()) {
+      } else if (this.isDeadOrDying()) {
          return event.setAndContinue(RawAnimation.begin().thenPlay("death"));
-      } else if (this.m_6144_()) {
+      } else if (this.isShiftKeyDown()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("guard"));
-      } else if (this.m_20142_()) {
+      } else if (this.isSprinting()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("sprint"));
       } else {
-         return this.m_5912_() && event.isMoving() ? event.setAndContinue(RawAnimation.begin().thenLoop("sprint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+         return this.isAggressive() && event.isMoving() ? event.setAndContinue(RawAnimation.begin().thenLoop("sprint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
       }
    }
 
    private PlayState attackingPredicate(AnimationState event) {
-      double d1 = this.m_20185_() - this.f_19790_;
-      double d0 = this.m_20189_() - this.f_19792_;
+      double d1 = this.getX() - this.xOld;
+      double d0 = this.getZ() - this.zOld;
       float velocity = (float)Math.sqrt(d1 * d1 + d0 * d0);
-      if (this.m_21324_(event.getPartialTick()) > 0.0F && !this.swinging) {
+      if (this.getAttackAnim(event.getPartialTick()) > 0.0F && !this.swinging) {
          this.swinging = true;
-         this.lastSwing = this.m_9236_().m_46467_();
+         this.lastSwing = this.level().getGameTime();
       }
 
-      if (this.swinging && this.lastSwing + 7L <= this.m_9236_().m_46467_()) {
+      if (this.swinging && this.lastSwing + 7L <= this.level().getGameTime()) {
          this.swinging = false;
       }
 
@@ -277,40 +277,47 @@ public class ChosoEntity extends Monster implements GeoEntity {
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -324,8 +331,8 @@ public class ChosoEntity extends Monster implements GeoEntity {
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(ChosoEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(ChosoEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(ChosoEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(ChosoEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(ChosoEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(ChosoEntity.class, EntityDataSerializers.STRING);
    }
 }

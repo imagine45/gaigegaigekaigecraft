@@ -29,10 +29,11 @@ public class KeyChangeTechniqueOnKeyPressedProcedure {
          double p_skill1 = 0.0;
          double p_selectNumber = 0.0;
          if (entity instanceof Player) {
-            p_skill1 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).SecondTechnique ? ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 : ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
-            p_selectNumber = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique;
-            if (!((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).noChangeTechnique) {
-               p_selectNumber += (double)(entity.m_6144_() ? -1 : 1);
+            JujutsucraftModVariables.PlayerVariables playerVars = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables());
+            p_skill1 = playerVars.SecondTechnique ? playerVars.PlayerCurseTechnique2 : playerVars.PlayerCurseTechnique;
+            p_selectNumber = playerVars.PlayerSelectCurseTechnique;
+            if (!playerVars.noChangeTechnique) {
+               p_selectNumber += (double)(entity.isShiftKeyDown() ? -1 : 1);
             }
 
             if (p_skill1 <= 10.0) {
@@ -45,459 +46,478 @@ public class KeyChangeTechniqueOnKeyPressedProcedure {
                      if (p_selectNumber == 5.0) {
                         p_physical = true;
                         cost = 0.0;
-                        name = Component.m_237115_("jujutsu.technique.attack7").getString();
+                        name = Component.translatable("jujutsu.technique.attack7").getString();
                      } else if (p_selectNumber == 6.0) {
                         p_physical = true;
                         cost = 0.0;
-                        name = Component.m_237115_("jujutsu.technique.attack4").getString();
+                        name = Component.translatable("jujutsu.technique.attack4").getString();
                      } else if (p_selectNumber == 7.0) {
                         p_physical = true;
                         cost = 0.0;
-                        name = Component.m_237115_("jujutsu.technique.attack5").getString();
+                        name = Component.translatable("jujutsu.technique.attack5").getString();
                      }
                   } else if (p_skill1 == 1.0) {
                      if (p_selectNumber == 5.0) {
-                        name = Component.m_237115_("jujutsu.technique.dismantle").getString();
+                        name = Component.translatable("jujutsu.technique.dismantle").getString();
                         cost = 100.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("jujutsu.technique.cleave").getString();
+                        name = Component.translatable("jujutsu.technique.cleave").getString();
                         cost = 200.0;
                      } else if (p_selectNumber == 7.0) {
-                        name = Component.m_237115_("jujutsu.technique.open").getString();
+                        name = Component.translatable("jujutsu.technique.open").getString();
                         cost = 500.0;
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("jujutsu.technique.malevolent_shrine").getString();
+                        name = Component.translatable("jujutsu.technique.malevolent_shrine").getString();
                         cost = 1250.0;
+                     }
+
+                     if (p_selectNumber == 11.0) {
+                        p_physical = true;
+                        name = Component.translatable("jujutsu.technique.dismantle1").getString();
+                        cost = 100.0;
+                     } else if (p_selectNumber == 12.0) {
+                        p_physical = true;
+                        name = Component.translatable("jujutsu.technique.dismantle2").getString();
+                        cost = 100.0;
+                     } else if (p_selectNumber == 13.0) {
+                        p_physical = true;
+                        name = Component.translatable("jujutsu.technique.dismantle3").getString();
+                        cost = 100.0;
                      }
                   } else if (p_skill1 == 2.0) {
                      if (p_selectNumber == 5.0) {
                         p_passive = true;
-                        name = Component.m_237115_("jujutsu.technique.infinity").getString();
+                        name = Component.translatable("jujutsu.technique.infinity").getString();
                         cost = 0.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("jujutsu.technique.blue").getString();
+                        name = Component.translatable("jujutsu.technique.blue").getString();
                         cost = 200.0;
                      } else if (p_selectNumber == 7.0) {
-                        name = Component.m_237115_("jujutsu.technique.red").getString();
+                        name = Component.translatable("jujutsu.technique.red").getString();
                         cost = 500.0;
                      } else if (p_selectNumber == 8.0) {
-                        name = Component.m_237115_("jujutsu.technique.gojo1").getString();
+                        name = Component.translatable("jujutsu.technique.gojo1").getString();
                         cost = 200.0;
                      } else if (p_selectNumber == 15.0) {
-                        name = Component.m_237115_("jujutsu.technique.purple").getString();
+                        name = Component.translatable("jujutsu.technique.purple").getString();
                         cost = 1000.0;
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("jujutsu.technique.unlimited_void").getString();
+                        name = Component.translatable("jujutsu.technique.unlimited_void").getString();
                         cost = 1250.0;
                      }
                   } else if (p_skill1 == 3.0) {
                      if (p_selectNumber == 4.0) {
-                        p_physical = true;
-                        name = Component.m_237115_("jujutsu.technique.cursed_speech_step").getString();
-                        cost = 0.0;
                      }
 
                      if (p_selectNumber == 5.0) {
-                        name = Component.m_237115_("jujutsu.technique.explode").getString();
+                        name = Component.translatable("jujutsu.technique.explode").getString();
                         cost = 400.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("jujutsu.technique.get_crushed").getString();
+                        name = Component.translatable("jujutsu.technique.get_crushed").getString();
                         cost = 250.0;
                      } else if (p_selectNumber == 7.0) {
-                        name = Component.m_237115_("jujutsu.technique.crumble_away").getString();
+                        name = Component.translatable("jujutsu.technique.crumble_away").getString();
                         cost = 500.0;
                      } else if (p_selectNumber == 8.0) {
-                        name = Component.m_237115_("jujutsu.technique.dont_move").getString();
+                        name = Component.translatable("jujutsu.technique.dont_move").getString();
                         cost = 150.0;
                      } else if (p_selectNumber == 9.0) {
-                        name = Component.m_237115_("jujutsu.technique.blast_away").getString();
+                        name = Component.translatable("jujutsu.technique.blast_away").getString();
                         cost = 300.0;
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("effect.domain_expansion").getString();
+                        name = Component.translatable("effect.domain_expansion").getString();
                         cost = 1000.0;
                      }
                   } else if (p_skill1 == 4.0) {
                      if (p_selectNumber == 5.0) {
-                        name = Component.m_237115_("jujutsu.technique.flame_fire").getString();
+                        name = Component.translatable("jujutsu.technique.flame_fire").getString();
                         cost = 180.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("jujutsu.technique.flame_fire2").getString();
+                        name = Component.translatable("jujutsu.technique.flame_fire2").getString();
                         cost = 120.0;
                      } else if (p_selectNumber == 7.0) {
-                        name = Component.m_237115_("jujutsu.technique.ember_insects").getString();
+                        name = Component.translatable("jujutsu.technique.ember_insects").getString();
                         cost = 150.0;
                      } else if (p_selectNumber == 8.0) {
-                        name = Component.m_237115_("jujutsu.technique.flame_fire3").getString();
+                        name = Component.translatable("jujutsu.technique.flame_fire3").getString();
                         cost = 150.0;
                      } else if (p_selectNumber == 9.0) {
-                        name = Component.m_237115_("jujutsu.technique.flame_fire4").getString();
+                        name = Component.translatable("jujutsu.technique.flame_fire4").getString();
                         cost = 500.0;
                      } else if (p_selectNumber == 15.0) {
-                        name = Component.m_237115_("jujutsu.technique.meteor").getString();
+                        name = Component.translatable("jujutsu.technique.meteor").getString();
                         cost = 1250.0;
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("jujutsu.technique.coffinofthe_iron_mountain").getString();
+                        name = Component.translatable("jujutsu.technique.coffinofthe_iron_mountain").getString();
                         cost = 1250.0;
                      }
                   } else if (p_skill1 == 5.0) {
                      if (p_selectNumber == 3.0) {
                         p_physical = true;
-                        name = Component.m_237115_("jujutsu.technique.attack6").getString();
+                        name = Component.translatable("jujutsu.technique.attack6").getString();
                         cost = 50.0;
                      } else if (p_selectNumber == 5.0) {
-                        name = Component.m_237115_("jujutsu.technique.copy1").getString();
+                        name = Component.translatable("jujutsu.technique.copy1").getString();
                         cost = 500.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("advancements.skill_copy_dhruv_lakdawalla.title").getString();
+                        name = Component.translatable("advancements.skill_copy_dhruv_lakdawalla.title").getString();
                         cost = 300.0;
                      } else if (p_selectNumber == 7.0) {
-                        name = Component.m_237115_("advancements.skill_copy_takako_uro.title").getString();
+                        name = Component.translatable("advancements.skill_copy_takako_uro.title").getString();
                         cost = 200.0;
                      } else if (p_selectNumber == 10.0) {
                         String var10000;
-                        label441: {
+                        label456: {
                            if (entity instanceof ServerPlayer) {
-                              ServerPlayer _plr33 = (ServerPlayer)entity;
-                              if (_plr33.m_9236_() instanceof ServerLevel && _plr33.m_8960_().m_135996_(_plr33.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_curseis_lifted"))).m_8193_()) {
-                                 var10000 = "entity.jujutsucraft.rika_2";
-                                 break label441;
+                              ServerPlayer _plr36 = (ServerPlayer)entity;
+                              if (_plr36.level() instanceof ServerLevel && _plr36.getAdvancements().getOrStartProgress(_plr36.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_curseis_lifted"))).isDone()) {
+                                 var10000 = "entity.gaigegaigekaigecraft.rika_2";
+                                 break label456;
                               }
                            }
 
-                           var10000 = "entity.jujutsucraft.rika";
+                           var10000 = "entity.gaigegaigekaigecraft.rika";
                         }
 
-                        name = Component.m_237115_(var10000).getString();
+                        name = Component.translatable(var10000).getString();
                         cost = 150.0;
                      } else if (p_selectNumber == 15.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.pure_love_cannon").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.pure_love_cannon").getString();
                         cost = 1000.0;
                      } else if (p_selectNumber == 19.0) {
                         p_physical = true;
-                        name = Component.m_237115_("jujutsu.technique.rika2").getString();
+                        name = Component.translatable("jujutsu.technique.rika2").getString();
                         cost = 0.0;
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("jujutsu.technique.okkotsu20").getString();
+                        name = Component.translatable("jujutsu.technique.okkotsu20").getString();
                         cost = 1250.0;
                      }
                   } else if (p_skill1 == 6.0) {
                      if (p_selectNumber == 4.0) {
                         p_passive = true;
                         p_physical = true;
-                        name = Component.m_237115_("jujutsu.technique.cancel").getString();
+                        name = Component.translatable("jujutsu.technique.cancel").getString();
                         cost = 0.0;
                      } else if (p_selectNumber == 5.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.divine_dog_white").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.divine_dog_white").getString();
                         cost = 100.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.divine_dog_black").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.divine_dog_black").getString();
                         cost = 100.0;
                      } else if (p_selectNumber != 8.0) {
                         if (p_selectNumber == 9.0) {
-                           name = Component.m_237115_("entity.jujutsucraft.great_serpent").getString();
+                           name = Component.translatable("entity.gaigegaigekaigecraft.great_serpent").getString();
                            cost = 300.0;
                         } else if (p_selectNumber == 10.0) {
-                           name = Component.m_237115_("entity.jujutsucraft.toad").getString();
+                           name = Component.translatable("entity.gaigegaigekaigecraft.toad").getString();
                            cost = 150.0;
                         } else if (p_selectNumber == 7.0) {
-                           name = Component.m_237115_("entity.jujutsucraft.divine_dog_totality").getString();
+                           name = Component.translatable("entity.gaigegaigekaigecraft.divine_dog_totality").getString();
                            cost = 400.0;
                         }
                      } else {
-                        label479: {
-                           label427: {
-                              if (entity.m_6144_()) {
+                        label494: {
+                           label442: {
+                              if (entity.isShiftKeyDown()) {
                                  if (entity instanceof ServerPlayer) {
-                                    ServerPlayer _plr42 = (ServerPlayer)entity;
-                                    if (_plr42.m_9236_() instanceof ServerLevel && _plr42.m_8960_().m_135996_(_plr42.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_nue_titan"))).m_8193_()) {
-                                       break label427;
+                                    ServerPlayer _plr45 = (ServerPlayer)entity;
+                                    if (_plr45.level() instanceof ServerLevel && _plr45.getAdvancements().getOrStartProgress(_plr45.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_nue_titan"))).isDone()) {
+                                       break label442;
                                     }
                                  }
 
                                  if (entity instanceof Player) {
                                     Player _plr = (Player)entity;
-                                    if (_plr.m_150110_().f_35937_) {
-                                       break label427;
+                                    if (_plr.getAbilities().instabuild) {
+                                       break label442;
                                     }
                                  }
                               }
 
-                              name = Component.m_237115_("entity.jujutsucraft.nue").getString();
+                              name = Component.translatable("entity.gaigegaigekaigecraft.nue").getString();
                               cost = 250.0;
-                              break label479;
+                              break label494;
                            }
 
-                           name = Component.m_237115_("entity.jujutsucraft.nue_totality").getString();
+                           name = Component.translatable("entity.gaigegaigekaigecraft.nue_totality").getString();
                            cost = 500.0;
                         }
                      }
 
                      if (p_selectNumber == 11.0) {
-                        label413: {
-                           label485: {
-                              if (entity.m_6144_()) {
-                                 label409: {
-                                    label408: {
+                        label428: {
+                           label500: {
+                              if (entity.isShiftKeyDown()) {
+                                 label424: {
+                                    label423: {
                                        if (entity instanceof ServerPlayer) {
-                                          ServerPlayer _plr50 = (ServerPlayer)entity;
-                                          if (_plr50.m_9236_() instanceof ServerLevel && _plr50.m_8960_().m_135996_(_plr50.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_max_elephant"))).m_8193_() && entity.getPersistentData().m_128459_("TenShadowsTechnique7") >= 0.0) {
-                                             break label408;
+                                          ServerPlayer _plr53 = (ServerPlayer)entity;
+                                          if (_plr53.level() instanceof ServerLevel && _plr53.getAdvancements().getOrStartProgress(_plr53.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_max_elephant"))).isDone() && entity.getPersistentData().getDouble("TenShadowsTechnique7") >= 0.0) {
+                                             break label423;
                                           }
                                        }
 
-                                       if (!(entity.getPersistentData().m_128459_("TenShadowsTechnique7") > 0.0)) {
-                                          break label409;
+                                       if (!(entity.getPersistentData().getDouble("TenShadowsTechnique7") > 0.0)) {
+                                          break label424;
                                        }
                                     }
 
                                     if (entity instanceof ServerPlayer) {
-                                       ServerPlayer _plr53 = (ServerPlayer)entity;
-                                       if (_plr53.m_9236_() instanceof ServerLevel && _plr53.m_8960_().m_135996_(_plr53.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_max_elephant_piercing_blood"))).m_8193_()) {
-                                          break label485;
+                                       ServerPlayer _plr56 = (ServerPlayer)entity;
+                                       if (_plr56.level() instanceof ServerLevel && _plr56.getAdvancements().getOrStartProgress(_plr56.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_max_elephant_piercing_blood"))).isDone()) {
+                                          break label500;
                                        }
                                     }
                                  }
 
                                  if (entity instanceof Player) {
                                     Player _plr = (Player)entity;
-                                    if (_plr.m_150110_().f_35937_) {
-                                       break label485;
+                                    if (_plr.getAbilities().instabuild) {
+                                       break label500;
                                     }
                                  }
                               }
 
-                              name = Component.m_237115_("entity.jujutsucraft.max_elephant").getString();
+                              name = Component.translatable("entity.gaigegaigekaigecraft.max_elephant").getString();
                               cost = 750.0;
-                              break label413;
+                              break label428;
                            }
 
-                           name = Component.m_237115_("jujutsu.technique.choso3").getString();
+                           name = Component.translatable("jujutsu.technique.choso3").getString();
                            cost = 200.0;
                         }
                      } else if (p_selectNumber == 12.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.rabbit_escape").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.rabbit_escape").getString();
                         cost = 125.0;
                      } else if (p_selectNumber == 13.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.round_deer").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.round_deer").getString();
                         cost = 600.0;
                      } else if (p_selectNumber == 14.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.piercing_ox").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.piercing_ox").getString();
                         cost = 400.0;
                      } else if (p_selectNumber == 15.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.tiger_funeral").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.tiger_funeral").getString();
                         cost = 400.0;
                      } else if (p_selectNumber == 17.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.merged_beast_agito").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.merged_beast_agito").getString();
                         cost = 600.0;
                      } else if (p_selectNumber == 18.0) {
-                        ItemStack var34;
+                        ItemStack var35;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entGetArmor = (LivingEntity)entity;
-                           var34 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                           var35 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                         } else {
-                           var34 = ItemStack.f_41583_;
+                           var35 = ItemStack.EMPTY;
                         }
 
-                        if (var34.m_41720_() == JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get()) {
+                        if (var35.getItem() == JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get()) {
                            p_passive = true;
-                           name = Component.m_237115_("entity.jujutsucraft.eight_handled_swrod_divergent_sila_divine_general_mahoraga").getString();
+                           name = Component.translatable("entity.gaigegaigekaigecraft.eight_handled_sword_divergent_sila_divine_general_mahoraga").getString();
                            cost = 0.0;
                         } else {
-                           label382: {
-                              label486: {
-                                 if (entity.m_6144_()) {
-                                    label378: {
-                                       label377: {
+                           label397: {
+                              label501: {
+                                 if (entity.isShiftKeyDown()) {
+                                    label393: {
+                                       label392: {
                                           if (entity instanceof ServerPlayer) {
-                                             ServerPlayer _plr66 = (ServerPlayer)entity;
-                                             if (_plr66.m_9236_() instanceof ServerLevel && _plr66.m_8960_().m_135996_(_plr66.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_mahoraga"))).m_8193_() && entity.getPersistentData().m_128459_("TenShadowsTechnique14") >= 0.0) {
-                                                break label377;
+                                             ServerPlayer _plr69 = (ServerPlayer)entity;
+                                             if (_plr69.level() instanceof ServerLevel && _plr69.getAdvancements().getOrStartProgress(_plr69.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_mahoraga"))).isDone() && entity.getPersistentData().getDouble("TenShadowsTechnique14") >= 0.0) {
+                                                break label392;
                                              }
                                           }
 
-                                          if (!(entity.getPersistentData().m_128459_("TenShadowsTechnique14") > 0.0)) {
-                                             break label378;
+                                          if (!(entity.getPersistentData().getDouble("TenShadowsTechnique14") > 0.0)) {
+                                             break label393;
                                           }
                                        }
 
                                        if (entity instanceof ServerPlayer) {
-                                          ServerPlayer _plr69 = (ServerPlayer)entity;
-                                          if (_plr69.m_9236_() instanceof ServerLevel && _plr69.m_8960_().m_135996_(_plr69.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_mahoraga_wheel"))).m_8193_()) {
-                                             break label486;
+                                          ServerPlayer _plr72 = (ServerPlayer)entity;
+                                          if (_plr72.level() instanceof ServerLevel && _plr72.getAdvancements().getOrStartProgress(_plr72.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_mahoraga_wheel"))).isDone()) {
+                                             break label501;
                                           }
                                        }
                                     }
 
                                     if (entity instanceof Player) {
                                        Player _plr = (Player)entity;
-                                       if (_plr.m_150110_().f_35937_) {
-                                          break label486;
+                                       if (_plr.getAbilities().instabuild) {
+                                          break label501;
                                        }
                                     }
                                  }
 
-                                 name = Component.m_237115_("entity.jujutsucraft.eight_handled_swrod_divergent_sila_divine_general_mahoraga").getString();
+                                 name = Component.translatable("entity.gaigegaigekaigecraft.eight_handled_sword_divergent_sila_divine_general_mahoraga").getString();
                                  cost = 1000.0;
-                                 break label382;
+                                 break label397;
                               }
 
                               p_passive = true;
-                              name = Component.m_237115_("item.jujutsucraft.mahoraga_wheel_helmet").getString();
+                              name = Component.translatable("item.gaigegaigekaigecraft.mahoraga_wheel_helmet").getString();
                               cost = 1000.0;
                            }
                         }
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("jujutsu.technique.chimera_shadow_garden").getString();
+                        name = Component.translatable("jujutsu.technique.chimera_shadow_garden").getString();
                         cost = 1250.0;
                      }
                   } else if (p_skill1 == 7.0) {
-                     if (p_selectNumber == 5.0) {
+                     if (p_selectNumber == 3.0) {
+                        p_physical = true;
+                        cost = 50.0;
+                        name = Component.translatable("jujutsu.technique.kick").getString();
+                     } else if (p_selectNumber == 4.0) {
+                        p_physical = true;
+                        cost = 50.0;
+                        name = Component.translatable("jujutsu.technique.attack4").getString();
+                     } else if (p_selectNumber == 5.0) {
                         p_physical = true;
                         p_passive = true;
-                        name = Component.m_237115_("jujutsu.technique.kashimo1").getString();
+                        name = Component.translatable("jujutsu.technique.kashimo1").getString();
                         cost = 200.0;
                      } else if (p_selectNumber == 10.0) {
                         p_passive = true;
                         p_physical = true;
-                        name = Component.m_237115_("jujutsu.technique.kashimo2").getString();
+                        name = Component.translatable("jujutsu.technique.kashimo2").getString();
                         cost = 100.0;
                      } else if (p_selectNumber == 15.0) {
                         p_passive = true;
-                        name = Component.m_237115_("effect.mythical_beast_amber_effect").getString();
+                        name = Component.translatable("effect.mythical_beast_amber_effect").getString();
                         cost = 0.0;
                      }
 
                      if (p_selectNumber == 16.0) {
-                        name = Component.m_237115_("jujutsu.technique.kashimo_ah").getString();
+                        name = Component.translatable("jujutsu.technique.kashimo_ah").getString();
                         cost = 100.0;
                      } else if (p_selectNumber == 17.0) {
-                        name = Component.m_237115_("jujutsu.technique.kashimo_energy_wave").getString();
+                        name = Component.translatable("jujutsu.technique.kashimo_energy_wave").getString();
                         cost = 250.0;
                      } else if (p_selectNumber == 19.0) {
                         p_physical = true;
-                        name = Component.m_237115_("jujutsu.technique.flying_kick").getString();
+                        name = Component.translatable("jujutsu.technique.flying_kick").getString();
                         cost = 400.0;
                      }
 
                      if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("effect.domain_expansion").getString();
+                        name = Component.translatable("effect.domain_expansion").getString();
                         cost = 1250.0;
                      }
                   } else if (p_skill1 == 8.0) {
                      if (p_selectNumber == 5.0) {
-                        name = Component.m_237115_("jujutsu.technique.dagon1").getString();
+                        name = Component.translatable("jujutsu.technique.dagon1").getString();
                         cost = 100.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("jujutsu.technique.dagon2").getString();
+                        name = Component.translatable("jujutsu.technique.dagon2").getString();
                         cost = 150.0;
                      } else if (p_selectNumber == 7.0) {
-                        name = Component.m_237115_("jujutsu.technique.dagon3").getString();
+                        name = Component.translatable("jujutsu.technique.dagon3").getString();
                         cost = 150.0;
                      } else if (p_selectNumber == 9.0) {
-                        name = Component.m_237115_("jujutsu.technique.dagon5").getString();
+                        name = Component.translatable("jujutsu.technique.dagon5").getString();
                         cost = 250.0;
                      } else if (p_selectNumber == 10.0) {
-                        name = Component.m_237115_("entity.jujutsucraft.bathynomus_giganteus").getString();
+                        name = Component.translatable("entity.gaigegaigekaigecraft.bathynomus_giganteus").getString();
                         cost = 400.0;
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("jujutsu.technique.dagon20").getString();
+                        name = Component.translatable("jujutsu.technique.dagon20").getString();
                         cost = 1250.0;
                      }
                   } else if (p_skill1 == 9.0) {
-                     label472: {
+                     label487: {
                         if (p_selectNumber == 4.0) {
-                           ItemStack var35;
+                           ItemStack var36;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var35 = _livEnt.m_21205_();
+                              var36 = _livEnt.getMainHandItem();
                            } else {
-                              var35 = ItemStack.f_41583_;
+                              var36 = ItemStack.EMPTY;
                            }
 
-                           if (var35.m_41720_() == JujutsucraftModItems.GARUDA_ITEM.get()) {
+                           if (var36.getItem() == JujutsucraftModItems.GARUDA_ITEM.get()) {
                               p_physical = true;
-                              name = Component.m_237115_("jujutsu.technique.attack7").getString();
+                              name = Component.translatable("jujutsu.technique.attack7").getString();
                               cost = 50.0;
-                              break label472;
+                              break label487;
                            }
                         }
 
                         if (p_selectNumber == 5.0) {
-                           ItemStack var36;
+                           ItemStack var37;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var36 = _livEnt.m_21205_();
+                              var37 = _livEnt.getMainHandItem();
                            } else {
-                              var36 = ItemStack.f_41583_;
+                              var37 = ItemStack.EMPTY;
                            }
 
-                           if (var36.m_41720_() == JujutsucraftModItems.GARUDA_ITEM_BALL.get()) {
-                              name = Component.m_237115_("jujutsu.technique.shoot").getString();
+                           if (var37.getItem() == JujutsucraftModItems.GARUDA_ITEM_BALL.get()) {
+                              name = Component.translatable("jujutsu.technique.shoot").getString();
                               cost = 500.0;
-                              break label472;
+                              break label487;
                            }
                         }
 
                         if (p_selectNumber == 6.0) {
-                           name = Component.m_237115_("entity.jujutsucraft.garuda").getString();
+                           name = Component.translatable("entity.gaigegaigekaigecraft.garuda").getString();
                            cost = 75.0;
                         } else if (p_selectNumber == 10.0) {
                            p_passive = true;
-                           name = Component.m_237115_("effect.star_rage").getString();
+                           name = Component.translatable("effect.star_rage").getString();
                            cost = 0.0;
                         } else if (p_selectNumber == 20.0) {
-                           name = Component.m_237115_("jujutsu.technique.tsukumo_domain").getString();
+                           name = Component.translatable("jujutsu.technique.tsukumo_domain").getString();
                            cost = 1250.0;
                         }
                      }
                   } else if (p_skill1 == 10.0) {
                      if (p_selectNumber == 5.0) {
-                        name = Component.m_237115_("jujutsu.technique.choso1").getString();
+                        name = Component.translatable("jujutsu.technique.choso1").getString();
                         cost = 120.0;
                      } else if (p_selectNumber == 6.0) {
-                        name = Component.m_237115_("jujutsu.technique.choso2").getString();
+                        name = Component.translatable("jujutsu.technique.choso2").getString();
                         cost = 25.0;
                      } else if (p_selectNumber == 7.0) {
-                        name = Component.m_237115_("jujutsu.technique.choso3").getString();
+                        name = Component.translatable("jujutsu.technique.choso3").getString();
                         cost = 200.0;
                      } else if (p_selectNumber == 8.0) {
-                        name = Component.m_237115_("jujutsu.technique.choso4").getString();
+                        name = Component.translatable("jujutsu.technique.choso4").getString();
                         cost = 100.0;
                      } else if (p_selectNumber == 9.0) {
-                        byte var37;
-                        label339: {
+                        byte var38;
+                        label354: {
                            p_passive = true;
-                           name = Component.m_237115_("jujutsu.technique.choso5").getString();
+                           name = Component.translatable("jujutsu.technique.choso5").getString();
                            if (entity instanceof LivingEntity) {
-                              LivingEntity _livEnt101 = (LivingEntity)entity;
-                              if (_livEnt101.m_21023_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get())) {
-                                 var37 = 0;
-                                 break label339;
+                              LivingEntity _livEnt106 = (LivingEntity)entity;
+                              if (_livEnt106.hasEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get())) {
+                                 var38 = 0;
+                                 break label354;
                               }
                            }
 
-                           var37 = 100;
+                           var38 = 100;
                         }
 
-                        cost = (double)var37;
+                        cost = (double)var38;
                      } else if (p_selectNumber == 16.0) {
-                        name = Component.m_237115_("jujutsu.technique.choso6").getString();
+                        name = Component.translatable("jujutsu.technique.choso6").getString();
                         cost = 400.0;
                      } else if (p_selectNumber == 18.0) {
-                        name = Component.m_237115_("item.jujutsucraft.wing_king_chestplate").getString();
+                        name = Component.translatable("item.gaigegaigekaigecraft.wing_king_chestplate").getString();
                         cost = 150.0;
                      } else if (p_selectNumber == 20.0) {
-                        name = Component.m_237115_("effect.domain_expansion").getString();
+                        name = Component.translatable("effect.domain_expansion").getString();
                         cost = 1250.0;
                      }
                   }
 
                   if (p_selectNumber >= 0.0 && p_selectNumber <= 2.0) {
-                     name = Component.m_237115_("jujutsu.technique.attack" + Math.round(p_selectNumber + 1.0)).getString();
+                     name = Component.translatable("jujutsu.technique.attack" + Math.round(p_selectNumber + 1.0)).getString();
                      p_physical = true;
                      cost = 0.0;
                   } else if (p_selectNumber == 21.0) {
-                     name = Component.m_237115_("jujutsu.technique.cancel_domain").getString();
+                     name = Component.translatable("jujutsu.technique.cancel_domain").getString();
                      p_physical = true;
                      p_passive = true;
                      cost = 0.0;
@@ -511,7 +531,7 @@ public class KeyChangeTechniqueOnKeyPressedProcedure {
                      name = "-----";
                   }
 
-                  p_selectNumber += (double)(entity.m_6144_() ? -1 : 1);
+                  p_selectNumber += (double)(entity.isShiftKeyDown() ? -1 : 1);
                   if (p_selectNumber < 0.0) {
                      p_selectNumber = 21.0;
                   } else if (p_selectNumber > 21.0) {

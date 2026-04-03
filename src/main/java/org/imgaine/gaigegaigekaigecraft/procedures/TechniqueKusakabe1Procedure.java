@@ -1,8 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
-import java.util.UUID;
-import java.util.function.BiFunction;
 import org.imgaine.gaigegaigekaigecraft.entity.KusakabeAtsuyaEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModAttributes;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
@@ -51,7 +48,7 @@ public class TechniqueKusakabe1Procedure {
             label510: {
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _plr1 = (ServerPlayer)entity;
-                  if (_plr1.m_9236_() instanceof ServerLevel && _plr1.m_8960_().m_135996_(_plr1.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_new_shadow_style_lv_4"))).m_8193_()) {
+                  if (_plr1.level() instanceof ServerLevel && _plr1.getAdvancements().getOrStartProgress(_plr1.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_new_shadow_style_lv_4"))).isDone()) {
                      level_newShadowStyle = 4.0;
                      break label510;
                   }
@@ -59,7 +56,7 @@ public class TechniqueKusakabe1Procedure {
 
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _plr2 = (ServerPlayer)entity;
-                  if (_plr2.m_9236_() instanceof ServerLevel && _plr2.m_8960_().m_135996_(_plr2.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_new_shadow_style_lv_3"))).m_8193_()) {
+                  if (_plr2.level() instanceof ServerLevel && _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_new_shadow_style_lv_3"))).isDone()) {
                      level_newShadowStyle = 3.0;
                      break label510;
                   }
@@ -67,7 +64,7 @@ public class TechniqueKusakabe1Procedure {
 
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _plr3 = (ServerPlayer)entity;
-                  if (_plr3.m_9236_() instanceof ServerLevel && _plr3.m_8960_().m_135996_(_plr3.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_new_shadow_style_lv_2"))).m_8193_()) {
+                  if (_plr3.level() instanceof ServerLevel && _plr3.getAdvancements().getOrStartProgress(_plr3.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_new_shadow_style_lv_2"))).isDone()) {
                      level_newShadowStyle = 2.0;
                      break label510;
                   }
@@ -75,7 +72,7 @@ public class TechniqueKusakabe1Procedure {
 
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _plr4 = (ServerPlayer)entity;
-                  if (_plr4.m_9236_() instanceof ServerLevel && _plr4.m_8960_().m_135996_(_plr4.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_new_shadow_style_lv_1"))).m_8193_()) {
+                  if (_plr4.level() instanceof ServerLevel && _plr4.getAdvancements().getOrStartProgress(_plr4.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_new_shadow_style_lv_1"))).isDone()) {
                      level_newShadowStyle = 1.0;
                      break label510;
                   }
@@ -91,28 +88,28 @@ public class TechniqueKusakabe1Procedure {
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)entity.getPersistentData().m_128459_("COOLDOWN_TICKS"), 0, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)entity.getPersistentData().getDouble("COOLDOWN_TICKS"), 0, false, false));
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt7") == 0.0) {
-            entity.getPersistentData().m_128347_("cnt8", entity.getPersistentData().m_128459_("cnt8") + 1.0);
-            if (level_newShadowStyle <= 1.0 || entity.getPersistentData().m_128459_("cnt8") == 1.0) {
+         if (entity.getPersistentData().getDouble("cnt7") == 0.0) {
+            entity.getPersistentData().putDouble("cnt8", entity.getPersistentData().getDouble("cnt8") + 1.0);
+            if (level_newShadowStyle <= 1.0 || entity.getPersistentData().getDouble("cnt8") == 1.0) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 60, 9, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 9, false, false));
                   }
                }
 
-               if (entity.getPersistentData().m_128459_("cnt8") == 1.0) {
+               if (entity.getPersistentData().getDouble("cnt8") == 1.0) {
                   label535: {
-                     if (!entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:can_use_hollow_wicker_basket")))) {
+                     if (!entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:can_use_hollow_wicker_basket")))) {
                         label529: {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt15 = (LivingEntity)entity;
-                              if (_livEnt15.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                              if (_livEnt15.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
                                  break label529;
                               }
                            }
@@ -129,8 +126,8 @@ public class TechniqueKusakabe1Procedure {
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livingEntity17 = (LivingEntity)entity;
-                     if (_livingEntity17.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                        _livingEntity17.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(num1);
+                     if (_livingEntity17.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                        _livingEntity17.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(num1);
                      }
                   }
 
@@ -138,14 +135,14 @@ public class TechniqueKusakabe1Procedure {
                }
             }
 
-            entity.getPersistentData().m_128347_("Damage", 15.0);
-            entity.getPersistentData().m_128347_("Range", 1.5);
-            entity.getPersistentData().m_128347_("effect", 5.0);
-            entity.getPersistentData().m_128347_("projectile_type", 1.0);
-            entity.getPersistentData().m_128379_("swing", true);
+            entity.getPersistentData().putDouble("Damage", 15.0);
+            entity.getPersistentData().putDouble("Range", 1.5);
+            entity.getPersistentData().putDouble("effect", 5.0);
+            entity.getPersistentData().putDouble("projectile_type", 1.0);
+            entity.getPersistentData().putBoolean("swing", true);
             DamageFixProcedure.execute(entity);
-            num1 = entity.getPersistentData().m_128459_("cnt8") - 1.0;
-            if (!(level_newShadowStyle < 4.0) && !(entity.getPersistentData().m_128459_("cnt8") <= 40.0)) {
+            num1 = entity.getPersistentData().getDouble("cnt8") - 1.0;
+            if (!(level_newShadowStyle < 4.0) && !(entity.getPersistentData().getDouble("cnt8") <= 40.0)) {
                num1 = Math.max((num1 - 40.0) * 50.0, 1.0);
                num1 = Math.min(160.0 + num1, 640.0);
             } else {
@@ -156,13 +153,13 @@ public class TechniqueKusakabe1Procedure {
             for(int index0 = 0; index0 < 5; ++index0) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get(), (int)num1, 1, true, true));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get(), (int)num1, 1, true, true));
                   }
                }
 
                num1 += 10.0;
-               if (num1 > (double)(!(level_newShadowStyle < 4.0) && !(entity.getPersistentData().m_128459_("cnt8") <= 60.0) ? 160 : 640)) {
+               if (num1 > (double)(!(level_newShadowStyle < 4.0) && !(entity.getPersistentData().getDouble("cnt8") <= 60.0) ? 160 : 640)) {
                   break;
                }
             }
@@ -170,11 +167,11 @@ public class TechniqueKusakabe1Procedure {
             double var10000;
             int var10002;
             label427: {
-               var10000 = (double)entity.m_20205_();
+               var10000 = (double)entity.getBbWidth();
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
-                     var10002 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).m_19557_();
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
+                     var10002 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).getDuration();
                      break label427;
                   }
                }
@@ -183,32 +180,32 @@ public class TechniqueKusakabe1Procedure {
             }
 
             dis = Math.min(var10000 + 0.025 * (double)var10002, level_newShadowStyle >= 4.0 ? 16.0 : 4.0);
-            if (entity.getPersistentData().m_128459_("cnt8") > 200.0) {
+            if (entity.getPersistentData().getDouble("cnt8") > 200.0) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get());
                }
 
-               entity.getPersistentData().m_128347_("skill", 0.0);
+               entity.getPersistentData().putDouble("skill", 0.0);
             } else {
-               entity.getPersistentData().m_128359_("TARGET", "");
+               entity.getPersistentData().putString("TARGET", "");
                Vec3 _center = new Vec3(x, y, z);
 
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(dis * 2.0 / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                  if (entity != entityiterator && entityiterator instanceof LivingEntity && entityiterator.m_6084_() && entity.m_20186_() + (double)entity.m_20206_() >= entityiterator.m_20186_() && entity.m_20186_() <= entityiterator.m_20186_() + (double)entityiterator.m_20206_() && LogicAttackProcedure.execute(world, entity, entityiterator)) {
-                     entity.getPersistentData().m_128359_("TARGET1", entityiterator.m_20149_());
-                     entity.getPersistentData().m_128347_("cnt1", 1.0);
-                     entity.getPersistentData().m_128347_("cnt5", Math.max(entity.getPersistentData().m_128459_("cnt5"), 1.0));
-                     entity.getPersistentData().m_128347_("cnt7", 1.0);
-                     entity.getPersistentData().m_128347_("cnt8", 0.0);
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(dis * 2.0 / 2.0), (e) -> true)) {
+                  if (entity != entityiterator && entityiterator instanceof LivingEntity && entityiterator.isAlive() && entity.getY() + (double)entity.getBbHeight() >= entityiterator.getY() && entity.getY() <= entityiterator.getY() + (double)entityiterator.getBbHeight() && LogicAttackProcedure.execute(world, entity, entityiterator)) {
+                     entity.getPersistentData().putString("TARGET1", entityiterator.getStringUUID());
+                     entity.getPersistentData().putDouble("cnt1", 1.0);
+                     entity.getPersistentData().putDouble("cnt5", Math.max(entity.getPersistentData().getDouble("cnt5"), 1.0));
+                     entity.getPersistentData().putDouble("cnt7", 1.0);
+                     entity.getPersistentData().putDouble("cnt8", 0.0);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_(MobEffects.f_19597_);
+                        _entity.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
                      }
 
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get());
+                        _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get());
                      }
                      break;
                   }
@@ -216,99 +213,88 @@ public class TechniqueKusakabe1Procedure {
             }
          }
 
-         entity_a = (new BiFunction<LevelAccessor, String, Entity>() {
-            public Entity apply(LevelAccessor levelAccessor, String uuid) {
-               if (levelAccessor instanceof ServerLevel serverLevel) {
-                  try {
-                     return serverLevel.m_8791_(UUID.fromString(uuid));
-                  } catch (Exception var5) {
-                  }
-               }
-
-               return null;
-            }
-         }).apply(world, entity.getPersistentData().m_128461_("TARGET1"));
-         if (entity.getPersistentData().m_128459_("cnt7") == 1.0) {
+         entity_a = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("TARGET1"));
+         if (entity.getPersistentData().getDouble("cnt7") == 1.0) {
             if (entity_a instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt8", entity.getPersistentData().m_128459_("cnt8") + 1.0);
-               dis = Math.sqrt(Math.pow(Math.max(Math.abs(entity_a.m_20185_() - entity.m_20185_()) - (double)(entity_a.m_20205_() + entity.m_20205_()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.m_20186_() - entity.m_20186_()) - (double)(entity_a.m_20206_() + entity.m_20206_()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.m_20189_() - entity.m_20189_()) - (double)(entity_a.m_20205_() + entity.m_20205_()), 0.0), 2.0));
-               RotateEntityProcedure.execute(entity_a.m_20185_(), entity_a.m_20186_() + (double)entity_a.m_20206_() * 0.5, entity_a.m_20189_(), entity);
-               entity.getPersistentData().m_128347_("x_power", entity.m_20154_().f_82479_ * 3.0);
-               entity.getPersistentData().m_128347_("y_power", entity.m_20154_().f_82480_ * 3.0);
-               entity.getPersistentData().m_128347_("z_power", entity.m_20154_().f_82481_ * 3.0);
-               speed = Math.sqrt(Math.pow(entity.getPersistentData().m_128459_("x_power"), 2.0) + Math.pow(entity.getPersistentData().m_128459_("y_power"), 2.0) + Math.pow(entity.getPersistentData().m_128459_("z_power"), 2.0));
+               entity.getPersistentData().putDouble("cnt8", entity.getPersistentData().getDouble("cnt8") + 1.0);
+               dis = Math.sqrt(Math.pow(Math.max(Math.abs(entity_a.getX() - entity.getX()) - (double)(entity_a.getBbWidth() + entity.getBbWidth()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.getY() - entity.getY()) - (double)(entity_a.getBbHeight() + entity.getBbHeight()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.getZ() - entity.getZ()) - (double)(entity_a.getBbWidth() + entity.getBbWidth()), 0.0), 2.0));
+               RotateEntityProcedure.execute(entity_a.getX(), entity_a.getY() + (double)entity_a.getBbHeight() * 0.5, entity_a.getZ(), entity);
+               entity.getPersistentData().putDouble("x_power", entity.getLookAngle().x * 3.0);
+               entity.getPersistentData().putDouble("y_power", entity.getLookAngle().y * 3.0);
+               entity.getPersistentData().putDouble("z_power", entity.getLookAngle().z * 3.0);
+               speed = Math.sqrt(Math.pow(entity.getPersistentData().getDouble("x_power"), 2.0) + Math.pow(entity.getPersistentData().getDouble("y_power"), 2.0) + Math.pow(entity.getPersistentData().getDouble("z_power"), 2.0));
                speed *= 4.0;
                if (speed != 0.0) {
-                  vx = entity.getPersistentData().m_128459_("x_power") / speed;
-                  vy = entity.getPersistentData().m_128459_("y_power") / speed;
-                  vz = entity.getPersistentData().m_128459_("z_power") / speed;
-                  x_pos = entity.m_20185_();
-                  y_pos = entity.m_20186_();
-                  z_pos = entity.m_20189_();
+                  vx = entity.getPersistentData().getDouble("x_power") / speed;
+                  vy = entity.getPersistentData().getDouble("y_power") / speed;
+                  vz = entity.getPersistentData().getDouble("z_power") / speed;
+                  x_pos = entity.getX();
+                  y_pos = entity.getY();
+                  z_pos = entity.getZ();
                   logic_b = true;
 
                   for(int index1 = 0; index1 < (int)Math.round(speed * 4.5); ++index1) {
-                     dis = Math.sqrt(Math.pow(Math.max(Math.abs(entity_a.m_20185_() - entity.m_20185_()) - (double)(entity_a.m_20205_() + entity.m_20205_()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.m_20186_() - entity.m_20186_()) - (double)(entity_a.m_20206_() + entity.m_20206_()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.m_20189_() - entity.m_20189_()) - (double)(entity_a.m_20205_() + entity.m_20205_()), 0.0), 2.0));
+                     dis = Math.sqrt(Math.pow(Math.max(Math.abs(entity_a.getX() - entity.getX()) - (double)(entity_a.getBbWidth() + entity.getBbWidth()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.getY() - entity.getY()) - (double)(entity_a.getBbHeight() + entity.getBbHeight()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.getZ() - entity.getZ()) - (double)(entity_a.getBbWidth() + entity.getBbWidth()), 0.0), 2.0));
                      if (dis < 2.5) {
                         logic_b = false;
-                        RotateEntityProcedure.execute(entity_a.m_20185_(), entity_a.m_20186_() + (double)entity_a.m_20206_() * 0.5, entity_a.m_20189_(), entity);
-                        entity.m_20256_(new Vec3(0.0, 0.0, 0.0));
-                        entity.getPersistentData().m_128347_("cnt7", 2.0);
+                        RotateEntityProcedure.execute(entity_a.getX(), entity_a.getY() + (double)entity_a.getBbHeight() * 0.5, entity_a.getZ(), entity);
+                        entity.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
+                        entity.getPersistentData().putDouble("cnt7", 2.0);
                         break;
                      }
 
                      y_pos += vy;
-                     if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                        entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                     if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                      }
 
-                     if (entity.m_5830_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_60815_()) {
+                     if (entity.isInWall() || world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).canOcclude()) {
                         y_pos -= vy;
-                        if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                           entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                           entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                         }
                      }
 
                      x_pos += vx;
-                     if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                        entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                     if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                      }
 
-                     if (entity.m_5830_()) {
+                     if (entity.isInWall()) {
                         x_pos -= vx;
-                        if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                           entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                           entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                         }
                      }
 
                      z_pos += vz;
-                     if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                        entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                     if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                      }
 
-                     if (entity.m_5830_()) {
+                     if (entity.isInWall()) {
                         z_pos -= vz;
-                        if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                           entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                           entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                         }
                      }
                   }
 
                   for(int index2 = 0; index2 < 8; ++index2) {
-                     dis = Math.sqrt(Math.pow(Math.max(Math.abs(entity_a.m_20185_() - entity.m_20185_()) - (double)(entity_a.m_20205_() + entity.m_20205_()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.m_20186_() - entity.m_20186_()) - (double)(entity_a.m_20206_() + entity.m_20206_()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.m_20189_() - entity.m_20189_()) - (double)(entity_a.m_20205_() + entity.m_20205_()), 0.0), 2.0));
+                     dis = Math.sqrt(Math.pow(Math.max(Math.abs(entity_a.getX() - entity.getX()) - (double)(entity_a.getBbWidth() + entity.getBbWidth()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.getY() - entity.getY()) - (double)(entity_a.getBbHeight() + entity.getBbHeight()), 0.0), 2.0) + Math.pow(Math.max(Math.abs(entity_a.getZ() - entity.getZ()) - (double)(entity_a.getBbWidth() + entity.getBbWidth()), 0.0), 2.0));
                      if (dis < 2.5) {
                         logic_b = false;
-                        RotateEntityProcedure.execute(entity_a.m_20185_(), entity_a.m_20186_() + (double)entity_a.m_20206_() * 0.5, entity_a.m_20189_(), entity);
-                        entity.m_20256_(new Vec3(0.0, 0.0, 0.0));
-                        entity.getPersistentData().m_128347_("cnt7", 2.0);
+                        RotateEntityProcedure.execute(entity_a.getX(), entity_a.getY() + (double)entity_a.getBbHeight() * 0.5, entity_a.getZ(), entity);
+                        entity.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
+                        entity.getPersistentData().putDouble("cnt7", 2.0);
                         break;
                      }
 
                      logic_a = true;
                      y_fix_height = 0.0;
 
-                     for(int index3 = 0; index3 < (int)Math.ceil((double)(entity.m_20206_() + 0.0F)); ++index3) {
-                        if (world.m_8055_(BlockPos.m_274561_(x_pos + vx, y_pos + vy + y_fix_height, z_pos + vz)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos + vy + y_fix_height, z_pos)).m_60815_()) {
+                     for(int index3 = 0; index3 < (int)Math.ceil((double)(entity.getBbHeight() + 0.0F)); ++index3) {
+                        if (world.getBlockState(BlockPos.containing(x_pos + vx, y_pos + vy + y_fix_height, z_pos + vz)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos, y_pos + vy + y_fix_height, z_pos)).canOcclude()) {
                            logic_a = false;
                            break;
                         }
@@ -324,8 +310,8 @@ public class TechniqueKusakabe1Procedure {
                         y_fix = 0.0;
 
                         for(int index4 = 0; index4 < (int)Math.round(Math.max(speed * 2.0, 1.0)); ++index4) {
-                           if (world.m_8055_(BlockPos.m_274561_(x_pos + vx, y_pos + vy + y_fix, z_pos + vz)).m_60815_()) {
-                              if (world.m_8055_(BlockPos.m_274561_(x_pos, Math.max(y_pos + vy, y_pos) + y_fix, z_pos)).m_60815_()) {
+                           if (world.getBlockState(BlockPos.containing(x_pos + vx, y_pos + vy + y_fix, z_pos + vz)).canOcclude()) {
+                              if (world.getBlockState(BlockPos.containing(x_pos, Math.max(y_pos + vy, y_pos) + y_fix, z_pos)).canOcclude()) {
                                  logic_a = false;
                                  break;
                               }
@@ -335,8 +321,8 @@ public class TechniqueKusakabe1Procedure {
                               logic_a = true;
                               y_fix_height = 0.0;
 
-                              for(int index5 = 0; index5 < (int)Math.ceil((double)entity.m_20206_()); ++index5) {
-                                 if (world.m_8055_(BlockPos.m_274561_(x_pos + vx, y_pos + vy + y_fix + y_fix_height, z_pos + vz)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos + y_fix + y_fix_height, z_pos + vz)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos + vy + y_fix + y_fix_height, z_pos + vz)).m_60815_()) {
+                              for(int index5 = 0; index5 < (int)Math.ceil((double)entity.getBbHeight()); ++index5) {
+                                 if (world.getBlockState(BlockPos.containing(x_pos + vx, y_pos + vy + y_fix + y_fix_height, z_pos + vz)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos, y_pos + y_fix + y_fix_height, z_pos + vz)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos, y_pos + vy + y_fix + y_fix_height, z_pos + vz)).canOcclude()) {
                                     logic_a = false;
                                     break;
                                  }
@@ -354,38 +340,38 @@ public class TechniqueKusakabe1Procedure {
 
                         if (logic_a) {
                            y_pos = y_pos + vy + y_fix;
-                           if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                              entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                           if (!entity.level().isClientSide() && entity.getServer() != null) {
+                              entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                            }
 
-                           if (entity.m_5830_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_60815_()) {
+                           if (entity.isInWall() || world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).canOcclude()) {
                               y_pos = y_pos - vy - y_fix;
-                              if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                 entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                              if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                 entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                               }
                            }
 
                            x_pos += vx;
-                           if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                              entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                           if (!entity.level().isClientSide() && entity.getServer() != null) {
+                              entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                            }
 
-                           if (entity.m_5830_()) {
+                           if (entity.isInWall()) {
                               x_pos -= vx;
-                              if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                 entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                              if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                 entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                               }
                            }
 
                            z_pos += vz;
-                           if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                              entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                           if (!entity.level().isClientSide() && entity.getServer() != null) {
+                              entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                            }
 
-                           if (entity.m_5830_()) {
+                           if (entity.isInWall()) {
                               z_pos -= vz;
-                              if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                 entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
+                              if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                 entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "tp @s " + x_pos + " " + y_pos + " " + z_pos + " ~ ~");
                               }
                            }
                            continue;
@@ -402,41 +388,41 @@ public class TechniqueKusakabe1Procedure {
                   }
                }
             } else {
-               entity.m_20256_(new Vec3(0.0, 0.0, 0.0));
-               entity.getPersistentData().m_128347_("cnt7", 2.0);
+               entity.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
+               entity.getPersistentData().putDouble("cnt7", 2.0);
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt7") > 1.0) {
+         if (entity.getPersistentData().getDouble("cnt7") > 1.0) {
             if (level_newShadowStyle >= 3.0) {
-               entity.getPersistentData().m_128347_("cnt5", entity.getPersistentData().m_128459_("cnt5") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt5") <= (double)(level_newShadowStyle == 3.0 ? 25 : 50)) {
-                  if (entity.getPersistentData().m_128459_("cnt2") > 0.0) {
-                     entity.getPersistentData().m_128347_("cnt1", 1.0);
-                     entity.getPersistentData().m_128347_("cnt2", 0.0);
-                     entity.getPersistentData().m_128347_("cnt6", 2.5 + Math.min(entity.getPersistentData().m_128459_("cnt5") * 0.01, 0.5));
-                     entity.getPersistentData().m_128347_("cnt7", 1.0);
-                     entity.getPersistentData().m_128347_("cnt8", 18.0);
+               entity.getPersistentData().putDouble("cnt5", entity.getPersistentData().getDouble("cnt5") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt5") <= (double)(level_newShadowStyle == 3.0 ? 25 : 50)) {
+                  if (entity.getPersistentData().getDouble("cnt2") > 0.0) {
+                     entity.getPersistentData().putDouble("cnt1", 1.0);
+                     entity.getPersistentData().putDouble("cnt2", 0.0);
+                     entity.getPersistentData().putDouble("cnt6", 2.5 + Math.min(entity.getPersistentData().getDouble("cnt5") * 0.01, 0.5));
+                     entity.getPersistentData().putDouble("cnt7", 1.0);
+                     entity.getPersistentData().putDouble("cnt8", 18.0);
                   }
                } else {
-                  entity.getPersistentData().m_128347_("cnt6", 10.0);
-                  entity.getPersistentData().m_128347_("cnt5", 100.0);
+                  entity.getPersistentData().putDouble("cnt6", 10.0);
+                  entity.getPersistentData().putDouble("cnt5", 100.0);
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt6", 10.0);
-               entity.getPersistentData().m_128347_("cnt5", 100.0);
+               entity.getPersistentData().putDouble("cnt6", 10.0);
+               entity.getPersistentData().putDouble("cnt5", 100.0);
             }
 
             for(int index6 = 0; index6 < 5; ++index6) {
                AttackWeakProcedure.execute(world, x, y, z, entity);
-               if (entity.getPersistentData().m_128459_("cnt5") >= 100.0) {
+               if (entity.getPersistentData().getDouble("cnt5") >= 100.0) {
                   break;
                }
             }
 
-            if (entity.getPersistentData().m_128459_("cnt7") == 1.0 && entity_a instanceof LivingEntity && !entity_a.m_6084_()) {
-               entity.getPersistentData().m_128347_("cnt7", 0.0);
-               entity.getPersistentData().m_128347_("cnt8", 100.0);
+            if (entity.getPersistentData().getDouble("cnt7") == 1.0 && entity_a instanceof LivingEntity && !entity_a.isAlive()) {
+               entity.getPersistentData().putDouble("cnt7", 0.0);
+               entity.getPersistentData().putDouble("cnt8", 100.0);
             }
          }
 

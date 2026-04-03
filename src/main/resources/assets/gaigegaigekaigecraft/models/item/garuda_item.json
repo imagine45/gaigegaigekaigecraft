@@ -1,0 +1,7 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/garuda",
+  "textures": {
+    "1": "gaigegaigekaigecraft:block/garuda",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

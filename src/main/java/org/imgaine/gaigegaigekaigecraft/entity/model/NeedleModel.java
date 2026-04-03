@@ -13,15 +13,15 @@ public class NeedleModel extends GeoModel<NeedleEntity> {
    }
 
    public ResourceLocation getAnimationResource(NeedleEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/needle.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/needle.animation.json");
    }
 
    public ResourceLocation getModelResource(NeedleEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/needle.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/needle.geo.json");
    }
 
    public ResourceLocation getTextureResource(NeedleEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(NeedleEntity animatable, long instanceId, AnimationState animationState) {

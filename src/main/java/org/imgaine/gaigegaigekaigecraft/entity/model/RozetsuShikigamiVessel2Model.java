@@ -9,14 +9,14 @@ public class RozetsuShikigamiVessel2Model extends GeoModel<RozetsuShikigamiVesse
    }
 
    public ResourceLocation getAnimationResource(RozetsuShikigamiVessel2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/rozetsu_shikigami_tenshadows_reinforce.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/rozetsu_shikigami_tenshadows_reinforce.animation.json");
    }
 
    public ResourceLocation getModelResource(RozetsuShikigamiVessel2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/rozetsu_shikigami_tenshadows_reinforce.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/rozetsu_shikigami_tenshadows_reinforce.geo.json");
    }
 
    public ResourceLocation getTextureResource(RozetsuShikigamiVessel2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

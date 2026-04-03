@@ -9,14 +9,14 @@ public class HeadJetModel extends GeoModel<HeadJetItem> {
    }
 
    public ResourceLocation getAnimationResource(HeadJetItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/head_jet.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/head_jet.animation.json");
    }
 
    public ResourceLocation getModelResource(HeadJetItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/head_jet.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/head_jet.geo.json");
    }
 
    public ResourceLocation getTextureResource(HeadJetItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/head_jets.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/head_jets.png");
    }
 }

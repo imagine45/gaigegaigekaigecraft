@@ -17,26 +17,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemMasterSixEyesItem extends Item {
    public ItemMasterSixEyesItem() {
-      super((new Item.Properties()).m_41487_(1).m_41486_().m_41497_(Rarity.EPIC));
+      super((new Item.Properties()).stacksTo(1).fireResistant().rarity(Rarity.EPIC));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.EAT;
    }
 
    @OnlyIn(Dist.CLIENT)
-   public boolean m_5812_(ItemStack itemstack) {
+   public boolean isFoil(ItemStack itemstack) {
       return true;
    }
 
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.item_master_six_eyes.description_0"));
+   public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, level, list, flag);
+      list.add(Component.translatable("item.gaigegaigekaigecraft.item_master_six_eyes.description_0"));
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      MasterSkillsProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity, (ItemStack)ar.m_19095_());
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      MasterSkillsProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), entity, (ItemStack)ar.getObject());
       return ar;
    }
 }

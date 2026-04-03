@@ -1,0 +1,9 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/sword_shigemo",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/sword_shigemo",
+    "1": "gaigegaigekaigecraft:block/sword_blade",
+    "1_0": "gaigegaigekaigecraft:block/sword_okkotsu",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

@@ -21,23 +21,23 @@ public class ParticleBrokenGlassSmallParticle extends TextureSheetParticle {
    protected ParticleBrokenGlassSmallParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(0.7F, 0.7F);
-      this.f_107663_ *= 0.7F;
-      this.f_107225_ = 100;
-      this.f_107226_ = 0.3F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 0.5;
-      this.f_107216_ = vy * 0.5;
-      this.f_107217_ = vz * 0.5;
-      this.m_108335_(spriteSet);
+      this.setSize(0.7F, 0.7F);
+      this.quadSize *= 0.7F;
+      this.lifetime = 100;
+      this.gravity = 0.3F;
+      this.hasPhysics = false;
+      this.xd = vx * 0.5;
+      this.yd = vy * 0.5;
+      this.zd = vz * 0.5;
+      this.pickSprite(spriteSet);
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107430_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
+   public void tick() {
+      super.tick();
    }
 
    public static class ParticleBrokenGlassSmallParticleProvider implements ParticleProvider<SimpleParticleType> {

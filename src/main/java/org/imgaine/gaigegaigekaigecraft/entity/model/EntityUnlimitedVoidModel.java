@@ -9,14 +9,14 @@ public class EntityUnlimitedVoidModel extends GeoModel<EntityUnlimitedVoidEntity
    }
 
    public ResourceLocation getAnimationResource(EntityUnlimitedVoidEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/entity_unlimited_void.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/entity_unlimited_void.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityUnlimitedVoidEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/entity_unlimited_void.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/entity_unlimited_void.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityUnlimitedVoidEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

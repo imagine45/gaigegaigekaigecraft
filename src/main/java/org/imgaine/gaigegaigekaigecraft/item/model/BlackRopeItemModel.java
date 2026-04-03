@@ -9,14 +9,14 @@ public class BlackRopeItemModel extends GeoModel<BlackRopeItem> {
    }
 
    public ResourceLocation getAnimationResource(BlackRopeItem animatable) {
-      return new ResourceLocation("jujutsucraft", "animations/black_rope.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/black_rope.animation.json");
    }
 
    public ResourceLocation getModelResource(BlackRopeItem animatable) {
-      return new ResourceLocation("jujutsucraft", "geo/black_rope.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/black_rope.geo.json");
    }
 
    public ResourceLocation getTextureResource(BlackRopeItem animatable) {
-      return new ResourceLocation("jujutsucraft", "textures/item/hair_black.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/hair_black.png");
    }
 }

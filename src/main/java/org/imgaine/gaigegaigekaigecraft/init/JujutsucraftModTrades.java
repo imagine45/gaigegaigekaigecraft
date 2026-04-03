@@ -20,7 +20,7 @@ public class JujutsucraftModTrades {
    @SubscribeEvent
    public static void registerTrades(VillagerTradesEvent event) {
       if (event.getType() == JujutsucraftModVillagerProfessions.PROFESSION_JUJUTSU_SORCERER.get()) {
-         ((List)event.getTrades().get(1)).add(new BasicItemListing(new ItemStack(Items.f_42417_, 9), new ItemStack((ItemLike)JujutsucraftModItems.STEVENSON_SCREEN_SPAWN_EGG.get()), 10, 5, 0.05F));
+         ((List)event.getTrades().get(1)).add(new BasicItemListing(new ItemStack(Items.GOLD_INGOT, 9), new ItemStack((ItemLike)JujutsucraftModItems.STEVENSON_SCREEN_SPAWN_EGG.get()), 10, 5, 0.05F));
       }
 
    }

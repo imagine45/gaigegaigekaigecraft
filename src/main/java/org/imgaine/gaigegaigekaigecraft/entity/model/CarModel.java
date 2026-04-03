@@ -9,14 +9,14 @@ public class CarModel extends GeoModel<CarEntity> {
    }
 
    public ResourceLocation getAnimationResource(CarEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/car.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/car.animation.json");
    }
 
    public ResourceLocation getModelResource(CarEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/car.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/car.geo.json");
    }
 
    public ResourceLocation getTextureResource(CarEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

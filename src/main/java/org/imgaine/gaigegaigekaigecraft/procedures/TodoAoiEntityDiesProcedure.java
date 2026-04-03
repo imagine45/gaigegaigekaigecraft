@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -16,14 +15,14 @@ public class TodoAoiEntityDiesProcedure {
       if (entity != null) {
          Vec3 _center = new Vec3(x, y, z);
 
-         for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(64.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-            entityiterator.getPersistentData().m_128379_("flag_pendant", false);
+         for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(64.0), (e) -> true)) {
+            entityiterator.getPersistentData().putBoolean("flag_pendant", false);
          }
 
          LivingEntity var10000;
          if (entity instanceof Mob) {
             Mob _mobEnt = (Mob)entity;
-            var10000 = _mobEnt.m_5448_();
+            var10000 = _mobEnt.getTarget();
          } else {
             var10000 = null;
          }
@@ -31,12 +30,12 @@ public class TodoAoiEntityDiesProcedure {
          if (var10000 instanceof LivingEntity) {
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
-            ((Entity)var10000).getPersistentData().m_128379_("flag_pendant", false);
+            ((Entity)var10000).getPersistentData().putBoolean("flag_pendant", false);
          }
 
       }

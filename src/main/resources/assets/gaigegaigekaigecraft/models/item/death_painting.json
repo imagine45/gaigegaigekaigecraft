@@ -1,0 +1,6 @@
+{
+  "parent": "gaigegaigekaigecraft:displaysettings/death_paintings",
+  "textures": {
+    "layer0": "gaigegaigekaigecraft:item/death_paintings"
+  }
+}

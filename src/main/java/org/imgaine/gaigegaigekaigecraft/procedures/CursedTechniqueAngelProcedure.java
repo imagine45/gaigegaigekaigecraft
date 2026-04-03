@@ -14,14 +14,14 @@ public class CursedTechniqueAngelProcedure {
       if (entity != null) {
          double level = 0.0;
          double skill = 0.0;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 2800.0);
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 2800.0);
          if (skill == 15.0) {
             TechniqueJacobsLadderProcedure.execute(world, entity);
          } else if (skill == 20.0) {
             AngelDomainExpansionProcedure.execute(world, x, y, z, entity);
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
          }
 
       }

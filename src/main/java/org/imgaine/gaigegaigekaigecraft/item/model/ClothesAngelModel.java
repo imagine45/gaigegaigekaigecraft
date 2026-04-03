@@ -9,14 +9,14 @@ public class ClothesAngelModel extends GeoModel<ClothesAngelItem> {
    }
 
    public ResourceLocation getAnimationResource(ClothesAngelItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/clothes_angel.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/clothes_angel.animation.json");
    }
 
    public ResourceLocation getModelResource(ClothesAngelItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/clothes_angel.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/clothes_angel.geo.json");
    }
 
    public ResourceLocation getTextureResource(ClothesAngelItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/clothes_angel.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/clothes_angel.png");
    }
 }

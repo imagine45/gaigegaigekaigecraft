@@ -8,7 +8,7 @@ public class KeyAOnKeyReleasedProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128379_("PRESS_A", false);
+         entity.getPersistentData().putBoolean("PRESS_A", false);
       }
    }
 }

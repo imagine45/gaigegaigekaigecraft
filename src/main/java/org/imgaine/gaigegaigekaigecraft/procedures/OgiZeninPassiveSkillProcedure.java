@@ -22,21 +22,23 @@ public class OgiZeninPassiveSkillProcedure {
          double NUM1 = 0.0;
          double T1 = 0.0;
          double T2 = 0.0;
-         entity.getPersistentData().m_128347_("PASSIVE_POWERFIX", 0.0);
+         entity.getPersistentData().putDouble("PASSIVE_POWERFIX", 0.0);
          if (entity instanceof Player) {
-            T1 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
-            T2 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2;
+            JujutsucraftModVariables.PlayerVariables pVars = null;
+            pVars = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse((JujutsucraftModVariables.PlayerVariables) null);
+            T1 = pVars.PlayerCurseTechnique;
+            T2 = pVars.PlayerCurseTechnique2;
          }
 
          if (T1 != 9.0 && T2 != 9.0) {
             if (T1 == 26.0 || T2 == 26.0 || entity instanceof ZeninOgiEntity) {
-               CompoundTag var27 = entity.getPersistentData();
+               CompoundTag var29 = entity.getPersistentData();
                double var10002;
                if (LogicStartPassiveProcedure.execute(entity)) {
                   float var10003;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     var10003 = _livEnt.m_21223_();
+                     var10003 = _livEnt.getHealth();
                   } else {
                      var10003 = -1.0F;
                   }
@@ -45,7 +47,7 @@ public class OgiZeninPassiveSkillProcedure {
                   float var10004;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     var10004 = _livEnt.m_21233_();
+                     var10004 = _livEnt.getMaxHealth();
                   } else {
                      var10004 = -1.0F;
                   }
@@ -55,10 +57,10 @@ public class OgiZeninPassiveSkillProcedure {
                   var10002 = 0.0;
                }
 
-               var27.m_128347_("PASSIVE_POWERFIX", var10002);
-               PASSIVE_POWERFIX = (double)Math.round(Math.max(Math.min(entity.getPersistentData().m_128459_("PASSIVE_POWERFIX") * 40.0, 10.0), 0.0));
+               var29.putDouble("PASSIVE_POWERFIX", var10002);
+               PASSIVE_POWERFIX = (double)Math.round(Math.max(Math.min(entity.getPersistentData().getDouble("PASSIVE_POWERFIX") * 40.0, 10.0), 0.0));
                if (PASSIVE_POWERFIX >= 10.0) {
-                  entity.getPersistentData().m_128347_("PASSIVE_POWERFIX", entity.getPersistentData().m_128459_("PASSIVE_POWERFIX") * 2.0);
+                  entity.getPersistentData().putDouble("PASSIVE_POWERFIX", entity.getPersistentData().getDouble("PASSIVE_POWERFIX") * 2.0);
                }
 
                if (entity instanceof Player) {
@@ -87,48 +89,48 @@ public class OgiZeninPassiveSkillProcedure {
                      ++NUM1;
                      STR1 = STR1 + "■";
                   }
-
+                  String STR2 = STR1;
                   entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                     capability.OVERLAY2 = STR1;
+                     capability.OVERLAY2 = STR2;
                      capability.syncPlayerVariables(entity);
                   });
                }
             }
          } else if (entity instanceof Player) {
-            int var26;
+            int var28;
             label116: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt3 = (LivingEntity)entity;
-                  if (_livEnt3.m_21023_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get())) {
+                  if (_livEnt3.hasEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get())) {
                      label112: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get())) {
-                              var26 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get()).m_19564_();
+                           if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get())) {
+                              var28 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get()).getAmplifier();
                               break label112;
                            }
                         }
 
-                        var26 = 0;
+                        var28 = 0;
                      }
 
-                     ++var26;
+                     ++var28;
                      break label116;
                   }
                }
 
-               var26 = 0;
+               var28 = 0;
             }
 
-            PASSIVE_POWERFIX = (double)var26;
+            PASSIVE_POWERFIX = (double)var28;
             if (PASSIVE_POWERFIX <= 0.0) {
-               String _setval = "§7" + Component.m_237115_("effect.star_rage").getString();
+               String _setval = "§7" + Component.translatable("effect.star_rage").getString();
                entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                   capability.OVERLAY1 = _setval;
                   capability.syncPlayerVariables(entity);
                });
             } else {
-               String _setval = (PASSIVE_POWERFIX >= 10.0 ? "§l§6" : "§e") + Component.m_237115_("effect.star_rage").getString();
+               String _setval = (PASSIVE_POWERFIX >= 10.0 ? "§l§6" : "§e") + Component.translatable("effect.star_rage").getString();
                entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                   capability.OVERLAY1 = _setval;
                   capability.syncPlayerVariables(entity);
@@ -146,9 +148,9 @@ public class OgiZeninPassiveSkillProcedure {
                ++NUM1;
                STR1 = STR1 + "■";
             }
-
+            String STR2 = STR1;
             entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-               capability.OVERLAY2 = STR1;
+               capability.OVERLAY2 = STR2;
                capability.syncPlayerVariables(entity);
             });
          }

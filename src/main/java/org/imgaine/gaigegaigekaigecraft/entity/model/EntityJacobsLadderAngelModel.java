@@ -13,15 +13,15 @@ public class EntityJacobsLadderAngelModel extends GeoModel<EntityJacobsLadderAng
    }
 
    public ResourceLocation getAnimationResource(EntityJacobsLadderAngelEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/jacobs_ladder_angel.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/jacobs_ladder_angel.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityJacobsLadderAngelEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/jacobs_ladder_angel.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/jacobs_ladder_angel.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityJacobsLadderAngelEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityJacobsLadderAngelEntity animatable, long instanceId, AnimationState animationState) {

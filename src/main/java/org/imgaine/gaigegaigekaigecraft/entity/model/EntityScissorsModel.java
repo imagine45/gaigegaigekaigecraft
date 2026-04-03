@@ -13,15 +13,15 @@ public class EntityScissorsModel extends GeoModel<EntityScissorsEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityScissorsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/scissors.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/scissors.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityScissorsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/scissors.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/scissors.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityScissorsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityScissorsEntity animatable, long instanceId, AnimationState animationState) {

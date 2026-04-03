@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -24,31 +23,31 @@ public class WeaponNanamiRightClickedInAirProcedure {
    public static void execute(LevelAccessor world, Entity entity) {
       if (entity != null) {
          boolean success = false;
-         Vec3 _center = new Vec3((double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(6.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123341_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(6.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123342_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(6.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123343_());
+         Vec3 _center = new Vec3((double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(6.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getX(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(6.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getY(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(6.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getZ());
 
-         for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(6.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
+         for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(6.0), (e) -> true)) {
             if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator)) {
                success = true;
                if (entityiterator instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entityiterator;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SPECIAL.get(), 60, 0, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SPECIAL.get(), 60, 0, false, false));
                   }
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  Commands var10000 = entity.m_20194_().m_129892_();
-                  CommandSourceStack var10001 = new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity);
-                  double var10002 = entityiterator.m_20185_();
-                  var10000.m_230957_(var10001, "particle jujutsucraft:particle_nanami_1 " + var10002 + " " + (entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.5) + " " + entityiterator.m_20189_() + " " + (double)entityiterator.m_20205_() * 0.5 + " " + (double)entityiterator.m_20206_() * 0.5 + " " + (double)entityiterator.m_20205_() * 0.5 + " 0 " + Math.round(Math.sqrt((double)(entityiterator.m_20205_() + entityiterator.m_20206_()))) + " force @s");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  Commands var10000 = entity.getServer().getCommands();
+                  CommandSourceStack var10001 = new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity);
+                  double var10002 = entityiterator.getX();
+                  var10000.performPrefixedCommand(var10001, "particle gaigegaigekaigecraft:particle_nanami_1 " + var10002 + " " + (entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5) + " " + entityiterator.getZ() + " " + (double)entityiterator.getBbWidth() * 0.5 + " " + (double)entityiterator.getBbHeight() * 0.5 + " " + (double)entityiterator.getBbWidth() * 0.5 + " 0 " + Math.round(Math.sqrt((double)(entityiterator.getBbWidth() + entityiterator.getBbHeight()))) + " force @s");
                }
             }
          }
 
          if (success && entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SPECIAL.get(), 60, 1, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SPECIAL.get(), 60, 1, false, false));
             }
          }
 

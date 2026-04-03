@@ -18,11 +18,11 @@ public class FallingBlossomEmotionMobEffect extends MobEffect {
       return cures;
    }
 
-   public void m_6742_(LivingEntity entity, int amplifier) {
-      FallingBlossomEmotionOnEffectActiveTickProcedure.execute(entity.m_9236_(), entity);
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
+      FallingBlossomEmotionOnEffectActiveTickProcedure.execute(entity.level(), entity);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

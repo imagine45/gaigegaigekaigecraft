@@ -14,7 +14,7 @@ public class LoudspeakerRightclickedProcedure {
          double old_skill = 0.0;
          if (entity instanceof Player) {
             Player _plrCldCheck1 = (Player)entity;
-            if (_plrCldCheck1.m_36335_().m_41519_(itemstack.m_41720_())) {
+            if (_plrCldCheck1.getCooldowns().isOnCooldown(itemstack.getItem())) {
                return;
             }
          }

@@ -9,14 +9,14 @@ public class HeadPropellerModel extends GeoModel<HeadPropellerItem> {
    }
 
    public ResourceLocation getAnimationResource(HeadPropellerItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/head_propeller.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/head_propeller.animation.json");
    }
 
    public ResourceLocation getModelResource(HeadPropellerItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/head_propeller.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/head_propeller.geo.json");
    }
 
    public ResourceLocation getTextureResource(HeadPropellerItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/head_propeller.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/head_propeller.png");
    }
 }

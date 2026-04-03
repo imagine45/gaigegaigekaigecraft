@@ -1,7 +1,9 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -13,6 +15,8 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BulletFlameBulletHitsBlockProcedure {
@@ -23,42 +27,54 @@ public class BulletFlameBulletHitsBlockProcedure {
       if (entity != null && immediatesourceentity != null) {
          double old_skill = 0.0;
          double CNT6 = 0.0;
-         CNT6 = 1.0 + immediatesourceentity.getPersistentData().m_128459_("cnt6") * 0.1;
-         entity.getPersistentData().m_128347_("BlockDamage", 2.0 * CNT6);
-         entity.getPersistentData().m_128347_("BlockRange", 2.0 * CNT6);
-         entity.getPersistentData().m_128379_("noParticle", true);
+         double range = 0.0;
+         CNT6 = 1.0 + immediatesourceentity.getPersistentData().getDouble("cnt6") * 0.1;
+         range = 1.0 + ReturnEntitySizeProcedure.execute(immediatesourceentity);
+         old_skill = entity.getPersistentData().getDouble("skill");
+         entity.getPersistentData().putDouble("skill", immediatesourceentity.getPersistentData().getDouble("skill"));
+         entity.getPersistentData().putDouble("BlockDamage", 4.0 * CNT6);
+         entity.getPersistentData().putDouble("BlockRange", 2.0 * range);
+         entity.getPersistentData().putDouble("effect", 3.0);
+         entity.getPersistentData().putBoolean("noParticle", true);
          BlockDestroyAllDirectionProcedure.execute(world, x, y, z, entity);
-         if (world.m_6106_().m_5470_().m_46207_(GameRules.f_46132_) && Math.random() < 0.1 && !world.m_8055_(BlockPos.m_274561_(x, y, z)).m_60815_() && world instanceof ServerLevel) {
+         entity.getPersistentData().putDouble("Damage", immediatesourceentity.getPersistentData().getDouble("Damage"));
+         entity.getPersistentData().putDouble("knockback", 0.25 * CNT6);
+         entity.getPersistentData().putDouble("Range", 4.0 * range);
+         entity.getPersistentData().putDouble("effect", 10.0);
+         entity.getPersistentData().putBoolean("attack", false);
+         RangeAttackProcedure.execute(world, x, y, z, entity);
+         entity.getPersistentData().putDouble("skill", old_skill);
+         if (world.getLevelData().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) && Math.random() < 0.1 && !world.getBlockState(BlockPos.containing(x, y, z)).canOcclude() && world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            FallingBlockEntity.m_201971_(_level, BlockPos.m_274561_(x, y, z), Blocks.f_50083_.m_49966_());
+            FallingBlockEntity.fall(_level, BlockPos.containing(x, y, z), Blocks.FIRE.defaultBlockState());
          }
 
          if (world instanceof Level) {
             Level _level = (Level)world;
-            if (!_level.m_5776_()) {
-               _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, 0.5F, 1.0F);
+            if (!_level.isClientSide()) {
+               _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, (float)(1.5 * CNT6), 1.0F);
             } else {
-               _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, 0.5F, 1.0F, false);
+               _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, (float)(1.5 * CNT6), 1.0F, false);
             }
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123744_, x, y, z, (int)(8.0 * CNT6), 0.25, 0.25, 0.25, 0.25 * CNT6);
+            _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle minecraft:explosion ~ ~ ~ " + range * 2.0 + " " + range * 2.0 + " " + range * 2.0 + " " + 0.25 * CNT6 + " " + Math.round(2.0 * CNT6 * range) + " force");
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123813_, x, y, z, (int)(2.0 * CNT6), 0.25, 0.25, 0.25, 0.25 * CNT6);
+            _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle minecraft:cloud ~ ~ ~ " + range * 1.0 + " " + range * 1.0 + " " + range * 1.0 + " " + 0.25 * CNT6 + " " + Math.round(4.0 * CNT6 * range) + " force");
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123796_, x, y, z, (int)(4.0 * CNT6), 0.25, 0.25, 0.25, 0.25 * CNT6);
+            _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle minecraft:flame ~ ~ ~ " + range * 1.0 + " " + range * 1.0 + " " + range * 1.0 + " " + 0.25 * CNT6 + " " + Math.round(8.0 * CNT6 * range) + " force");
          }
 
-         if (!immediatesourceentity.m_9236_().m_5776_()) {
-            immediatesourceentity.m_146870_();
+         if (!immediatesourceentity.level().isClientSide()) {
+            immediatesourceentity.discard();
          }
 
       }

@@ -9,14 +9,14 @@ public class EntityTreeHanamiModel extends GeoModel<EntityTreeHanamiEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityTreeHanamiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/tree_hanami.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/tree_hanami.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityTreeHanamiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/tree_hanami.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/tree_hanami.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityTreeHanamiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

@@ -17,50 +17,50 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BulletFlameItem extends Item {
    public BulletFlameItem() {
-      super((new Item.Properties()).m_41487_(1).m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).stacksTo(1).rarity(Rarity.COMMON));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.BOW;
    }
 
-   public int m_8105_(ItemStack itemstack) {
+   public int getUseDuration(ItemStack itemstack) {
       return 72000;
    }
 
-   public float m_8102_(ItemStack par1ItemStack, BlockState par2Block) {
+   public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
       return 0.0F;
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = InteractionResultHolder.m_19100_(entity.m_21120_(hand));
-      if (entity.m_150110_().f_35937_ || this.findAmmo(entity) != ItemStack.f_41583_) {
-         ar = InteractionResultHolder.m_19090_(entity.m_21120_(hand));
-         entity.m_6672_(hand);
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = InteractionResultHolder.fail(entity.getItemInHand(hand));
+      if (entity.getAbilities().instabuild || this.findAmmo(entity) != ItemStack.EMPTY) {
+         ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+         entity.startUsingItem(hand);
       }
 
       return ar;
    }
 
-   public void m_5551_(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-      if (!world.m_5776_() && entity instanceof ServerPlayer player) {
+   public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
+      if (!world.isClientSide() && entity instanceof ServerPlayer player) {
          ItemStack stack = this.findAmmo(player);
-         if (player.m_150110_().f_35937_ || stack != ItemStack.f_41583_) {
-            BulletFlameProjectileEntity projectile = BulletFlameProjectileEntity.shoot(world, entity, world.m_213780_());
-            if (player.m_150110_().f_35937_) {
-               projectile.f_36705_ = Pickup.CREATIVE_ONLY;
-            } else if (stack.m_41763_()) {
-               if (stack.m_220157_(1, world.m_213780_(), player)) {
-                  stack.m_41774_(1);
-                  stack.m_41721_(0);
-                  if (stack.m_41619_()) {
-                     player.m_150109_().m_36057_(stack);
+         if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
+            BulletFlameProjectileEntity projectile = BulletFlameProjectileEntity.shoot(world, entity, world.getRandom());
+            if (player.getAbilities().instabuild) {
+               projectile.pickup = Pickup.CREATIVE_ONLY;
+            } else if (stack.isDamageableItem()) {
+               if (stack.hurt(1, world.getRandom(), player)) {
+                  stack.shrink(1);
+                  stack.setDamageValue(0);
+                  if (stack.isEmpty()) {
+                     player.getInventory().removeItem(stack);
                   }
                }
             } else {
-               stack.m_41774_(1);
-               if (stack.m_41619_()) {
-                  player.m_150109_().m_36057_(stack);
+               stack.shrink(1);
+               if (stack.isEmpty()) {
+                  player.getInventory().removeItem(stack);
                }
             }
          }
@@ -69,11 +69,11 @@ public class BulletFlameItem extends Item {
    }
 
    private ItemStack findAmmo(Player player) {
-      ItemStack stack = ProjectileWeaponItem.m_43010_(player, (e) -> e.m_41720_() == BulletFlameProjectileEntity.PROJECTILE_ITEM.m_41720_());
-      if (stack == ItemStack.f_41583_) {
-         for(int i = 0; i < player.m_150109_().f_35974_.size(); ++i) {
-            ItemStack teststack = (ItemStack)player.m_150109_().f_35974_.get(i);
-            if (teststack != null && teststack.m_41720_() == BulletFlameProjectileEntity.PROJECTILE_ITEM.m_41720_()) {
+      ItemStack stack = ProjectileWeaponItem.getHeldProjectile(player, (e) -> e.getItem() == BulletFlameProjectileEntity.PROJECTILE_ITEM.getItem());
+      if (stack == ItemStack.EMPTY) {
+         for(int i = 0; i < player.getInventory().items.size(); ++i) {
+            ItemStack teststack = (ItemStack)player.getInventory().items.get(i);
+            if (teststack != null && teststack.getItem() == BulletFlameProjectileEntity.PROJECTILE_ITEM.getItem()) {
                stack = teststack;
                break;
             }

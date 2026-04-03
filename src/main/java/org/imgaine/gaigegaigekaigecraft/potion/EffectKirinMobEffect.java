@@ -20,16 +20,16 @@ public class EffectKirinMobEffect extends MobEffect {
       return cures;
    }
 
-   public void m_6742_(LivingEntity entity, int amplifier) {
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
       EffectKirinOnEffectActiveTickProcedure.execute(entity);
    }
 
-   public void m_6386_(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-      super.m_6386_(entity, attributeMap, amplifier);
-      EffectKirinEffectExpiresProcedure.execute(entity.m_9236_(), entity);
+   public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+      super.removeAttributeModifiers(entity, attributeMap, amplifier);
+      EffectKirinEffectExpiresProcedure.execute(entity.level(), entity);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

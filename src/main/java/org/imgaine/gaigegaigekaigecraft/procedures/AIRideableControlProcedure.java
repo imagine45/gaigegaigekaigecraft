@@ -15,39 +15,41 @@ public class AIRideableControlProcedure {
       if (entity != null) {
          double speed = 0.0;
          Entity owner_uuid = null;
-         owner_uuid = entity.m_146895_();
+         owner_uuid = entity.getFirstPassenger();
          if (owner_uuid instanceof LivingEntity) {
-            entity.m_146922_(owner_uuid.m_146908_());
-            entity.m_146926_(owner_uuid.m_146909_());
-            entity.m_5618_(entity.m_146908_());
-            entity.m_5616_(entity.m_146908_());
-            entity.f_19859_ = entity.m_146908_();
-            entity.f_19860_ = entity.m_146909_();
+            entity.fallDistance = 0.0F;
+            owner_uuid.fallDistance = 0.0F;
+            entity.setYRot(owner_uuid.getYRot());
+            entity.setXRot(owner_uuid.getXRot());
+            entity.setYBodyRot(entity.getYRot());
+            entity.setYHeadRot(entity.getYRot());
+            entity.yRotO = entity.getYRot();
+            entity.xRotO = entity.getXRot();
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.f_20884_ = _entity.m_146908_();
-               _entity.f_20886_ = _entity.m_146908_();
+               _entity.yBodyRotO = _entity.getYRot();
+               _entity.yHeadRotO = _entity.getYRot();
             }
 
             if (owner_uuid instanceof Player) {
-               if (owner_uuid.getPersistentData().m_128471_("PRESS_SPACE") && entity instanceof LivingEntity) {
+               if (owner_uuid.getPersistentData().getBoolean("PRESS_SPACE") && entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19620_, 5, 19, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 5, 19, false, false));
                   }
                }
 
-               if (owner_uuid.getPersistentData().m_128471_("PRESS_W")) {
+               if (owner_uuid.getPersistentData().getBoolean("PRESS_W")) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19591_, 10, 9, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 10, 9, false, false));
                      }
                   }
 
-                  speed = Math.sqrt(Math.pow(entity.m_20184_().m_7096_(), 2.0) + Math.pow(entity.m_20184_().m_7098_(), 2.0) + Math.pow(entity.m_20184_().m_7094_(), 2.0));
+                  speed = Math.sqrt(Math.pow(entity.getDeltaMovement().x(), 2.0) + Math.pow(entity.getDeltaMovement().y(), 2.0) + Math.pow(entity.getDeltaMovement().z(), 2.0));
                   speed = Math.min(speed + 0.2, 1.25);
-                  entity.m_20256_(new Vec3(owner_uuid.m_20154_().f_82479_ * speed, owner_uuid.m_20154_().f_82480_ * speed, owner_uuid.m_20154_().f_82481_ * speed));
+                  entity.setDeltaMovement(new Vec3(owner_uuid.getLookAngle().x * speed, owner_uuid.getLookAngle().y * speed, owner_uuid.getLookAngle().z * speed));
                }
             }
          }

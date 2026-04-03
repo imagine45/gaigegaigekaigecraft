@@ -24,12 +24,12 @@ public class LogicIronBodyProcedure {
             ItemStack var10000;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var10000 = _entGetArmor.m_6844_(EquipmentSlot.m_20744_(Type.ARMOR, (int)num1));
+               var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.byTypeAndIndex(Type.ARMOR, (int)num1));
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_204117_(ItemTags.create(new ResourceLocation("forge:metallic")))) {
+            if (var10000.is(ItemTags.create(new ResourceLocation("forge:metallic")))) {
                if (num1 != 0.0 && num1 != 3.0) {
                   if (num1 == 2.0) {
                      num2 += 0.5;

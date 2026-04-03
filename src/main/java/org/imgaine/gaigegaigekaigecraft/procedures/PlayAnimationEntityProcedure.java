@@ -41,29 +41,29 @@ public class PlayAnimationEntityProcedure {
          double rnd = 0.0;
          String ANIME_NAME = "";
          String STR1 = "";
-         if (damagesource.m_276093_(ResourceKey.m_135785_(Registries.f_268580_, new ResourceLocation("jujutsucraft:start_animation"))) && entity instanceof GeoEntity && entity instanceof LivingEntity) {
+         if (damagesource.is(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("gaigegaigekaigecraft:start_animation"))) && entity instanceof GeoEntity && entity instanceof LivingEntity) {
             LivingEntity _livingEntity2 = (LivingEntity)entity;
-            if (_livingEntity2.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+            if (_livingEntity2.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
                double var10000;
-               label285: {
+               label341: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livingEntity3 = (LivingEntity)entity;
-                     if (_livingEntity3.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                        var10000 = _livingEntity3.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22115_();
-                        break label285;
+                     if (_livingEntity3.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                        var10000 = _livingEntity3.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).getBaseValue();
+                        break label341;
                      }
                   }
 
                   var10000 = 0.0;
                }
 
-               label280: {
+               label336: {
                   NUM1 = var10000;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livingEntity4 = (LivingEntity)entity;
-                     if (_livingEntity4.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
-                        var10000 = _livingEntity4.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).m_22115_();
-                        break label280;
+                     if (_livingEntity4.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
+                        var10000 = _livingEntity4.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).getBaseValue();
+                        break label336;
                      }
                   }
 
@@ -99,24 +99,29 @@ public class PlayAnimationEntityProcedure {
                         if (sword) {
                            ANIME_NAME = "sword_to_right";
                         } else {
-                           String var29 = Math.random() > 0.75 ? "punch_" : "kick_";
-                           ANIME_NAME = var29 + STR1;
+                           String var28 = Math.random() < 0.25 ? "punch_" : "kick_";
+                           ANIME_NAME = var28 + STR1;
                         }
                      } else if (NUM3 == 4.0) {
-                        ANIME_NAME = sword ? "sword_overhead" : "punch_overhead";
-                     }
-                  } else if (NUM2 != 0.0 && !(NUM2 >= 100.0)) {
-                     if (sword) {
-                        rnd = Math.ceil(Math.random() * 3.0);
-                        ANIME_NAME = rnd == 1.0 ? "sword_overhead" : "sword_to_" + STR1;
-                     } else {
-                        ANIME_NAME = "punch_" + STR1;
+                        if (NUM2 == 0.0) {
+                           ANIME_NAME = sword ? "sword_overhead" : "punch_overhead";
+                        } else if (NUM2 == 1.0) {
+                           ANIME_NAME = sword ? "sword_overhead2" : "punch_overhead2";
+                        } else if (NUM2 == 2.0) {
+                           ANIME_NAME = "punch_overhead";
+                        } else if (NUM2 == 3.0) {
+                           ANIME_NAME = "punch_overhead2";
+                        } else if (NUM2 == 4.0) {
+                           ANIME_NAME = "sword_overhead";
+                        } else if (NUM2 == 5.0) {
+                           ANIME_NAME = "sword_overhead2";
+                        }
                      }
                   } else if (sword) {
                      ANIME_NAME = "sword_to_" + STR1;
                   } else {
-                     String var28 = Math.random() > 0.5 ? "kick_" : "punch_";
-                     ANIME_NAME = var28 + STR1;
+                     String var27 = !(Math.random() < 0.25) && (!(NUM2 > 0.0) || !(NUM2 < 100.0)) ? "kick_" : "punch_";
+                     ANIME_NAME = var27 + STR1;
                   }
                } else if (NUM3 == 20.0) {
                   if (NUM1 == 220.0) {
@@ -143,9 +148,27 @@ public class PlayAnimationEntityProcedure {
                      }
 
                      if (NUM1 == -6.0) {
-                        ANIME_NAME = "kick_" + STR1;
+                        if (NUM2 == 0.0) {
+                           ANIME_NAME = "kick_" + STR1;
+                        } else if (NUM2 == 1.0) {
+                           ANIME_NAME = "kashimo_kick";
+                        } else if (NUM2 == 2.0) {
+                           ANIME_NAME = "kick_right";
+                        } else if (NUM2 == 3.0) {
+                           ANIME_NAME = "kick_left";
+                        } else if (NUM2 == 4.0) {
+                           ANIME_NAME = "kick_rotate4";
+                        }
                      } else if (NUM1 == -7.0) {
-                        ANIME_NAME = "punch_" + STR1;
+                        if (NUM2 == 0.0) {
+                           ANIME_NAME = "punch_" + STR1;
+                        } else if (NUM2 == 1.0) {
+                           ANIME_NAME = "combo1";
+                        } else if (NUM2 == 2.0) {
+                           ANIME_NAME = "combo2";
+                        } else if (NUM2 == 3.0) {
+                           ANIME_NAME = "combo3";
+                        }
                      } else if (NUM1 == -8.0) {
                         if (NUM2 == 0.0) {
                            ANIME_NAME = "rotation";
@@ -185,8 +208,12 @@ public class PlayAnimationEntityProcedure {
                            ANIME_NAME = "step_front";
                         }
                      }
-                  } else if (NUM1 >= -25.0 && NUM1 == -21.0) {
-                     ANIME_NAME = "invisibility";
+                  } else if (NUM1 >= -25.0) {
+                     if (NUM1 == -21.0) {
+                        ANIME_NAME = "invisibility";
+                     } else if (NUM1 == -22.0 && NUM2 == 1.0) {
+                        ANIME_NAME = "swim_butterfly";
+                     }
                   }
 
                   if (NUM1 == -49.0) {
@@ -197,6 +224,12 @@ public class PlayAnimationEntityProcedure {
                      ANIME_NAME = "open";
                   } else if (NUM1 == 207.0) {
                      ANIME_NAME = "red";
+                  } else if (NUM1 == 215.0) {
+                     if (NUM2 == 0.0) {
+                        ANIME_NAME = "charge1";
+                     } else if (NUM2 == 1.0) {
+                        ANIME_NAME = "charge2";
+                     }
                   } else if (NUM1 == 618.0) {
                      ANIME_NAME = "ten_shadows_technique_mahoraga";
                   }
@@ -222,15 +255,15 @@ public class PlayAnimationEntityProcedure {
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity5 = (LivingEntity)entity;
-                  if (_livingEntity5.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                     _livingEntity5.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(0.0);
+                  if (_livingEntity5.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                     _livingEntity5.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(0.0);
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity6 = (LivingEntity)entity;
-                  if (_livingEntity6.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
-                     _livingEntity6.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).m_22100_(0.0);
+                  if (_livingEntity6.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
+                     _livingEntity6.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).setBaseValue(0.0);
                   }
                }
 

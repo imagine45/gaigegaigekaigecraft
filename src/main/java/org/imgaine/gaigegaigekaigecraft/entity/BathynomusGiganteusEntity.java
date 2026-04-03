@@ -48,131 +48,131 @@ public class BathynomusGiganteusEntity extends PathfinderMob {
 
    public BathynomusGiganteusEntity(EntityType<BathynomusGiganteusEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new MeleeAttackGoal(this, 1.2, false) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = BathynomusGiganteusEntity.this.m_20185_();
-            double y = BathynomusGiganteusEntity.this.m_20186_();
-            double z = BathynomusGiganteusEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = BathynomusGiganteusEntity.this.getX();
+            double y = BathynomusGiganteusEntity.this.getY();
+            double z = BathynomusGiganteusEntity.this.getZ();
             Entity entity = BathynomusGiganteusEntity.this;
-            Level world = BathynomusGiganteusEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = BathynomusGiganteusEntity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(2, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = BathynomusGiganteusEntity.this.m_20185_();
-            double y = BathynomusGiganteusEntity.this.m_20186_();
-            double z = BathynomusGiganteusEntity.this.m_20189_();
+      this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = BathynomusGiganteusEntity.this.getX();
+            double y = BathynomusGiganteusEntity.this.getY();
+            double z = BathynomusGiganteusEntity.this.getZ();
             Entity entity = BathynomusGiganteusEntity.this;
-            Level world = BathynomusGiganteusEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = BathynomusGiganteusEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = BathynomusGiganteusEntity.this.m_20185_();
-            double y = BathynomusGiganteusEntity.this.m_20186_();
-            double z = BathynomusGiganteusEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = BathynomusGiganteusEntity.this.getX();
+            double y = BathynomusGiganteusEntity.this.getY();
+            double z = BathynomusGiganteusEntity.this.getZ();
             Entity entity = BathynomusGiganteusEntity.this;
-            Level world = BathynomusGiganteusEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = BathynomusGiganteusEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = BathynomusGiganteusEntity.this.m_20185_();
-            double y = BathynomusGiganteusEntity.this.m_20186_();
-            double z = BathynomusGiganteusEntity.this.m_20189_();
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = BathynomusGiganteusEntity.this.getX();
+            double y = BathynomusGiganteusEntity.this.getY();
+            double z = BathynomusGiganteusEntity.this.getZ();
             Entity entity = BathynomusGiganteusEntity.this;
-            Level world = BathynomusGiganteusEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = BathynomusGiganteusEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = BathynomusGiganteusEntity.this.m_20185_();
-            double y = BathynomusGiganteusEntity.this.m_20186_();
-            double z = BathynomusGiganteusEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = BathynomusGiganteusEntity.this.getX();
+            double y = BathynomusGiganteusEntity.this.getY();
+            double z = BathynomusGiganteusEntity.this.getZ();
             Entity entity = BathynomusGiganteusEntity.this;
-            Level world = BathynomusGiganteusEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = BathynomusGiganteusEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(5, new RandomStrollGoal(this, 1.0));
-      this.f_21345_.m_25352_(6, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(7, new FloatGoal(this));
+      this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
+      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(7, new FloatGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      return damagesource.m_276093_(DamageTypes.f_268722_) ? false : super.m_6469_(damagesource, amount);
+   public boolean hurt(DamageSource damagesource, float amount) {
+      return damagesource.is(DamageTypes.DROWN) ? false : super.hurt(damagesource, amount);
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AISeaSerpentProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AISeaSerpentProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public boolean m_6063_() {
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public boolean isPushedByFluid() {
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       return false;
    }
 
-   public EntityDimensions m_6972_(Pose pose) {
-      Level world = this.m_9236_();
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      return super.m_6972_(pose).m_20388_((float)SizeByNBTProcedure.execute(this));
+   public EntityDimensions getDimensions(Pose pose) {
+      Level world = this.level();
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      return super.getDimensions(pose).scale((float)SizeByNBTProcedure.execute(this));
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 100.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 25.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 5.0);
-      builder = builder.m_22268_(Attributes.f_22282_, 1.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 100.0);
+      builder = builder.add(Attributes.ARMOR, 25.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 5.0);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 1.0);
       return builder;
    }
 }

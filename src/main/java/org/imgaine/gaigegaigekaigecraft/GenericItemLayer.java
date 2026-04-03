@@ -3,6 +3,7 @@ package org.imgaine.gaigegaigekaigecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import javax.annotation.Nullable;
+import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade013Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade06Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade08Entity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,13 +29,13 @@ public class GenericItemLayer<T extends LivingEntity & GeoAnimatable> extends Bl
 
    @Nullable
    protected ItemStack getStackForBone(GeoBone bone, T animatable) {
-      ItemStack mainHandItem = animatable.m_21205_();
-      ItemStack offhandItem = animatable.m_21206_();
-      ItemStack headItem = animatable.m_6844_(EquipmentSlot.HEAD);
-      Item var7 = headItem.m_41720_();
+      ItemStack mainHandItem = animatable.getMainHandItem();
+      ItemStack offhandItem = animatable.getOffhandItem();
+      ItemStack headItem = animatable.getItemBySlot(EquipmentSlot.HEAD);
+      Item var7 = headItem.getItem();
       if (var7 instanceof ArmorItem armorItem) {
-         if (armorItem.m_40402_().m_20751_().equals("head")) {
-            headItem = ItemStack.f_41583_;
+         if (armorItem.getEquipmentSlot().getName().equals("head")) {
+            headItem = ItemStack.EMPTY;
          }
       }
 
@@ -76,18 +77,18 @@ public class GenericItemLayer<T extends LivingEntity & GeoAnimatable> extends Bl
    }
 
    protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
-      ItemStack mainHandItem = animatable.m_21205_();
-      ItemStack offhandItem = animatable.m_21206_();
-      ItemStack headItem = animatable.m_6844_(EquipmentSlot.HEAD);
+      ItemStack mainHandItem = animatable.getMainHandItem();
+      ItemStack offhandItem = animatable.getOffhandItem();
+      ItemStack headItem = animatable.getItemBySlot(EquipmentSlot.HEAD);
       float scaleFactor = 1.0F;
       if (stack != mainHandItem && stack != offhandItem) {
          if (stack == headItem) {
             scaleFactor = 0.625F;
-            poseStack.m_252880_(0.0F, 0.25F, 0.0F);
-            poseStack.m_85841_(scaleFactor, scaleFactor, scaleFactor);
+            poseStack.translate(0.0F, 0.25F, 0.0F);
+            poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
          }
       } else {
-         if (animatable instanceof CursedSpiritGrade06Entity) {
+         if (animatable instanceof CursedSpiritGrade06Entity || animatable instanceof CursedSpiritGrade013Entity) {
             scaleFactor = 2.75F;
          }
 
@@ -95,11 +96,11 @@ public class GenericItemLayer<T extends LivingEntity & GeoAnimatable> extends Bl
             scaleFactor = 1.5F;
          }
 
-         poseStack.m_85841_(scaleFactor, scaleFactor, scaleFactor);
-         poseStack.m_252781_(Axis.f_252529_.m_252977_(-90.0F));
-         if (stack.m_41720_() instanceof ShieldItem && stack == offhandItem) {
-            poseStack.m_252880_(0.0F, -0.25F, 0.0F);
-            poseStack.m_252781_(Axis.f_252403_.m_252977_(180.0F));
+         poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
+         poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+         if (stack.getItem() instanceof ShieldItem && stack == offhandItem) {
+            poseStack.translate(0.0F, -0.25F, 0.0F);
+            poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
          }
       }
 

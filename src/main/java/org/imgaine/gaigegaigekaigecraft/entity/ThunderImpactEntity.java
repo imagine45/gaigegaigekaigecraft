@@ -28,53 +28,53 @@ public class ThunderImpactEntity extends PathfinderMob {
 
    public ThunderImpactEntity(EntityType<ThunderImpactEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(true);
-      this.m_21530_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(true);
+      this.setPersistenceRequired();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public double m_6049_() {
+   public double getMyRidingOffset() {
       return -0.35;
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      if (damagesource.m_276093_(DamageTypes.f_268631_)) {
+   public boolean hurt(DamageSource damagesource, float amount) {
+      if (damagesource.is(DamageTypes.IN_FIRE)) {
          return false;
-      } else if (damagesource.m_7640_() instanceof AbstractArrow) {
+      } else if (damagesource.getDirectEntity() instanceof AbstractArrow) {
          return false;
-      } else if (damagesource.m_7640_() instanceof Player) {
+      } else if (damagesource.getDirectEntity() instanceof Player) {
          return false;
-      } else if (!(damagesource.m_7640_() instanceof ThrownPotion) && !(damagesource.m_7640_() instanceof AreaEffectCloud)) {
-         if (damagesource.m_276093_(DamageTypes.f_268671_)) {
+      } else if (!(damagesource.getDirectEntity() instanceof ThrownPotion) && !(damagesource.getDirectEntity() instanceof AreaEffectCloud)) {
+         if (damagesource.is(DamageTypes.FALL)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268585_)) {
+         } else if (damagesource.is(DamageTypes.CACTUS)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268722_)) {
+         } else if (damagesource.is(DamageTypes.DROWN)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268450_)) {
+         } else if (damagesource.is(DamageTypes.LIGHTNING_BOLT)) {
             return false;
-         } else if (!damagesource.m_276093_(DamageTypes.f_268565_) && !damagesource.m_276093_(DamageTypes.f_268448_)) {
-            if (damagesource.m_276093_(DamageTypes.f_268714_)) {
+         } else if (!damagesource.is(DamageTypes.EXPLOSION) && !damagesource.is(DamageTypes.PLAYER_EXPLOSION)) {
+            if (damagesource.is(DamageTypes.TRIDENT)) {
                return false;
-            } else if (damagesource.m_276093_(DamageTypes.f_268526_)) {
+            } else if (damagesource.is(DamageTypes.FALLING_ANVIL)) {
                return false;
-            } else if (damagesource.m_276093_(DamageTypes.f_268482_)) {
+            } else if (damagesource.is(DamageTypes.DRAGON_BREATH)) {
                return false;
             } else {
-               return !damagesource.m_276093_(DamageTypes.f_268493_) && !damagesource.m_276093_(DamageTypes.f_268641_) ? super.m_6469_(damagesource, amount) : false;
+               return !damagesource.is(DamageTypes.WITHER) && !damagesource.is(DamageTypes.WITHER_SKULL) ? super.hurt(damagesource, amount) : false;
             }
          } else {
             return false;
@@ -84,40 +84,40 @@ public class ThunderImpactEntity extends PathfinderMob {
       }
    }
 
-   public boolean m_6128_() {
+   public boolean ignoreExplosion() {
       return true;
    }
 
-   public boolean m_5825_() {
+   public boolean fireImmune() {
       return true;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIThunderBoltImpactProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AIThunderBoltImpactProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
    }
 
-   public boolean m_6094_() {
+   public boolean isPushable() {
       return false;
    }
 
-   protected void m_7324_(Entity entityIn) {
+   protected void doPush(Entity entityIn) {
    }
 
-   protected void m_6138_() {
+   protected void pushEntities() {
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22276_, 500.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 3.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 4.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.0);
+      builder = builder.add(Attributes.MAX_HEALTH, 500.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 3.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 4.0);
       return builder;
    }
 }

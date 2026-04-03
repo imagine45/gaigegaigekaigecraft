@@ -24,15 +24,15 @@ public class InstantSpiritBodyofDistortedKillingEffectEffectExpiresProcedure {
          if (num_level > 0.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity1 = (LivingEntity)entity;
-               if (_livingEntity1.m_21204_().m_22171_(Attributes.f_22281_)) {
+               if (_livingEntity1.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
                   AttributeInstance var10000;
                   double var10001;
                   label109: {
-                     var10000 = _livingEntity1.getAttribute_(Attributes.f_22281_);
+                     var10000 = _livingEntity1.getAttribute(Attributes.ATTACK_DAMAGE);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livingEntity0 = (LivingEntity)entity;
-                        if (_livingEntity0.m_21204_().m_22171_(Attributes.f_22281_)) {
-                           var10001 = _livingEntity0.getAttribute_(Attributes.f_22281_).m_22115_();
+                        if (_livingEntity0.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                           var10001 = _livingEntity0.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                            break label109;
                         }
                      }
@@ -40,21 +40,21 @@ public class InstantSpiritBodyofDistortedKillingEffectEffectExpiresProcedure {
                      var10001 = 0.0;
                   }
 
-                  var10000.m_22100_(var10001 - num_level * 0.6);
+                  var10000.setBaseValue(var10001 - num_level * 0.6);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity3 = (LivingEntity)entity;
-               if (_livingEntity3.m_21204_().m_22171_(Attributes.f_22278_)) {
+               if (_livingEntity3.getAttributes().hasAttribute(Attributes.KNOCKBACK_RESISTANCE)) {
                   AttributeInstance var20;
                   double var21;
                   label98: {
-                     var20 = _livingEntity3.getAttribute_(Attributes.f_22278_);
+                     var20 = _livingEntity3.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livingEntity2 = (LivingEntity)entity;
-                        if (_livingEntity2.m_21204_().m_22171_(Attributes.f_22278_)) {
-                           var21 = _livingEntity2.getAttribute_(Attributes.f_22278_).m_22115_();
+                        if (_livingEntity2.getAttributes().hasAttribute(Attributes.KNOCKBACK_RESISTANCE)) {
+                           var21 = _livingEntity2.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getBaseValue();
                            break label98;
                         }
                      }
@@ -62,7 +62,7 @@ public class InstantSpiritBodyofDistortedKillingEffectEffectExpiresProcedure {
                      var21 = 0.0;
                   }
 
-                  var20.m_22100_(var21 - 2.0);
+                  var20.setBaseValue(var21 - 2.0);
                }
             }
          }
@@ -78,28 +78,28 @@ public class InstantSpiritBodyofDistortedKillingEffectEffectExpiresProcedure {
 
          Player = entity instanceof Player;
          if (Player) {
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:armor_instant_spirit_bodyof_distorted_killing_helmet");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:armor_instant_spirit_bodyof_distorted_killing_helmet");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:armor_instant_spirit_bodyof_distorted_killing_chestplate");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:armor_instant_spirit_bodyof_distorted_killing_chestplate");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:armor_instant_spirit_bodyof_distorted_killing_leggings");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:armor_instant_spirit_bodyof_distorted_killing_leggings");
             }
          } else {
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.head with air");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.head with air");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.chest with air");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.chest with air");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.legs with air");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.legs with air");
             }
          }
 

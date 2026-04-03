@@ -15,17 +15,17 @@ public class Effect6Procedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          Entity entity_a = null;
-         x_pos = entityiterator.m_20185_();
-         y_pos = entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.5;
-         z_pos = entityiterator.m_20189_();
+         x_pos = entityiterator.getX();
+         y_pos = entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5;
+         z_pos = entityiterator.getZ();
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123783_, x_pos, y_pos, z_pos, 20, 0.25, 0.5, 0.25, 0.05);
+            _level.sendParticles(ParticleTypes.ASH, x_pos, y_pos, z_pos, 20, 0.25, 0.5, 0.25, 0.05);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123744_, x_pos, y_pos, z_pos, 10, 0.25, 0.5, 0.25, 0.05);
+            _level.sendParticles(ParticleTypes.FLAME, x_pos, y_pos, z_pos, 10, 0.25, 0.5, 0.25, 0.05);
          }
 
       }

@@ -17,73 +17,74 @@ public class GavelRightClicked2Procedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
-         ItemStack ITEM_A = ItemStack.f_41583_;
-         ItemStack ITEM_REPLACE = ItemStack.f_41583_;
+         ItemStack ITEM_A = ItemStack.EMPTY;
+         ItemStack ITEM_REPLACE = ItemStack.EMPTY;
          boolean RIGHT_HAND = false;
          boolean success = false;
          ItemStack var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         ITEM_A = var10000.m_41777_();
+         ITEM_A = var10000.copy();
          RIGHT_HAND = true;
 
          for(int index0 = 0; index0 < 2; ++index0) {
             success = true;
-            if (ITEM_A.m_41720_() == JujutsucraftModItems.GAVEL.get()) {
-               ITEM_REPLACE = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL_LONG.get())).m_41777_();
-            } else if (ITEM_A.m_41720_() == JujutsucraftModItems.GAVEL_LONG.get()) {
-               ITEM_REPLACE = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL_BIG.get())).m_41777_();
-            } else if (ITEM_A.m_41720_() != JujutsucraftModItems.GAVEL_BIG.get() && ITEM_A.m_41720_() != JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
+            if (ITEM_A.getItem() == JujutsucraftModItems.GAVEL.get()) {
+               ITEM_REPLACE = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL_LONG.get())).copy();
+            } else if (ITEM_A.getItem() == JujutsucraftModItems.GAVEL_LONG.get()) {
+               ITEM_REPLACE = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL_BIG.get())).copy();
+            } else if (ITEM_A.getItem() != JujutsucraftModItems.GAVEL_BIG.get() && ITEM_A.getItem() != JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
                success = false;
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  var10000 = _livEnt.m_21206_();
+                  var10000 = _livEnt.getOffhandItem();
                } else {
-                  var10000 = ItemStack.f_41583_;
+                  var10000 = ItemStack.EMPTY;
                }
 
-               ITEM_A = var10000.m_41777_();
+               ITEM_A = var10000.copy();
                RIGHT_HAND = false;
             } else {
-               ITEM_REPLACE = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL.get())).m_41777_();
+               ITEM_REPLACE = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL.get())).copy();
             }
 
             if (success) {
+               SetAttributeMainhandProcedure.execute(ITEM_REPLACE);
                if (RIGHT_HAND) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     ItemStack _setstack = ITEM_REPLACE.m_41777_();
-                     _setstack.m_41764_(1);
-                     _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                     ItemStack _setstack = ITEM_REPLACE.copy();
+                     _setstack.setCount(1);
+                     _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                      if (_entity instanceof Player) {
                         Player _player = (Player)_entity;
-                        _player.m_150109_().m_6596_();
+                        _player.getInventory().setChanged();
                      }
                   }
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  ItemStack _setstack = ITEM_REPLACE.m_41777_();
-                  _setstack.m_41764_(1);
-                  _entity.m_21008_(InteractionHand.OFF_HAND, _setstack);
+                  ItemStack _setstack = ITEM_REPLACE.copy();
+                  _setstack.setCount(1);
+                  _entity.setItemInHand(InteractionHand.OFF_HAND, _setstack);
                   if (_entity instanceof Player) {
                      Player _player = (Player)_entity;
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().setChanged();
                   }
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_36335_().m_41524_(ITEM_A.m_41720_(), 10);
+                  _player.getCooldowns().addCooldown(ITEM_A.getItem(), 10);
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_36335_().m_41524_(ITEM_REPLACE.m_41720_(), 10);
+                  _player.getCooldowns().addCooldown(ITEM_REPLACE.getItem(), 10);
                }
                break;
             }

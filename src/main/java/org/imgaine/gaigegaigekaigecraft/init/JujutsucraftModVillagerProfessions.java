@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import org.imgaine.gaigegaigekaigecraft.JujutsucraftMod;
+import org.imgaine.gaigegaigekaigecraft.Gaigegaigekaigecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -22,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries.Keys;
+import org.imgaine.gaigegaigekaigecraft.block.CursedBlockBlock;
 
 @EventBusSubscriber(
    bus = Bus.MOD
@@ -38,7 +39,7 @@ public class JujutsucraftModVillagerProfessions {
       POI_TYPES.put(name, new ProfessionPoiType(block, (Holder)null));
       return PROFESSIONS.register(name, () -> {
          Predicate<Holder<PoiType>> poiPredicate = (poiTypeHolder) -> ((ProfessionPoiType)POI_TYPES.get(name)).poiType != null && poiTypeHolder.get() == ((ProfessionPoiType)POI_TYPES.get(name)).poiType.get();
-         return new VillagerProfession("jujutsucraft:" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), (SoundEvent)soundEvent.get());
+         return new VillagerProfession("gaigegaigekaigecraft:" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), (SoundEvent)soundEvent.get());
       });
    }
 
@@ -48,11 +49,11 @@ public class JujutsucraftModVillagerProfessions {
          for(Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
             Block block = (Block)((ProfessionPoiType)entry.getValue()).block.get();
             String name = (String)entry.getKey();
-            Optional<Holder<PoiType>> existingCheck = PoiTypes.m_218075_(block.m_49966_());
+            Optional<Holder<PoiType>> existingCheck = PoiTypes.forState(block.defaultBlockState());
             if (existingCheck.isPresent()) {
-               JujutsucraftMod.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + String.valueOf(block) + " that is already in use by " + String.valueOf(existingCheck));
+               Gaigegaigekaigecraft.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + String.valueOf(block) + " that is already in use by " + String.valueOf(existingCheck));
             } else {
-               PoiType poiType = new PoiType(ImmutableSet.copyOf(block.m_49965_().m_61056_()), 1, 1);
+               PoiType poiType = new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
                registerHelper.register(name, poiType);
                ((ProfessionPoiType)entry.getValue()).poiType = (Holder)ForgeRegistries.POI_TYPES.getHolder(poiType).get();
             }
@@ -62,8 +63,8 @@ public class JujutsucraftModVillagerProfessions {
    }
 
    static {
-      PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, "jujutsucraft");
-      PROFESSION_JUJUTSU_SORCERER = registerProfession("profession_jujutsu_sorcerer", () -> (Block)JujutsucraftModBlocks.CURSED_BLOCK.get(), () -> (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:slow_motion_end")));
+      PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, "gaigegaigekaigecraft");
+      PROFESSION_JUJUTSU_SORCERER = registerProfession("profession_jujutsu_sorcerer", CursedBlockBlock::new, () -> (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:slow_motion_end")));
    }
 
    private static class ProfessionPoiType {

@@ -28,19 +28,18 @@ public class WhenPlayerJumpProcedure {
       if (entity != null) {
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_(MobEffects.f_19597_)) {
+            if (_livEnt0.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
                Vec3 var10001;
                double var10003;
                double var10004;
                int var10006;
                label18: {
-                  var10001 = new Vec3;
-                  var10003 = entity.m_20184_().m_7096_();
-                  var10004 = entity.m_20184_().m_7098_();
+                  var10003 = entity.getDeltaMovement().x();
+                  var10004 = entity.getDeltaMovement().y();
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_(MobEffects.f_19597_)) {
-                        var10006 = _livEnt.m_21124_(MobEffects.f_19597_).m_19564_();
+                     if (_livEnt.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
+                        var10006 = _livEnt.getEffect(MobEffects.MOVEMENT_SLOWDOWN).getAmplifier();
                         break label18;
                      }
                   }
@@ -48,8 +47,8 @@ public class WhenPlayerJumpProcedure {
                   var10006 = 0;
                }
 
-               var10001.<init>(var10003, var10004 * Math.max(1.0 - (double)(var10006 + 1) * 0.15, 0.0), entity.m_20184_().m_7094_());
-               entity.m_20256_(var10001);
+               var10001 = new Vec3(var10003, var10004 * Math.max(1.0 - (double)(var10006 + 1) * 0.15, 0.0), entity.getDeltaMovement().z());
+               entity.setDeltaMovement(var10001);
             }
          }
 

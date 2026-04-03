@@ -9,14 +9,14 @@ public class MythicalBeastAmberModel extends GeoModel<MythicalBeastAmberItem> {
    }
 
    public ResourceLocation getAnimationResource(MythicalBeastAmberItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/mythicalbeastamber_head.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/mythicalbeastamber_head.animation.json");
    }
 
    public ResourceLocation getModelResource(MythicalBeastAmberItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/mythicalbeastamber_head.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/mythicalbeastamber_head.geo.json");
    }
 
    public ResourceLocation getTextureResource(MythicalBeastAmberItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/mythical_beast_amber_head.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/mythical_beast_amber_head.png");
    }
 }

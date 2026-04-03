@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "gaigegaigekaigecraft:block/blue",
+    "particle": "gaigegaigekaigecraft:block/blue"
+  },
+  "render_type": "solid"
+}

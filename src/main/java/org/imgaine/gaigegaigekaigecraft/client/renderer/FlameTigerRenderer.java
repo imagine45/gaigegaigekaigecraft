@@ -15,18 +15,18 @@ import net.minecraft.resources.ResourceLocation;
 
 public class FlameTigerRenderer extends MobRenderer<FlameTigerEntity, Modelflame_tiger<FlameTigerEntity>> {
    public FlameTigerRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelflame_tiger(context.m_174023_(Modelflame_tiger.LAYER_LOCATION)), 0.0F);
-      this.m_115326_(new RenderLayer<FlameTigerEntity, Modelflame_tiger<FlameTigerEntity>>(this) {
-         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("jujutsucraft:textures/entities/flame_tiger.png");
+      super(context, new Modelflame_tiger(context.bakeLayer(Modelflame_tiger.LAYER_LOCATION)), 0.0F);
+      this.addLayer(new RenderLayer<FlameTigerEntity, Modelflame_tiger<FlameTigerEntity>>(this) {
+         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("gaigegaigekaigecraft:textures/entities/flame_tiger_blue.png");
 
          public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, FlameTigerEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            VertexConsumer vertexConsumer = bufferSource.m_6299_(RenderType.m_110488_(this.LAYER_TEXTURE));
-            ((Modelflame_tiger)this.m_117386_()).m_7695_(poseStack, vertexConsumer, light, LivingEntityRenderer.m_115338_(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.eyes(this.LAYER_TEXTURE));
+            ((Modelflame_tiger)this.getParentModel()).renderToBuffer(poseStack, vertexConsumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
          }
       });
    }
 
    public ResourceLocation getTextureLocation(FlameTigerEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/flame_tiger.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/clear.png");
    }
 }

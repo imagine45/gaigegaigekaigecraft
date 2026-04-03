@@ -34,8 +34,8 @@ public class StepBlockProcedure {
             z_power = vz / distance;
          }
 
-         bbWidth = (double)entity.m_20205_();
-         bbHeight = (double)entity.m_20206_();
+         bbWidth = (double)entity.getBbWidth();
+         bbHeight = (double)entity.getBbHeight();
          if (InsideSolidCalculateProcedure.execute(world, x + x_power, y + Math.max(y_power, 0.0), z + z_power, bbHeight, bbWidth)) {
             maxAllowedStepHeight = Math.max(distance, 1.0);
 
@@ -51,13 +51,13 @@ public class StepBlockProcedure {
                      }
 
                      if (!(y_pos <= y)) {
-                        entity.m_6021_(x_pos, y_pos, z_pos);
+                        entity.teleportTo(x_pos, y_pos, z_pos);
                         if (entity instanceof ServerPlayer) {
                            ServerPlayer _serverPlayer = (ServerPlayer)entity;
-                           _serverPlayer.f_8906_.m_9774_(x_pos, y_pos, z_pos, entity.m_146908_(), entity.m_146909_());
+                           _serverPlayer.connection.teleport(x_pos, y_pos, z_pos, entity.getYRot(), entity.getXRot());
                         }
 
-                        entity.m_20256_(new Vec3(vx, vy, vz));
+                        entity.setDeltaMovement(new Vec3(vx, vy, vz));
                      }
                   }
                   break;

@@ -13,15 +13,15 @@ public class HanakoHandModel extends GeoModel<HanakoHandEntity> {
    }
 
    public ResourceLocation getAnimationResource(HanakoHandEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/hanako_hand.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/hanako_hand.animation.json");
    }
 
    public ResourceLocation getModelResource(HanakoHandEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/hanako_hand.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/hanako_hand.geo.json");
    }
 
    public ResourceLocation getTextureResource(HanakoHandEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(HanakoHandEntity animatable, long instanceId, AnimationState animationState) {

@@ -37,49 +37,49 @@ public class AdvancementOtherProcedure {
          if (t1 == 1.0 || t2 == 1.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_sukuna"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_sukuna"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr1 = (ServerPlayer)entity;
-               if (_plr1.m_9236_() instanceof ServerLevel && _plr1.m_8960_().m_135996_(_plr1.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_sukuna"))).m_8193_()) {
+               if (_plr1.level() instanceof ServerLevel && _plr1.getAdvancements().getOrStartProgress(_plr1.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_sukuna"))).isDone()) {
                   if (entity instanceof ServerPlayer) {
                      ServerPlayer _player = (ServerPlayer)entity;
-                     Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_dismantle"));
-                     AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                     if (!_ap.m_8193_()) {
-                        for(String criteria : _ap.m_8219_()) {
-                           _player.m_8960_().m_135988_(_adv, criteria);
+                     Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_dismantle"));
+                     AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                     if (!_ap.isDone()) {
+                        for(String criteria : _ap.getRemainingCriteria()) {
+                           _player.getAdvancements().award(_adv, criteria);
                         }
                      }
                   }
 
                   if (entity instanceof ServerPlayer) {
                      ServerPlayer _player = (ServerPlayer)entity;
-                     Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_cleave"));
-                     AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                     if (!_ap.m_8193_()) {
-                        for(String criteria : _ap.m_8219_()) {
-                           _player.m_8960_().m_135988_(_adv, criteria);
+                     Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_cleave"));
+                     AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                     if (!_ap.isDone()) {
+                        for(String criteria : _ap.getRemainingCriteria()) {
+                           _player.getAdvancements().award(_adv, criteria);
                         }
                      }
                   }
 
                   if (entity instanceof ServerPlayer) {
                      ServerPlayer _plr4 = (ServerPlayer)entity;
-                     if (_plr4.m_9236_() instanceof ServerLevel && _plr4.m_8960_().m_135996_(_plr4.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_1_semi"))).m_8193_() && entity instanceof ServerPlayer) {
+                     if (_plr4.level() instanceof ServerLevel && _plr4.getAdvancements().getOrStartProgress(_plr4.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_1_semi"))).isDone() && entity instanceof ServerPlayer) {
                         ServerPlayer _player = (ServerPlayer)entity;
-                        Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_open"));
-                        AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                        if (!_ap.m_8193_()) {
-                           for(String criteria : _ap.m_8219_()) {
-                              _player.m_8960_().m_135988_(_adv, criteria);
+                        Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_open"));
+                        AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                        if (!_ap.isDone()) {
+                           for(String criteria : _ap.getRemainingCriteria()) {
+                              _player.getAdvancements().award(_adv, criteria);
                            }
                         }
                      }
@@ -91,40 +91,40 @@ public class AdvancementOtherProcedure {
          if (t1 == 8.0 || t2 == 8.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_dagon"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_dagon"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr7 = (ServerPlayer)entity;
-               if (_plr7.m_9236_() instanceof ServerLevel && _plr7.m_8960_().m_135996_(_plr7.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_dagon"))).m_8193_() && entity instanceof ServerPlayer) {
+               if (_plr7.level() instanceof ServerLevel && _plr7.getAdvancements().getOrStartProgress(_plr7.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_dagon"))).isDone() && entity instanceof ServerPlayer) {
                   ServerPlayer _plr8 = (ServerPlayer)entity;
-                  if (_plr8.m_9236_() instanceof ServerLevel && _plr8.m_8960_().m_135996_(_plr8.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_3"))).m_8193_()) {
+                  if (_plr8.level() instanceof ServerLevel && _plr8.getAdvancements().getOrStartProgress(_plr8.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_3"))).isDone()) {
                      if (entity instanceof ServerPlayer) {
                         ServerPlayer _player = (ServerPlayer)entity;
-                        Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_bathynomus_giganteus"));
-                        AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                        if (!_ap.m_8193_()) {
-                           for(String criteria : _ap.m_8219_()) {
-                              _player.m_8960_().m_135988_(_adv, criteria);
+                        Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_bathynomus_giganteus"));
+                        AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                        if (!_ap.isDone()) {
+                           for(String criteria : _ap.getRemainingCriteria()) {
+                              _player.getAdvancements().award(_adv, criteria);
                            }
                         }
                      }
 
                      if (entity instanceof ServerPlayer) {
                         ServerPlayer _plr10 = (ServerPlayer)entity;
-                        if (_plr10.m_9236_() instanceof ServerLevel && _plr10.m_8960_().m_135996_(_plr10.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2_semi"))).m_8193_() && entity instanceof ServerPlayer) {
+                        if (_plr10.level() instanceof ServerLevel && _plr10.getAdvancements().getOrStartProgress(_plr10.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2_semi"))).isDone() && entity instanceof ServerPlayer) {
                            ServerPlayer _player = (ServerPlayer)entity;
-                           Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_death_swarm"));
-                           AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                           if (!_ap.m_8193_()) {
-                              for(String criteria : _ap.m_8219_()) {
-                                 _player.m_8960_().m_135988_(_adv, criteria);
+                           Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_death_swarm"));
+                           AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                           if (!_ap.isDone()) {
+                              for(String criteria : _ap.getRemainingCriteria()) {
+                                 _player.getAdvancements().award(_adv, criteria);
                               }
                            }
                         }
@@ -137,26 +137,26 @@ public class AdvancementOtherProcedure {
          if (t1 == 11.0 || t2 == 11.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_black_bird_manipulation"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_black_bird_manipulation"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr13 = (ServerPlayer)entity;
-               if (_plr13.m_9236_() instanceof ServerLevel && _plr13.m_8960_().m_135996_(_plr13.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_black_bird_manipulation"))).m_8193_() && entity instanceof ServerPlayer) {
+               if (_plr13.level() instanceof ServerLevel && _plr13.getAdvancements().getOrStartProgress(_plr13.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_black_bird_manipulation"))).isDone() && entity instanceof ServerPlayer) {
                   ServerPlayer _plr14 = (ServerPlayer)entity;
-                  if (_plr14.m_9236_() instanceof ServerLevel && _plr14.m_8960_().m_135996_(_plr14.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2"))).m_8193_() && entity instanceof ServerPlayer) {
+                  if (_plr14.level() instanceof ServerLevel && _plr14.getAdvancements().getOrStartProgress(_plr14.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2"))).isDone() && entity instanceof ServerPlayer) {
                      ServerPlayer _player = (ServerPlayer)entity;
-                     Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_bird_strike"));
-                     AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                     if (!_ap.m_8193_()) {
-                        for(String criteria : _ap.m_8219_()) {
-                           _player.m_8960_().m_135988_(_adv, criteria);
+                     Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_bird_strike"));
+                     AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                     if (!_ap.isDone()) {
+                        for(String criteria : _ap.getRemainingCriteria()) {
+                           _player.getAdvancements().award(_adv, criteria);
                         }
                      }
                   }
@@ -167,26 +167,26 @@ public class AdvancementOtherProcedure {
          if (t1 == 13.0 || t2 == 13.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_nanami"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_nanami"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr17 = (ServerPlayer)entity;
-               if (_plr17.m_9236_() instanceof ServerLevel && _plr17.m_8960_().m_135996_(_plr17.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_nanami"))).m_8193_() && entity instanceof ServerPlayer) {
+               if (_plr17.level() instanceof ServerLevel && _plr17.getAdvancements().getOrStartProgress(_plr17.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_nanami"))).isDone() && entity instanceof ServerPlayer) {
                   ServerPlayer _plr18 = (ServerPlayer)entity;
-                  if (_plr18.m_9236_() instanceof ServerLevel && _plr18.m_8960_().m_135996_(_plr18.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2"))).m_8193_() && entity instanceof ServerPlayer) {
+                  if (_plr18.level() instanceof ServerLevel && _plr18.getAdvancements().getOrStartProgress(_plr18.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2"))).isDone() && entity instanceof ServerPlayer) {
                      ServerPlayer _player = (ServerPlayer)entity;
-                     Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_collapse"));
-                     AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                     if (!_ap.m_8193_()) {
-                        for(String criteria : _ap.m_8219_()) {
-                           _player.m_8960_().m_135988_(_adv, criteria);
+                     Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_collapse"));
+                     AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                     if (!_ap.isDone()) {
+                        for(String criteria : _ap.getRemainingCriteria()) {
+                           _player.getAdvancements().award(_adv, criteria);
                         }
                      }
                   }
@@ -197,26 +197,26 @@ public class AdvancementOtherProcedure {
          if (t1 == 14.0 || t2 == 14.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_hanami"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_hanami"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr21 = (ServerPlayer)entity;
-               if (_plr21.m_9236_() instanceof ServerLevel && _plr21.m_8960_().m_135996_(_plr21.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_hanami"))).m_8193_() && entity instanceof ServerPlayer) {
+               if (_plr21.level() instanceof ServerLevel && _plr21.getAdvancements().getOrStartProgress(_plr21.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_hanami"))).isDone() && entity instanceof ServerPlayer) {
                   ServerPlayer _plr22 = (ServerPlayer)entity;
-                  if (_plr22.m_9236_() instanceof ServerLevel && _plr22.m_8960_().m_135996_(_plr22.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2"))).m_8193_() && entity instanceof ServerPlayer) {
+                  if (_plr22.level() instanceof ServerLevel && _plr22.getAdvancements().getOrStartProgress(_plr22.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2"))).isDone() && entity instanceof ServerPlayer) {
                      ServerPlayer _player = (ServerPlayer)entity;
-                     Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_huge_roots"));
-                     AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                     if (!_ap.m_8193_()) {
-                        for(String criteria : _ap.m_8219_()) {
-                           _player.m_8960_().m_135988_(_adv, criteria);
+                     Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_huge_roots"));
+                     AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                     if (!_ap.isDone()) {
+                        for(String criteria : _ap.getRemainingCriteria()) {
+                           _player.getAdvancements().award(_adv, criteria);
                         }
                      }
                   }
@@ -227,26 +227,26 @@ public class AdvancementOtherProcedure {
          if (t1 == 18.0 || t2 == 18.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_geto"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_geto"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr25 = (ServerPlayer)entity;
-               if (_plr25.m_9236_() instanceof ServerLevel && _plr25.m_8960_().m_135996_(_plr25.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_geto"))).m_8193_() && entity instanceof ServerPlayer) {
+               if (_plr25.level() instanceof ServerLevel && _plr25.getAdvancements().getOrStartProgress(_plr25.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_geto"))).isDone() && entity instanceof ServerPlayer) {
                   ServerPlayer _plr26 = (ServerPlayer)entity;
-                  if (_plr26.m_9236_() instanceof ServerLevel && _plr26.m_8960_().m_135996_(_plr26.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_1"))).m_8193_() && entity instanceof ServerPlayer) {
+                  if (_plr26.level() instanceof ServerLevel && _plr26.getAdvancements().getOrStartProgress(_plr26.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_1"))).isDone() && entity instanceof ServerPlayer) {
                      ServerPlayer _player = (ServerPlayer)entity;
-                     Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_maximum_uzumaki"));
-                     AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                     if (!_ap.m_8193_()) {
-                        for(String criteria : _ap.m_8219_()) {
-                           _player.m_8960_().m_135988_(_adv, criteria);
+                     Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_maximum_uzumaki"));
+                     AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                     if (!_ap.isDone()) {
+                        for(String criteria : _ap.getRemainingCriteria()) {
+                           _player.getAdvancements().award(_adv, criteria);
                         }
                      }
                   }
@@ -257,26 +257,26 @@ public class AdvancementOtherProcedure {
          if (t1 == 19.0 || t2 == 19.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_naoya"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_naoya"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr29 = (ServerPlayer)entity;
-               if (_plr29.m_9236_() instanceof ServerLevel && _plr29.m_8960_().m_135996_(_plr29.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_naoya"))).m_8193_() && entity instanceof ServerPlayer) {
+               if (_plr29.level() instanceof ServerLevel && _plr29.getAdvancements().getOrStartProgress(_plr29.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_naoya"))).isDone() && entity instanceof ServerPlayer) {
                   ServerPlayer _plr30 = (ServerPlayer)entity;
-                  if (_plr30.m_9236_() instanceof ServerLevel && _plr30.m_8960_().m_135996_(_plr30.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2"))).m_8193_() && entity instanceof ServerPlayer) {
+                  if (_plr30.level() instanceof ServerLevel && _plr30.getAdvancements().getOrStartProgress(_plr30.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2"))).isDone() && entity instanceof ServerPlayer) {
                      ServerPlayer _player = (ServerPlayer)entity;
-                     Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_explodethe_air"));
-                     AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                     if (!_ap.m_8193_()) {
-                        for(String criteria : _ap.m_8219_()) {
-                           _player.m_8960_().m_135988_(_adv, criteria);
+                     Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_explodethe_air"));
+                     AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                     if (!_ap.isDone()) {
+                        for(String criteria : _ap.getRemainingCriteria()) {
+                           _player.getAdvancements().award(_adv, criteria);
                         }
                      }
                   }
@@ -287,40 +287,40 @@ public class AdvancementOtherProcedure {
          if (t1 == 24.0 || t2 == 24.0) {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_uraume"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_uraume"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr33 = (ServerPlayer)entity;
-               if (_plr33.m_9236_() instanceof ServerLevel && _plr33.m_8960_().m_135996_(_plr33.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_uraume"))).m_8193_() && entity instanceof ServerPlayer) {
+               if (_plr33.level() instanceof ServerLevel && _plr33.getAdvancements().getOrStartProgress(_plr33.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_uraume"))).isDone() && entity instanceof ServerPlayer) {
                   ServerPlayer _plr34 = (ServerPlayer)entity;
-                  if (_plr34.m_9236_() instanceof ServerLevel && _plr34.m_8960_().m_135996_(_plr34.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_3"))).m_8193_()) {
+                  if (_plr34.level() instanceof ServerLevel && _plr34.getAdvancements().getOrStartProgress(_plr34.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_3"))).isDone()) {
                      if (entity instanceof ServerPlayer) {
                         ServerPlayer _player = (ServerPlayer)entity;
-                        Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_frost_calm"));
-                        AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                        if (!_ap.m_8193_()) {
-                           for(String criteria : _ap.m_8219_()) {
-                              _player.m_8960_().m_135988_(_adv, criteria);
+                        Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_frost_calm"));
+                        AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                        if (!_ap.isDone()) {
+                           for(String criteria : _ap.getRemainingCriteria()) {
+                              _player.getAdvancements().award(_adv, criteria);
                            }
                         }
                      }
 
                      if (entity instanceof ServerPlayer) {
                         ServerPlayer _plr36 = (ServerPlayer)entity;
-                        if (_plr36.m_9236_() instanceof ServerLevel && _plr36.m_8960_().m_135996_(_plr36.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2_semi"))).m_8193_() && entity instanceof ServerPlayer) {
+                        if (_plr36.level() instanceof ServerLevel && _plr36.getAdvancements().getOrStartProgress(_plr36.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2_semi"))).isDone() && entity instanceof ServerPlayer) {
                            ServerPlayer _player = (ServerPlayer)entity;
-                           Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_icefall"));
-                           AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                           if (!_ap.m_8193_()) {
-                              for(String criteria : _ap.m_8219_()) {
-                                 _player.m_8960_().m_135988_(_adv, criteria);
+                           Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_icefall"));
+                           AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                           if (!_ap.isDone()) {
+                              for(String criteria : _ap.getRemainingCriteria()) {
+                                 _player.getAdvancements().award(_adv, criteria);
                               }
                            }
                         }

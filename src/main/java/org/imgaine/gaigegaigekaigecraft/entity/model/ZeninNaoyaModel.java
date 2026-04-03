@@ -9,14 +9,14 @@ public class ZeninNaoyaModel extends GeoModel<ZeninNaoyaEntity> {
    }
 
    public ResourceLocation getAnimationResource(ZeninNaoyaEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/human.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/human.animation.json");
    }
 
    public ResourceLocation getModelResource(ZeninNaoyaEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/human.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/human.geo.json");
    }
 
    public ResourceLocation getTextureResource(ZeninNaoyaEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

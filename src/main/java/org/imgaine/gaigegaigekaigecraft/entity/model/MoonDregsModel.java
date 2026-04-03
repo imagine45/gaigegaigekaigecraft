@@ -9,14 +9,14 @@ public class MoonDregsModel extends GeoModel<MoonDregsEntity> {
    }
 
    public ResourceLocation getAnimationResource(MoonDregsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/moon_dregs.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/moon_dregs.animation.json");
    }
 
    public ResourceLocation getModelResource(MoonDregsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/moon_dregs.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/moon_dregs.geo.json");
    }
 
    public ResourceLocation getTextureResource(MoonDregsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

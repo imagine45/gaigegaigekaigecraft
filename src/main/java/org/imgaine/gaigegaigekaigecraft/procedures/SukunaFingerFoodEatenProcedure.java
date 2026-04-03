@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -46,7 +45,7 @@ public class SukunaFingerFoodEatenProcedure {
          boolean success = false;
          boolean sukuna = false;
          boolean logic_unluck = false;
-         if (entity.getPersistentData().m_128471_("CursedSpirit")) {
+         if (entity.getPersistentData().getBoolean("CursedSpirit")) {
             success = true;
          } else {
             cursed_technique = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
@@ -59,12 +58,12 @@ public class SukunaFingerFoodEatenProcedure {
                   label313: {
                      if (entity instanceof Player) {
                         Player _plr = (Player)entity;
-                        if (_plr.m_150110_().f_35937_) {
+                        if (_plr.getAbilities().instabuild) {
                            break label313;
                         }
                      }
 
-                     if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41720_() != JujutsucraftModItems.SUKUNA_FINGER.get() && cursed_technique != 1.0 && cursed_technique2 != 1.0 && cursed_technique != 6.0 && cursed_technique2 != 6.0) {
+                     if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.getItem() != JujutsucraftModItems.SUKUNA_FINGER.get() && cursed_technique != 1.0 && cursed_technique2 != 1.0 && cursed_technique != 6.0 && cursed_technique2 != 6.0) {
                         success = false;
                         level_control = 0.0;
                         break label314;
@@ -83,82 +82,82 @@ public class SukunaFingerFoodEatenProcedure {
                label300: {
                   if (entity instanceof Player) {
                      Player _plr = (Player)entity;
-                     if (_plr.m_150110_().f_35937_) {
+                     if (_plr.getAbilities().instabuild) {
                         break label300;
                      }
                   }
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).m_41777_();
-                     _setstack.m_41764_(1);
+                     ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).copy();
+                     _setstack.setCount(1);
                      ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.ZONE.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.ZONE.get());
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "kill @s");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "kill @s");
                }
             }
          }
 
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             if (level_control < 2.0) {
-               if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41720_() == JujutsucraftModItems.DEATH_PAINTING.get() && entity instanceof Player) {
+               if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.getItem() == JujutsucraftModItems.DEATH_PAINTING.get() && entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.death_painting").getString()), false);
+                  if (!_player.level().isClientSide()) {
+                     _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.death_painting").getString()), false);
                   }
                }
 
-               if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41720_() == JujutsucraftModItems.SUKUNA_FINGER.get()) {
-                  ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41764_(Math.min(((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41613_() + 1, 20));
+               if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.getItem() == JujutsucraftModItems.SUKUNA_FINGER.get()) {
+                  ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.setCount(Math.min(((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.getCount() + 1, 20));
                } else {
                   ItemStack _setval = new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get());
                   entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                     capability.BodyItem = _setval.m_41777_();
+                     capability.BodyItem = _setval.copy();
                      capability.syncPlayerVariables(entity);
                   });
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     String var10001 = Component.m_237115_("item.jujutsucraft.sukuna_finger").getString();
-                     _player.m_5661_(Component.m_237113_(var10001 + ": " + Math.round((float)((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41613_())), false);
+                  if (!_player.level().isClientSide()) {
+                     String var10001 = Component.translatable("item.gaigegaigekaigecraft.sukuna_finger").getString();
+                     _player.displayClientMessage(Component.literal(var10001 + ": " + Math.round((float)((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.getCount())), false);
                   }
                }
 
-               num1 = (double)((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41613_();
+               num1 = (double)((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.getCount();
             }
 
             if (num1 > 0.0) {
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "advancement revoke @s only jujutsucraft:update");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "advancement revoke @s only gaigegaigekaigecraft:update");
                }
 
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _player = (ServerPlayer)entity;
-                  Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:update"));
-                  AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                  if (!_ap.m_8193_()) {
-                     for(String criteria : _ap.m_8219_()) {
-                        _player.m_8960_().m_135988_(_adv, criteria);
+                  Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:update"));
+                  AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                  if (!_ap.isDone()) {
+                     for(String criteria : _ap.getRemainingCriteria()) {
+                        _player.getAdvancements().award(_adv, criteria);
                      }
                   }
                }
 
-               if (entity.getPersistentData().m_128471_("CursedSpirit")) {
+               if (entity.getPersistentData().getBoolean("CursedSpirit")) {
                   double _setval = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerChange + 1000.0;
                   entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                      capability.PlayerCursePowerChange = _setval;
@@ -168,7 +167,7 @@ public class SukunaFingerFoodEatenProcedure {
                   label329: {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt22 = (LivingEntity)entity;
-                        if (_livEnt22.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                        if (_livEnt22.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
                            break label329;
                         }
                      }
@@ -178,12 +177,12 @@ public class SukunaFingerFoodEatenProcedure {
                         logic_unluck = true;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt23 = (LivingEntity)entity;
-                           if (_livEnt23.m_21023_(MobEffects.f_19590_)) {
+                           if (_livEnt23.hasEffect(MobEffects.UNLUCK)) {
                               label272: {
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    if (_livEnt.m_21023_(MobEffects.f_19590_)) {
-                                       var70 = _livEnt.m_21124_(MobEffects.f_19590_).m_19564_();
+                                    if (_livEnt.hasEffect(MobEffects.UNLUCK)) {
+                                       var70 = _livEnt.getEffect(MobEffects.UNLUCK).getAmplifier();
                                        break label272;
                                     }
                                  }
@@ -216,7 +215,7 @@ public class SukunaFingerFoodEatenProcedure {
                         label263: {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt25 = (LivingEntity)entity;
-                              if (_livEnt25.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                              if (_livEnt25.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
                                  break label263;
                               }
                            }
@@ -236,24 +235,24 @@ public class SukunaFingerFoodEatenProcedure {
             num1 = -300.0 - Math.random();
             if (sukuna && world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               Entity entityToSpawn = EntityType.f_20510_.m_262496_(_level, BlockPos.m_274561_(entity.m_20185_(), num1, entity.m_20189_()), MobSpawnType.MOB_SUMMONED);
+               Entity entityToSpawn = EntityType.PIG.spawn(_level, BlockPos.containing(entity.getX(), num1, entity.getZ()), MobSpawnType.MOB_SUMMONED);
                if (entityToSpawn != null) {
-                  entityToSpawn.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                  entityToSpawn.setYRot(world.getRandom().nextFloat() * 360.0F);
                }
             }
 
             sukuna = false;
-            Vec3 _center = new Vec3(entity.m_20185_(), num1, entity.m_20189_());
+            Vec3 _center = new Vec3(entity.getX(), num1, entity.getZ());
 
-            for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-               if (entityiterator instanceof Pig && entityiterator.m_6084_()) {
+            for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(0.5), (e) -> true)) {
+               if (entityiterator instanceof Pig && entityiterator.isAlive()) {
                   sukuna = true;
-                  if (!entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-                     entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "kill @s");
+                  if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                     entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "kill @s");
                   }
 
-                  if (!entityiterator.m_9236_().m_5776_()) {
-                     entityiterator.m_146870_();
+                  if (!entityiterator.level().isClientSide()) {
+                     entityiterator.discard();
                   }
                   break;
                }
@@ -262,12 +261,12 @@ public class SukunaFingerFoodEatenProcedure {
             if (sukuna) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_(MobEffects.f_19590_);
+                  _entity.removeEffect(MobEffects.UNLUCK);
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  Commands var71 = entity.m_20194_().m_129892_();
-                  CommandSourceStack var72 = new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity);
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  Commands var71 = entity.getServer().getCommands();
+                  CommandSourceStack var72 = new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity);
                   Object var10002;
                   if (tick > 10000.0) {
                      var10002 = "infinite";
@@ -276,8 +275,8 @@ public class SukunaFingerFoodEatenProcedure {
                      label239: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
-                              var10003 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get()).m_19564_();
+                           if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                              var10003 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get()).getAmplifier();
                               break label239;
                            }
                         }
@@ -289,47 +288,47 @@ public class SukunaFingerFoodEatenProcedure {
                   }
 
                   String var73 = String.valueOf(var10002);
-                  var71.m_230957_(var72, "effect give @s jujutsucraft:sukuna_effect " + var73 + " " + Math.round(Math.min(Math.max(GetSukunaLevelProcedure.execute(entity), 1.0), 20.0) - 1.0) + " true");
+                  var71.performPrefixedCommand(var72, "effect give @s gaigegaigekaigecraft:sukuna_effect " + var73 + " " + Math.round(Math.min(Math.max(GetSukunaLevelProcedure.execute(entity), 1.0), 20.0) - 1.0) + " true");
                }
             }
 
             if (logic_unluck && world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               Entity entityToSpawn = EntityType.f_20557_.m_262496_(_level, BlockPos.m_274561_(entity.m_20185_(), num1, entity.m_20189_()), MobSpawnType.MOB_SUMMONED);
+               Entity entityToSpawn = EntityType.COW.spawn(_level, BlockPos.containing(entity.getX(), num1, entity.getZ()), MobSpawnType.MOB_SUMMONED);
                if (entityToSpawn != null) {
-                  entityToSpawn.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                  entityToSpawn.setYRot(world.getRandom().nextFloat() * 360.0F);
                }
             }
 
             logic_unluck = false;
-            _center = new Vec3(entity.m_20185_(), num1, entity.m_20189_());
+            _center = new Vec3(entity.getX(), num1, entity.getZ());
 
-            for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-               if (entityiterator instanceof Cow && entityiterator.m_6084_()) {
+            for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(0.5), (e) -> true)) {
+               if (entityiterator instanceof Cow && entityiterator.isAlive()) {
                   logic_unluck = true;
-                  if (!entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-                     entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "kill @s");
+                  if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                     entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "kill @s");
                   }
 
-                  if (!entityiterator.m_9236_().m_5776_()) {
-                     entityiterator.m_146870_();
+                  if (!entityiterator.level().isClientSide()) {
+                     entityiterator.discard();
                   }
                   break;
                }
             }
 
-            if (logic_unluck && !entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "effect give @s minecraft:unluck 180 " + Math.round(num2) + " true");
+            if (logic_unluck && !entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "effect give @s minecraft:unluck 180 " + Math.round(num2) + " true");
             }
 
-            if (!entity.getPersistentData().m_128471_("CursedSpirit")) {
+            if (!entity.getPersistentData().getBoolean("CursedSpirit")) {
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _player = (ServerPlayer)entity;
-                  Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:observation_of_the_soul"));
-                  AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                  if (!_ap.m_8193_()) {
-                     for(String criteria : _ap.m_8219_()) {
-                        _player.m_8960_().m_135988_(_adv, criteria);
+                  Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:observation_of_the_soul"));
+                  AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                  if (!_ap.isDone()) {
+                     for(String criteria : _ap.getRemainingCriteria()) {
+                        _player.getAdvancements().award(_adv, criteria);
                      }
                   }
                }

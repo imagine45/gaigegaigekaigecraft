@@ -10,16 +10,16 @@ import net.minecraft.world.item.context.UseOnContext;
 
 public class HumanStockItem extends Item {
    public HumanStockItem() {
-      super((new Item.Properties()).m_41487_(64).m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).stacksTo(64).rarity(Rarity.COMMON));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.EAT;
    }
 
-   public InteractionResult m_6225_(UseOnContext context) {
-      super.m_6225_(context);
-      HumanStockRightClickedInAirProcedure.execute(context.m_43725_(), (double)context.m_8083_().m_123341_(), (double)context.m_8083_().m_123342_(), (double)context.m_8083_().m_123343_(), context.m_43719_(), context.m_43723_(), context.m_43722_());
+   public InteractionResult useOn(UseOnContext context) {
+      super.useOn(context);
+      HumanStockRightClickedInAirProcedure.execute(context.getLevel(), (double)context.getClickedPos().getX(), (double)context.getClickedPos().getY(), (double)context.getClickedPos().getZ(), context.getClickedFace(), context.getPlayer(), context.getItemInHand());
       return InteractionResult.SUCCESS;
    }
 }

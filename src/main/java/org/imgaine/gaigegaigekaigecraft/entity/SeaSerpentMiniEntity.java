@@ -34,99 +34,99 @@ public class SeaSerpentMiniEntity extends PathfinderMob {
 
    public SeaSerpentMiniEntity(EntityType<SeaSerpentMiniEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
-      this.f_21342_ = new FlyingMoveControl(this, 10, true);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
+      this.moveControl = new FlyingMoveControl(this, 10, true);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected PathNavigation m_6037_(Level world) {
+   protected PathNavigation createNavigation(Level world) {
       return new FlyingPathNavigation(this, world);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
+   protected void registerGoals() {
+      super.registerGoals();
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public double m_6048_() {
-      return super.m_6048_() + -0.5;
+   public double getPassengersRidingOffset() {
+      return super.getPassengersRidingOffset() + -0.5;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_142535_(float l, float d, DamageSource source) {
+   public boolean causeFallDamage(float l, float d, DamageSource source) {
       return false;
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      if (damagesource.m_276093_(DamageTypes.f_268671_)) {
+   public boolean hurt(DamageSource damagesource, float amount) {
+      if (damagesource.is(DamageTypes.FALL)) {
          return false;
       } else {
-         return damagesource.m_276093_(DamageTypes.f_268722_) ? false : super.m_6469_(damagesource, amount);
+         return damagesource.is(DamageTypes.DROWN) ? false : super.hurt(damagesource, amount);
       }
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AISeaSerpentProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AISeaSerpentProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
    }
 
-   public boolean m_6914_(LevelReader world) {
-      return world.m_45784_(this);
+   public boolean checkSpawnObstruction(LevelReader world) {
+      return world.isUnobstructed(this);
    }
 
-   public boolean m_6040_() {
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public boolean canBreatheUnderwater() {
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       return true;
    }
 
-   protected void m_7840_(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+   protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
    }
 
-   public void m_20242_(boolean ignored) {
-      super.m_20242_(true);
+   public void setNoGravity(boolean ignored) {
+      super.setNoGravity(true);
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_20242_(true);
+   public void aiStep() {
+      super.aiStep();
+      this.setNoGravity(true);
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 15.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22282_, 0.1);
-      builder = builder.m_22268_(Attributes.f_22280_, 0.3);
-      builder = builder.m_22268_((Attribute)ForgeMod.SWIM_SPEED.get(), 0.3);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 15.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 0.1);
+      builder = builder.add(Attributes.FLYING_SPEED, 0.3);
+      builder = builder.add((Attribute)ForgeMod.SWIM_SPEED.get(), 0.3);
       return builder;
    }
 }

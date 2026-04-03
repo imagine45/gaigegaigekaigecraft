@@ -36,105 +36,105 @@ public class EntityWater2Entity extends PathfinderMob {
 
    public EntityWater2Entity(EntityType<EntityWater2Entity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
-      this.m_6210_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
+      this.refreshDimensions();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new FloatGoal(this));
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new FloatGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public void m_7355_(BlockPos pos, BlockState blockIn) {
-      this.m_5496_((SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.swim")), 0.15F, 1.0F);
+   public void playStepSound(BlockPos pos, BlockState blockIn) {
+      this.playSound((SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.swim")), 0.15F, 1.0F);
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.splash"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.splash"));
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      if (damagesource.m_276093_(DamageTypes.f_268631_)) {
+   public boolean hurt(DamageSource damagesource, float amount) {
+      if (damagesource.is(DamageTypes.IN_FIRE)) {
          return false;
-      } else if (damagesource.m_7640_() instanceof AbstractArrow) {
+      } else if (damagesource.getDirectEntity() instanceof AbstractArrow) {
          return false;
-      } else if (damagesource.m_7640_() instanceof Player) {
+      } else if (damagesource.getDirectEntity() instanceof Player) {
          return false;
-      } else if (!(damagesource.m_7640_() instanceof ThrownPotion) && !(damagesource.m_7640_() instanceof AreaEffectCloud)) {
-         if (damagesource.m_276093_(DamageTypes.f_268671_)) {
+      } else if (!(damagesource.getDirectEntity() instanceof ThrownPotion) && !(damagesource.getDirectEntity() instanceof AreaEffectCloud)) {
+         if (damagesource.is(DamageTypes.FALL)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268585_)) {
+         } else if (damagesource.is(DamageTypes.CACTUS)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268722_)) {
+         } else if (damagesource.is(DamageTypes.DROWN)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268714_)) {
+         } else if (damagesource.is(DamageTypes.TRIDENT)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268526_)) {
+         } else if (damagesource.is(DamageTypes.FALLING_ANVIL)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268482_)) {
+         } else if (damagesource.is(DamageTypes.DRAGON_BREATH)) {
             return false;
          } else {
-            return !damagesource.m_276093_(DamageTypes.f_268493_) && !damagesource.m_276093_(DamageTypes.f_268641_) ? super.m_6469_(damagesource, amount) : false;
+            return !damagesource.is(DamageTypes.WITHER) && !damagesource.is(DamageTypes.WITHER_SKULL) ? super.hurt(damagesource, amount) : false;
          }
       } else {
          return false;
       }
    }
 
-   public boolean m_5825_() {
+   public boolean fireImmune() {
       return true;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIWater2Procedure.execute(this.m_9236_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AIWater2Procedure.execute(this.level(), this);
    }
 
-   public boolean m_6094_() {
+   public boolean isPushable() {
       return false;
    }
 
-   protected void m_7324_(Entity entityIn) {
+   protected void doPush(Entity entityIn) {
    }
 
-   protected void m_6138_() {
+   protected void pushEntities() {
    }
 
-   public EntityDimensions m_6972_(Pose pose) {
-      return super.m_6972_(pose).m_20388_(5.0F);
+   public EntityDimensions getDimensions(Pose pose) {
+      return super.getDimensions(pose).scale(5.0F);
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.35);
-      builder = builder.m_22268_(Attributes.f_22276_, 100.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22282_, 1.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35);
+      builder = builder.add(Attributes.MAX_HEALTH, 100.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 1.0);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 1.0);
       return builder;
    }
 }

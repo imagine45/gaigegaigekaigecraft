@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.core.particles.ParticleTypes;
@@ -40,8 +39,8 @@ public class RozetsuDomainExpansionActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label78;
                }
             }
@@ -50,43 +49,43 @@ public class RozetsuDomainExpansionActiveProcedure {
          }
 
          double var30 = var10000;
-         double var37 = entity.getPersistentData().m_128459_("x_pos_doma");
-         double var39 = entity.getPersistentData().m_128459_("y_pos_doma");
-         double var38 = entity.getPersistentData().m_128459_("z_pos_doma");
+         double var37 = entity.getPersistentData().getDouble("x_pos_doma");
+         double var39 = entity.getPersistentData().getDouble("y_pos_doma");
+         double var38 = entity.getPersistentData().getDouble("z_pos_doma");
          if (var30 % 10.0 == 0.0) {
-            entity.getPersistentData().m_128379_("onlyLiving", true);
+            entity.getPersistentData().putBoolean("onlyLiving", true);
             Vec3 _center = new Vec3(var37, var39, var38);
 
-            for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-               if (entity != entityiterator && LogicAttackDomainProcedure.execute(world, entity, entityiterator) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:ranged_ammo")))) {
+            for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
+               if (entity != entityiterator && LogicAttackDomainProcedure.execute(world, entity, entityiterator) && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:ranged_ammo")))) {
                   double var31 = 20.0;
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityiterator;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)var31, 0, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)var31, 0, false, false));
                      }
                   }
 
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityiterator;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), (int)var31, 0, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), (int)var31, 0, false, false));
                      }
                   }
 
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityiterator;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, (int)var31, 1, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int)var31, 1, false, false));
                      }
                   }
                }
             }
 
-            entity.getPersistentData().m_128379_("onlyLiving", false);
+            entity.getPersistentData().putBoolean("onlyLiving", false);
          }
 
-         if (!entity.getPersistentData().m_128471_("Failed")) {
+         if (!entity.getPersistentData().getBoolean("Failed")) {
             double var33 = Math.toRadians(90.0 * (var30 % 4.0));
             double var29 = 4.0 * var30 % (range * 0.5 - 5.0);
 
@@ -99,7 +98,7 @@ public class RozetsuDomainExpansionActiveProcedure {
                      double var36 = var38 + Math.sin(var33) * var29;
                      if (world instanceof ServerLevel) {
                         ServerLevel _level = (ServerLevel)world;
-                        _level.m_8767_(ParticleTypes.f_123784_, var34, var35, var36, 1, 1.0, 1.0, 1.0, 0.05);
+                        _level.sendParticles(ParticleTypes.CRIMSON_SPORE, var34, var35, var36, 1, 1.0, 1.0, 1.0, 0.05);
                      }
                   }
                }

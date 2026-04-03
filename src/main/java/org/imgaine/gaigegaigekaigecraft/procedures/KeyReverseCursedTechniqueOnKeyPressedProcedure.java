@@ -30,50 +30,50 @@ public class KeyReverseCursedTechniqueOnKeyPressedProcedure {
          Player = entity instanceof Player;
          if (Player && entity instanceof LivingEntity) {
             LivingEntity _livEnt1 = (LivingEntity)entity;
-            if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get())) {
+            if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get())) {
                return;
             }
          }
 
-         label147: {
+         label153: {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt2 = (LivingEntity)entity;
-               if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
-                  break label147;
+               if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+                  break label153;
                }
             }
 
-            if (entity.getPersistentData().m_128459_("skill") == 0.0) {
-               if (entity.getPersistentData().m_128471_("CursedSpirit")) {
+            if (entity.getPersistentData().getDouble("skill") == 0.0) {
+               if (entity.getPersistentData().getBoolean("CursedSpirit")) {
                   level = 1.0;
                } else if (Player) {
                   if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerFormer > 150.0 && ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePower >= 10.0) {
-                     label127: {
-                        label160: {
+                     label129: {
+                        label166: {
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr5 = (ServerPlayer)entity;
-                              if (_plr5.m_9236_() instanceof ServerLevel && _plr5.m_8960_().m_135996_(_plr5.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_2"))).m_8193_()) {
-                                 break label160;
+                              if (_plr5.level() instanceof ServerLevel && _plr5.getAdvancements().getOrStartProgress(_plr5.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_2"))).isDone()) {
+                                 break label166;
                               }
                            }
 
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt6 = (LivingEntity)entity;
-                              if (_livEnt6.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
-                                 break label160;
+                              if (_livEnt6.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                                 break label166;
                               }
                            }
 
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr7 = (ServerPlayer)entity;
-                              if (_plr7.m_9236_() instanceof ServerLevel && _plr7.m_8960_().m_135996_(_plr7.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_1"))).m_8193_()) {
+                              if (_plr7.level() instanceof ServerLevel && _plr7.getAdvancements().getOrStartProgress(_plr7.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_1"))).isDone()) {
                                  level = 0.0;
-                                 break label127;
+                                 break label129;
                               }
                            }
 
                            level = -1.0;
-                           break label127;
+                           break label129;
                         }
 
                         level = 1.0;
@@ -82,30 +82,34 @@ public class KeyReverseCursedTechniqueOnKeyPressedProcedure {
                      level = -1.0;
                   }
                } else {
-                  label165: {
-                     label138: {
-                        if (!entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:can_use_reverse_cursed_technique")))) {
-                           if (!(entity instanceof GojoSatoruSchoolDaysEntity)) {
-                              break label138;
-                           }
+                  label172: {
+                     label144: {
+                        if (!entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:can_use_reverse_cursed_technique")))) {
+                           label167: {
+                              if (entity instanceof GojoSatoruSchoolDaysEntity) {
+                                 GojoSatoruSchoolDaysEntity _datEntL9 = (GojoSatoruSchoolDaysEntity)entity;
+                                 if ((Boolean)_datEntL9.getEntityData().get(GojoSatoruSchoolDaysEntity.DATA_awaking)) {
+                                    break label167;
+                                 }
+                              }
 
-                           GojoSatoruSchoolDaysEntity _datEntL9 = (GojoSatoruSchoolDaysEntity)entity;
-                           if (!(Boolean)_datEntL9.m_20088_().m_135370_(GojoSatoruSchoolDaysEntity.DATA_awaking)) {
-                              break label138;
+                              if (!entity.getPersistentData().contains("entity_can_use_rct") || !entity.getPersistentData().getBoolean("entity_can_use_rct")) {
+                                 break label144;
+                              }
                            }
                         }
 
-                        if (entity.getPersistentData().m_128459_("skill") == 0.0) {
+                        if (entity.getPersistentData().getDouble("skill") == 0.0) {
                            float var10000;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var10000 = _livEnt.m_21233_();
+                              var10000 = _livEnt.getMaxHealth();
                            } else {
                               var10000 = -1.0F;
                            }
 
                            level = (double)(var10000 > 800.0F ? 1 : 0);
-                           break label165;
+                           break label172;
                         }
                      }
 
@@ -116,23 +120,23 @@ public class KeyReverseCursedTechniqueOnKeyPressedProcedure {
                if (!(level >= 0.0)) {
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     if (!_player.m_9236_().m_5776_()) {
-                        _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.not_mastered").getString()), false);
+                     if (!_player.level().isClientSide()) {
+                        _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.not_mastered").getString()), false);
                      }
                   }
                } else {
                   if (entity instanceof LivingEntity) {
-                     LivingEntity _livEnt12 = (LivingEntity)entity;
-                     if (_livEnt12.m_21023_((MobEffect)JujutsucraftModMobEffects.ZONE.get())) {
+                     LivingEntity _livEnt14 = (LivingEntity)entity;
+                     if (_livEnt14.hasEffect((MobEffect)JujutsucraftModMobEffects.ZONE.get())) {
                         double var20;
                         int var10001;
-                        label104: {
+                        label106: {
                            var20 = level + 1.0;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.ZONE.get())) {
-                                 var10001 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.ZONE.get()).m_19564_();
-                                 break label104;
+                              if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.ZONE.get())) {
+                                 var10001 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.ZONE.get()).getAmplifier();
+                                 break label106;
                               }
                            }
 
@@ -145,24 +149,24 @@ public class KeyReverseCursedTechniqueOnKeyPressedProcedure {
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.GUARD.get());
+                     _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.GUARD.get());
                   }
 
-                  entity.getPersistentData().m_128379_("PRESS_M", true);
-                  if (entity.getPersistentData().m_128471_("CursedSpirit")) {
+                  entity.getPersistentData().putBoolean("PRESS_M", true);
+                  if (entity.getPersistentData().getBoolean("CursedSpirit")) {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get(), 2147483647, (int)(Math.round(level) * -1L), true, true));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get(), 2147483647, (int)(Math.round(level) * -1L), true, true));
                         }
                      }
-                  } else if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                     entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "effect give @s jujutsucraft:reverse_cursed_technique infinite " + Math.round(level) + " true");
+                  } else if (!entity.level().isClientSide() && entity.getServer() != null) {
+                     entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "effect give @s gaigegaigekaigecraft:reverse_cursed_technique infinite " + Math.round(level) + " true");
                   }
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "playsound ui.button.click master @s");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "playsound ui.button.click master @s");
                }
 
                return;
@@ -171,8 +175,8 @@ public class KeyReverseCursedTechniqueOnKeyPressedProcedure {
 
          if (entity instanceof Player) {
             Player _player = (Player)entity;
-            if (!_player.m_9236_().m_5776_()) {
-               _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.dont_use").getString()), false);
+            if (!_player.level().isClientSide()) {
+               _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.dont_use").getString()), false);
             }
          }
 

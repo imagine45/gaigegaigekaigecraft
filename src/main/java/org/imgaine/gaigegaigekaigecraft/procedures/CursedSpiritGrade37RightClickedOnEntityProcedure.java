@@ -21,39 +21,39 @@ public class CursedSpiritGrade37RightClickedOnEntityProcedure {
             TamableAnimal _toTame = (TamableAnimal)entity;
             if (sourceentity instanceof Player) {
                Player _owner = (Player)sourceentity;
-               _toTame.m_21828_(_owner);
+               _toTame.tame(_owner);
             }
          }
 
          ItemStack var10000;
          if (sourceentity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)sourceentity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         if (var10000.m_41720_() == ItemStack.f_41583_.m_41720_()) {
+         if (var10000.getItem() == ItemStack.EMPTY.getItem()) {
             if (sourceentity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)sourceentity;
-               ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get())).m_41777_();
-               _setstack.m_41764_(1);
-               _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+               ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get())).copy();
+               _setstack.setCount(1);
+               _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                if (_entity instanceof Player) {
                   Player _player = (Player)_entity;
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().setChanged();
                }
             }
          } else if (sourceentity instanceof Player) {
             Player _player = (Player)sourceentity;
-            ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get())).m_41777_();
-            _setstack.m_41764_(1);
+            ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get())).copy();
+            _setstack.setCount(1);
             ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
          }
 
          CursedSpiritGrade37EntityDiesProcedure.execute(world, x, y, z);
-         if (!entity.m_9236_().m_5776_()) {
-            entity.m_146870_();
+         if (!entity.level().isClientSide()) {
+            entity.discard();
          }
 
       }

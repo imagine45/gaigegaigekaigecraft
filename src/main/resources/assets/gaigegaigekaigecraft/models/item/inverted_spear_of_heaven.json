@@ -1,0 +1,8 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/inverted_spear_of_heaven",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/inverted_spear_of_heaven",
+    "1": "gaigegaigekaigecraft:block/sword_blade",
+    "particle": "gaigegaigekaigecraft:item/inverted_spear_of_heaven"
+  }
+}

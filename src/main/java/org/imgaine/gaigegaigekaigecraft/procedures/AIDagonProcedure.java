@@ -1,5 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import org.imgaine.gaigegaigekaigecraft.entity.DagonEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.core.BlockPos;
@@ -37,285 +38,293 @@ public class AIDagonProcedure {
          double health = 0.0;
          double CNT6 = 0.0;
          double dis = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             int var10000;
             if (entity instanceof DagonEntity) {
                DagonEntity _datEntI = (DagonEntity)entity;
-               var10000 = (Integer)_datEntI.m_20088_().m_135370_(DagonEntity.DATA_form);
+               var10000 = (Integer)_datEntI.getEntityData().get(DagonEntity.DATA_form);
             } else {
                var10000 = 0;
             }
 
             if (var10000 >= 1) {
-               label293: {
+               label296: {
                   AIActiveProcedure.execute(world, x, y, z, entity);
                   AIActiveFlyingProcedure.execute(world, entity);
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_(MobEffects.f_19596_);
+                     _entity.removeEffect(MobEffects.MOVEMENT_SPEED);
                   }
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt3 = (LivingEntity)entity;
-                     if (_livEnt3.m_21023_(MobEffects.f_19600_)) {
-                        break label293;
+                     if (_livEnt3.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        break label296;
                      }
                   }
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, 13, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, 13, false, false));
                      }
                   }
                }
             }
 
-            label268: {
+            label272: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt5 = (LivingEntity)entity;
-                  if (_livEnt5.m_21023_(MobEffects.f_19606_)) {
-                     break label268;
+                  if (_livEnt5.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
+                     break label272;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, 2, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, 2, false, false));
                   }
                }
             }
 
-            label263: {
+            label267: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt7 = (LivingEntity)entity;
-                  if (_livEnt7.m_21023_(MobEffects.f_19593_)) {
-                     break label263;
+                  if (_livEnt7.hasEffect(MobEffects.DOLPHINS_GRACE)) {
+                     break label267;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19593_, 2147483647, 4, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 2147483647, 4, false, false));
                   }
                }
             }
 
-            label258: {
+            label262: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt9 = (LivingEntity)entity;
-                  if (_livEnt9.m_21023_(MobEffects.f_19608_)) {
-                     break label258;
+                  if (_livEnt9.hasEffect(MobEffects.WATER_BREATHING)) {
+                     break label262;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19608_, 2147483647, 0, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 2147483647, 0, false, false));
                   }
                }
             }
 
-            LivingEntity var61;
-            if (entity instanceof Mob) {
-               Mob _mobEnt = (Mob)entity;
-               var61 = _mobEnt.m_5448_();
+            if (entity instanceof DagonEntity) {
+               DagonEntity _datEntI = (DagonEntity)entity;
+               var10000 = (Integer)_datEntI.getEntityData().get(DagonEntity.DATA_form);
             } else {
-               var61 = null;
+               var10000 = 0;
             }
 
-            if (var61 instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
-                  entity.getPersistentData().m_128347_("cnt_x", 0.0);
-                  int var62;
+            if (var10000 == 0) {
+               float var63;
+               if (entity instanceof LivingEntity) {
+                  LivingEntity _livEnt = (LivingEntity)entity;
+                  var63 = _livEnt.getHealth();
+               } else {
+                  var63 = -1.0F;
+               }
+
+               double var64 = (double)var63;
+               float var10001;
+               if (entity instanceof LivingEntity) {
+                  LivingEntity _livEnt = (LivingEntity)entity;
+                  var10001 = _livEnt.getMaxHealth();
+               } else {
+                  var10001 = -1.0F;
+               }
+
+               if (var64 < (double)var10001 * 0.75 || entity.getPersistentData().getDouble("cnt_target") > 600.0) {
                   if (entity instanceof DagonEntity) {
-                     DagonEntity _datEntI = (DagonEntity)entity;
-                     var62 = (Integer)_datEntI.m_20088_().m_135370_(DagonEntity.DATA_form);
-                  } else {
-                     var62 = 0;
+                     DagonEntity _datEntSetI = (DagonEntity)entity;
+                     _datEntSetI.getEntityData().set(DagonEntity.DATA_form, 1);
                   }
 
-                  if (var62 == 0) {
-                     float var63;
+                  if (entity instanceof DagonEntity) {
+                     DagonEntity animatable = (DagonEntity)entity;
+                     animatable.setTexture("dagon2");
+                  }
+
+                  label251: {
                      if (entity instanceof LivingEntity) {
-                        LivingEntity _livEnt = (LivingEntity)entity;
-                        var63 = _livEnt.m_21223_();
-                     } else {
-                        var63 = -1.0F;
+                        LivingEntity _livingEntity17 = (LivingEntity)entity;
+                        if (_livingEntity17.getAttributes().hasAttribute(Attributes.MAX_HEALTH)) {
+                           var64 = _livingEntity17.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+                           break label251;
+                        }
                      }
 
-                     double var64 = (double)var63;
-                     float var10001;
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _livEnt = (LivingEntity)entity;
-                        var10001 = _livEnt.m_21233_();
-                     } else {
-                        var10001 = -1.0F;
-                     }
+                     var64 = 0.0;
+                  }
 
-                     if (var64 < (double)var10001 * 0.75 || entity.getPersistentData().m_128459_("cnt_target") > 600.0) {
-                        if (entity instanceof DagonEntity) {
-                           DagonEntity _datEntSetI = (DagonEntity)entity;
-                           _datEntSetI.m_20088_().m_135381_(DagonEntity.DATA_form, 1);
-                        }
-
-                        if (entity instanceof DagonEntity) {
-                           DagonEntity animatable = (DagonEntity)entity;
-                           animatable.setTexture("dagon2");
-                        }
-
+                  health = var64 * 2.0;
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _livingEntity19 = (LivingEntity)entity;
+                     if (_livingEntity19.getAttributes().hasAttribute(Attributes.MAX_HEALTH)) {
+                        AttributeInstance var66;
+                        double var70;
                         label243: {
+                           var66 = _livingEntity19.getAttribute(Attributes.MAX_HEALTH);
                            if (entity instanceof LivingEntity) {
-                              LivingEntity _livingEntity24 = (LivingEntity)entity;
-                              if (_livingEntity24.m_21204_().m_22171_(Attributes.f_22276_)) {
-                                 var64 = _livingEntity24.getAttribute_(Attributes.f_22276_).m_22115_();
+                              LivingEntity _livingEntity18 = (LivingEntity)entity;
+                              if (_livingEntity18.getAttributes().hasAttribute(Attributes.MAX_HEALTH)) {
+                                 var70 = _livingEntity18.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
                                  break label243;
                               }
                            }
 
-                           var64 = 0.0;
+                           var70 = 0.0;
                         }
 
-                        health = var64 * 2.0;
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _livingEntity26 = (LivingEntity)entity;
-                           if (_livingEntity26.m_21204_().m_22171_(Attributes.f_22276_)) {
-                              label235: {
-                                 var66 = _livingEntity26.getAttribute_(Attributes.f_22276_);
-                                 if (entity instanceof LivingEntity) {
-                                    LivingEntity _livingEntity25 = (LivingEntity)entity;
-                                    if (_livingEntity25.m_21204_().m_22171_(Attributes.f_22276_)) {
-                                       var69 = _livingEntity25.getAttribute_(Attributes.f_22276_).m_22115_();
-                                       break label235;
-                                    }
-                                 }
-
-                                 var69 = 0.0;
-                              }
-
-                              var66.m_22100_(var69 + health);
-                           }
-                        }
-
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entity;
-                           if (entity instanceof LivingEntity) {
-                              LivingEntity _livEnt = (LivingEntity)entity;
-                              var10001 = _livEnt.m_21233_();
-                           } else {
-                              var10001 = -1.0F;
-                           }
-
-                           _entity.m_21153_(var10001);
-                        }
-
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entity;
-                           _entity.m_21195_(MobEffects.f_19600_);
-                        }
-
-                        if (world instanceof Level) {
-                           Level _level = (Level)world;
-                           if (!_level.m_5776_()) {
-                              _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:crush")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                           } else {
-                              _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:crush")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                           }
-                        }
-
-                        entity.m_20256_(new Vec3(0.0, 2.0, 0.0));
-                        if (world instanceof ServerLevel) {
-                           ServerLevel _level = (ServerLevel)world;
-                           _level.m_8767_(ParticleTypes.f_123796_, entity.m_20185_(), entity.m_20186_() + (double)entity.m_20206_() * 0.5, entity.m_20189_(), (int)(15.0 * ReturnEntitySizeProcedure.execute(entity)), (double)entity.m_20205_() * 0.5, (double)entity.m_20206_() * 0.5, (double)entity.m_20205_() * 0.5, 1.0);
-                        }
+                        var66.setBaseValue(var70 + health);
                      }
                   }
 
-                  if (entity instanceof DagonEntity) {
-                     DagonEntity _datEntI = (DagonEntity)entity;
-                     var62 = (Integer)_datEntI.m_20088_().m_135370_(DagonEntity.DATA_form);
-                  } else {
-                     var62 = 0;
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _entity = (LivingEntity)entity;
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _livEnt = (LivingEntity)entity;
+                        var10001 = _livEnt.getMaxHealth();
+                     } else {
+                        var10001 = -1.0F;
+                     }
+
+                     _entity.setHealth(var10001);
                   }
 
-                  if (var62 >= 1) {
-                     CompoundTag var68 = entity.getPersistentData();
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _entity = (LivingEntity)entity;
+                     _entity.removeEffect(MobEffects.DAMAGE_BOOST);
+                  }
+
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _entity = (LivingEntity)entity;
+                     _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.STUN.get());
+                  }
+
+                  if (world instanceof Level) {
+                     Level _level = (Level)world;
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:crush")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                     } else {
+                        _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:crush")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                     }
+                  }
+
+                  entity.setDeltaMovement(new Vec3(0.0, 2.0, 0.0));
+                  if (world instanceof ServerLevel) {
+                     ServerLevel _level = (ServerLevel)world;
+                     _level.sendParticles(ParticleTypes.CLOUD, entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ(), (int)(15.0 * ReturnEntitySizeProcedure.execute(entity)), (double)entity.getBbWidth() * 0.5, (double)entity.getBbHeight() * 0.5, (double)entity.getBbWidth() * 0.5, 1.0);
+                  }
+               }
+            }
+
+            LivingEntity var67;
+            if (entity instanceof Mob) {
+               Mob _mobEnt = (Mob)entity;
+               var67 = _mobEnt.getTarget();
+            } else {
+               var67 = null;
+            }
+
+            if (var67 instanceof LivingEntity) {
+               entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
+                  entity.getPersistentData().putDouble("cnt_x", 0.0);
+                  int var68;
+                  if (entity instanceof DagonEntity) {
+                     DagonEntity _datEntI = (DagonEntity)entity;
+                     var68 = (Integer)_datEntI.getEntityData().get(DagonEntity.DATA_form);
+                  } else {
+                     var68 = 0;
+                  }
+
+                  if (var68 >= 1) {
+                     CompoundTag var69 = entity.getPersistentData();
                      float var10002;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        var10002 = _livEnt.m_21223_();
+                        var10002 = _livEnt.getHealth();
                      } else {
                         var10002 = -1.0F;
                      }
 
-                     double var71 = (double)var10002;
+                     double var72 = (double)var10002;
                      float var10003;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        var10003 = _livEnt.m_21233_();
+                        var10003 = _livEnt.getMaxHealth();
                      } else {
                         var10003 = -1.0F;
                      }
-
-                     label221: {
-                        if (var71 < (double)var10003 * 0.5) {
-                           label218: {
+                     boolean var75;
+                     label225: {
+                        if (var72 < (double)var10003 * 0.5) {
+                           int var73;
+                           label222: {
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entity;
-                                 if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                    var72 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                                    break label218;
+                                 if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                    var73 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                    break label222;
                                  }
                               }
 
-                              var72 = 0;
+                              var73 = 0;
                            }
 
-                           int var73 = var72 - 10;
-                           LivingEntity var75;
+                           int var74 = var73 - 10;
+                           LivingEntity var76;
                            if (entity instanceof Mob) {
                               Mob _mobEnt = (Mob)entity;
-                              var75 = _mobEnt.m_5448_();
+                              var76 = _mobEnt.getTarget();
                            } else {
-                              var75 = null;
+                              var76 = null;
                            }
-
-                           label212: {
-                              LivingEntity var31 = var75;
+                           int var77;
+                           label216: {
+                              LivingEntity var31 = var76;
                               if (var31 instanceof LivingEntity) {
                                  LivingEntity _livEnt = var31;
-                                 if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                    var76 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                                    break label212;
+                                 if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                    var77 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                    break label216;
                                  }
                               }
 
-                              var76 = 0;
+                              var77 = 0;
                            }
 
-                           if (var73 <= var76) {
-                              var74 = true;
-                              break label221;
+                           if (var74 <= var77) {
+                              var75 = true;
+                              break label225;
                            }
                         }
 
-                        var74 = false;
+                        var75 = false;
                      }
 
-                     var68.m_128379_("flag_domain", var74);
+                     var69.putBoolean("flag_domain", var75);
                      domain = LogicConfilmDomainProcedure.execute(world, x, y, z, entity);
                      ResetCounterProcedure.execute(entity);
-                     if ((!LogicStartProcedure.execute(entity) || !(Math.random() > 0.3) && !entity.getPersistentData().m_128471_("UseCursedTechnique")) && !domain) {
+                     if ((!LogicStartProcedure.execute(entity) || !(Math.random() > 0.3) && !entity.getPersistentData().getBoolean("UseCursedTechnique")) && !domain) {
                         CalculateAttackProcedure.execute(world, entity);
                      } else {
                         if (domain) {
                            tick = 20.0;
                            rnd = 20.0;
-                           entity.getPersistentData().m_128379_("flag_domain", false);
+                           entity.getPersistentData().putBoolean("flag_domain", false);
                         } else {
                            distance = GetDistanceProcedure.execute(entity);
 
@@ -357,27 +366,27 @@ public class AIDagonProcedure {
                            }
                         }
 
-                        entity.getPersistentData().m_128347_("skill", (double)Math.round(800.0 + rnd));
+                        entity.getPersistentData().putDouble("skill", (double)Math.round(800.0 + rnd));
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
                            }
                         }
 
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                            }
                         }
 
-                        entity.getPersistentData().m_128379_("UseCursedTechnique", false);
+                        entity.getPersistentData().putBoolean("UseCursedTechnique", false);
                      }
                   }
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
             }
          }
 

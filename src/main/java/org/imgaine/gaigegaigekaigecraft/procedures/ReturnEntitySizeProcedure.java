@@ -14,8 +14,8 @@ public class ReturnEntitySizeProcedure {
          return 0.0;
       } else {
          double size = 0.0;
-         size = (double)(entity.m_20206_() + entity.m_20205_()) * 0.42;
-         size = entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) ? Math.sqrt(size) : Math.cbrt(size);
+         size = (double)(entity.getBbHeight() + entity.getBbWidth()) * 0.42;
+         size = entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) ? Math.sqrt(size) : Math.cbrt(size);
          return size;
       }
    }

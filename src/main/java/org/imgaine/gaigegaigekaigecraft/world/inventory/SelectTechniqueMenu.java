@@ -36,46 +36,46 @@ public class SelectTechniqueMenu extends AbstractContainerMenu implements Suppli
 
    public SelectTechniqueMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
       super((MenuType)JujutsucraftModMenus.SELECT_TECHNIQUE.get(), id);
-      this.access = ContainerLevelAccess.f_39287_;
+      this.access = ContainerLevelAccess.NULL;
       this.customSlots = new HashMap();
       this.bound = false;
       this.boundItemMatcher = null;
       this.boundEntity = null;
       this.boundBlockEntity = null;
-      this.entity = inv.f_35978_;
-      this.world = inv.f_35978_.m_9236_();
+      this.entity = inv.player;
+      this.world = inv.player.level();
       this.internal = new ItemStackHandler(0);
       BlockPos pos = null;
       if (extraData != null) {
-         pos = extraData.m_130135_();
-         this.x = pos.m_123341_();
-         this.y = pos.m_123342_();
-         this.z = pos.m_123343_();
-         this.access = ContainerLevelAccess.m_39289_(this.world, pos);
+         pos = extraData.readBlockPos();
+         this.x = pos.getX();
+         this.y = pos.getY();
+         this.z = pos.getZ();
+         this.access = ContainerLevelAccess.create(this.world, pos);
       }
 
    }
 
-   public boolean m_6875_(Player player) {
+   public boolean stillValid(Player player) {
       if (this.bound) {
          if (this.boundItemMatcher != null) {
             return (Boolean)this.boundItemMatcher.get();
          }
 
          if (this.boundBlockEntity != null) {
-            return AbstractContainerMenu.m_38889_(this.access, player, this.boundBlockEntity.m_58900_().m_60734_());
+            return AbstractContainerMenu.stillValid(this.access, player, this.boundBlockEntity.getBlockState().getBlock());
          }
 
          if (this.boundEntity != null) {
-            return this.boundEntity.m_6084_();
+            return this.boundEntity.isAlive();
          }
       }
 
       return true;
    }
 
-   public ItemStack m_7648_(Player playerIn, int index) {
-      return ItemStack.f_41583_;
+   public ItemStack quickMoveStack(Player playerIn, int index) {
+      return ItemStack.EMPTY;
    }
 
    public Map<Integer, Slot> get() {

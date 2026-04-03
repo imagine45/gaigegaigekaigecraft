@@ -31,8 +31,8 @@ public class SimpleDomainEffectStartedappliedProcedure {
             double tick = 0.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
-                  var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).m_19564_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
+                  var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).getAmplifier();
                   break label46;
                }
             }
@@ -41,15 +41,14 @@ public class SimpleDomainEffectStartedappliedProcedure {
          }
 
          if (var10000 > 0 && LogicSimpleDomainProcedure.execute()) {
-            double var31;
             int var10002;
+            double var35;
             label38: {
-               var31 = Math.toRadians(Math.random() * 360.0);
-               var35 = (double)entity.m_20205_();
+               var35 = (double)entity.getBbWidth();
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
-                     var10002 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).m_19557_();
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
+                     var10002 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).getDuration();
                      break label38;
                   }
                }
@@ -58,17 +57,16 @@ public class SimpleDomainEffectStartedappliedProcedure {
             }
 
             double var32 = var35 + 0.025 * (double)var10002;
-            var32 = Math.min(var32, entity.getPersistentData().m_128459_("skill") == 3105.0 ? 16.0 : 4.0);
+            var32 = Math.min(var32, entity.getPersistentData().getDouble("skill") == 3105.0 ? 16.0 : 4.0);
 
             for(int index0 = 0; index0 < 72; ++index0) {
+               double var31 = Math.toRadians(Math.random() * 360.0);
                double var29 = x + Math.sin(var31) * var32;
                double var30 = z + Math.cos(var31) * var32;
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(var29, y, var30), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle dust 0.749 0.984 1.000 1 ~ ~ ~ 0 0 0 1 1 force");
+                  _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(var29, y, var30), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle dust 0.749 0.984 1.000 1 ~ ~ ~ 0 0 0 1 1 force");
                }
-
-               var31 += Math.toRadians(Math.random() * 10.0);
             }
          }
 

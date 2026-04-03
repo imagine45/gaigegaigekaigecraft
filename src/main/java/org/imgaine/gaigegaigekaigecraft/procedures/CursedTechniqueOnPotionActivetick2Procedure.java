@@ -13,7 +13,7 @@ public class CursedTechniqueOnPotionActivetick2Procedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          double skill = 0.0;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 1000.0);
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 1000.0);
          if (skill >= 500.0) {
             if (skill >= 1000.0) {
                CursedTechniqueOnPotionActiveTick3Procedure.execute(world, x, y, z, entity);
@@ -29,7 +29,7 @@ public class CursedTechniqueOnPotionActivetick2Procedure {
                CursedTechniqueMahitoProcedure.execute(world, x, y, z, entity);
             } else if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          } else if (skill >= 400.0) {
             CursedTechniqueHanamiProcedure.execute(world, x, y, z, entity);
@@ -43,7 +43,7 @@ public class CursedTechniqueOnPotionActivetick2Procedure {
             CursedTechniqueChosoProcedure.execute(world, x, y, z, entity);
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
          }
 
       }

@@ -33,51 +33,51 @@ public class SoccerPlayerEntity extends Monster {
 
    public SoccerPlayerEntity(EntityType<SoccerPlayerEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.m_21573_().m_26575_().m_77355_(true);
-      this.f_21345_.m_25352_(1, new RandomStrollGoal(this, 1.25));
-      this.f_21345_.m_25352_(2, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(3, new MeleeAttackGoal(this, 1.5, true) {
-         protected double m_6639_(LivingEntity entity) {
-            return (double)(this.f_25540_.m_20205_() * this.f_25540_.m_20205_() + entity.m_20205_());
+   protected void registerGoals() {
+      super.registerGoals();
+      this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
+      this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.25));
+      this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.5, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
+            return (double)(this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth());
          }
       });
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, JogoHeadEntity.class, false, false));
-      this.f_21345_.m_25352_(5, new LeapAtTargetGoal(this, 0.5F));
-      this.f_21345_.m_25352_(6, new FloatGoal(this));
-      this.f_21345_.m_25352_(7, new MoveBackToVillageGoal(this, 0.6, false));
-      this.f_21345_.m_25352_(8, new OpenDoorGoal(this, true));
-      this.f_21345_.m_25352_(9, new OpenDoorGoal(this, false));
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, JogoHeadEntity.class, false, false));
+      this.goalSelector.addGoal(5, new LeapAtTargetGoal(this, 0.5F));
+      this.goalSelector.addGoal(6, new FloatGoal(this));
+      this.goalSelector.addGoal(7, new MoveBackToVillageGoal(this, 0.6, false));
+      this.goalSelector.addGoal(8, new OpenDoorGoal(this, true));
+      this.goalSelector.addGoal(9, new OpenDoorGoal(this, false));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public double m_6049_() {
+   public double getMyRidingOffset() {
       return -0.35;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
@@ -85,13 +85,13 @@ public class SoccerPlayerEntity extends Monster {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 20.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22282_, 4.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 20.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 4.0);
       return builder;
    }
 }

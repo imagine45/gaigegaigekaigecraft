@@ -1,5 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import org.imgaine.gaigegaigekaigecraft.InlineMethodHandler;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
@@ -16,17 +17,7 @@ public class OverlayHaveTechniqueProcedure {
       if (entity == null) {
          return false;
       } else if (entity instanceof Player) {
-         if (((<undefinedtype>)(new Object() {
-            public boolean checkGamemode(Entity _ent) {
-               if (_ent instanceof ServerPlayer _serverPlayer) {
-                  return _serverPlayer.f_8941_.m_9290_() == GameType.SPECTATOR;
-               } else if (_ent.m_9236_().m_5776_() && _ent instanceof Player _player) {
-                  return Minecraft.m_91087_().m_91403_().m_104949_(_player.m_36316_().getId()) != null && Minecraft.m_91087_().m_91403_().m_104949_(_player.m_36316_().getId()).m_105325_() == GameType.SPECTATOR;
-               } else {
-                  return false;
-               }
-            }
-         })).checkGamemode(entity)) {
+         if (InlineMethodHandler.checkGamemodeSpectator(entity)) {
             return false;
          } else {
             Player player = (Player)entity;

@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class Modelino_takuma<T extends Entity> extends EntityModel<T> {
-   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("jujutsucraft", "modelino_takuma"), "main");
+   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("gaigegaigekaigecraft", "modelino_takuma"), "main");
    public final ModelPart Head;
    public final ModelPart Body;
    public final ModelPart RightArm;
@@ -26,41 +26,41 @@ public class Modelino_takuma<T extends Entity> extends EntityModel<T> {
    public final ModelPart LeftBoot;
 
    public Modelino_takuma(ModelPart root) {
-      this.Head = root.m_171324_("Head");
-      this.Body = root.m_171324_("Body");
-      this.RightArm = root.m_171324_("RightArm");
-      this.LeftArm = root.m_171324_("LeftArm");
-      this.RightLeg = root.m_171324_("RightLeg");
-      this.LeftLeg = root.m_171324_("LeftLeg");
-      this.RightBoot = root.m_171324_("RightBoot");
-      this.LeftBoot = root.m_171324_("LeftBoot");
+      this.Head = root.getChild("Head");
+      this.Body = root.getChild("Body");
+      this.RightArm = root.getChild("RightArm");
+      this.LeftArm = root.getChild("LeftArm");
+      this.RightLeg = root.getChild("RightLeg");
+      this.LeftLeg = root.getChild("LeftLeg");
+      this.RightBoot = root.getChild("RightBoot");
+      this.LeftBoot = root.getChild("LeftBoot");
    }
 
    public static LayerDefinition createBodyLayer() {
       MeshDefinition meshdefinition = new MeshDefinition();
-      PartDefinition partdefinition = meshdefinition.m_171576_();
-      partdefinition.m_171599_("Head", CubeListBuilder.m_171558_().m_171514_(32, 0).m_171488_(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.505F)), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
-      partdefinition.m_171599_("Body", CubeListBuilder.m_171558_().m_171514_(16, 16).m_171488_(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)).m_171514_(16, 32).m_171488_(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.6F)), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
-      partdefinition.m_171599_("RightArm", CubeListBuilder.m_171558_().m_171514_(40, 16).m_171488_(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.03F)).m_171514_(48, 48).m_171488_(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)), PartPose.m_171419_(-5.0F, 2.0F, 0.0F));
-      partdefinition.m_171599_("LeftArm", CubeListBuilder.m_171558_().m_171514_(32, 48).m_171488_(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)).m_171514_(48, 48).m_171480_().m_171488_(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.53F)).m_171555_(false), PartPose.m_171419_(5.0F, 2.0F, 0.0F));
-      partdefinition.m_171599_("RightLeg", CubeListBuilder.m_171558_().m_171514_(0, 48).m_171488_(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)), PartPose.m_171419_(-2.0F, 12.0F, 0.0F));
-      partdefinition.m_171599_("LeftLeg", CubeListBuilder.m_171558_().m_171514_(0, 48).m_171480_().m_171488_(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)).m_171555_(false), PartPose.m_171419_(2.0F, 12.0F, 0.0F));
-      partdefinition.m_171599_("RightBoot", CubeListBuilder.m_171558_().m_171514_(16, 48).m_171480_().m_171488_(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.4F)).m_171555_(false), PartPose.m_171419_(-2.0F, 12.0F, 0.0F));
-      partdefinition.m_171599_("LeftBoot", CubeListBuilder.m_171558_().m_171514_(16, 48).m_171488_(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.4F)), PartPose.m_171419_(2.0F, 12.0F, 0.0F));
-      return LayerDefinition.m_171565_(meshdefinition, 64, 64);
+      PartDefinition partdefinition = meshdefinition.getRoot();
+      partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.505F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+      partdefinition.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)).texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.6F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+      partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.03F)).texOffs(48, 48).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)), PartPose.offset(-5.0F, 2.0F, 0.0F));
+      partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)).texOffs(48, 48).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.53F)).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
+      partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create().texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)), PartPose.offset(-2.0F, 12.0F, 0.0F));
+      partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create().texOffs(0, 48).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.28F)).mirror(false), PartPose.offset(2.0F, 12.0F, 0.0F));
+      partdefinition.addOrReplaceChild("RightBoot", CubeListBuilder.create().texOffs(16, 48).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.4F)).mirror(false), PartPose.offset(-2.0F, 12.0F, 0.0F));
+      partdefinition.addOrReplaceChild("LeftBoot", CubeListBuilder.create().texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.4F)), PartPose.offset(2.0F, 12.0F, 0.0F));
+      return LayerDefinition.create(meshdefinition, 64, 64);
    }
 
-   public void m_7695_(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      this.Head.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.Body.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.RightArm.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.LeftArm.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.RightLeg.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.LeftLeg.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.RightBoot.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.LeftBoot.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+   public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      this.Head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.Body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.RightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.LeftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.RightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.LeftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.RightBoot.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.LeftBoot.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
    }
 
-   public void m_6973_(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+   public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
    }
 }

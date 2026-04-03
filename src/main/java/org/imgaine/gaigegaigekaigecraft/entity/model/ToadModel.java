@@ -13,15 +13,15 @@ public class ToadModel extends GeoModel<ToadEntity> {
    }
 
    public ResourceLocation getAnimationResource(ToadEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/toad.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/toad.animation.json");
    }
 
    public ResourceLocation getModelResource(ToadEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/toad.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/toad.geo.json");
    }
 
    public ResourceLocation getTextureResource(ToadEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(ToadEntity animatable, long instanceId, AnimationState animationState) {

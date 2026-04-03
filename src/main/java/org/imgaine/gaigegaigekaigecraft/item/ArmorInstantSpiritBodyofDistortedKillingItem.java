@@ -25,35 +25,35 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 public abstract class ArmorInstantSpiritBodyofDistortedKillingItem extends ArmorItem {
    public ArmorInstantSpiritBodyofDistortedKillingItem(ArmorItem.Type type, Item.Properties properties) {
       super(new ArmorMaterial() {
-         public int m_266425_(ArmorItem.Type type) {
-            return (new int[]{13, 15, 16, 11})[type.m_266308_().m_20749_()] * 0;
+         public int getDurabilityForType(ArmorItem.Type type) {
+            return (new int[]{13, 15, 16, 11})[type.getSlot().getIndex()] * 0;
          }
 
-         public int m_7366_(ArmorItem.Type type) {
-            return (new int[]{1, 2, 6, 2})[type.m_266308_().m_20749_()];
+         public int getDefenseForType(ArmorItem.Type type) {
+            return (new int[]{1, 2, 6, 2})[type.getSlot().getIndex()];
          }
 
-         public int m_6646_() {
+         public int getEnchantmentValue() {
             return 0;
          }
 
-         public SoundEvent m_7344_() {
-            return SoundEvents.f_271165_;
+         public SoundEvent getEquipSound() {
+            return SoundEvents.EMPTY;
          }
 
-         public Ingredient m_6230_() {
-            return Ingredient.m_151265_();
+         public Ingredient getRepairIngredient() {
+            return Ingredient.of();
          }
 
-         public String m_6082_() {
+         public String getName() {
             return "armor_instant_spirit_bodyof_distorted_killing";
          }
 
-         public float m_6651_() {
+         public float getToughness() {
             return 0.25F;
          }
 
-         public float m_6649_() {
+         public float getKnockbackResistance() {
             return 0.01F;
          }
       }, type, properties);
@@ -67,17 +67,17 @@ public abstract class ArmorInstantSpiritBodyofDistortedKillingItem extends Armor
       public void initializeClient(Consumer<IClientItemExtensions> consumer) {
          consumer.accept(new IClientItemExtensions() {
             public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
-               HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("head", (new Modelmahito_phase2(Minecraft.m_91087_().m_167973_().m_171103_(Modelmahito_phase2.LAYER_LOCATION))).head, "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
-               armorModel.f_102817_ = living.m_6144_();
-               armorModel.f_102609_ = defaultModel.f_102609_;
-               armorModel.f_102610_ = living.m_6162_();
+               HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("head", (new Modelmahito_phase2(Minecraft.getInstance().getEntityModels().bakeLayer(Modelmahito_phase2.LAYER_LOCATION))).head, "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
+               armorModel.crouching = living.isShiftKeyDown();
+               armorModel.riding = defaultModel.riding;
+               armorModel.young = living.isBaby();
                return armorModel;
             }
          });
       }
 
       public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-         return "jujutsucraft:textures/entities/mahito_phase2_head.png";
+         return "gaigegaigekaigecraft:textures/entities/mahito_phase2_head.png";
       }
    }
 
@@ -90,17 +90,17 @@ public abstract class ArmorInstantSpiritBodyofDistortedKillingItem extends Armor
          consumer.accept(new IClientItemExtensions() {
             @OnlyIn(Dist.CLIENT)
             public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
-               HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("body", (new Modelmahito_phase2(Minecraft.m_91087_().m_167973_().m_171103_(Modelmahito_phase2.LAYER_LOCATION))).body, "left_arm", (new Modelmahito_phase2(Minecraft.m_91087_().m_167973_().m_171103_(Modelmahito_phase2.LAYER_LOCATION))).left_arm, "right_arm", (new Modelmahito_phase2(Minecraft.m_91087_().m_167973_().m_171103_(Modelmahito_phase2.LAYER_LOCATION))).right_arm, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
-               armorModel.f_102817_ = living.m_6144_();
-               armorModel.f_102609_ = defaultModel.f_102609_;
-               armorModel.f_102610_ = living.m_6162_();
+               HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("body", (new Modelmahito_phase2(Minecraft.getInstance().getEntityModels().bakeLayer(Modelmahito_phase2.LAYER_LOCATION))).body, "left_arm", (new Modelmahito_phase2(Minecraft.getInstance().getEntityModels().bakeLayer(Modelmahito_phase2.LAYER_LOCATION))).left_arm, "right_arm", (new Modelmahito_phase2(Minecraft.getInstance().getEntityModels().bakeLayer(Modelmahito_phase2.LAYER_LOCATION))).right_arm, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
+               armorModel.crouching = living.isShiftKeyDown();
+               armorModel.riding = defaultModel.riding;
+               armorModel.young = living.isBaby();
                return armorModel;
             }
          });
       }
 
       public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-         return "jujutsucraft:textures/entities/mahito_phase2__body.png";
+         return "gaigegaigekaigecraft:textures/entities/mahito_phase2__body.png";
       }
    }
 
@@ -113,17 +113,17 @@ public abstract class ArmorInstantSpiritBodyofDistortedKillingItem extends Armor
          consumer.accept(new IClientItemExtensions() {
             @OnlyIn(Dist.CLIENT)
             public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
-               HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("left_leg", (new Modelmahito_phase2(Minecraft.m_91087_().m_167973_().m_171103_(Modelmahito_phase2.LAYER_LOCATION))).left_leg, "right_leg", (new Modelmahito_phase2(Minecraft.m_91087_().m_167973_().m_171103_(Modelmahito_phase2.LAYER_LOCATION))).right_leg, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
-               armorModel.f_102817_ = living.m_6144_();
-               armorModel.f_102609_ = defaultModel.f_102609_;
-               armorModel.f_102610_ = living.m_6162_();
+               HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("left_leg", (new Modelmahito_phase2(Minecraft.getInstance().getEntityModels().bakeLayer(Modelmahito_phase2.LAYER_LOCATION))).left_leg, "right_leg", (new Modelmahito_phase2(Minecraft.getInstance().getEntityModels().bakeLayer(Modelmahito_phase2.LAYER_LOCATION))).right_leg, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
+               armorModel.crouching = living.isShiftKeyDown();
+               armorModel.riding = defaultModel.riding;
+               armorModel.young = living.isBaby();
                return armorModel;
             }
          });
       }
 
       public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-         return "jujutsucraft:textures/entities/mahito_phase2__body.png";
+         return "gaigegaigekaigecraft:textures/entities/mahito_phase2__body.png";
       }
    }
 }

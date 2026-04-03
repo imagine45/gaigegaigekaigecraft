@@ -14,7 +14,7 @@ public class OrcasanRightClickedOnEntityProcedure {
             TamableAnimal _toTame = (TamableAnimal)entity;
             if (sourceentity instanceof Player) {
                Player _owner = (Player)sourceentity;
-               _toTame.m_21828_(_owner);
+               _toTame.tame(_owner);
             }
          }
 

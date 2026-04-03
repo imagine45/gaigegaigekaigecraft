@@ -23,8 +23,8 @@ public class PlayAnimationProcedure {
             label43: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity2 = (LivingEntity)entity;
-                  if (_livingEntity2.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                     var10000 = _livingEntity2.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22115_();
+                  if (_livingEntity2.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                     var10000 = _livingEntity2.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).getBaseValue();
                      break label43;
                   }
                }
@@ -35,15 +35,15 @@ public class PlayAnimationProcedure {
             if (var10000 == 0.0) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity4 = (LivingEntity)entity;
-                  if (_livingEntity4.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                     _livingEntity4.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(entity.getPersistentData().m_128459_("skill"));
+                  if (_livingEntity4.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                     _livingEntity4.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(entity.getPersistentData().getDouble("skill"));
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity6 = (LivingEntity)entity;
-                  if (_livingEntity6.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
-                     _livingEntity6.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).m_22100_(entity.getPersistentData().m_128459_("cnt5"));
+                  if (_livingEntity6.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
+                     _livingEntity6.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).setBaseValue(entity.getPersistentData().getDouble("cnt5"));
                   }
                }
             }
@@ -51,8 +51,8 @@ public class PlayAnimationProcedure {
             label37: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity7 = (LivingEntity)entity;
-                  if (_livingEntity7.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                     var10000 = _livingEntity7.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22115_();
+                  if (_livingEntity7.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                     var10000 = _livingEntity7.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).getBaseValue();
                      break label37;
                   }
                }
@@ -61,7 +61,7 @@ public class PlayAnimationProcedure {
             }
 
             if (var10000 != 0.0) {
-               entity.m_6469_(new DamageSource(world.m_9598_().m_175515_(Registries.f_268580_).m_246971_(ResourceKey.m_135785_(Registries.f_268580_, new ResourceLocation("jujutsucraft:start_animation")))), 1.0F);
+               entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("gaigegaigekaigecraft:start_animation")))), 1.0F);
             }
          }
 

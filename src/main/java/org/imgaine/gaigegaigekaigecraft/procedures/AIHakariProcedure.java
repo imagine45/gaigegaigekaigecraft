@@ -24,14 +24,14 @@ public class AIHakariProcedure {
          double tick = 0.0;
          double distance = 0.0;
          double level = 0.0;
-         if (entity.m_6084_()) {
-            entity.getPersistentData().m_128347_("cnt_break", 0.0);
+         if (entity.isAlive()) {
+            entity.getPersistentData().putDouble("cnt_break", 0.0);
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt2 = (LivingEntity)entity;
-               if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.JACKPOT.get()) && entity instanceof LivingEntity) {
+               if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.JACKPOT.get()) && entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get(), 20, 9, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get(), 20, 9, false, false));
                   }
                }
             }
@@ -40,15 +40,15 @@ public class AIHakariProcedure {
                AIActiveProcedure.execute(world, x, y, z, entity);
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt4 = (LivingEntity)entity;
-                  if (_livEnt4.m_21023_(MobEffects.f_19600_)) {
+                  if (_livEnt4.hasEffect(MobEffects.DAMAGE_BOOST)) {
                      break label225;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, 11, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, 11, false, false));
                   }
                }
             }
@@ -56,15 +56,15 @@ public class AIHakariProcedure {
             label220: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt6 = (LivingEntity)entity;
-                  if (_livEnt6.m_21023_(MobEffects.f_19606_)) {
+                  if (_livEnt6.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
                      break label220;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, 3, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, 3, false, false));
                   }
                }
             }
@@ -72,15 +72,15 @@ public class AIHakariProcedure {
             label215: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt8 = (LivingEntity)entity;
-                  if (_livEnt8.m_21023_(MobEffects.f_19621_)) {
+                  if (_livEnt8.hasEffect(MobEffects.LUCK)) {
                      break label215;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19621_, 2147483647, 1, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.LUCK, 2147483647, 1, false, false));
                   }
                }
             }
@@ -88,34 +88,34 @@ public class AIHakariProcedure {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
             if (var10000 instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
-                  if (entity.getPersistentData().m_128459_("cnt_target") > 600.0) {
+               entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
+                  if (entity.getPersistentData().getDouble("cnt_target") > 600.0) {
                      if (entity instanceof Player) {
                         Player _player = (Player)entity;
-                        _player.m_150109_().f_35975_.set(2, ItemStack.f_41583_);
-                        _player.m_150109_().m_6596_();
+                        _player.getInventory().armor.set(2, ItemStack.EMPTY);
+                        _player.getInventory().setChanged();
                      } else if (entity instanceof LivingEntity) {
                         LivingEntity _living = (LivingEntity)entity;
-                        _living.m_8061_(EquipmentSlot.CHEST, ItemStack.f_41583_);
+                        _living.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
                      }
                   }
 
                   ResetCounterProcedure.execute(entity);
-                  entity.getPersistentData().m_128347_("cnt_x", 0.0);
+                  entity.getPersistentData().putDouble("cnt_x", 0.0);
                   if (LogicStartProcedure.execute(entity)) {
                      label246: {
-                        if ((!(Math.random() < 0.1) || AIDomainLogicProcedure.execute(world, x, y, z, entity)) && !(entity.getPersistentData().m_128459_("cnt_target") > 600.0)) {
+                        if ((!(Math.random() < 0.1) || AIDomainLogicProcedure.execute(world, x, y, z, entity)) && !(entity.getPersistentData().getDouble("cnt_target") > 600.0)) {
                            float var49;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var49 = _livEnt.m_21223_();
+                              var49 = _livEnt.getHealth();
                            } else {
                               var49 = -1.0F;
                            }
@@ -124,7 +124,7 @@ public class AIHakariProcedure {
                            float var10001;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var10001 = _livEnt.m_21233_();
+                              var10001 = _livEnt.getMaxHealth();
                            } else {
                               var10001 = -1.0F;
                            }
@@ -133,29 +133,29 @@ public class AIHakariProcedure {
                               LivingEntity var51;
                               if (entity instanceof Mob) {
                                  Mob _mobEnt = (Mob)entity;
-                                 var51 = _mobEnt.m_5448_();
+                                 var51 = _mobEnt.getTarget();
                               } else {
                                  var51 = null;
                               }
-
+                              int var52;
                               label194: {
                                  LivingEntity var27 = var51;
                                  if (var27 instanceof LivingEntity) {
                                     LivingEntity _livEnt = var27;
-                                    if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                       var52 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                                    if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                       var52 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                        break label194;
                                     }
                                  }
 
                                  var52 = 0;
                               }
-
+                              int var55;
                               label189: {
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                       var55 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                                    if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                       var55 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                        break label189;
                                     }
                                  }
@@ -171,12 +171,12 @@ public class AIHakariProcedure {
 
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt26 = (LivingEntity)entity;
-                           if (_livEnt26.m_21023_((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
+                           if (_livEnt26.hasEffect((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
                               break label246;
                            }
                         }
 
-                        entity.getPersistentData().m_128379_("flag_domain", true);
+                        entity.getPersistentData().putBoolean("flag_domain", true);
                      }
                   }
 
@@ -186,15 +186,15 @@ public class AIHakariProcedure {
                      label243: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt28 = (LivingEntity)entity;
-                           if (_livEnt28.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && !entity.getPersistentData().m_128471_("Failed")) {
-                              if (entity.getPersistentData().m_128459_("Reserve") != 0.0) {
+                           if (_livEnt28.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && !entity.getPersistentData().getBoolean("Failed")) {
+                              if (entity.getPersistentData().getDouble("Reserve") != 0.0) {
                                  break label243;
                               }
 
                               float var53;
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entity;
-                                 var53 = _livEnt.m_21223_();
+                                 var53 = _livEnt.getHealth();
                               } else {
                                  var53 = -1.0F;
                               }
@@ -203,12 +203,12 @@ public class AIHakariProcedure {
                               float var56;
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entity;
-                                 var56 = _livEnt.m_21233_();
+                                 var56 = _livEnt.getMaxHealth();
                               } else {
                                  var56 = -1.0F;
                               }
 
-                              if (var54 <= (double)var56 * 0.75 && entity.getPersistentData().m_128459_("mode_hakari") == 2.0) {
+                              if (var54 <= (double)var56 * 0.75 && entity.getPersistentData().getDouble("mode_hakari") == 2.0) {
                                  level = 0.0;
                                  rnd = 7.0;
                                  tick = 0.0;
@@ -224,7 +224,7 @@ public class AIHakariProcedure {
 
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt34 = (LivingEntity)entity;
-                           if (_livEnt34.m_21023_((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
+                           if (_livEnt34.hasEffect((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
                               break label243;
                            }
                         }
@@ -240,7 +240,7 @@ public class AIHakariProcedure {
                   label161: {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt35 = (LivingEntity)entity;
-                        if (_livEnt35.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
+                        if (_livEnt35.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
                            break label161;
                         }
                      }
@@ -256,7 +256,7 @@ public class AIHakariProcedure {
                      label244: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt36 = (LivingEntity)entity;
-                           if (_livEnt36.m_21023_((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
+                           if (_livEnt36.hasEffect((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
                               break label244;
                            }
                         }
@@ -268,37 +268,37 @@ public class AIHakariProcedure {
                   }
 
                   if (rnd > 0.0) {
-                     entity.getPersistentData().m_128347_("skill", 2900.0 + rnd);
+                     entity.getPersistentData().putDouble("skill", 2900.0 + rnd);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                         }
                      }
 
                      if (level > 0.0) {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)tick, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)tick, 0, false, false));
                            }
                         }
                      } else if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
                         }
                      }
 
                      if (rnd == 20.0) {
-                        entity.getPersistentData().m_128379_("flag_domain", false);
+                        entity.getPersistentData().putBoolean("flag_domain", false);
                      }
                   } else {
                      CalculateAttackProcedure.execute(world, entity);
                   }
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
             }
          }
 

@@ -24,41 +24,46 @@ public class ReturnInsideItemProcedure {
 
    public static ItemStack execute(Entity entity) {
       if (entity == null) {
-         return ItemStack.f_41583_;
+         return ItemStack.EMPTY;
       } else {
-         ItemStack item_a = ItemStack.f_41583_;
+         ItemStack item_a = ItemStack.EMPTY;
          if (entity instanceof Player) {
-            item_a = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41777_();
+            item_a = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.copy();
          } else {
             if (entity instanceof ItadoriYujiShinjukuEntity) {
-               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get())).m_41777_();
-               item_a.m_41764_(6);
-            } else if (entity instanceof ItadoriYujiEntity) {
-               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).m_41777_();
-               item_a.m_41764_(3);
+               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get())).copy();
+               item_a.setCount(6);
             } else if (entity instanceof ItadoriYujiShibuyaEntity) {
-               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).m_41777_();
-               item_a.m_41764_(16);
+               if (entity instanceof ItadoriYujiShibuyaEntity) {
+                  ItadoriYujiShibuyaEntity _datEntL4 = (ItadoriYujiShibuyaEntity)entity;
+                  if ((Boolean)_datEntL4.getEntityData().get(ItadoriYujiShibuyaEntity.DATA_sukuna)) {
+                     item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).copy();
+                     item_a.setCount(16);
+                  }
+               }
+            } else if (entity instanceof ItadoriYujiEntity) {
+               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).copy();
+               item_a.setCount(3);
             }
 
             if (entity instanceof ChosoEntity || entity instanceof EsoEntity || entity instanceof KechizuEntity) {
-               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get())).m_41777_();
-               item_a.m_41764_(1);
+               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get())).copy();
+               item_a.setCount(1);
             }
 
             if (!(entity instanceof SukunaFushiguroEntity) && !(entity instanceof SukunaPerfectEntity)) {
                if (entity instanceof SukunaEntity) {
-                  item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).m_41777_();
-                  item_a.m_41764_(16);
+                  item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).copy();
+                  item_a.setCount(16);
                }
             } else {
-               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).m_41777_();
-               item_a.m_41764_(20);
+               item_a = (new ItemStack((ItemLike)JujutsucraftModItems.SUKUNA_FINGER.get())).copy();
+               item_a.setCount(20);
             }
          }
 
-         if (entity.getPersistentData().m_128471_("CursedSpirit")) {
-            item_a = (new ItemStack((ItemLike)JujutsucraftModBlocks.IN_BARRIER.get())).m_41777_();
+         if (entity.getPersistentData().getBoolean("CursedSpirit")) {
+            item_a = (new ItemStack((ItemLike)JujutsucraftModBlocks.IN_BARRIER.get())).copy();
          }
 
          return item_a;

@@ -33,65 +33,64 @@ public class DeepConcentrationItadoriProcedure {
          double y_power = 0.0;
          double z_power = 0.0;
          double max_power = 0.0;
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-         x_pos = entity.m_20185_();
-         y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.5;
-         z_pos = entity.m_20189_();
-         if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "stopsound @s");
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+         x_pos = entity.getX();
+         y_pos = entity.getY() + (double)entity.getBbHeight() * 0.5;
+         z_pos = entity.getZ();
+         if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "stopsound @s");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "playsound jujutsucraft:slow_motion_end master @s ~ ~ ~ 1 1 1");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "playsound gaigegaigekaigecraft:slow_motion_end master @s ~ ~ ~ 1 1 1");
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19610_, 35, 0, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 35, 0, false, false));
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19611_, 35, 0, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 35, 0, false, false));
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 25, 9, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 25, 9, false, false));
                }
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt1") > 25.0) {
+         if (entity.getPersistentData().getDouble("cnt1") > 25.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get());
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get());
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
+               if (!_entity.level().isClientSide()) {
                   MobEffectInstance var10001;
                   MobEffect var10003;
                   int var10005;
                   label69: {
-                     var10001 = new MobEffectInstance;
                      var10003 = (MobEffect)JujutsucraftModMobEffects.DEEP_CONCENTRATION.get();
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                           var10005 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                        if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                           var10005 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                            break label69;
                         }
                      }
@@ -99,8 +98,8 @@ public class DeepConcentrationItadoriProcedure {
                      var10005 = 0;
                   }
 
-                  var10001.<init>(var10003, 1800, Math.min(var10005, 9), true, true);
-                  _entity.m_7292_(var10001);
+                  var10001 = new MobEffectInstance(var10003, 1800, Math.min(var10005, 9), true, true);
+                  _entity.addEffect(var10001);
                }
             }
 
@@ -110,7 +109,7 @@ public class DeepConcentrationItadoriProcedure {
                capability.syncPlayerVariables(entity);
             });
             KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-            entity.getPersistentData().m_128347_("skill", 0.0);
+            entity.getPersistentData().putDouble("skill", 0.0);
          }
 
       }

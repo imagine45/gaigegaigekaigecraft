@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModAttributes;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -61,24 +60,24 @@ public class SkillSoulExplosionProcedure {
          double y_power = 0.0;
          double z_power = 0.0;
          double x_power = 0.0;
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-         CNT6 = 1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.1;
-         if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+         CNT6 = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.1;
+         if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)entity.getPersistentData().m_128459_("COOLDOWN_TICKS"), 0, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)entity.getPersistentData().getDouble("COOLDOWN_TICKS"), 0, false, false));
                }
             }
 
-            yaw = Math.toRadians((double)(entity.m_146908_() + 90.0F));
-            picth = Math.toRadians((double)entity.m_146909_());
-            x_pos = entity.m_20185_() + Math.cos(yaw) * Math.cos(picth) * (double)(1.0F + entity.m_20205_());
-            y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.6 + Math.sin(picth) * -1.0 * (double)(1.0F + entity.m_20205_());
-            z_pos = entity.m_20189_() + Math.sin(yaw) * Math.cos(picth) * (double)(1.0F + entity.m_20205_());
-            CNT6 = 1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.1;
-            if (entity.getPersistentData().m_128459_("cnt6") >= 5.0) {
-               ChargeParticleProcedure.execute(world, entity, 10.0);
+            yaw = Math.toRadians((double)(entity.getYRot() + 90.0F));
+            picth = Math.toRadians((double)entity.getXRot());
+            x_pos = entity.getX() + Math.cos(yaw) * Math.cos(picth) * (double)(1.0F + entity.getBbWidth());
+            y_pos = entity.getY() + (double)entity.getBbHeight() * 0.6 + Math.sin(picth) * -1.0 * (double)(1.0F + entity.getBbWidth());
+            z_pos = entity.getZ() + Math.sin(yaw) * Math.cos(picth) * (double)(1.0F + entity.getBbWidth());
+            CNT6 = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.1;
+            if (entity.getPersistentData().getDouble("cnt6") >= 5.0) {
+               ChargeParticleProcedure.execute(world, entity, 1.0);
             } else {
                ChargeParticleProcedure.execute(world, entity, 0.0);
             }
@@ -86,7 +85,7 @@ public class SkillSoulExplosionProcedure {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
@@ -94,82 +93,82 @@ public class SkillSoulExplosionProcedure {
             if (var10000 instanceof LivingEntity) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 20, 9, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 9, false, false));
                   }
                }
 
-               entity.getPersistentData().m_128379_("PRESS_Z", false);
+               entity.getPersistentData().putBoolean("PRESS_Z", false);
                if (GetDistanceNearestEnemyProcedure.execute(world, entity) > 6.0) {
-                  label243: {
+                  label245: {
                      if (entity instanceof Mob) {
                         Mob _mobEnt = (Mob)entity;
-                        var10000 = _mobEnt.m_5448_();
+                        var10000 = _mobEnt.getTarget();
                      } else {
                         var10000 = null;
                      }
 
-                     if (((Entity)var10000).getPersistentData().m_128459_("skill") != 0.0) {
-                        label244: {
+                     if (((Entity)var10000).getPersistentData().getDouble("skill") != 0.0) {
+                        label246: {
                            if (entity instanceof Mob) {
                               Mob _mobEnt = (Mob)entity;
-                              var10000 = _mobEnt.m_5448_();
+                              var10000 = _mobEnt.getTarget();
                            } else {
                               var10000 = null;
                            }
 
-                           if (((Entity)var10000).getPersistentData().m_128459_("skill") != 0.0) {
+                           if (((Entity)var10000).getPersistentData().getDouble("skill") != 0.0) {
                               if (entity instanceof Mob) {
                                  Mob _mobEnt = (Mob)entity;
-                                 var10000 = _mobEnt.m_5448_();
+                                 var10000 = _mobEnt.getTarget();
                               } else {
                                  var10000 = null;
                               }
 
-                              if (((Entity)var10000).getPersistentData().m_128471_("attack")) {
-                                 break label244;
+                              if (((Entity)var10000).getPersistentData().getBoolean("attack")) {
+                                 break label246;
                               }
                            }
 
                            if (entity instanceof Mob) {
                               Mob _mobEnt = (Mob)entity;
-                              var10000 = _mobEnt.m_5448_();
+                              var10000 = _mobEnt.getTarget();
                            } else {
                               var10000 = null;
                            }
 
-                           if (((Entity)var10000).getPersistentData().m_128459_("Damage") != 0.0) {
-                              break label243;
+                           if (((Entity)var10000).getPersistentData().getDouble("Damage") != 0.0) {
+                              break label245;
                            }
                         }
                      }
 
-                     entity.getPersistentData().m_128379_("PRESS_Z", true);
+                     entity.getPersistentData().putBoolean("PRESS_Z", true);
                   }
                }
 
-               if (entity.getPersistentData().m_128459_("cnt6") >= 5.0) {
-                  entity.getPersistentData().m_128379_("PRESS_Z", false);
+               if (entity.getPersistentData().getDouble("cnt6") >= 5.0) {
+                  entity.getPersistentData().putBoolean("PRESS_Z", false);
                }
             }
 
-            if (entity.getPersistentData().m_128471_("PRESS_Z")) {
-               entity.getPersistentData().m_128347_("cnt1", Math.min(entity.getPersistentData().m_128459_("cnt1"), 0.0));
-               if (entity.getPersistentData().m_128459_("cnt6") > 5.0) {
+            if (entity.getPersistentData().getBoolean("PRESS_Z")) {
+               entity.getPersistentData().putDouble("cnt1", Math.min(entity.getPersistentData().getDouble("cnt1"), 0.0));
+               if (entity.getPersistentData().getDouble("cnt6") > 5.0) {
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_254849_((Entity)null, x_pos, y_pos, z_pos, 0.0F, ExplosionInteraction.NONE);
+                     if (!_level.isClientSide()) {
+                        _level.explode((Entity)null, x_pos, y_pos, z_pos, 0.0F, ExplosionInteraction.NONE);
                      }
                   }
 
-                  entity.getPersistentData().m_128347_("cnt6", 5.0);
-               } else if (entity.getPersistentData().m_128459_("cnt6") == 5.0) {
-                  entity.getPersistentData().m_128347_("cnt6", 5.0);
+                  entity.getPersistentData().putDouble("cnt6", 5.0);
+               } else if (entity.getPersistentData().getDouble("cnt6") == 5.0) {
+                  entity.getPersistentData().putDouble("cnt6", 5.0);
                } else {
-                  entity.getPersistentData().m_128347_("cnt6", entity.getPersistentData().m_128459_("cnt6") + 0.1);
-                  if (entity.getPersistentData().m_128459_("cnt6") == 5.0) {
-                     entity.getPersistentData().m_128347_("cnt6", entity.getPersistentData().m_128459_("cnt6") + 0.01);
+                  entity.getPersistentData().putDouble("cnt6", entity.getPersistentData().getDouble("cnt6") + 0.1);
+                  if (entity.getPersistentData().getDouble("cnt6") == 5.0) {
+                     entity.getPersistentData().putDouble("cnt6", entity.getPersistentData().getDouble("cnt6") + 0.01);
                   }
 
                   if (entity instanceof Player) {
@@ -183,77 +182,77 @@ public class SkillSoulExplosionProcedure {
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
+         if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 20, 9, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 9, false, false));
                }
             }
 
             LivingEntity var79;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var79 = _mobEnt.m_5448_();
+               var79 = _mobEnt.getTarget();
             } else {
                var79 = null;
             }
 
             if (var79 instanceof LivingEntity) {
                EntityAnchorArgument.Anchor var10001 = Anchor.EYES;
-               Vec3 var10002 = new Vec3;
+               Vec3 var10002;
                LivingEntity var10004;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10004 = _mobEnt.m_5448_();
+                  var10004 = _mobEnt.getTarget();
                } else {
                   var10004 = null;
                }
 
-               double var80 = ((Entity)var10004).m_20185_();
+               double var80 = ((Entity)var10004).getX();
                LivingEntity var10005;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10005 = _mobEnt.m_5448_();
+                  var10005 = _mobEnt.getTarget();
                } else {
                   var10005 = null;
                }
 
-               double var81 = ((Entity)var10005).m_20186_();
+               double var81 = ((Entity)var10005).getY();
                LivingEntity var10006;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10006 = _mobEnt.m_5448_();
+                  var10006 = _mobEnt.getTarget();
                } else {
                   var10006 = null;
                }
 
-               var81 += (double)((Entity)var10006).m_20206_() * 0.5;
+               var81 += (double)((Entity)var10006).getBbHeight() * 0.5;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10006 = _mobEnt.m_5448_();
+                  var10006 = _mobEnt.getTarget();
                } else {
                   var10006 = null;
                }
 
-               var10002.<init>(var80, var81, ((Entity)var10006).m_20189_());
-               entity.m_7618_(var10001, var10002);
+               var10002 = new Vec3(var80, var81, ((Entity)var10006).getZ());
+               entity.lookAt(var10001, var10002);
             }
 
             dis = 6.0;
 
             for(int index0 = 0; index0 < 8; ++index0) {
-               x_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(dis)), Block.VISUAL, Fluid.NONE, entity)).m_82425_().m_123341_();
-               y_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(dis)), Block.VISUAL, Fluid.NONE, entity)).m_82425_().m_123342_();
-               z_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(dis)), Block.VISUAL, Fluid.NONE, entity)).m_82425_().m_123343_();
+               x_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(dis)), Block.VISUAL, Fluid.NONE, entity)).getBlockPos().getX();
+               y_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(dis)), Block.VISUAL, Fluid.NONE, entity)).getBlockPos().getY();
+               z_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(dis)), Block.VISUAL, Fluid.NONE, entity)).getBlockPos().getZ();
                Vec3 _center = new Vec3(x_pos, y_pos, z_pos);
 
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(6.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                  if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo")))) {
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(6.0), (e) -> true)) {
+                  if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator) && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo")))) {
                      SUCCESS = true;
-                     x_pos = entityiterator.m_20185_();
-                     y_pos = entityiterator.m_20186_();
-                     z_pos = entityiterator.m_20189_();
+                     x_pos = entityiterator.getX();
+                     y_pos = entityiterator.getY();
+                     z_pos = entityiterator.getZ();
                      break;
                   }
                }
@@ -265,47 +264,47 @@ public class SkillSoulExplosionProcedure {
                dis += 6.0;
             }
 
-            for(int index1 = 0; index1 < 255 && !world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_60815_() && !world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_204336_(BlockTags.create(new ResourceLocation("jujutsucraft:barrier"))); ++index1) {
+            for(int index1 = 0; index1 < 255 && !world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).canOcclude() && !world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).is(BlockTags.create(new ResourceLocation("gaigegaigekaigecraft:barrier"))); ++index1) {
                ++y_pos;
             }
 
-            for(int index2 = 0; index2 < 255 && !world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_60815_() && !world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_204336_(BlockTags.create(new ResourceLocation("jujutsucraft:barrier"))); ++index2) {
+            for(int index2 = 0; index2 < 255 && !world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).canOcclude() && !world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).is(BlockTags.create(new ResourceLocation("gaigegaigekaigecraft:barrier"))); ++index2) {
                --y_pos;
             }
 
-            entity.getPersistentData().m_128347_("x_pos", x_pos);
-            entity.getPersistentData().m_128347_("y_pos", y_pos);
-            entity.getPersistentData().m_128347_("z_pos", z_pos);
+            entity.getPersistentData().putDouble("x_pos", x_pos);
+            entity.getPersistentData().putDouble("y_pos", y_pos);
+            entity.getPersistentData().putDouble("z_pos", z_pos);
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity77 = (LivingEntity)entity;
-               if (_livingEntity77.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                  _livingEntity77.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(4.0);
+               if (_livingEntity77.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                  _livingEntity77.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(4.0);
                }
             }
 
             PlayAnimationProcedure.execute(world, entity);
          }
 
-         x_pos = entity.getPersistentData().m_128459_("x_pos");
-         y_pos = entity.getPersistentData().m_128459_("y_pos");
-         z_pos = entity.getPersistentData().m_128459_("z_pos");
+         x_pos = entity.getPersistentData().getDouble("x_pos");
+         y_pos = entity.getPersistentData().getDouble("y_pos");
+         z_pos = entity.getPersistentData().getDouble("z_pos");
          dis = 6.0 * CNT6;
-         if (entity.getPersistentData().m_128459_("cnt1") > 1.0 && entity.getPersistentData().m_128459_("cnt1") <= 10.0) {
+         if (entity.getPersistentData().getDouble("cnt1") > 1.0 && entity.getPersistentData().getDouble("cnt1") <= 10.0) {
             if (world instanceof Level) {
                Level _level = (Level)world;
-               if (!_level.m_5776_()) {
-                  _level.m_5594_((Player)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+               if (!_level.isClientSide()) {
+                  _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F);
                } else {
-                  _level.m_7785_(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+                  _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
                }
             }
 
             if (world instanceof Level) {
                Level _level = (Level)world;
-               if (!_level.m_5776_()) {
-                  _level.m_5594_((Player)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_portal.spawn")), SoundSource.NEUTRAL, 2.0F, 0.9F);
+               if (!_level.isClientSide()) {
+                  _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_portal.spawn")), SoundSource.NEUTRAL, 2.0F, 0.9F);
                } else {
-                  _level.m_7785_(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_portal.spawn")), SoundSource.NEUTRAL, 2.0F, 0.9F, false);
+                  _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_portal.spawn")), SoundSource.NEUTRAL, 2.0F, 0.9F, false);
                }
             }
 
@@ -313,29 +312,29 @@ public class SkillSoulExplosionProcedure {
             ParticleGeneratorCircleProcedure.execute(world, 10.0, 90.0, dis, dis, 0.25, x_pos, x_pos, y_pos, y_pos + 1.0, 0.0, z_pos, z_pos, "minecraft:squid_ink");
          }
 
-         if (entity.getPersistentData().m_128459_("cnt1") > 10.0) {
-            entity.getPersistentData().m_128347_("y_knockback", 0.26);
-            entity.getPersistentData().m_128347_("Damage", 14.0 * CNT6);
-            entity.getPersistentData().m_128347_("knockback", 0.1);
-            entity.getPersistentData().m_128347_("Range", 2.0 * dis);
+         if (entity.getPersistentData().getDouble("cnt1") > 10.0 && entity.getPersistentData().getDouble("cnt1") < 20.0) {
+            entity.getPersistentData().putDouble("y_knockback", 0.26);
+            entity.getPersistentData().putDouble("Damage", 14.0 * CNT6);
+            entity.getPersistentData().putDouble("knockback", 0.1);
+            entity.getPersistentData().putDouble("Range", 2.0 * dis);
             RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
-            entity.getPersistentData().m_128347_("BlockRange", 1.0 * dis);
-            entity.getPersistentData().m_128347_("BlockDamage", 0.2 * CNT6);
+            entity.getPersistentData().putDouble("BlockRange", 1.0 * dis);
+            entity.getPersistentData().putDouble("BlockDamage", 0.2 * CNT6);
             BlockDestroyAllDirectionProcedure.execute(world, x_pos, y_pos, z_pos, entity);
-            entity.getPersistentData().m_128347_("y_knockback", 0.0);
+            entity.getPersistentData().putDouble("y_knockback", 0.0);
             ParticleGeneratorCircleProcedure.execute(world, 10.0, 90.0, dis, dis, 0.5, x_pos, x_pos, y_pos, y_pos + 1.0, 0.0, z_pos, z_pos, "minecraft:sculk_soul");
             ParticleGeneratorCircleProcedure.execute(world, 10.0, 90.0, dis, dis, 1.5, x_pos, x_pos, y_pos, y_pos + 1.0, 0.0, z_pos, z_pos, "minecraft:squid_ink");
 
             for(int index3 = 0; index3 < 10; ++index3) {
-               dis = Mth.m_216263_(RandomSource.m_216327_(), 0.0, 6.0);
+               dis = Mth.nextDouble(RandomSource.create(), 0.0, 6.0);
                ParticleGeneratorCircleProcedure.execute(world, 1.0, 90.0, dis, dis, 0.5, x_pos, x_pos, y_pos, y_pos + 1.0, 0.0, z_pos, z_pos, "minecraft:soul");
-               dis = Mth.m_216263_(RandomSource.m_216327_(), 0.0, 6.0);
+               dis = Mth.nextDouble(RandomSource.create(), 0.0, 6.0);
                ParticleGeneratorCircleProcedure.execute(world, 2.0, 90.0, dis, dis, 1.5, x_pos, x_pos, y_pos, y_pos + 1.0, 0.0, z_pos, z_pos, "minecraft:squid_ink");
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt1") > 30.0) {
-            entity.getPersistentData().m_128347_("skill", 0.0);
+         if (entity.getPersistentData().getDouble("cnt1") > 30.0) {
+            entity.getPersistentData().putDouble("skill", 0.0);
          }
 
       }

@@ -10,7 +10,7 @@ public class MeteorDisplayConditionProcedure {
       if (entity == null) {
          return false;
       } else {
-         return entity.getPersistentData().m_128459_("cnt5") > 600.0;
+         return entity.getPersistentData().getDouble("cnt5") > 600.0;
       }
    }
 }

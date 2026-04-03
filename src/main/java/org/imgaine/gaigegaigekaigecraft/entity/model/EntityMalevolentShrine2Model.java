@@ -9,14 +9,14 @@ public class EntityMalevolentShrine2Model extends GeoModel<EntityMalevolentShrin
    }
 
    public ResourceLocation getAnimationResource(EntityMalevolentShrine2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/malevolent_shrine_incomplete.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/malevolent_shrine_incomplete.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityMalevolentShrine2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/malevolent_shrine_incomplete.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/malevolent_shrine_incomplete.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityMalevolentShrine2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

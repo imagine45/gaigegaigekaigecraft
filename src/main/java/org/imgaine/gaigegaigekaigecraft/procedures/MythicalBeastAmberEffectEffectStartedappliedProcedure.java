@@ -21,94 +21,94 @@ public class MythicalBeastAmberEffectEffectStartedappliedProcedure {
       if (entity != null) {
          double tick = 0.0;
          double num_level = 0.0;
-         ItemStack item_a = ItemStack.f_41583_;
-         ItemStack item_b = ItemStack.f_41583_;
+         ItemStack item_a = ItemStack.EMPTY;
+         ItemStack item_b = ItemStack.EMPTY;
          if (entity instanceof Player) {
-            item_a = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).m_41777_();
-            item_a.m_41784_().m_128379_("effect_item", true);
-            item_a.m_41784_().m_128379_("hand", true);
+            item_a = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).copy();
+            item_a.getOrCreateTag().putBoolean("effect_item", true);
+            item_a.getOrCreateTag().putBoolean("hand", true);
             ItemStack var10000;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var10000 = _livEnt.m_21205_();
+               var10000 = _livEnt.getMainHandItem();
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == ItemStack.f_41583_.m_41720_()) {
+            if (var10000.getItem() == ItemStack.EMPTY.getItem()) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  ItemStack _setstack = item_a.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
-                  _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                  ItemStack _setstack = item_a.copy().copy();
+                  _setstack.setCount(1);
+                  _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                   if (_entity instanceof Player) {
                      Player _player = (Player)_entity;
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().setChanged();
                   }
                }
             } else if (entity instanceof Player) {
                Player _player = (Player)entity;
-               ItemStack _setstack = item_a.m_41777_().m_41777_();
-               _setstack.m_41764_(1);
+               ItemStack _setstack = item_a.copy().copy();
+               _setstack.setCount(1);
                ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var10000 = _livEnt.m_21206_();
+               var10000 = _livEnt.getOffhandItem();
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == ItemStack.f_41583_.m_41720_()) {
+            if (var10000.getItem() == ItemStack.EMPTY.getItem()) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  ItemStack _setstack = item_a.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
-                  _entity.m_21008_(InteractionHand.OFF_HAND, _setstack);
+                  ItemStack _setstack = item_a.copy().copy();
+                  _setstack.setCount(1);
+                  _entity.setItemInHand(InteractionHand.OFF_HAND, _setstack);
                   if (_entity instanceof Player) {
                      Player _player = (Player)_entity;
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().setChanged();
                   }
                }
             } else if (entity instanceof Player) {
                Player _player = (Player)entity;
-               ItemStack _setstack = item_a.m_41777_().m_41777_();
-               _setstack.m_41764_(1);
+               ItemStack _setstack = item_a.copy().copy();
+               _setstack.setCount(1);
                ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
             }
 
-            item_b = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).m_41777_();
-            item_b.m_41784_().m_128379_("effect_item", true);
+            item_b = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).copy();
+            item_b.getOrCreateTag().putBoolean("effect_item", true);
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var10000 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()) {
+            if (var10000.getItem() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var10000 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                     var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                   } else {
-                     var10000 = ItemStack.f_41583_;
+                     var10000 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var10000.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var10000.copy().copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(3, item_b.m_41777_());
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, item_b.copy());
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.HEAD, item_b.m_41777_());
+                  _living.setItemSlot(EquipmentSlot.HEAD, item_b.copy());
                }
             }
          }
@@ -116,15 +116,15 @@ public class MythicalBeastAmberEffectEffectStartedappliedProcedure {
          num_level = amplifier + 1.0;
          if (num_level > 0.0 && entity instanceof LivingEntity) {
             LivingEntity _livingEntity26 = (LivingEntity)entity;
-            if (_livingEntity26.m_21204_().m_22171_(Attributes.f_22281_)) {
+            if (_livingEntity26.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
                AttributeInstance var36;
                double var10001;
                label80: {
-                  var36 = _livingEntity26.getAttribute_(Attributes.f_22281_);
+                  var36 = _livingEntity26.getAttribute(Attributes.ATTACK_DAMAGE);
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livingEntity25 = (LivingEntity)entity;
-                     if (_livingEntity25.m_21204_().m_22171_(Attributes.f_22281_)) {
-                        var10001 = _livingEntity25.getAttribute_(Attributes.f_22281_).m_22115_();
+                     if (_livingEntity25.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                        var10001 = _livingEntity25.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                         break label80;
                      }
                   }
@@ -132,7 +132,7 @@ public class MythicalBeastAmberEffectEffectStartedappliedProcedure {
                   var10001 = 0.0;
                }
 
-               var36.m_22100_(var10001 + num_level * 1.2);
+               var36.setBaseValue(var10001 + num_level * 1.0);
             }
          }
 

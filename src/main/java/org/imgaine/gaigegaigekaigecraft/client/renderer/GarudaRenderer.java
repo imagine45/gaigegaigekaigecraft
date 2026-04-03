@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GarudaRenderer extends MobRenderer<GarudaEntity, ModelGaruda<GarudaEntity>> {
    public GarudaRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelGaruda(context.m_174023_(ModelGaruda.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelGaruda(context.bakeLayer(ModelGaruda.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(GarudaEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/garuda.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/garuda.png");
    }
 }

@@ -16,19 +16,19 @@ public class AIJogoAshProcedure {
       if (entity != null) {
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123783_, x, y + 1.0, z, 4, 0.25, 0.5, 0.25, 0.0);
+            _level.sendParticles(ParticleTypes.ASH, x, y + 1.0, z, 4, 0.25, 0.5, 0.25, 0.0);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123755_, x, y + 1.0, z, 1, 0.25, 0.5, 0.25, 0.0);
+            _level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y + 1.0, z, 1, 0.25, 0.5, 0.25, 0.0);
          }
 
-         entity.m_20254_(15);
+         entity.setSecondsOnFire(15);
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance(MobEffects.f_19607_, 60, 1, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 60, 1, false, false));
             }
          }
 

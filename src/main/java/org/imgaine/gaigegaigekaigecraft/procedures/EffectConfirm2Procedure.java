@@ -13,8 +13,8 @@ public class EffectConfirm2Procedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          Entity entity_a = null;
-         entityiterator.getPersistentData().m_128347_("Damage", 0.0);
-         entityiterator.m_20256_(new Vec3(0.0, 0.0, 0.0));
+         entityiterator.getPersistentData().putDouble("Damage", 0.0);
+         entityiterator.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
       }
    }
 }

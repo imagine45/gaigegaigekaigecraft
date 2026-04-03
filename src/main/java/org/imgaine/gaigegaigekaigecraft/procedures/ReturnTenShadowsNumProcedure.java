@@ -3,7 +3,7 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 import org.imgaine.gaigegaigekaigecraft.entity.DivineDogBlackEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.DivineDogTotalityEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.DivineDogWhiteEntity;
-import org.imgaine.gaigegaigekaigecraft.entity.EightHandledSwrodDivergentSilaDivineGeneralMahoragaEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.EightHandledSwordDivergentSilaDivineGeneralMahoragaEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.GreatSerpentEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.MaxElephantEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.MergedBeastAgitoEntity;
@@ -50,7 +50,7 @@ public class ReturnTenShadowsNumProcedure {
             NUM1 = 11.0;
          } else if (entity instanceof MergedBeastAgitoEntity) {
             NUM1 = 13.0;
-         } else if (entity instanceof EightHandledSwrodDivergentSilaDivineGeneralMahoragaEntity) {
+         } else if (entity instanceof EightHandledSwordDivergentSilaDivineGeneralMahoragaEntity) {
             NUM1 = 14.0;
          }
 

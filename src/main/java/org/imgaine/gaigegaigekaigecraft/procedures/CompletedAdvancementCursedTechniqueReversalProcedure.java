@@ -33,9 +33,9 @@ public class CompletedAdvancementCursedTechniqueReversalProcedure {
          label103: {
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr0 = (ServerPlayer)entity;
-               if (_plr0.m_9236_() instanceof ServerLevel && _plr0.m_8960_().m_135996_(_plr0.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:fame_special"))).m_8193_()) {
-                  if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                     entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "advancement grant @s until jujutsucraft:fame_1");
+               if (_plr0.level() instanceof ServerLevel && _plr0.getAdvancements().getOrStartProgress(_plr0.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:fame_special"))).isDone()) {
+                  if (!entity.level().isClientSide() && entity.getServer() != null) {
+                     entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "advancement grant @s until gaigegaigekaigecraft:fame_1");
                   }
                   break label103;
                }
@@ -43,9 +43,9 @@ public class CompletedAdvancementCursedTechniqueReversalProcedure {
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr2 = (ServerPlayer)entity;
-               if (_plr2.m_9236_() instanceof ServerLevel && _plr2.m_8960_().m_135996_(_plr2.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:fame_1"))).m_8193_()) {
-                  if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                     entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "advancement grant @s until jujutsucraft:fame_2");
+               if (_plr2.level() instanceof ServerLevel && _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:fame_1"))).isDone()) {
+                  if (!entity.level().isClientSide() && entity.getServer() != null) {
+                     entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "advancement grant @s until gaigegaigekaigecraft:fame_2");
                   }
                   break label103;
                }
@@ -53,9 +53,9 @@ public class CompletedAdvancementCursedTechniqueReversalProcedure {
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr4 = (ServerPlayer)entity;
-               if (_plr4.m_9236_() instanceof ServerLevel && _plr4.m_8960_().m_135996_(_plr4.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:fame_2"))).m_8193_()) {
-                  if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                     entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "advancement grant @s until jujutsucraft:fame_3");
+               if (_plr4.level() instanceof ServerLevel && _plr4.getAdvancements().getOrStartProgress(_plr4.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:fame_2"))).isDone()) {
+                  if (!entity.level().isClientSide() && entity.getServer() != null) {
+                     entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "advancement grant @s until gaigegaigekaigecraft:fame_3");
                   }
                   break label103;
                }
@@ -63,21 +63,21 @@ public class CompletedAdvancementCursedTechniqueReversalProcedure {
 
             if (entity instanceof ServerPlayer) {
                ServerPlayer _plr6 = (ServerPlayer)entity;
-               if (_plr6.m_9236_() instanceof ServerLevel && _plr6.m_8960_().m_135996_(_plr6.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:fame_3"))).m_8193_() && !entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "advancement grant @s until jujutsucraft:fame_4");
+               if (_plr6.level() instanceof ServerLevel && _plr6.getAdvancements().getOrStartProgress(_plr6.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:fame_3"))).isDone() && !entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "advancement grant @s until gaigegaigekaigecraft:fame_4");
                }
             }
          }
 
          if (entity instanceof ServerPlayer) {
             ServerPlayer _plr8 = (ServerPlayer)entity;
-            if (_plr8.m_9236_() instanceof ServerLevel && _plr8.m_8960_().m_135996_(_plr8.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_2"))).m_8193_() && entity instanceof ServerPlayer) {
+            if (_plr8.level() instanceof ServerLevel && _plr8.getAdvancements().getOrStartProgress(_plr8.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_2"))).isDone() && entity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_1"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_1"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }

@@ -1,0 +1,7 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/pistol",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/pistol",
+    "particle": "minecraft:item/bow"
+  }
+}

@@ -9,14 +9,14 @@ public class GojoSatoruModel extends GeoModel<GojoSatoruEntity> {
    }
 
    public ResourceLocation getAnimationResource(GojoSatoruEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/human.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/human.animation.json");
    }
 
    public ResourceLocation getModelResource(GojoSatoruEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/human.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/human.geo.json");
    }
 
    public ResourceLocation getTextureResource(GojoSatoruEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

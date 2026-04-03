@@ -14,10 +14,10 @@ public class EntityVectorProcedure {
 
    public static void execute(Entity entity_a, double vx, double vy, double vz) {
       if (entity_a != null) {
-         entity_a.m_20256_(new Vec3(vx, vy, vz));
+         entity_a.setDeltaMovement(new Vec3(vx, vy, vz));
          if (entity_a instanceof ServerPlayer) {
-            Level world = entity_a.m_9236_();
-            if (!world.f_46443_) {
+            Level world = entity_a.level();
+            if (!world.isClientSide) {
                PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)entity_a), new PlayerVelocityPacket(vx, vy, vz));
             }
          }

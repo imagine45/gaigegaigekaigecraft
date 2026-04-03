@@ -9,14 +9,14 @@ public class SwordOptionItemModel extends GeoModel<SwordOptionItem> {
    }
 
    public ResourceLocation getAnimationResource(SwordOptionItem animatable) {
-      return new ResourceLocation("jujutsucraft", "animations/sword_option.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/sword_option.animation.json");
    }
 
    public ResourceLocation getModelResource(SwordOptionItem animatable) {
-      return new ResourceLocation("jujutsucraft", "geo/sword_option.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/sword_option.geo.json");
    }
 
    public ResourceLocation getTextureResource(SwordOptionItem animatable) {
-      return new ResourceLocation("jujutsucraft", "textures/item/playful_cloud.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/playful_cloud.png");
    }
 }

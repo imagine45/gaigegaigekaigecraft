@@ -13,15 +13,15 @@ public class Rika2Model extends GeoModel<Rika2Entity> {
    }
 
    public ResourceLocation getAnimationResource(Rika2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/rika2.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/rika2.animation.json");
    }
 
    public ResourceLocation getModelResource(Rika2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/rika2.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/rika2.geo.json");
    }
 
    public ResourceLocation getTextureResource(Rika2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(Rika2Entity animatable, long instanceId, AnimationState animationState) {

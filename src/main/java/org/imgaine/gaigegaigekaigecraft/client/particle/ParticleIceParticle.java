@@ -21,25 +21,25 @@ public class ParticleIceParticle extends TextureSheetParticle {
    protected ParticleIceParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(6.0F, 6.0F);
-      this.f_107663_ *= 6.0F;
-      this.f_107225_ = 24;
-      this.f_107226_ = 0.0F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 0.5;
-      this.f_107216_ = vy * 0.5;
-      this.f_107217_ = vz * 0.5;
-      this.m_108339_(spriteSet);
+      this.setSize(6.0F, 6.0F);
+      this.quadSize *= 6.0F;
+      this.lifetime = 24;
+      this.gravity = 0.0F;
+      this.hasPhysics = false;
+      this.xd = vx * 0.5;
+      this.yd = vy * 0.5;
+      this.zd = vz * 0.5;
+      this.setSpriteFromAge(spriteSet);
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107431_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
-      if (!this.f_107220_) {
-         this.m_108337_(this.spriteSet.m_5819_(this.f_107224_ / 3 % 12 + 1, 12));
+   public void tick() {
+      super.tick();
+      if (!this.removed) {
+         this.setSprite(this.spriteSet.get(this.age / 3 % 12 + 1, 12));
       }
 
    }

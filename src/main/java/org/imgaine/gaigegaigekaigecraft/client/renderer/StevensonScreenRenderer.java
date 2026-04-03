@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class StevensonScreenRenderer extends MobRenderer<StevensonScreenEntity, Modelstevenson_screen<StevensonScreenEntity>> {
    public StevensonScreenRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelstevenson_screen(context.m_174023_(Modelstevenson_screen.LAYER_LOCATION)), 0.5F);
+      super(context, new Modelstevenson_screen(context.bakeLayer(Modelstevenson_screen.LAYER_LOCATION)), 0.5F);
    }
 
    public ResourceLocation getTextureLocation(StevensonScreenEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/stevensonscreen.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/stevensonscreen.png");
    }
 }

@@ -9,14 +9,14 @@ public class ShikigamiHeterocephalusGlaberModel extends GeoModel<ShikigamiHetero
    }
 
    public ResourceLocation getAnimationResource(ShikigamiHeterocephalusGlaberEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/shikigami_dhruvrakdawala1.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/shikigami_dhruvrakdawala1.animation.json");
    }
 
    public ResourceLocation getModelResource(ShikigamiHeterocephalusGlaberEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/shikigami_dhruvrakdawala1.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/shikigami_dhruvrakdawala1.geo.json");
    }
 
    public ResourceLocation getTextureResource(ShikigamiHeterocephalusGlaberEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

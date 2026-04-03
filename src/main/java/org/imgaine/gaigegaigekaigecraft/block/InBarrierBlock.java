@@ -34,50 +34,50 @@ public class InBarrierBlock extends Block implements SimpleWaterloggedBlock, Ent
    public static final BooleanProperty WATERLOGGED;
 
    public InBarrierBlock() {
-      super(Properties.m_284310_().m_60996_().m_284180_(MapColor.f_283808_).m_60918_(SoundType.f_56744_).m_60913_(-1.0F, 66.5F).m_60910_().m_60955_().m_278166_(PushReaction.IGNORE).m_60924_((bs, br, bp) -> false));
-      this.m_49959_((BlockState)((BlockState)this.f_49792_.m_61090_()).m_61124_(WATERLOGGED, false));
+      super(Properties.of().air().mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(-1.0F, 66.5F).noCollission().noOcclusion().pushReaction(PushReaction.IGNORE).isRedstoneConductor((bs, br, bp) -> false));
+      this.registerDefaultState((BlockState)((BlockState)this.stateDefinition.any()).setValue(WATERLOGGED, false));
    }
 
-   public boolean m_7420_(BlockState state, BlockGetter reader, BlockPos pos) {
-      return state.m_60819_().m_76178_();
+   public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+      return state.getFluidState().isEmpty();
    }
 
-   public int m_7753_(BlockState state, BlockGetter worldIn, BlockPos pos) {
+   public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
       return 0;
    }
 
-   public VoxelShape m_5909_(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-      return Shapes.m_83040_();
+   public VoxelShape getVisualShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+      return Shapes.empty();
    }
 
-   public VoxelShape m_5940_(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-      return Shapes.m_83040_();
+   public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+      return Shapes.empty();
    }
 
-   protected void m_7926_(StateDefinition.Builder<Block, BlockState> builder) {
-      super.m_7926_(builder);
-      builder.m_61104_(new Property[]{WATERLOGGED});
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+      super.createBlockStateDefinition(builder);
+      builder.add(new Property[]{WATERLOGGED});
    }
 
-   public BlockState m_5573_(BlockPlaceContext context) {
-      boolean flag = context.m_43725_().m_6425_(context.m_8083_()).m_76152_() == Fluids.f_76193_;
-      return (BlockState)super.m_5573_(context).m_61124_(WATERLOGGED, flag);
+   public BlockState getStateForPlacement(BlockPlaceContext context) {
+      boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
+      return (BlockState)super.getStateForPlacement(context).setValue(WATERLOGGED, flag);
    }
 
-   public FluidState m_5888_(BlockState state) {
-      return (Boolean)state.m_61143_(WATERLOGGED) ? Fluids.f_76193_.m_76068_(false) : super.m_5888_(state);
+   public FluidState getFluidState(BlockState state) {
+      return (Boolean)state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
    }
 
-   public BlockState m_7417_(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-      if ((Boolean)state.m_61143_(WATERLOGGED)) {
-         world.m_186469_(currentPos, Fluids.f_76193_, Fluids.f_76193_.m_6718_(world));
+   public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+      if ((Boolean)state.getValue(WATERLOGGED)) {
+         world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
       }
 
-      return super.m_7417_(state, facing, facingState, world, currentPos, facingPos);
+      return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
    }
 
-   public boolean m_6864_(BlockState state, BlockPlaceContext context) {
-      return context.m_43722_().m_41720_() != this.m_5456_();
+   public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+      return context.getItemInHand().getItem() != this.asItem();
    }
 
    public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
@@ -88,8 +88,8 @@ public class InBarrierBlock extends Block implements SimpleWaterloggedBlock, Ent
       return true;
    }
 
-   public MenuProvider m_7246_(BlockState state, Level worldIn, BlockPos pos) {
-      BlockEntity tileEntity = worldIn.m_7702_(pos);
+   public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+      BlockEntity tileEntity = worldIn.getBlockEntity(pos);
       MenuProvider var10000;
       if (tileEntity instanceof MenuProvider menuProvider) {
          var10000 = menuProvider;
@@ -100,17 +100,17 @@ public class InBarrierBlock extends Block implements SimpleWaterloggedBlock, Ent
       return var10000;
    }
 
-   public BlockEntity m_142194_(BlockPos pos, BlockState state) {
+   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
       return new InBarrierBlockEntity(pos, state);
    }
 
-   public boolean m_8133_(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-      super.m_8133_(state, world, pos, eventID, eventParam);
-      BlockEntity blockEntity = world.m_7702_(pos);
-      return blockEntity == null ? false : blockEntity.m_7531_(eventID, eventParam);
+   public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+      super.triggerEvent(state, world, pos, eventID, eventParam);
+      BlockEntity blockEntity = world.getBlockEntity(pos);
+      return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
    }
 
    static {
-      WATERLOGGED = BlockStateProperties.f_61362_;
+      WATERLOGGED = BlockStateProperties.WATERLOGGED;
    }
 }

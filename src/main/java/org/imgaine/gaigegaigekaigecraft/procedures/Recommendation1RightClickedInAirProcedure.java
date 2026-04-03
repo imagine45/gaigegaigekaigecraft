@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -32,26 +31,26 @@ public class Recommendation1RightClickedInAirProcedure {
          double num1 = 0.0;
          boolean consume = false;
          consume = true;
-         if (itemstack.m_41720_() == JujutsucraftModItems.RECOMMENDATION_2.get()) {
+         if (itemstack.getItem() == JujutsucraftModItems.RECOMMENDATION_2.get()) {
             label219: {
                label218: {
                   if (entity instanceof ServerPlayer) {
                      ServerPlayer _plr2 = (ServerPlayer)entity;
-                     if (_plr2.m_9236_() instanceof ServerLevel && _plr2.m_8960_().m_135996_(_plr2.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_special"))).m_8193_()) {
+                     if (_plr2.level() instanceof ServerLevel && _plr2.getAdvancements().getOrStartProgress(_plr2.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_special"))).isDone()) {
                         break label218;
                      }
                   }
 
                   if (entity instanceof ServerPlayer) {
                      ServerPlayer _plr3 = (ServerPlayer)entity;
-                     if (_plr3.m_9236_() instanceof ServerLevel && _plr3.m_8960_().m_135996_(_plr3.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_1"))).m_8193_()) {
+                     if (_plr3.level() instanceof ServerLevel && _plr3.getAdvancements().getOrStartProgress(_plr3.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_1"))).isDone()) {
                         if (entity instanceof ServerPlayer) {
                            ServerPlayer _player = (ServerPlayer)entity;
-                           Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_special"));
-                           AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                           if (!_ap.m_8193_()) {
-                              for(String criteria : _ap.m_8219_()) {
-                                 _player.m_8960_().m_135988_(_adv, criteria);
+                           Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_special"));
+                           AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                           if (!_ap.isDone()) {
+                              for(String criteria : _ap.getRemainingCriteria()) {
+                                 _player.getAdvancements().award(_adv, criteria);
                               }
                            }
                         }
@@ -66,22 +65,22 @@ public class Recommendation1RightClickedInAirProcedure {
             label202: {
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _plr5 = (ServerPlayer)entity;
-                  if (_plr5.m_9236_() instanceof ServerLevel && _plr5.m_8960_().m_135996_(_plr5.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_4"))).m_8193_()) {
+                  if (_plr5.level() instanceof ServerLevel && _plr5.getAdvancements().getOrStartProgress(_plr5.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_4"))).isDone()) {
                      if (entity instanceof ServerPlayer) {
                         ServerPlayer _plr7 = (ServerPlayer)entity;
-                        if (_plr7.m_9236_() instanceof ServerLevel && _plr7.m_8960_().m_135996_(_plr7.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_3"))).m_8193_()) {
+                        if (_plr7.level() instanceof ServerLevel && _plr7.getAdvancements().getOrStartProgress(_plr7.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_3"))).isDone()) {
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr9 = (ServerPlayer)entity;
-                              if (_plr9.m_9236_() instanceof ServerLevel && _plr9.m_8960_().m_135996_(_plr9.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2_semi"))).m_8193_()) {
+                              if (_plr9.level() instanceof ServerLevel && _plr9.getAdvancements().getOrStartProgress(_plr9.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2_semi"))).isDone()) {
                                  if (entity instanceof ServerPlayer) {
                                     ServerPlayer _plr11 = (ServerPlayer)entity;
-                                    if (_plr11.m_9236_() instanceof ServerLevel && _plr11.m_8960_().m_135996_(_plr11.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2"))).m_8193_()) {
+                                    if (_plr11.level() instanceof ServerLevel && _plr11.getAdvancements().getOrStartProgress(_plr11.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2"))).isDone()) {
                                        if (entity instanceof ServerPlayer) {
                                           ServerPlayer _plr13 = (ServerPlayer)entity;
-                                          if (_plr13.m_9236_() instanceof ServerLevel && _plr13.m_8960_().m_135996_(_plr13.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_1_semi"))).m_8193_()) {
+                                          if (_plr13.level() instanceof ServerLevel && _plr13.getAdvancements().getOrStartProgress(_plr13.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_1_semi"))).isDone()) {
                                              if (entity instanceof ServerPlayer) {
                                                 ServerPlayer _plr15 = (ServerPlayer)entity;
-                                                if (_plr15.m_9236_() instanceof ServerLevel && _plr15.m_8960_().m_135996_(_plr15.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_1"))).m_8193_()) {
+                                                if (_plr15.level() instanceof ServerLevel && _plr15.getAdvancements().getOrStartProgress(_plr15.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_1"))).isDone()) {
                                                    consume = false;
                                                    break label202;
                                                 }
@@ -89,11 +88,11 @@ public class Recommendation1RightClickedInAirProcedure {
 
                                              if (entity instanceof ServerPlayer) {
                                                 ServerPlayer _player = (ServerPlayer)entity;
-                                                Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_1"));
-                                                AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                                                if (!_ap.m_8193_()) {
-                                                   for(String criteria : _ap.m_8219_()) {
-                                                      _player.m_8960_().m_135988_(_adv, criteria);
+                                                Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_1"));
+                                                AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                                                if (!_ap.isDone()) {
+                                                   for(String criteria : _ap.getRemainingCriteria()) {
+                                                      _player.getAdvancements().award(_adv, criteria);
                                                    }
                                                 }
                                              }
@@ -103,11 +102,11 @@ public class Recommendation1RightClickedInAirProcedure {
 
                                        if (entity instanceof ServerPlayer) {
                                           ServerPlayer _player = (ServerPlayer)entity;
-                                          Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_1_semi"));
-                                          AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                                          if (!_ap.m_8193_()) {
-                                             for(String criteria : _ap.m_8219_()) {
-                                                _player.m_8960_().m_135988_(_adv, criteria);
+                                          Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_1_semi"));
+                                          AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                                          if (!_ap.isDone()) {
+                                             for(String criteria : _ap.getRemainingCriteria()) {
+                                                _player.getAdvancements().award(_adv, criteria);
                                              }
                                           }
                                        }
@@ -117,11 +116,11 @@ public class Recommendation1RightClickedInAirProcedure {
 
                                  if (entity instanceof ServerPlayer) {
                                     ServerPlayer _player = (ServerPlayer)entity;
-                                    Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2"));
-                                    AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                                    if (!_ap.m_8193_()) {
-                                       for(String criteria : _ap.m_8219_()) {
-                                          _player.m_8960_().m_135988_(_adv, criteria);
+                                    Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2"));
+                                    AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                                    if (!_ap.isDone()) {
+                                       for(String criteria : _ap.getRemainingCriteria()) {
+                                          _player.getAdvancements().award(_adv, criteria);
                                        }
                                     }
                                  }
@@ -131,11 +130,11 @@ public class Recommendation1RightClickedInAirProcedure {
 
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _player = (ServerPlayer)entity;
-                              Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_2_semi"));
-                              AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                              if (!_ap.m_8193_()) {
-                                 for(String criteria : _ap.m_8219_()) {
-                                    _player.m_8960_().m_135988_(_adv, criteria);
+                              Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_2_semi"));
+                              AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                              if (!_ap.isDone()) {
+                                 for(String criteria : _ap.getRemainingCriteria()) {
+                                    _player.getAdvancements().award(_adv, criteria);
                                  }
                               }
                            }
@@ -145,11 +144,11 @@ public class Recommendation1RightClickedInAirProcedure {
 
                      if (entity instanceof ServerPlayer) {
                         ServerPlayer _player = (ServerPlayer)entity;
-                        Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_3"));
-                        AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                        if (!_ap.m_8193_()) {
-                           for(String criteria : _ap.m_8219_()) {
-                              _player.m_8960_().m_135988_(_adv, criteria);
+                        Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_3"));
+                        AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                        if (!_ap.isDone()) {
+                           for(String criteria : _ap.getRemainingCriteria()) {
+                              _player.getAdvancements().award(_adv, criteria);
                            }
                         }
                      }
@@ -159,11 +158,11 @@ public class Recommendation1RightClickedInAirProcedure {
 
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _player = (ServerPlayer)entity;
-                  Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:sorcerer_grade_4"));
-                  AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                  if (!_ap.m_8193_()) {
-                     for(String criteria : _ap.m_8219_()) {
-                        _player.m_8960_().m_135988_(_adv, criteria);
+                  Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:sorcerer_grade_4"));
+                  AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                  if (!_ap.isDone()) {
+                     for(String criteria : _ap.getRemainingCriteria()) {
+                        _player.getAdvancements().award(_adv, criteria);
                      }
                   }
                }
@@ -173,24 +172,24 @@ public class Recommendation1RightClickedInAirProcedure {
          num1 = -200.0 - Math.random() * 20.0;
          if (consume && world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            Entity entityToSpawn = EntityType.f_20549_.m_262496_(_level, BlockPos.m_274561_(entity.m_20185_(), num1, entity.m_20189_()), MobSpawnType.MOB_SUMMONED);
+            Entity entityToSpawn = EntityType.BAT.spawn(_level, BlockPos.containing(entity.getX(), num1, entity.getZ()), MobSpawnType.MOB_SUMMONED);
             if (entityToSpawn != null) {
-               entityToSpawn.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+               entityToSpawn.setYRot(world.getRandom().nextFloat() * 360.0F);
             }
          }
 
          consume = false;
-         Vec3 _center = new Vec3(entity.m_20185_(), num1, entity.m_20189_());
+         Vec3 _center = new Vec3(entity.getX(), num1, entity.getZ());
 
-         for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-            if (entityiterator instanceof Bat && entityiterator.m_6084_()) {
+         for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(0.5), (e) -> true)) {
+            if (entityiterator instanceof Bat && entityiterator.isAlive()) {
                consume = true;
-               if (!entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-                  entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "kill @s");
+               if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                  entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "kill @s");
                }
 
-               if (!entityiterator.m_9236_().m_5776_()) {
-                  entityiterator.m_146870_();
+               if (!entityiterator.level().isClientSide()) {
+                  entityiterator.discard();
                }
                break;
             }
@@ -198,21 +197,21 @@ public class Recommendation1RightClickedInAirProcedure {
 
          if (entity instanceof Player) {
             Player _player = (Player)entity;
-            _player.m_36335_().m_41524_(itemstack.m_41720_(), 5);
+            _player.getCooldowns().addCooldown(itemstack.getItem(), 5);
          }
 
          if (consume) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21011_(InteractionHand.MAIN_HAND, true);
+               _entity.swing(InteractionHand.MAIN_HAND, true);
             }
 
-            itemstack.m_41774_(1);
+            itemstack.shrink(1);
             WhenRespawnProcedure.execute(world, x, y, z, entity);
          } else if (entity instanceof Player) {
             Player _player = (Player)entity;
-            if (!_player.m_9236_().m_5776_()) {
-               _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.dont_use").getString()), false);
+            if (!_player.level().isClientSide()) {
+               _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.dont_use").getString()), false);
             }
          }
 

@@ -1,8 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
-import java.util.UUID;
-import java.util.function.BiFunction;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
@@ -53,84 +50,73 @@ public class AIEnergyBallWhiteProcedure {
          boolean skull = false;
          boolean flame = false;
          range = ReturnEntitySizeProcedure.execute(entity);
-         x_pos = entity.m_20185_();
-         y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.5;
-         z_pos = entity.m_20189_();
-         energy_wave = entity.getPersistentData().m_128459_("skill") >= 700.0 && entity.getPersistentData().m_128459_("skill") < 800.0;
-         granite = entity.getPersistentData().m_128459_("skill") >= 1200.0 && entity.getPersistentData().m_128459_("skill") < 1300.0;
-         flame = entity.getPersistentData().m_128459_("skill") >= 400.0 && entity.getPersistentData().m_128459_("skill") < 500.0;
-         entity_a = (new BiFunction<LevelAccessor, String, Entity>() {
-            public Entity apply(LevelAccessor levelAccessor, String uuid) {
-               if (levelAccessor instanceof ServerLevel serverLevel) {
-                  try {
-                     return serverLevel.m_8791_(UUID.fromString(uuid));
-                  } catch (Exception var5) {
-                  }
-               }
-
-               return null;
-            }
-         }).apply(world, entity.getPersistentData().m_128461_("OWNER_UUID"));
-         if (entity.getPersistentData().m_128459_("cnt3") == 0.0) {
+         x_pos = entity.getX();
+         y_pos = entity.getY() + (double)entity.getBbHeight() * 0.5;
+         z_pos = entity.getZ();
+         energy_wave = entity.getPersistentData().getDouble("skill") >= 700.0 && entity.getPersistentData().getDouble("skill") < 800.0;
+         granite = entity.getPersistentData().getDouble("skill") >= 1200.0 && entity.getPersistentData().getDouble("skill") < 1300.0;
+         flame = entity.getPersistentData().getDouble("skill") >= 400.0 && entity.getPersistentData().getDouble("skill") < 500.0;
+         entity_a = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("OWNER_UUID"));
+         if (entity.getPersistentData().getDouble("cnt3") == 0.0) {
             logic_attack = false;
-            entity.getPersistentData().m_128379_("Stop", false);
-            if (entity.getPersistentData().m_128459_("NameRanged_ranged") != 0.0 && energy_wave && LogicOwnerExistProcedure.execute(world, entity)) {
-               if (entity.getPersistentData().m_128459_("NameRanged_ranged") == entity_a.getPersistentData().m_128459_("NameRanged")) {
+            entity.getPersistentData().putBoolean("Stop", false);
+            if (entity.getPersistentData().getDouble("NameRanged_ranged") != 0.0 && energy_wave && LogicOwnerExistProcedure.execute(world, entity)) {
+               if (entity.getPersistentData().getDouble("NameRanged_ranged") == entity_a.getPersistentData().getDouble("NameRanged")) {
                   logic_attack = true;
-                  entity.getPersistentData().m_128347_("cnt6", Math.max(entity.getPersistentData().m_128459_("cnt6"), entity_a.getPersistentData().m_128459_("cnt6")));
-                  entity.getPersistentData().m_128347_("x_power", entity_a.getPersistentData().m_128459_("x_power"));
-                  entity.getPersistentData().m_128347_("y_power", entity_a.getPersistentData().m_128459_("y_power"));
-                  entity.getPersistentData().m_128347_("z_power", entity_a.getPersistentData().m_128459_("z_power"));
-                  entity.m_146922_(entity_a.m_146908_());
-                  entity.m_146926_(entity_a.m_146909_());
-                  entity.m_5618_(entity.m_146908_());
-                  entity.m_5616_(entity.m_146908_());
-                  entity.f_19859_ = entity.m_146908_();
-                  entity.f_19860_ = entity.m_146909_();
+                  entity.getPersistentData().putDouble("cnt6", Math.max(entity.getPersistentData().getDouble("cnt6"), entity_a.getPersistentData().getDouble("cnt6")));
+                  entity.getPersistentData().putDouble("x_power", entity_a.getPersistentData().getDouble("x_power"));
+                  entity.getPersistentData().putDouble("y_power", entity_a.getPersistentData().getDouble("y_power"));
+                  entity.getPersistentData().putDouble("z_power", entity_a.getPersistentData().getDouble("z_power"));
+                  entity.setYRot(entity_a.getYRot());
+                  entity.setXRot(entity_a.getXRot());
+                  entity.setYBodyRot(entity.getYRot());
+                  entity.setYHeadRot(entity.getYRot());
+                  entity.yRotO = entity.getYRot();
+                  entity.xRotO = entity.getXRot();
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.f_20884_ = _entity.m_146908_();
-                     _entity.f_20886_ = _entity.m_146908_();
+                     _entity.yBodyRotO = _entity.getYRot();
+                     _entity.yHeadRotO = _entity.getYRot();
                   }
 
-                  entity.m_6021_(entity_a.getPersistentData().m_128459_("x_pos"), entity_a.getPersistentData().m_128459_("y_pos"), entity_a.getPersistentData().m_128459_("z_pos"));
+                  entity.teleportTo(entity_a.getPersistentData().getDouble("x_pos"), entity_a.getPersistentData().getDouble("y_pos"), entity_a.getPersistentData().getDouble("z_pos"));
                   if (entity instanceof ServerPlayer) {
                      ServerPlayer _serverPlayer = (ServerPlayer)entity;
-                     _serverPlayer.f_8906_.m_9774_(entity_a.getPersistentData().m_128459_("x_pos"), entity_a.getPersistentData().m_128459_("y_pos"), entity_a.getPersistentData().m_128459_("z_pos"), entity.m_146908_(), entity.m_146909_());
+                     _serverPlayer.connection.teleport(entity_a.getPersistentData().getDouble("x_pos"), entity_a.getPersistentData().getDouble("y_pos"), entity_a.getPersistentData().getDouble("z_pos"), entity.getYRot(), entity.getXRot());
                   }
                }
 
-               if (entity_a.getPersistentData().m_128459_("skill") <= 0.0) {
+               if (entity_a.getPersistentData().getDouble("skill") <= 0.0) {
                   logic_attack = false;
                }
             }
 
-            if (!logic_attack || !entity.m_6084_()) {
-               entity.getPersistentData().m_128347_("cnt3", 1.0);
+            if (!logic_attack || !entity.isAlive()) {
+               entity.getPersistentData().putDouble("cnt3", 1.0);
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.0F, 0.5F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.0F, 0.5F);
                   } else {
-                     _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.0F, 0.5F, false);
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.0F, 0.5F, false);
                   }
                }
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt3") != 0.0) {
-            entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-            entity.getPersistentData().m_128347_("x_knockback", entity.m_20184_().m_7096_() * 1.0);
-            entity.getPersistentData().m_128347_("z_knockback", entity.m_20184_().m_7094_() * 1.0);
-            CNT6 = 1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.1;
+         if (entity.getPersistentData().getDouble("cnt3") != 0.0) {
+            entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+            entity.getPersistentData().putDouble("x_knockback", entity.getDeltaMovement().x() * 1.0);
+            entity.getPersistentData().putDouble("z_knockback", entity.getDeltaMovement().z() * 1.0);
+            CNT6 = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.1;
             range_fix = 1.0;
-            RotateEntityProcedure.execute(entity.m_20185_() + entity.getPersistentData().m_128459_("x_power") * 50.0, entity.m_20186_() + (double)entity.m_20206_() * 0.9 + entity.getPersistentData().m_128459_("y_power") * 50.0, entity.m_20189_() + entity.getPersistentData().m_128459_("z_power") * 50.0, entity);
+            RotateEntityProcedure.execute(entity.getX() + entity.getPersistentData().getDouble("x_power") * 50.0, entity.getY() + (double)entity.getBbHeight() * 0.9 + entity.getPersistentData().getDouble("y_power") * 50.0, entity.getZ() + entity.getPersistentData().getDouble("z_power") * 50.0, entity);
             if (energy_wave) {
-               ParticleGeneratorCircleProcedure.execute(world, 18.0 * range, (double)entity.m_146909_(), 0.0 * range, 1.0 * range, 4.0, entity.m_20185_(), entity.m_20185_() - entity.getPersistentData().m_128459_("x_power") * range, entity.m_20186_() + (double)entity.m_20206_() * 0.5, entity.m_20186_() + (double)entity.m_20206_() * 0.5 - entity.getPersistentData().m_128459_("y_power") * range, (double)entity.m_146908_(), entity.m_20189_(), entity.m_20189_() - entity.getPersistentData().m_128459_("z_power") * range, "jujutsucraft:particle_thunder_blue");
+               ParticleGeneratorCircleProcedure.execute(world, 18.0 * range, (double)entity.getXRot(), 0.0 * range, 1.0 * range, 4.0, entity.getX(), entity.getX() - entity.getPersistentData().getDouble("x_power") * range, entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getY() + (double)entity.getBbHeight() * 0.5 - entity.getPersistentData().getDouble("y_power") * range, (double)entity.getYRot(), entity.getZ(), entity.getZ() - entity.getPersistentData().getDouble("z_power") * range, "gaigegaigekaigecraft:particle_thunder_blue");
             }
 
-            if (entity.getPersistentData().m_128471_("Stop")) {
-               entity.getPersistentData().m_128379_("Stop", false);
+            if (entity.getPersistentData().getBoolean("Stop")) {
+               entity.getPersistentData().putBoolean("Stop", false);
                speed = 0.0;
                speed2 = 0.0;
             } else {
@@ -140,18 +126,18 @@ public class AIEnergyBallWhiteProcedure {
             }
 
             if (granite && entity_a instanceof LivingEntity) {
-               entity.getPersistentData().m_128379_("free", true);
-               GetPowerForwardProcedure.execute((double)entity_a.m_9236_().m_45547_(new ClipContext(entity_a.m_20299_(1.0F), entity_a.m_20299_(1.0F).m_82549_(entity_a.m_20252_(1.0F).m_82490_(48.0)), Block.OUTLINE, Fluid.NONE, entity_a)).m_82425_().m_123341_(), (double)entity_a.m_9236_().m_45547_(new ClipContext(entity_a.m_20299_(1.0F), entity_a.m_20299_(1.0F).m_82549_(entity_a.m_20252_(1.0F).m_82490_(48.0)), Block.OUTLINE, Fluid.NONE, entity_a)).m_82425_().m_123342_(), (double)entity_a.m_9236_().m_45547_(new ClipContext(entity_a.m_20299_(1.0F), entity_a.m_20299_(1.0F).m_82549_(entity_a.m_20252_(1.0F).m_82490_(48.0)), Block.OUTLINE, Fluid.NONE, entity_a)).m_82425_().m_123343_(), entity);
-               x_power = entity.m_20184_().m_7096_() + Math.min(speed2, Math.abs(entity.m_20184_().m_7096_() - entity.getPersistentData().m_128459_("x_power") * speed)) * (double)(entity.m_20184_().m_7096_() > entity.getPersistentData().m_128459_("x_power") * speed ? -1 : 1);
-               y_power = entity.m_20184_().m_7098_() + Math.min(speed2, Math.abs(entity.m_20184_().m_7098_() - entity.getPersistentData().m_128459_("y_power") * speed)) * (double)(entity.m_20184_().m_7098_() > entity.getPersistentData().m_128459_("y_power") * speed ? -1 : 1);
-               z_power = entity.m_20184_().m_7094_() + Math.min(speed2, Math.abs(entity.m_20184_().m_7094_() - entity.getPersistentData().m_128459_("z_power") * speed)) * (double)(entity.m_20184_().m_7094_() > entity.getPersistentData().m_128459_("z_power") * speed ? -1 : 1);
+               entity.getPersistentData().putBoolean("free", true);
+               GetPowerForwardProcedure.execute((double)entity_a.level().clip(new ClipContext(entity_a.getEyePosition(1.0F), entity_a.getEyePosition(1.0F).add(entity_a.getViewVector(1.0F).scale(48.0)), Block.OUTLINE, Fluid.NONE, entity_a)).getBlockPos().getX(), (double)entity_a.level().clip(new ClipContext(entity_a.getEyePosition(1.0F), entity_a.getEyePosition(1.0F).add(entity_a.getViewVector(1.0F).scale(48.0)), Block.OUTLINE, Fluid.NONE, entity_a)).getBlockPos().getY(), (double)entity_a.level().clip(new ClipContext(entity_a.getEyePosition(1.0F), entity_a.getEyePosition(1.0F).add(entity_a.getViewVector(1.0F).scale(48.0)), Block.OUTLINE, Fluid.NONE, entity_a)).getBlockPos().getZ(), entity);
+               x_power = entity.getDeltaMovement().x() + Math.min(speed2, Math.abs(entity.getDeltaMovement().x() - entity.getPersistentData().getDouble("x_power") * speed)) * (double)(entity.getDeltaMovement().x() > entity.getPersistentData().getDouble("x_power") * speed ? -1 : 1);
+               y_power = entity.getDeltaMovement().y() + Math.min(speed2, Math.abs(entity.getDeltaMovement().y() - entity.getPersistentData().getDouble("y_power") * speed)) * (double)(entity.getDeltaMovement().y() > entity.getPersistentData().getDouble("y_power") * speed ? -1 : 1);
+               z_power = entity.getDeltaMovement().z() + Math.min(speed2, Math.abs(entity.getDeltaMovement().z() - entity.getPersistentData().getDouble("z_power") * speed)) * (double)(entity.getDeltaMovement().z() > entity.getPersistentData().getDouble("z_power") * speed ? -1 : 1);
             } else {
-               x_power = entity.getPersistentData().m_128459_("x_power") * speed;
-               y_power = entity.getPersistentData().m_128459_("y_power") * speed;
-               z_power = entity.getPersistentData().m_128459_("z_power") * speed;
+               x_power = entity.getPersistentData().getDouble("x_power") * speed;
+               y_power = entity.getPersistentData().getDouble("y_power") * speed;
+               z_power = entity.getPersistentData().getDouble("z_power") * speed;
             }
 
-            entity.m_20256_(new Vec3(x_power, y_power, z_power));
+            entity.setDeltaMovement(new Vec3(x_power, y_power, z_power));
             dis = Math.sqrt(x_power * x_power + y_power * y_power + z_power * z_power);
             if (dis > 1.0) {
                x_power /= dis;
@@ -163,118 +149,122 @@ public class AIEnergyBallWhiteProcedure {
 
             for(int index0 = 0; index0 < (int)dis; ++index0) {
                range = ReturnEntitySizeProcedure.execute(entity);
-               x_pos = entity.m_20185_();
-               y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.5;
-               z_pos = entity.m_20189_();
+               x_pos = entity.getX();
+               y_pos = entity.getY() + (double)entity.getBbHeight() * 0.5;
+               z_pos = entity.getZ();
                if (granite) {
-                  entity.getPersistentData().m_128347_("Damage", 20.0);
+                  entity.getPersistentData().putDouble("Damage", 20.0);
                } else if (energy_wave) {
-                  entity.getPersistentData().m_128347_("Damage", 24.0);
+                  entity.getPersistentData().putDouble("Damage", 24.0);
                } else if (flame) {
-                  entity.getPersistentData().m_128347_("Damage", 17.0);
-                  entity.getPersistentData().m_128347_("effect", 10.0);
+                  entity.getPersistentData().putDouble("Damage", 17.0);
+                  entity.getPersistentData().putDouble("effect", 10.0);
                } else {
-                  entity.getPersistentData().m_128347_("Damage", 10.0);
+                  entity.getPersistentData().putDouble("Damage", 10.0);
                }
 
-               if (entity.getPersistentData().m_128459_("cnt_life") > 0.0) {
-                  entity.getPersistentData().m_128347_("Damage", entity.getPersistentData().m_128459_("Damage") * Math.pow(0.99, Math.min(entity.getPersistentData().m_128459_("cnt_life"), 25.0)));
+               if (entity.getPersistentData().getDouble("cnt_life") > 0.0) {
+                  entity.getPersistentData().putDouble("Damage", entity.getPersistentData().getDouble("Damage") * Math.pow(0.99, Math.min(entity.getPersistentData().getDouble("cnt_life"), 25.0)));
                }
 
-               entity.getPersistentData().m_128347_("Damage", entity.getPersistentData().m_128459_("Damage") * CNT6);
-               entity.getPersistentData().m_128347_("Range", 3.0 * range_fix);
-               entity.getPersistentData().m_128347_("knockback", 0.5);
+               entity.getPersistentData().putDouble("Damage", entity.getPersistentData().getDouble("Damage") * CNT6);
+               entity.getPersistentData().putDouble("Range", 3.0 * range_fix);
+               entity.getPersistentData().putDouble("knockback", 0.5);
                RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
                Vec3 _center = new Vec3(x_pos, y_pos, z_pos);
 
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(entity.getPersistentData().m_128459_("Range") / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                  if (entity != entityiterator && entityiterator.m_6084_() && LogicAttackProcedure.execute(world, entity, entityiterator)) {
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(entity.getPersistentData().getDouble("Range") / 2.0), (e) -> true)) {
+                  if (entity != entityiterator && entityiterator.isAlive() && LogicAttackProcedure.execute(world, entity, entityiterator)) {
                      logic_b = true;
                      break;
                   }
                }
 
-               d = Math.sqrt(1.0 + entity.getPersistentData().m_128459_("Damage"));
-               if (logic_b || entity.m_5830_() || !entity.m_6084_()) {
-                  entity.getPersistentData().m_128379_("Stop", true);
+               d = Math.sqrt(1.0 + entity.getPersistentData().getDouble("Damage"));
+               if (logic_b || entity.isInWall() || !entity.isAlive()) {
+                  entity.getPersistentData().putBoolean("Stop", true);
                   range = d * 0.25 + 3.0 * range_fix;
-                  entity.getPersistentData().m_128347_("Damage", 15.0 * CNT6);
-                  entity.getPersistentData().m_128347_("Range", range * 2.0);
-                  entity.getPersistentData().m_128347_("knockback", 1.0);
+                  entity.getPersistentData().putDouble("Damage", 15.0 * CNT6);
+                  entity.getPersistentData().putDouble("Range", range * 2.0);
+                  entity.getPersistentData().putDouble("knockback", 1.0);
                   if (flame) {
-                     entity.getPersistentData().m_128347_("effect", 10.0);
+                     entity.getPersistentData().putDouble("effect", 10.0);
                   } else {
-                     entity.getPersistentData().m_128347_("effect", 0.0);
+                     entity.getPersistentData().putDouble("effect", 0.0);
                   }
 
                   RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
-                  entity.getPersistentData().m_128347_("BlockDamage", d * 1.0);
-                  entity.getPersistentData().m_128347_("BlockRange", range);
-                  entity.getPersistentData().m_128379_("noParticle", true);
+                  entity.getPersistentData().putDouble("BlockDamage", d * 1.0);
+                  entity.getPersistentData().putDouble("BlockRange", range);
+                  entity.getPersistentData().putBoolean("noParticle", true);
+                  if (flame) {
+                     entity.getPersistentData().putDouble("effect", 3.0);
+                  }
+
                   BlockDestroyAllDirectionProcedure.execute(world, x_pos, y_pos, z_pos, entity);
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F);
                      } else {
-                        _level.m_7785_(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F, false);
+                        _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.end_gateway.spawn")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F, false);
                      }
                   }
 
                   if (granite) {
                      if (world instanceof ServerLevel) {
                         ServerLevel _level = (ServerLevel)world;
-                        _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle cloud ~ ~ ~ " + range * 0.25 + " " + range * 0.25 + " " + range * 0.25 + " 1 " + Math.round(5.0 * range) + " force");
+                        _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle gaigegaigekaigecraft:particle_blue ~ ~ ~ " + range * 0.25 + " " + range * 0.25 + " " + range * 0.25 + " 1 " + Math.round(5.0 * range) + " force");
                      }
                   } else if (energy_wave) {
                      if (world instanceof Level) {
                         Level _level = (Level)world;
-                        if (!_level.m_5776_()) {
-                           _level.m_5594_((Player)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:thunder_impact")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F);
+                        if (!_level.isClientSide()) {
+                           _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:thunder_impact")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F);
                         } else {
-                           _level.m_7785_(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:thunder_impact")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F, false);
+                           _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:thunder_impact")), SoundSource.NEUTRAL, (float)(range * 0.5), 1.0F, false);
                         }
                      }
 
                      if (world instanceof ServerLevel) {
                         ServerLevel _level = (ServerLevel)world;
-                        _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle jujutsucraft:particle_thunder_blue ~ ~ ~ " + range * 0.25 + " " + range * 0.25 + " " + range * 0.25 + " 1 " + Math.round(5.0 * range) + " force");
+                        _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle gaigegaigekaigecraft:particle_thunder_blue ~ ~ ~ " + range * 0.25 + " " + range * 0.25 + " " + range * 0.25 + " 1 " + Math.round(5.0 * range) + " force");
                      }
                   } else if (flame && world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle flame ~ ~ ~ " + range * 0.25 + " " + range * 0.25 + " " + range * 0.25 + " 1 " + Math.round(5.0 * range) + " force");
+                     _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle flame ~ ~ ~ " + range * 0.25 + " " + range * 0.25 + " " + range * 0.25 + " 1 " + Math.round(5.0 * range) + " force");
                   }
 
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle explosion ~ ~ ~ " + range * 0.75 + " " + range * 0.75 + " " + range * 0.75 + " 1 " + Math.round(10.0 * range) + " force");
+                     _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle explosion ~ ~ ~ " + range * 0.75 + " " + range * 0.75 + " " + range * 0.75 + " 1 " + Math.round(10.0 * range) + " force");
                   }
 
-                  entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") - 1.0);
-                  entity.getPersistentData().m_128347_("cnt2", entity.getPersistentData().m_128459_("cnt2") + 1.0);
+                  entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") - 1.0);
+                  entity.getPersistentData().putDouble("cnt2", entity.getPersistentData().getDouble("cnt2") + 1.0);
                   break;
                }
 
-               entity.m_6021_(entity.m_20185_() + x_power * 1.0, entity.m_20186_() + y_power * 1.0, entity.m_20189_() + z_power * 1.0);
+               entity.teleportTo(entity.getX() + x_power * 1.0, entity.getY() + y_power * 1.0, entity.getZ() + z_power * 1.0);
                if (entity instanceof ServerPlayer) {
                   ServerPlayer _serverPlayer = (ServerPlayer)entity;
-                  _serverPlayer.f_8906_.m_9774_(entity.m_20185_() + x_power * 1.0, entity.m_20186_() + y_power * 1.0, entity.m_20189_() + z_power * 1.0, entity.m_146908_(), entity.m_146909_());
+                  _serverPlayer.connection.teleport(entity.getX() + x_power * 1.0, entity.getY() + y_power * 1.0, entity.getZ() + z_power * 1.0, entity.getYRot(), entity.getXRot());
                }
             }
 
-            if ((entity.getPersistentData().m_128459_("cnt1") > (double)(granite ? 35 : 15) || entity.getPersistentData().m_128459_("cnt2") > 10.0 * CNT6) && !entity.m_9236_().m_5776_()) {
-               entity.m_146870_();
+            if ((entity.getPersistentData().getDouble("cnt1") > (double)(granite ? 35 : 15) || entity.getPersistentData().getDouble("cnt2") > 5.0 * CNT6) && !entity.level().isClientSide()) {
+               entity.discard();
             }
          }
 
-         entity.getPersistentData().m_128347_("cnt_life", entity.getPersistentData().m_128459_("cnt_life") + 1.0);
-         if (entity.getPersistentData().m_128459_("cnt_life") > 1.0) {
-            x_pos = entity.getPersistentData().m_128459_("old_x");
-            y_pos = entity.getPersistentData().m_128459_("old_y");
-            z_pos = entity.getPersistentData().m_128459_("old_z");
-            x_power = entity.m_20185_() - x_pos;
-            y_power = entity.m_20186_() - y_pos;
-            z_power = entity.m_20189_() - z_pos;
+         entity.getPersistentData().putDouble("cnt_life", entity.getPersistentData().getDouble("cnt_life") + 1.0);
+         if (entity.getPersistentData().getDouble("cnt_life") > 1.0) {
+            x_pos = entity.getPersistentData().getDouble("old_x");
+            y_pos = entity.getPersistentData().getDouble("old_y");
+            z_pos = entity.getPersistentData().getDouble("old_z");
+            x_power = entity.getX() - x_pos;
+            y_power = entity.getY() - y_pos;
+            z_power = entity.getZ() - z_pos;
             dis = Math.sqrt(x_power * x_power + y_power * y_power + z_power * z_power);
             if (dis > 1.0) {
                x_power /= dis;
@@ -288,16 +278,16 @@ public class AIEnergyBallWhiteProcedure {
                if (flame) {
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle minecraft:flame ~ ~ ~ 0.25 0.25 0.25 0.01 2 force");
+                     _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle minecraft:flame ~ ~ ~ 0.25 0.25 0.25 0.01 2 force");
                   }
 
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle minecraft:end_rod ~ ~ ~ 0.25 0.25 0.25 0.01 2 force");
+                     _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle minecraft:end_rod ~ ~ ~ 0.25 0.25 0.25 0.01 2 force");
                   }
                } else if (granite && world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "particle minecraft:cloud ~ ~ ~ 0.25 0.25 0.25 0.01 2 force");
+                  _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle gaigegaigekaigecraft:particle_blue ~ ~ ~ 0.25 0.25 0.25 0.01 2 force");
                }
 
                if (energy_wave) {
@@ -310,9 +300,9 @@ public class AIEnergyBallWhiteProcedure {
             }
          }
 
-         entity.getPersistentData().m_128347_("old_x", entity.m_20185_());
-         entity.getPersistentData().m_128347_("old_y", entity.m_20186_());
-         entity.getPersistentData().m_128347_("old_z", entity.m_20189_());
+         entity.getPersistentData().putDouble("old_x", entity.getX());
+         entity.getPersistentData().putDouble("old_y", entity.getY());
+         entity.getPersistentData().putDouble("old_z", entity.getZ());
       }
    }
 }

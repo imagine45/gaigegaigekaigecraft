@@ -13,25 +13,21 @@ public class LogicBetrayalProcedure {
    public static boolean execute(Entity entity, Entity entityiterator) {
       if (entity != null && entityiterator != null) {
          boolean betrayal = false;
-         Entity entity_a = null;
-         double x_pos = 0.0;
-         double y_pos = 0.0;
-         double z_pos = 0.0;
          betrayal = false;
-         if (entityiterator instanceof LivingEntity && entity.getPersistentData().m_128471_("betrayal")) {
+         if (entityiterator instanceof LivingEntity && entity.getPersistentData().getBoolean("betrayal")) {
             if (entity == entityiterator) {
                betrayal = true;
             }
 
-            if (entity.getPersistentData().m_128471_("DomainAttack")) {
+            if (entity.getPersistentData().getBoolean("DomainAttack")) {
                betrayal = false;
             }
 
-            if (entity.getPersistentData().m_128471_("attack")) {
+            if (entity.getPersistentData().getBoolean("attack")) {
                betrayal = false;
             }
 
-            if (entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo")))) {
+            if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo")))) {
                betrayal = false;
             }
          }

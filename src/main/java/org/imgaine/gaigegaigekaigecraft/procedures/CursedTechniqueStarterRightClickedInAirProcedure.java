@@ -17,22 +17,19 @@ public class CursedTechniqueStarterRightClickedInAirProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) {
       if (entity != null) {
-         double old_select = 0.0;
-         double old_technique = 0.0;
-         boolean old_second = false;
-         if (itemstack.m_41784_().m_128461_("TechniqueName").equals("")) {
-            itemstack.m_41714_(Component.m_237113_(((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechniqueName));
-            itemstack.m_41784_().m_128359_("TechniqueName", ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechniqueName);
-            itemstack.m_41784_().m_128347_("TechniqueNumber1", ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique);
-            itemstack.m_41784_().m_128347_("TechniqueNumber2", ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique);
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "playsound ui.button.click master @s");
+         if (itemstack.getOrCreateTag().getString("TechniqueName").equals("")) {
+            itemstack.setHoverName(Component.literal(((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechniqueName));
+            itemstack.getOrCreateTag().putString("TechniqueName", ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechniqueName);
+            itemstack.getOrCreateTag().putDouble("TechniqueNumber1", ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique);
+            itemstack.getOrCreateTag().putDouble("TechniqueNumber2", ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique);
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "playsound ui.button.click master @s");
             }
 
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_(itemstack.m_41611_().getString()), true);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal(itemstack.getDisplayName().getString()), true);
                }
             }
 
@@ -44,35 +41,35 @@ public class CursedTechniqueStarterRightClickedInAirProcedure {
             KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               _player.m_36335_().m_41524_(itemstack.m_41720_(), 5);
+               _player.getCooldowns().addCooldown(itemstack.getItem(), 5);
             }
-         } else if (itemstack.m_41784_().m_128459_("TechniqueNumber1") == ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique || itemstack.m_41784_().m_128459_("TechniqueNumber1") == ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2) {
-            if (entity.getPersistentData().m_128459_("skill") == 0.0) {
+         } else if (itemstack.getOrCreateTag().getDouble("TechniqueNumber1") == ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique || itemstack.getOrCreateTag().getDouble("TechniqueNumber1") == ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2) {
+            if (entity.getPersistentData().getDouble("skill") == 0.0) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_36335_().m_41524_(itemstack.m_41720_(), 1);
+                  _player.getCooldowns().addCooldown(itemstack.getItem(), 1);
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "playsound ui.button.click master @s");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "playsound ui.button.click master @s");
                }
 
-               old_second = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).SecondTechnique;
-               boolean _setval = itemstack.m_41784_().m_128459_("TechniqueNumber1") != ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
+               boolean old_second = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).SecondTechnique;
+               boolean _setval1 = itemstack.getOrCreateTag().getDouble("TechniqueNumber1") != ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
                entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                  capability.SecondTechnique = _setval;
+                  capability.SecondTechnique = _setval1;
                   capability.syncPlayerVariables(entity);
                });
-               old_technique = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
-               old_select = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique;
-               double _setval = itemstack.m_41784_().m_128459_("TechniqueNumber1");
+               double old_technique = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
+               double old_select = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique;
+               double _doublesetval2 = itemstack.getOrCreateTag().getDouble("TechniqueNumber1");
                entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                  capability.PlayerCurseTechnique = _setval;
+                  capability.PlayerCurseTechnique = _doublesetval2;
                   capability.syncPlayerVariables(entity);
                });
-               _setval = itemstack.m_41784_().m_128459_("TechniqueNumber2");
+               double _doublesetval3 = itemstack.getOrCreateTag().getDouble("TechniqueNumber2");
                entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                  capability.PlayerSelectCurseTechnique = _setval;
+                  capability.PlayerSelectCurseTechnique = _doublesetval3;
                   capability.syncPlayerVariables(entity);
                });
                StartCursedTechniqueProcedure.execute(world, x, y, z, entity);
@@ -88,21 +85,21 @@ public class CursedTechniqueStarterRightClickedInAirProcedure {
                   capability.PlayerSelectCurseTechnique = old_select;
                   capability.syncPlayerVariables(entity);
                });
-               boolean _setval = true;
+               boolean _setval4 = true;
                entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                  capability.noChangeTechnique = _setval;
+                  capability.noChangeTechnique = _setval4;
                   capability.syncPlayerVariables(entity);
                });
                KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-               entity.getPersistentData().m_128379_("PRESS_Z", true);
+               entity.getPersistentData().putBoolean("PRESS_Z", true);
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_(itemstack.m_41611_().getString()), true);
+                  if (!_player.level().isClientSide()) {
+                     _player.displayClientMessage(Component.literal(itemstack.getDisplayName().getString()), true);
                   }
                }
             } else {
-               entity.getPersistentData().m_128379_("PRESS_Z", false);
+               entity.getPersistentData().putBoolean("PRESS_Z", false);
             }
          }
 

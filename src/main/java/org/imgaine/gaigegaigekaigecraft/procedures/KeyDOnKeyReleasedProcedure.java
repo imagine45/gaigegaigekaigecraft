@@ -8,7 +8,7 @@ public class KeyDOnKeyReleasedProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128379_("PRESS_D", false);
+         entity.getPersistentData().putBoolean("PRESS_D", false);
       }
    }
 }

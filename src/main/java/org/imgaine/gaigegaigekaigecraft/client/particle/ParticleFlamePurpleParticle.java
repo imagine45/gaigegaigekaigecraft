@@ -21,25 +21,25 @@ public class ParticleFlamePurpleParticle extends TextureSheetParticle {
    protected ParticleFlamePurpleParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(8.0F, 8.0F);
-      this.f_107663_ *= 8.0F;
-      this.f_107225_ = Math.max(1, 24 + (this.f_107223_.m_188503_(12) - 6));
-      this.f_107226_ = 0.0F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 0.3;
-      this.f_107216_ = vy * 0.3;
-      this.f_107217_ = vz * 0.3;
-      this.m_108339_(spriteSet);
+      this.setSize(8.0F, 8.0F);
+      this.quadSize *= 8.0F;
+      this.lifetime = Math.max(1, 24 + (this.random.nextInt(12) - 6));
+      this.gravity = 0.0F;
+      this.hasPhysics = false;
+      this.xd = vx * 0.3;
+      this.yd = vy * 0.3;
+      this.zd = vz * 0.3;
+      this.setSpriteFromAge(spriteSet);
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107431_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
-      if (!this.f_107220_) {
-         this.m_108337_(this.spriteSet.m_5819_(this.f_107224_ / 2 % 15 + 1, 15));
+   public void tick() {
+      super.tick();
+      if (!this.removed) {
+         this.setSprite(this.spriteSet.get(this.age / 2 % 15 + 1, 15));
       }
 
    }

@@ -1,0 +1,7 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/loudspeaker",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/loudspeaker",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

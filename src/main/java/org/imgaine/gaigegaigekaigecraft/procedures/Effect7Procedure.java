@@ -26,76 +26,76 @@ public class Effect7Procedure {
          double z_pos = 0.0;
          double amount = 0.0;
          double speed = 0.0;
-         speed = 1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.2;
+         speed = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.2;
          amount = 0.1 * speed;
          if (entity instanceof FoxFireEntity) {
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123745_, x, y, z, 20, 0.1, 0.1, 0.1, 0.25 * speed);
+               _level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 20, 0.1, 0.1, 0.1, 0.25 * speed);
             }
 
             if (world instanceof Level) {
                Level _level = (Level)world;
-               if (!_level.m_5776_()) {
-                  _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.blaze.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+               if (!_level.isClientSide()) {
+                  _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.blaze.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                } else {
-                  _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.blaze.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                  _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.blaze.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                }
             }
 
             if (world instanceof Level) {
                Level _level = (Level)world;
-               if (!_level.m_5776_()) {
-                  _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.firecharge.use")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+               if (!_level.isClientSide()) {
+                  _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.firecharge.use")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                } else {
-                  _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.firecharge.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                  _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.firecharge.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                }
             }
 
-            if (!entity.m_9236_().m_5776_()) {
-               entity.m_146870_();
+            if (!entity.level().isClientSide()) {
+               entity.discard();
             }
          } else {
             if (entity instanceof EmberInsectEntity) {
                amount = 1.0;
-               entity.getPersistentData().m_128347_("BlockDamage", 2.0);
-               entity.getPersistentData().m_128347_("BlockRange", 3.0);
+               entity.getPersistentData().putDouble("BlockDamage", 2.0);
+               entity.getPersistentData().putDouble("BlockRange", 3.0);
                BlockDestroyAllDirectionProcedure.execute(world, x, y, z, entity);
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123813_, x, y, z, 25, 1.0, 1.0, 1.0, 0.25);
+                  _level.sendParticles(ParticleTypes.EXPLOSION, x, y, z, 25, 1.0, 1.0, 1.0, 0.25);
                }
 
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_254849_((Entity)null, x, y, z, 0.0F, ExplosionInteraction.NONE);
+                  if (!_level.isClientSide()) {
+                     _level.explode((Entity)null, x, y, z, 0.0F, ExplosionInteraction.NONE);
                   }
                }
 
-               if (!entity.m_9236_().m_5776_()) {
-                  entity.m_146870_();
+               if (!entity.level().isClientSide()) {
+                  entity.discard();
                }
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123796_, x, y, z, (int)(20.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
+               _level.sendParticles(ParticleTypes.CLOUD, x, y, z, (int)(20.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123755_, x, y, z, (int)(20.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
+               _level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y, z, (int)(20.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123756_, x, y, z, (int)(30.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
+               _level.sendParticles(ParticleTypes.LAVA, x, y, z, (int)(30.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123744_, x, y, z, (int)(60.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
+               _level.sendParticles(ParticleTypes.FLAME, x, y, z, (int)(60.0 * amount), 0.5, 0.5, 0.5, 0.25 * speed);
             }
          }
 

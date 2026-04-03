@@ -5,6 +5,7 @@ import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
 import org.imgaine.gaigegaigekaigecraft.procedures.AIHumanCarProcedure;
 import org.imgaine.gaigegaigekaigecraft.procedures.AlwayTrueProcedure;
 import org.imgaine.gaigegaigekaigecraft.procedures.SetTagProcedure;
+import org.imgaine.gaigegaigekaigecraft.procedures.SizeByNBTProcedure;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -72,199 +73,210 @@ public class TruckEntity extends PathfinderMob implements GeoEntity {
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_274367_(1.5F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setMaxUpStep(1.5F);
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "truck");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "truck");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public boolean m_7337_(Entity entity) {
+   public boolean canCollideWith(Entity entity) {
       return true;
    }
 
-   public boolean m_5829_() {
-      Level world = ((Entity)this).m_9236_();
-      double x = ((Entity)this).m_20185_();
-      double y = ((Entity)this).m_20186_();
-      double z = ((Entity)this).m_20189_();
+   public boolean canBeCollidedWith() {
+      Level world = ((Entity)this).level();
+      double x = ((Entity)this).getX();
+      double y = ((Entity)this).getY();
+      double z = ((Entity)this).getZ();
       return AlwayTrueProcedure.execute();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
+   protected void registerGoals() {
+      super.registerGoals();
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public double m_6048_() {
-      return super.m_6048_() + -1.4;
+   public double getPassengersRidingOffset() {
+      return super.getPassengersRidingOffset() + -1.4;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      super.m_6071_(sourceentity, hand);
-      sourceentity.m_20329_(this);
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      super.mobInteract(sourceentity, hand);
+      sourceentity.startRiding(this);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIHumanCarProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIHumanCarProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      return super.m_6972_(p_33597_).m_20388_(1.0F);
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      Level world = this.level();
+      double x = this.getX();
+      double y = ((Entity)this).getY();
+      double z = ((Entity)this).getZ();
+      return super.getDimensions(p_33597_).scale((float)SizeByNBTProcedure.execute(this));
    }
 
-   public void m_7023_(Vec3 dir) {
-      Entity entity = this.m_20197_().isEmpty() ? null : (Entity)this.m_20197_().get(0);
-      if (this.m_20160_()) {
-         this.m_146922_(entity.m_146908_());
-         this.f_19859_ = this.m_146908_();
-         this.m_146926_(entity.m_146909_() * 0.5F);
-         this.m_19915_(this.m_146908_(), this.m_146909_());
-         this.f_20883_ = entity.m_146908_();
-         this.f_20885_ = entity.m_146908_();
+   public void travel(Vec3 dir) {
+      Entity entity = this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+      if (this.isVehicle()) {
+         this.setYRot(entity.getYRot());
+         this.yRotO = this.getYRot();
+         this.setXRot(entity.getXRot() * 0.5F);
+         this.setRot(this.getYRot(), this.getXRot());
+         this.yBodyRot = entity.getYRot();
+         this.yHeadRot = entity.getYRot();
          if (entity instanceof LivingEntity) {
             LivingEntity passenger = (LivingEntity)entity;
-            this.m_7910_((float)this.m_21133_(Attributes.f_22279_));
-            float forward = passenger.f_20902_;
+            this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            float forward = passenger.zza;
             float strafe = 0.0F;
-            super.m_7023_(new Vec3((double)strafe, 0.0, (double)forward));
+            super.travel(new Vec3((double)strafe, 0.0, (double)forward));
          }
 
-         double d1 = this.m_20185_() - this.f_19854_;
-         double d0 = this.m_20189_() - this.f_19856_;
+         double d1 = this.getX() - this.xo;
+         double d0 = this.getZ() - this.zo;
          float f1 = (float)Math.sqrt(d1 * d1 + d0 * d0) * 4.0F;
          if (f1 > 1.0F) {
             f1 = 1.0F;
          }
 
-         this.f_267362_.m_267771_(this.f_267362_.m_267731_() + (f1 - this.f_267362_.m_267731_()) * 0.4F);
-         this.f_267362_.m_267590_(this.f_267362_.m_267756_() + this.f_267362_.m_267731_());
-         this.m_267651_(true);
+         this.walkAnimation.setSpeed(this.walkAnimation.speed() + (f1 - this.walkAnimation.speed()) * 0.4F);
+         this.walkAnimation.position(this.walkAnimation.position() + this.walkAnimation.speed());
+         this.calculateEntityAnimation(true);
       } else {
-         super.m_7023_(dir);
+         super.travel(dir);
       }
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_21203_();
+   public void aiStep() {
+      super.aiStep();
+      this.updateSwingTime();
    }
 
    public static void init() {
-      SpawnPlacements.m_21754_((EntityType)JujutsucraftModEntities.TRUCK.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> world.m_46791_() != Difficulty.PEACEFUL && Monster.m_219009_(world, pos, random) && Mob.m_217057_(entityType, world, reason, pos, random));
+      SpawnPlacements.register((EntityType)JujutsucraftModEntities.TRUCK.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random));
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 100.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 10.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 3.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 2.0);
-      builder = builder.m_22268_(Attributes.f_22282_, 2.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 100.0);
+      builder = builder.add(Attributes.ARMOR, 10.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 3.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 2.0);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 2.0);
       return builder;
    }
 
    private PlayState movementPredicate(AnimationState event) {
       if (!this.animationprocedure.equals("empty")) {
          return PlayState.STOP;
-      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.m_5912_() && !this.m_20142_()) {
+      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.isAggressive() && !this.isSprinting()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
-      } else if (this.m_20142_()) {
+      } else if (this.isSprinting()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("sprint"));
       } else {
-         return this.m_5912_() && event.isMoving() ? event.setAndContinue(RawAnimation.begin().thenLoop("sptint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+         return this.isAggressive() && event.isMoving() ? event.setAndContinue(RawAnimation.begin().thenLoop("sptint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
       }
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -277,8 +289,8 @@ public class TruckEntity extends PathfinderMob implements GeoEntity {
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(TruckEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(TruckEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(TruckEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(TruckEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(TruckEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(TruckEntity.class, EntityDataSerializers.STRING);
    }
 }

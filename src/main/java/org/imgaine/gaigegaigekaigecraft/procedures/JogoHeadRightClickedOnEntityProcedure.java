@@ -20,45 +20,45 @@ public class JogoHeadRightClickedOnEntityProcedure {
          ItemStack var10000;
          if (sourceentity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)sourceentity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         if (var10000.m_41720_() != Items.f_42436_) {
+         if (var10000.getItem() != Items.GOLDEN_APPLE) {
             if (sourceentity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)sourceentity;
-               var10000 = _livEnt.m_21205_();
+               var10000 = _livEnt.getMainHandItem();
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() != Items.f_42437_) {
+            if (var10000.getItem() != Items.ENCHANTED_GOLDEN_APPLE) {
                return;
             }
          }
 
          if (sourceentity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)sourceentity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         var10000.m_41774_(1);
+         var10000.shrink(1);
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            Entity entityToSpawn = ((EntityType)JujutsucraftModEntities.JOGO.get()).m_262496_(_level, BlockPos.m_274561_(x, y, z), MobSpawnType.MOB_SUMMONED);
+            Entity entityToSpawn = ((EntityType)JujutsucraftModEntities.JOGO.get()).spawn(_level, BlockPos.containing(x, y, z), MobSpawnType.MOB_SUMMONED);
             if (entityToSpawn != null) {
-               entityToSpawn.m_146922_(entity.m_146908_());
-               entityToSpawn.m_5618_(entity.m_146908_());
-               entityToSpawn.m_5616_(entity.m_146908_());
-               entityToSpawn.m_146926_(entity.m_146909_());
+               entityToSpawn.setYRot(entity.getYRot());
+               entityToSpawn.setYBodyRot(entity.getYRot());
+               entityToSpawn.setYHeadRot(entity.getYRot());
+               entityToSpawn.setXRot(entity.getXRot());
             }
          }
 
-         if (!entity.m_9236_().m_5776_()) {
-            entity.m_146870_();
+         if (!entity.level().isClientSide()) {
+            entity.discard();
          }
 
       }

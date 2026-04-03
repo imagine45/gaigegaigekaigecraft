@@ -1,22 +1,44 @@
 package org.imgaine.gaigegaigekaigecraft.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.imgaine.gaigegaigekaigecraft.client.model.Modelguillotine;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import org.imgaine.gaigegaigekaigecraft.GenericArmorLayer;
+import org.imgaine.gaigegaigekaigecraft.GenericItemLayer;
 import org.imgaine.gaigegaigekaigecraft.entity.EntityGuillotineEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.model.EntityGuillotineModel;
+import org.imgaine.gaigegaigekaigecraft.procedures.SizeByNBTProcedure;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 
-public class EntityGuillotineRenderer extends MobRenderer<EntityGuillotineEntity, Modelguillotine<EntityGuillotineEntity>> {
-   public EntityGuillotineRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelguillotine(context.m_174023_(Modelguillotine.LAYER_LOCATION)), 0.0F);
+public class EntityGuillotineRenderer extends DynamicGeoEntityRenderer<EntityGuillotineEntity> {
+   public EntityGuillotineRenderer(EntityRendererProvider.Context renderManager) {
+      super(renderManager, new EntityGuillotineModel());
+      this.shadowRadius = 0.0F;
+      this.addRenderLayer(new GenericArmorLayer(this));
+      this.addRenderLayer(new GenericItemLayer(this));
    }
 
-   protected void scale(EntityGuillotineEntity entity, PoseStack poseStack, float f) {
-      poseStack.m_85841_(1.25F, 1.25F, 1.25F);
+   public RenderType getRenderType(EntityGuillotineEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 
-   public ResourceLocation getTextureLocation(EntityGuillotineEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/guillotine.png");
+   public void preRender(PoseStack poseStack, EntityGuillotineEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
+      float scale = (float)SizeByNBTProcedure.execute(entity);
+      this.scaleHeight = scale;
+      this.scaleWidth = scale;
+      super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+   }
+
+   protected float getDeathMaxRotation(EntityGuillotineEntity entityLivingBaseIn) {
+      return 0.0F;
    }
 }

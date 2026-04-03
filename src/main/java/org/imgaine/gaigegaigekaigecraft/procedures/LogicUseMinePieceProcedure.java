@@ -13,7 +13,7 @@ public class LogicUseMinePieceProcedure {
       } else {
          boolean logic_a = false;
          logic_a = false;
-         if (ModList.get().isLoaded("minepiece") && (entity.getPersistentData().m_128459_("Pirate") != 0.0 || entity.getPersistentData().m_128471_("Marine") || entity.getPersistentData().m_128471_("Revolutionary"))) {
+         if (ModList.get().isLoaded("minepiece") && (entity.getPersistentData().getDouble("Pirate") != 0.0 || entity.getPersistentData().getBoolean("Marine") || entity.getPersistentData().getBoolean("Revolutionary"))) {
             logic_a = true;
          }
 

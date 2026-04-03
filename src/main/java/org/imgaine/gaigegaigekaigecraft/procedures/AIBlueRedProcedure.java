@@ -1,9 +1,7 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.UUID;
-import java.util.function.BiFunction;
+import org.imgaine.gaigegaigekaigecraft.entity.BlueEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.RedEntity;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LevelAccessor;
@@ -26,82 +24,115 @@ public class AIBlueRedProcedure {
          boolean logic_attack = false;
          Entity entity_a = null;
          if (LogicOwnerExistProcedure.execute(world, entity)) {
-            entity_a = (new BiFunction<LevelAccessor, String, Entity>() {
-               public Entity apply(LevelAccessor levelAccessor, String uuid) {
-                  if (levelAccessor instanceof ServerLevel serverLevel) {
-                     try {
-                        return serverLevel.m_8791_(UUID.fromString(uuid));
-                     } catch (Exception var5) {
+            entity_a = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("OWNER_UUID"));
+            logic_a = false;
+            if (entity.getPersistentData().getDouble("NameRanged_ranged") != 0.0) {
+               label104: {
+                  label105: {
+                     if (entity instanceof RedEntity) {
+                        RedEntity _datEntL3 = (RedEntity)entity;
+                        if ((Boolean)_datEntL3.getEntityData().get(RedEntity.DATA_flag_purple)) {
+                           break label105;
+                        }
                      }
+
+                     if (entity instanceof BlueEntity) {
+                        BlueEntity _datEntL4 = (BlueEntity)entity;
+                        if ((Boolean)_datEntL4.getEntityData().get(BlueEntity.DATA_flag_purple)) {
+                           break label105;
+                        }
+                     }
+
+                     label106: {
+                        label107: {
+                           if (entity instanceof RedEntity) {
+                              if (!(entity instanceof RedEntity)) {
+                                 break label107;
+                              }
+
+                              RedEntity _datEntL19 = (RedEntity)entity;
+                              if (!(Boolean)_datEntL19.getEntityData().get(RedEntity.DATA_flag_start)) {
+                                 break label107;
+                              }
+                           }
+
+                           if (!(entity instanceof BlueEntity)) {
+                              break label106;
+                           }
+
+                           if (entity instanceof BlueEntity) {
+                              BlueEntity _datEntL21 = (BlueEntity)entity;
+                              if ((Boolean)_datEntL21.getEntityData().get(BlueEntity.DATA_flag_start)) {
+                                 break label106;
+                              }
+                           }
+                        }
+
+                        if (entity.getPersistentData().getDouble("NameRanged_ranged") != entity_a.getPersistentData().getDouble("NameRanged")) {
+                           break label104;
+                        }
+
+                        logic_a = true;
+                        if (entity instanceof RedEntity) {
+                           entity.setDeltaMovement(new Vec3(entity_a.getDeltaMovement().x(), entity_a.getDeltaMovement().y(), entity_a.getDeltaMovement().z()));
+                           entity.setYRot(entity_a.getYRot());
+                           entity.setXRot(entity_a.getXRot());
+                           entity.setYBodyRot(entity.getYRot());
+                           entity.setYHeadRot(entity.getYRot());
+                           entity.yRotO = entity.getYRot();
+                           entity.xRotO = entity.getXRot();
+                           if (entity instanceof LivingEntity) {
+                              LivingEntity _entity = (LivingEntity)entity;
+                              _entity.yBodyRotO = _entity.getYRot();
+                              _entity.yHeadRotO = _entity.getYRot();
+                           }
+
+                           if ((!entity.isAlive() || entity_a.getPersistentData().getDouble("skill") == 0.0) && entity instanceof RedEntity) {
+                              RedEntity _datEntSetL = (RedEntity)entity;
+                              _datEntSetL.getEntityData().set(RedEntity.DATA_flag_start, true);
+                           }
+                        } else if (entity instanceof BlueEntity && entity instanceof BlueEntity) {
+                           BlueEntity _datEntSetL = (BlueEntity)entity;
+                           _datEntSetL.getEntityData().set(BlueEntity.DATA_flag_start, true);
+                        }
+
+                        entity.getPersistentData().putDouble("x_power", entity_a.getPersistentData().getDouble("x_power"));
+                        entity.getPersistentData().putDouble("y_power", entity_a.getPersistentData().getDouble("y_power"));
+                        entity.getPersistentData().putDouble("z_power", entity_a.getPersistentData().getDouble("z_power"));
+                        break label104;
+                     }
+
+                     logic_a = true;
+                     break label104;
                   }
 
-                  return null;
-               }
-            }).apply(world, entity.getPersistentData().m_128461_("OWNER_UUID"));
-            logic_a = false;
-            if (entity.getPersistentData().m_128459_("NameRanged_ranged") != 0.0) {
-               if (entity.getPersistentData().m_128471_("flag_purple")) {
-                  if (entity.getPersistentData().m_128459_("NameRanged_ranged") == entity_a.getPersistentData().m_128459_("NameRanged")) {
+                  if (entity.getPersistentData().getDouble("NameRanged_ranged") == entity_a.getPersistentData().getDouble("NameRanged")) {
                      logic_a = true;
-                     entity.m_20256_(new Vec3(entity_a.m_20184_().m_7096_(), entity_a.m_20096_() ? 0.0 : entity_a.m_20184_().m_7098_(), entity_a.m_20184_().m_7094_()));
-                     entity.m_146922_(entity_a.m_146908_());
-                     entity.m_146926_(entity_a.m_146909_());
-                     entity.m_5618_(entity.m_146908_());
-                     entity.m_5616_(entity.m_146908_());
-                     entity.f_19859_ = entity.m_146908_();
-                     entity.f_19860_ = entity.m_146909_();
+                     entity.setDeltaMovement(new Vec3(entity_a.getDeltaMovement().x(), entity_a.onGround() ? 0.0 : entity_a.getDeltaMovement().y(), entity_a.getDeltaMovement().z()));
+                     entity.setYRot(entity_a.getYRot());
+                     entity.setXRot(entity_a.getXRot());
+                     entity.setYBodyRot(entity.getYRot());
+                     entity.setYHeadRot(entity.getYRot());
+                     entity.yRotO = entity.getYRot();
+                     entity.xRotO = entity.getXRot();
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.f_20884_ = _entity.m_146908_();
-                        _entity.f_20886_ = _entity.m_146908_();
+                        _entity.yBodyRotO = _entity.getYRot();
+                        _entity.yHeadRotO = _entity.getYRot();
                      }
 
-                     if ((entity_a.getPersistentData().m_128459_("cnt1") >= 18.0 || entity_a.getPersistentData().m_128459_("skill") == 0.0) && !entity.m_9236_().m_5776_()) {
-                        entity.m_146870_();
+                     if ((entity_a.getPersistentData().getDouble("cnt1") >= 18.0 || entity_a.getPersistentData().getDouble("skill") == 0.0) && !entity.level().isClientSide()) {
+                        entity.discard();
                      }
                   }
-               } else if (!entity.getPersistentData().m_128471_("flag_start")) {
-                  if (entity.getPersistentData().m_128459_("NameRanged_ranged") == entity_a.getPersistentData().m_128459_("NameRanged")) {
-                     logic_a = true;
-                     if (entity instanceof RedEntity) {
-                        entity.m_20256_(new Vec3(entity_a.m_20184_().m_7096_(), entity_a.m_20184_().m_7098_(), entity_a.m_20184_().m_7094_()));
-                        entity.m_146922_(entity_a.m_146908_());
-                        entity.m_146926_(entity_a.m_146909_());
-                        entity.m_5618_(entity.m_146908_());
-                        entity.m_5616_(entity.m_146908_());
-                        entity.f_19859_ = entity.m_146908_();
-                        entity.f_19860_ = entity.m_146909_();
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entity;
-                           _entity.f_20884_ = _entity.m_146908_();
-                           _entity.f_20886_ = _entity.m_146908_();
-                        }
-
-                        if (entity_a.getPersistentData().m_128459_("skill") == 0.0) {
-                           entity.getPersistentData().m_128379_("flag_start", true);
-                        }
-
-                        if (!entity.m_6084_()) {
-                           entity.getPersistentData().m_128379_("flag_start", true);
-                        }
-                     } else {
-                        entity.getPersistentData().m_128379_("flag_start", true);
-                     }
-
-                     entity.getPersistentData().m_128347_("x_power", entity_a.getPersistentData().m_128459_("x_power"));
-                     entity.getPersistentData().m_128347_("y_power", entity_a.getPersistentData().m_128459_("y_power"));
-                     entity.getPersistentData().m_128347_("z_power", entity_a.getPersistentData().m_128459_("z_power"));
-                  }
-               } else {
-                  logic_a = true;
                }
 
-               if (!logic_a && !entity.m_9236_().m_5776_()) {
-                  entity.m_146870_();
+               if (!logic_a && !entity.level().isClientSide()) {
+                  entity.discard();
                }
             }
-         } else if (!entity.m_9236_().m_5776_()) {
-            entity.m_146870_();
+         } else if (!entity.level().isClientSide()) {
+            entity.discard();
          }
 
       }

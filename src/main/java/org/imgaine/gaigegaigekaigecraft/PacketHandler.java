@@ -13,7 +13,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 )
 public class PacketHandler {
    private static final String PROTOCOL_VERSION = "1";
-   public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation("jujutsucraft", "main"), () -> "1", "1"::equals, "1"::equals);
+   public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation("gaigegaigekaigecraft", "main"), () -> "1", "1"::equals, "1"::equals);
 
    public PacketHandler() {
    }

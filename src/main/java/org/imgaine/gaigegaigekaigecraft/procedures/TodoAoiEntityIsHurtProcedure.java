@@ -1,5 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import org.imgaine.gaigegaigekaigecraft.InlineMethodHandler;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +24,7 @@ public class TodoAoiEntityIsHurtProcedure {
          float var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10000 = _livEnt.m_21223_();
+            var10000 = _livEnt.getHealth();
          } else {
             var10000 = -1.0F;
          }
@@ -32,7 +33,7 @@ public class TodoAoiEntityIsHurtProcedure {
          float var10001;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10001 = _livEnt.m_21233_();
+            var10001 = _livEnt.getMaxHealth();
          } else {
             var10001 = -1.0F;
          }
@@ -41,36 +42,26 @@ public class TodoAoiEntityIsHurtProcedure {
             ItemStack var16;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var16 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var16 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var16 = ItemStack.f_41583_;
+               var16 = ItemStack.EMPTY;
             }
 
-            if (var16.m_41720_() == JujutsucraftModItems.PENDANT_TODO_AOI.get()) {
+            if (var16.getItem() == JujutsucraftModItems.PENDANT_TODO_AOI.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(3, ItemStack.f_41583_);
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, ItemStack.EMPTY);
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.HEAD, ItemStack.f_41583_);
+                  _living.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
                }
 
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  ItemEntity entityToSpawn = new ItemEntity(_level, x, y + ((<undefinedtype>)(new Object() {
-                     public double getSubmergedHeight(Entity _entity) {
-                        for(FluidType fluidType : ((IForgeRegistry)ForgeRegistries.FLUID_TYPES.get()).getValues()) {
-                           if (_entity.m_9236_().m_6425_(_entity.m_20183_()).getFluidType() == fluidType) {
-                              return _entity.getFluidTypeHeight(fluidType);
-                           }
-                        }
-
-                        return 0.0;
-                     }
-                  })).getSubmergedHeight(entity), z, new ItemStack((ItemLike)JujutsucraftModItems.PENDANT_TODO_AOI.get()));
-                  entityToSpawn.m_32010_(10);
-                  _level.m_7967_(entityToSpawn);
+                  ItemEntity entityToSpawn = new ItemEntity(_level, x, y + InlineMethodHandler.getSubmergedHeight(entity), z, new ItemStack((ItemLike)JujutsucraftModItems.PENDANT_TODO_AOI.get()));
+                  entityToSpawn.setPickUpDelay(10);
+                  _level.addFreshEntity(entityToSpawn);
                }
 
                PendantTodoAoiItemIsDroppedByPlayerProcedure.execute(world, x, y, z, entity);

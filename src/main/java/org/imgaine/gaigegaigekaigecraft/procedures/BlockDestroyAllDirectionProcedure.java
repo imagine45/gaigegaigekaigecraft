@@ -1,39 +1,48 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import org.imgaine.gaigegaigekaigecraft.entity.BlueEntity;
-import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade06Entity;
-import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade18Entity;
+import org.imgaine.gaigegaigekaigecraft.entity.BlackHoleEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.FlameArrowEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.Gravestone1Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.Gravestone2Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.Gravestone3Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.Gravestone4Entity;
+import org.imgaine.gaigegaigekaigecraft.entity.MeteorEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.ProjectileSlashEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.PureLoveCannonEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.PurpleEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.RockFragmentEntity;
-import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModParticleTypes;
+import org.imgaine.gaigegaigekaigecraft.entity.UzumakiEntity;
+import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModBlocks;
+import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -43,50 +52,164 @@ public class BlockDestroyAllDirectionProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
-         BlockState block_a = Blocks.f_50016_.m_49966_();
+         BlockState block_a = Blocks.AIR.defaultBlockState();
+         boolean insideBarrier = false;
+         boolean type_flame = false;
+         boolean logic_success = false;
+         boolean rock = false;
+         boolean wood = false;
          boolean logic_water = false;
          boolean glass = false;
          boolean logic_a = false;
-         boolean type_flame = false;
-         boolean rock = false;
-         boolean wood = false;
-         String destroy_type = "";
+         boolean water = false;
+         Entity entity_a = null;
          double x_dis = 0.0;
          double damage = 0.0;
          double distance = 0.0;
          double cnt_x = 0.0;
          double x_pos = 0.0;
-         double z_dis = 0.0;
-         double z_pos = 0.0;
-         double hardness = 0.0;
+         double knockback = 0.0;
+         double speed = 0.0;
          double num1 = 0.0;
          double y_pos = 0.0;
          double y_dis = 0.0;
+         double z_dis = 0.0;
+         double z_pos = 0.0;
+         double hardness = 0.0;
          double RANGE = 0.0;
-         if (world.m_6106_().m_5470_().m_46207_(GameRules.f_46132_)) {
-            if (world.m_6106_().m_5470_().m_46207_(GameRules.f_46136_)) {
+         String destroy_type = "";
+         String old_block = "";
+         if (world.getLevelData().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            if (world.getLevelData().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
                logic_a = true;
-               ((GameRules.BooleanValue)world.m_6106_().m_5470_().m_46170_(GameRules.f_46136_)).m_46246_(false, world.m_7654_());
-            }
-
-            num1 = entity.getPersistentData().m_128459_("skill");
-            if (num1 != 107.0 && (!(num1 >= 405.0) || !(num1 <= 420.0)) && (!(num1 >= 2605.0) || !(num1 <= 2620.0))) {
-               if (entity instanceof CursedSpiritGrade18Entity || entity instanceof CursedSpiritGrade06Entity) {
-                  type_flame = true;
-               }
-            } else {
-               type_flame = true;
+               ((GameRules.BooleanValue)world.getLevelData().getGameRules().getRule(GameRules.RULE_DOBLOCKDROPS)).set(false, world.getServer());
             }
 
             logic_water = true;
-            if (entity instanceof Gravestone1Entity || entity instanceof Gravestone2Entity || entity instanceof Gravestone3Entity || entity instanceof Gravestone4Entity || entity instanceof RockFragmentEntity) {
+            if (entity instanceof Gravestone1Entity || entity instanceof Gravestone2Entity || entity instanceof Gravestone3Entity || entity instanceof Gravestone4Entity) {
                logic_water = false;
             }
 
-            RANGE = entity.getPersistentData().m_128459_("BlockRange");
+            if (entity instanceof RockFragmentEntity) {
+               logic_water = false;
+            }
+
+            if (entity.getPersistentData().getDouble("effect") == 3.0) {
+               type_flame = true;
+            }
+
+            label419: {
+               label437: {
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _livEnt9 = (LivingEntity)entity;
+                     if (_livEnt9.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                        break label437;
+                     }
+                  }
+
+                  int var10000;
+                  label413: {
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _livEnt = (LivingEntity)entity;
+                        if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
+                           var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get()).getAmplifier();
+                           break label413;
+                        }
+                     }
+
+                     var10000 = 0;
+                  }
+
+                  if (var10000 < 10) {
+                     break label419;
+                  }
+               }
+
+               insideBarrier = true;
+            }
+
+            if (!insideBarrier) {
+               label453: {
+                  if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && !entity.getPersistentData().getString("OWNER_UUID").isEmpty()) {
+                     entity_a = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("OWNER_UUID"));
+                  }
+
+                  if (!(entity_a instanceof LivingEntity)) {
+                     entity_a = entity;
+                  }
+
+                  label439: {
+                     if (entity_a instanceof LivingEntity) {
+                        LivingEntity _livEnt16 = (LivingEntity)entity_a;
+                        if (_livEnt16.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                           break label439;
+                        }
+                     }
+
+                     int var98;
+                     label396: {
+                        if (entity_a instanceof LivingEntity) {
+                           LivingEntity _livEnt = (LivingEntity)entity_a;
+                           if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
+                              var98 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get()).getAmplifier();
+                              break label396;
+                           }
+                        }
+
+                        var98 = 0;
+                     }
+
+                     if (var98 < 10) {
+                        break label453;
+                     }
+                  }
+
+                  insideBarrier = true;
+               }
+            }
+
+            if (insideBarrier) {
+               label386: {
+                  if (!(entity instanceof PurpleEntity) && !(entity instanceof FlameArrowEntity)) {
+                     label383: {
+                        if (entity instanceof ProjectileSlashEntity) {
+                           int var99;
+                           if (entity instanceof ProjectileSlashEntity) {
+                              ProjectileSlashEntity _datEntI = (ProjectileSlashEntity)entity;
+                              var99 = (Integer)_datEntI.getEntityData().get(ProjectileSlashEntity.DATA_mode);
+                           } else {
+                              var99 = 0;
+                           }
+
+                           if (var99 == 1) {
+                              break label383;
+                           }
+                        }
+
+                        if (!(entity instanceof PureLoveCannonEntity) && !(entity instanceof UzumakiEntity) && !(entity instanceof MeteorEntity)) {
+                           break label386;
+                        }
+                     }
+                  }
+
+                  insideBarrier = false;
+               }
+
+               if (entity instanceof BlackHoleEntity) {
+                  insideBarrier = false;
+               }
+            }
+
+            knockback = entity.getPersistentData().getDouble("knockback");
+            damage = entity.getPersistentData().getDouble("BlockDamage");
+            RANGE = entity.getPersistentData().getDouble("BlockRange");
             RANGE = (double)Math.round(RANGE >= 1.0 ? RANGE * 2.0 : 1.0);
-            damage = entity.getPersistentData().m_128459_("BlockDamage");
-            destroy_type = !entity.getPersistentData().m_128471_("noParticle") && !(RANGE >= 6.0) ? "destroy" : "replace";
+            if (!entity.getPersistentData().getBoolean("noParticle") && !(RANGE >= 6.0)) {
+               String var101 = "destroy";
+            } else {
+               String var100 = "replace";
+            }
+
             x_pos = (double)Math.round(x - Math.floor(RANGE * 0.5));
 
             for(int index0 = 0; index0 < (int)RANGE; ++index0) {
@@ -100,146 +223,186 @@ public class BlockDestroyAllDirectionProcedure {
                   z_pos = (double)Math.round(z - Math.floor(RANGE * 0.5));
 
                   for(int index2 = 0; index2 < (int)RANGE; ++index2) {
-                     if (!world.m_46859_(BlockPos.m_274561_(x_pos, y_pos, z_pos))) {
-                        label344: {
-                           hardness = (double)world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_60800_(world, BlockPos.m_274561_(x_pos, y_pos, z_pos));
-                           block_a = world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos));
-                           z_dis = z_pos - z;
-                           z_dis *= z_dis;
-                           distance = Math.sqrt(x_dis + y_dis + z_dis);
-                           if (block_a.m_204336_(BlockTags.create(new ResourceLocation("minecraft:logs"))) || block_a.m_204336_(BlockTags.create(new ResourceLocation("minecraft:planks")))) {
-                              hardness *= 0.5;
+                     BlockPos currentPos = BlockPos.containing(x_pos, y_pos, z_pos);
+                     if (!world.isEmptyBlock(currentPos)) {
+                        block_a = world.getBlockState(currentPos);
+                        hardness = (double)block_a.getDestroySpeed(world, currentPos);
+                        z_dis = z_pos - z;
+                        z_dis *= z_dis;
+                        distance = x_dis + y_dis + z_dis;
+                        if (block_a.is(BlockTags.create(new ResourceLocation("minecraft:logs"))) || block_a.is(BlockTags.create(new ResourceLocation("minecraft:planks")))) {
+                           hardness *= 0.5;
+                        }
+
+                        label348: {
+                           logic_success = false;
+                           if (!(block_a.getBlock() instanceof LiquidBlock)) {
+                              Property var55 = block_a.getBlock().getStateDefinition().getProperty("waterlogged");
+                              if (!(var55 instanceof BooleanProperty)) {
+                                 break label348;
+                              }
+
+                              BooleanProperty _getbp33 = (BooleanProperty)var55;
+                              if (!(Boolean)block_a.getValue(_getbp33)) {
+                                 break label348;
+                              }
                            }
 
-                           if ((!(hardness >= 0.0) || !(hardness < damage)) && !(block_a.m_60734_() instanceof LiquidBlock)) {
-                              Property var44 = block_a.m_60734_().m_49965_().m_61081_("waterlogged");
-                              if (!(var44 instanceof BooleanProperty)) {
-                                 break label344;
-                              }
+                           logic_success = true;
+                        }
 
-                              BooleanProperty _getbp20 = (BooleanProperty)var44;
-                              if (!(Boolean)block_a.m_61143_(_getbp20)) {
-                                 break label344;
-                              }
+                        if (hardness >= 0.0 && hardness < damage) {
+                           logic_success = true;
+                        }
+
+                        if (block_a.is(BlockTags.create(new ResourceLocation("gaigegaigekaigecraft:barrier")))) {
+                           if (insideBarrier) {
+                              logic_success = false;
+                           } else if (damage >= 1.5) {
+                              logic_success = true;
+                           }
+                        }
+
+                        if (logic_success && distance <= Math.max(RANGE * 0.5, 1.0) * Math.max(RANGE * 0.5, 1.0)) {
+                           distance = Math.sqrt(distance);
+                           cnt_x = 0.0;
+                           if (world.getBlockState(currentPos.east()).canOcclude() || world.getBlockState(currentPos.east()).getFluidState().isSource()) {
+                              cnt_x += 2.0;
                            }
 
-                           if (distance <= Math.max(RANGE * 0.5, 1.0)) {
-                              cnt_x = 0.0;
-                              if (world.m_8055_(BlockPos.m_274561_(x_pos + 1.0, y_pos, z_pos)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos + 1.0, y_pos, z_pos)).m_60819_().m_76170_()) {
-                                 cnt_x += 2.0;
-                              }
+                           if (world.getBlockState(currentPos.west()).canOcclude() || world.getBlockState(currentPos.west()).getFluidState().isSource()) {
+                              cnt_x += 2.0;
+                           }
 
-                              if (world.m_8055_(BlockPos.m_274561_(x_pos - 1.0, y_pos, z_pos)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos - 1.0, y_pos, z_pos)).m_60819_().m_76170_()) {
-                                 cnt_x += 2.0;
-                              }
+                           if (world.getBlockState(currentPos.south()).canOcclude() || world.getBlockState(currentPos.south()).getFluidState().isSource()) {
+                              cnt_x += 2.0;
+                           }
 
-                              if (world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos + 1.0)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos + 1.0)).m_60819_().m_76170_()) {
-                                 cnt_x += 2.0;
-                              }
+                           if (world.getBlockState(currentPos.north()).canOcclude() || world.getBlockState(currentPos.north()).getFluidState().isSource()) {
+                              cnt_x += 2.0;
+                           }
 
-                              if (world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos - 1.0)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos - 1.0)).m_60819_().m_76170_()) {
-                                 cnt_x += 2.0;
-                              }
-
-                              if (world.m_8055_(BlockPos.m_274561_(x_pos, y_pos + 1.0, z_pos)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos + 1.0, z_pos)).m_60819_().m_76170_()) {
+                           if (!block_a.is(BlockTags.create(new ResourceLocation("gaigegaigekaigecraft:barrier")))) {
+                              if (world.getBlockState(currentPos.above()).canOcclude() || world.getBlockState(currentPos.above()).getFluidState().isSource()) {
                                  ++cnt_x;
                               }
 
-                              if (world.m_8055_(BlockPos.m_274561_(x_pos, y_pos - 1.0, z_pos)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos - 1.0, z_pos)).m_60819_().m_76170_()) {
+                              if (world.getBlockState(currentPos.below()).canOcclude() || world.getBlockState(currentPos.below()).getFluidState().isSource()) {
                                  ++cnt_x;
                               }
+                           }
 
-                              if (cnt_x < 8.0) {
-                                 label333: {
-                                    label327: {
-                                       if (!(block_a.m_60734_() instanceof LiquidBlock)) {
-                                          Property var45 = block_a.m_60734_().m_49965_().m_61081_("waterlogged");
-                                          if (!(var45 instanceof BooleanProperty)) {
-                                             break label327;
-                                          }
+                           if (block_a.getBlock() == Blocks.WATER && cnt_x < 10.0) {
+                              if (knockback >= 0.0) {
+                                 ParticleGeneratorProcedure.execute(world, 1.0, 4.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.5, 5.0) * knockback, x_pos, x_pos + x_pos - x, y_pos, y_pos + Math.abs(y_pos - y), z_pos, z_pos + z_pos - z, "gaigegaigekaigecraft:particle_water");
+                              } else if (knockback < 0.0) {
+                                 ParticleGeneratorProcedure.execute(world, 1.0, 4.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.05, 0.5) * distance, x_pos, x, y_pos, y, z_pos, z, "gaigegaigekaigecraft:particle_water");
+                              }
 
-                                          BooleanProperty _getbp40 = (BooleanProperty)var45;
-                                          if (!(Boolean)block_a.m_61143_(_getbp40)) {
-                                             break label327;
-                                          }
-                                       }
+                              if (knockback >= 1.0) {
+                                 water = true;
+                              }
+                           }
 
-                                       if (world.m_46859_(BlockPos.m_274561_(x_pos, y_pos + 1.0, z_pos)) && block_a.m_60734_() == Blocks.f_49990_) {
-                                          if (entity instanceof BlueEntity) {
-                                             ParticleGeneratorProcedure.execute(world, 0.5, 4.0, 0.0, 0.2 * distance, x_pos, x, y_pos, y, z_pos, z, "jujutsucraft:particle_water");
-                                          } else if (world instanceof ServerLevel) {
-                                             ServerLevel _level = (ServerLevel)world;
-                                             _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_WATER.get(), x_pos, y_pos, z_pos, 4, 0.2, 0.2, 0.2, 2.0);
-                                          }
-                                       }
-
-                                       if (logic_water && (world.m_46859_(BlockPos.m_274561_(x_pos + 1.0, y_pos, z_pos + 0.0)) || world.m_46859_(BlockPos.m_274561_(x_pos - 1.0, y_pos, z_pos + 0.0)) || world.m_46859_(BlockPos.m_274561_(x_pos + 0.0, y_pos, z_pos + 1.0)) || world.m_46859_(BlockPos.m_274561_(x_pos + 0.0, y_pos, z_pos - 1.0))) && world instanceof ServerLevel) {
-                                          ServerLevel _level = (ServerLevel)world;
-                                          _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "setblock ~ ~ ~ air replace");
-                                       }
-                                       break label333;
-                                    }
-
-                                    if (!block_a.m_204336_(BlockTags.create(new ResourceLocation("minecraft:impermeable"))) && type_flame) {
-                                       if (entity instanceof BlueEntity) {
-                                          ParticleGeneratorProcedure.execute(world, 0.5, 1.0, 0.0, 0.5 * distance, x_pos, x, y_pos, y, z_pos, z, "jujutsucraft:particle_magma");
-                                       } else if (world instanceof ServerLevel) {
-                                          ServerLevel _level = (ServerLevel)world;
-                                          _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_MAGMA.get(), x_pos, y_pos, z_pos, 1, 0.2, 0.2, 0.2, 0.25);
-                                       }
-                                    }
-
-                                    if (block_a.m_204336_(BlockTags.create(new ResourceLocation("minecraft:mineable/pickaxe")))) {
-                                       if (Math.random() < 0.33) {
-                                          if (entity instanceof BlueEntity) {
-                                             ParticleGeneratorProcedure.execute(world, 0.5, 1.0, 0.0, 0.1 * distance, x_pos, x, y_pos, y, z_pos, z, "jujutsucraft:particle_big_smoke");
-                                          } else if (world instanceof ServerLevel) {
-                                             ServerLevel _level = (ServerLevel)world;
-                                             _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), x_pos, y_pos, z_pos, 1, 0.2, 0.2, 0.2, 0.25);
+                           if (cnt_x < 8.0) {
+                              label460: {
+                                 if (!(block_a.getBlock() instanceof LiquidBlock)) {
+                                    label461: {
+                                       Property var95 = block_a.getBlock().getStateDefinition().getProperty("waterlogged");
+                                       if (var95 instanceof BooleanProperty) {
+                                          BooleanProperty _getbp39 = (BooleanProperty)var95;
+                                          if ((Boolean)block_a.getValue(_getbp39)) {
+                                             break label461;
                                           }
                                        }
 
-                                       rock = true;
-                                    } else if (block_a.m_204336_(BlockTags.create(new ResourceLocation("minecraft:mineable/axe"))) && hardness > 0.0) {
-                                       wood = true;
-                                    } else if (block_a.m_204336_(BlockTags.create(new ResourceLocation("minecraft:impermeable")))) {
-                                       if (entity instanceof BlueEntity) {
-                                          ParticleGeneratorProcedure.execute(world, 0.5, 1.0, 0.0, 0.1 * distance, x_pos, x, y_pos, y, z_pos, z, "jujutsucraft:particle_broken_glass_small");
-                                       } else if (world instanceof ServerLevel) {
-                                          ServerLevel _level = (ServerLevel)world;
-                                          _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BROKEN_GLASS_SMALL.get(), x_pos, y_pos, z_pos, 4, 0.2, 0.2, 0.2, 0.25);
+                                       if (!block_a.is(BlockTags.create(new ResourceLocation("minecraft:impermeable"))) && type_flame) {
+                                          if (knockback >= 0.0) {
+                                             ParticleGeneratorProcedure.execute(world, 1.0, 1.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.5, 5.0) * knockback, x_pos, x_pos + x_pos - x, y_pos, y_pos + y_pos - y, z_pos, z_pos + z_pos - z, "gaigegaigekaigecraft:particle_magma");
+                                          } else if (knockback < 0.0) {
+                                             ParticleGeneratorProcedure.execute(world, 1.0, 1.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.2, 2.0) * distance, x_pos, x, y_pos, y, z_pos, z, "gaigegaigekaigecraft:particle_magma");
+                                          }
                                        }
 
-                                       glass = true;
-                                    }
+                                       if (block_a.is(BlockTags.create(new ResourceLocation("minecraft:mineable/pickaxe")))) {
+                                          if (knockback >= 0.0) {
+                                             ParticleGeneratorProcedure.execute(world, 1.0, 1.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.1, 1.0) * knockback, x_pos, x_pos + x_pos - x, y_pos, y_pos + y_pos - y, z_pos, z_pos + z_pos - z, "gaigegaigekaigecraft:particle_big_smoke");
+                                          } else if (knockback < 0.0) {
+                                             ParticleGeneratorProcedure.execute(world, 1.0, 1.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.01, 0.1) * distance, x_pos, x, y_pos, y, z_pos, z, "gaigegaigekaigecraft:particle_big_smoke");
+                                          }
 
-                                    if (world instanceof ServerLevel) {
-                                       ServerLevel _level = (ServerLevel)world;
-                                       _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "setblock ~ ~ ~ air " + destroy_type);
-                                    }
+                                          rock = true;
+                                       } else if (block_a.is(BlockTags.create(new ResourceLocation("minecraft:mineable/axe"))) && hardness > 0.0) {
+                                          wood = true;
+                                       } else if (block_a.is(BlockTags.create(new ResourceLocation("minecraft:impermeable"))) || block_a.getBlock() == JujutsucraftModBlocks.JUJUTSU_BARRIER.get()) {
+                                          if (knockback >= 0.0) {
+                                             ParticleGeneratorProcedure.execute(world, 1.0, 4.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.2, 2.0) * knockback, x_pos, x_pos + x_pos - x, y_pos, y_pos + y_pos - y, z_pos, z_pos + z_pos - z, "gaigegaigekaigecraft:particle_broken_glass_small");
+                                          } else if (knockback < 0.0) {
+                                             ParticleGeneratorProcedure.execute(world, 1.0, 4.0, 10.0, Mth.nextDouble(RandomSource.create(), 0.025, 0.25) * distance, x_pos, x, y_pos, y, z_pos, z, "gaigegaigekaigecraft:particle_broken_glass_small");
+                                          }
 
-                                    if (!entity.getPersistentData().m_128471_("ExtinctionBlock")) {
-                                       if (Math.random() < 0.1) {
-                                          if (world instanceof ServerLevel) {
-                                             ServerLevel _serverLevel = (ServerLevel)world;
-                                             Entity entityinstance = EntityType.f_20450_.m_20615_(_serverLevel);
-                                             if (entityinstance != null) {
-                                                CompoundTag _compoundTag = entityinstance.m_20240_(new CompoundTag());
-                                                _compoundTag.m_128365_("BlockState", NbtUtils.m_129202_(block_a));
-                                                entityinstance.m_20258_(_compoundTag);
-                                                entityinstance.m_6034_((double)Math.round(x_pos) + 0.5, (double)Math.round(y_pos), (double)Math.round(z_pos) + 0.5);
-                                                if (!entityinstance.m_9236_().m_5776_() && entityinstance.m_20194_() != null) {
-                                                   entityinstance.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityinstance.m_20182_(), entityinstance.m_20155_(), entityinstance.m_9236_() instanceof ServerLevel ? (ServerLevel)entityinstance.m_9236_() : null, 4, entityinstance.m_7755_().getString(), entityinstance.m_5446_(), entityinstance.m_9236_().m_7654_(), entityinstance), "data merge entity @s {Time:560,DropItem:0b,HurtEntities:0b}");
-                                                }
+                                          glass = true;
+                                       }
 
-                                                _serverLevel.m_7967_(entityinstance);
+                                       if (block_a.is(BlockTags.create(new ResourceLocation("gaigegaigekaigecraft:barrier")))) {
+                                          if (!world.isClientSide()) {
+                                             BlockEntity be = world.getBlockEntity(currentPos);
+                                             old_block = be != null ? be.getPersistentData().getString("old_block") : "";
+                                             world.setBlock(currentPos, ((Block)ForgeRegistries.BLOCKS.getValue(new ResourceLocation("gaigegaigekaigecraft:domain_hole"))).defaultBlockState(), 3);
+                                             BlockEntity newBe = world.getBlockEntity(currentPos);
+                                             if (newBe != null) {
+                                                newBe.getPersistentData().putString("old_block", old_block);
+                                                newBe.getPersistentData().putString("old_barrier", ("" + String.valueOf(block_a)).replace("}", "").replace("Block{", ""));
+                                                newBe.getPersistentData().putDouble("delay_time", distance);
                                              }
                                           }
-                                       } else if (type_flame && Math.random() < 0.1 && world instanceof ServerLevel) {
-                                          ServerLevel _level = (ServerLevel)world;
-                                          FallingBlockEntity.m_201971_(_level, BlockPos.m_274561_((double)Math.round(x_pos) + 0.5, (double)Math.round(y_pos), (double)Math.round(z_pos) + 0.5), Blocks.f_50083_.m_49966_());
+                                       } else if (!world.isClientSide()) {
+                                          world.setBlock(currentPos, Blocks.AIR.defaultBlockState(), 3);
                                        }
+
+                                       if (!entity.getPersistentData().getBoolean("ExtinctionBlock")) {
+                                          double spawnChance = 0.0;
+                                          if (type_flame && Math.random() < 0.1 + spawnChance) {
+                                             block_a = Blocks.FIRE.defaultBlockState();
+                                          } else if (!block_a.is(BlockTags.create(new ResourceLocation("gaigegaigekaigecraft:barrier"))) && Math.random() < 0.1 + spawnChance) {
+                                             block_a = block_a;
+                                          } else {
+                                             block_a = Blocks.AIR.defaultBlockState();
+                                          }
+
+                                          if (!block_a.isAir() && !block_a.is(BlockTags.create(new ResourceLocation("minecraft:impermeable")))) {
+                                             speed = Mth.nextDouble(RandomSource.create(), 0.1, 1.0) * Math.min(knockback * 1.0, 3.0);
+                                             if (world instanceof ServerLevel) {
+                                                ServerLevel _serverLevel = (ServerLevel)world;
+                                                Entity entityinstance = EntityType.FALLING_BLOCK.create(_serverLevel);
+                                                if (entityinstance != null) {
+                                                   CompoundTag _compoundTag = entityinstance.saveWithoutId(new CompoundTag());
+                                                   _compoundTag.put("BlockState", NbtUtils.writeBlockState(block_a));
+                                                   entityinstance.load(_compoundTag);
+                                                   entityinstance.setPos((double)Math.round(x_pos) + 0.5, (double)Math.round(y_pos), (double)Math.round(z_pos) + 0.5);
+                                                   if (!entityinstance.level().isClientSide() && entityinstance.getServer() != null) {
+                                                      entityinstance.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityinstance.position(), entityinstance.getRotationVector(), entityinstance.level() instanceof ServerLevel ? (ServerLevel)entityinstance.level() : null, 4, entityinstance.getName().getString(), entityinstance.getDisplayName(), entityinstance.level().getServer(), entityinstance), "data merge entity @s {Time:560,DropItem:0b,HurtEntities:0b}");
+                                                   }
+
+                                                   if (distance != 0.0) {
+                                                      entityinstance.setDeltaMovement(new Vec3((x_pos - x) / distance * speed + entity.getPersistentData().getDouble("x_knockback"), (y_pos - y) / distance * speed + entity.getPersistentData().getDouble("y_knockback"), (z_pos - z) / distance * speed + entity.getPersistentData().getDouble("z_knockback")));
+                                                   }
+
+                                                   _serverLevel.addFreshEntity(entityinstance);
+                                                }
+                                             }
+                                          }
+                                       }
+                                       break label460;
                                     }
+                                 }
+
+                                 if (logic_water) {
+                                    if (!world.isClientSide()) {
+                                       world.setBlock(currentPos, Blocks.AIR.defaultBlockState(), 3);
+                                    }
+
+                                    water = true;
                                  }
                               }
                            }
@@ -255,45 +418,56 @@ public class BlockDestroyAllDirectionProcedure {
                ++x_pos;
             }
 
-            if (!entity.getPersistentData().m_128471_("noEffect")) {
-               if (rock) {
-                  if (world instanceof Level) {
-                     Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:stone_crash")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                     } else {
-                        _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:stone_crash")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                     }
-                  }
-               } else if (wood) {
-                  if (world instanceof Level) {
-                     Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                     } else {
-                        _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                     }
-                  }
-               } else if (glass && world instanceof Level) {
+            if (!entity.getPersistentData().getBoolean("noEffect")) {
+               float pitch = (float)Mth.nextDouble(RandomSource.create(), 0.9, 1.1);
+               if (rock && world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:glass_crash")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:stone_crash")), SoundSource.NEUTRAL, 1.0F, pitch);
                   } else {
-                     _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:glass_crash")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:stone_crash")), SoundSource.NEUTRAL, 1.0F, pitch, false);
+                  }
+               }
+
+               if (wood && world instanceof Level) {
+                  Level _level = (Level)world;
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, 1.0F, pitch);
+                  } else {
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, 1.0F, pitch, false);
+                  }
+               }
+
+               if (glass && world instanceof Level) {
+                  Level _level = (Level)world;
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:glass_crash")), SoundSource.NEUTRAL, 1.0F, pitch);
+                  } else {
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:glass_crash")), SoundSource.NEUTRAL, 1.0F, pitch, false);
+                  }
+               }
+
+               if (water && world instanceof Level) {
+                  Level _level = (Level)world;
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:water_splash")), SoundSource.NEUTRAL, 1.0F, pitch);
+                  } else {
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:water_splash")), SoundSource.NEUTRAL, 1.0F, pitch, false);
                   }
                }
             }
 
             if (logic_a) {
-               ((GameRules.BooleanValue)world.m_6106_().m_5470_().m_46170_(GameRules.f_46136_)).m_46246_(true, world.m_7654_());
+               ((GameRules.BooleanValue)world.getLevelData().getGameRules().getRule(GameRules.RULE_DOBLOCKDROPS)).set(true, world.getServer());
             }
          }
 
-         entity.getPersistentData().m_128347_("BlockRange", 0.0);
-         entity.getPersistentData().m_128347_("BlockDamage", 0.0);
-         entity.getPersistentData().m_128379_("noParticle", false);
-         entity.getPersistentData().m_128379_("noEffect", false);
-         entity.getPersistentData().m_128379_("ExtinctionBlock", false);
+         entity.getPersistentData().putDouble("BlockRange", 0.0);
+         entity.getPersistentData().putDouble("BlockDamage", 0.0);
+         entity.getPersistentData().putDouble("effect", 0.0);
+         entity.getPersistentData().putBoolean("noParticle", false);
+         entity.getPersistentData().putBoolean("noEffect", false);
+         entity.getPersistentData().putBoolean("ExtinctionBlock", false);
       }
    }
 }

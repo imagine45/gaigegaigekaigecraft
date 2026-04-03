@@ -16,108 +16,108 @@ public class EntityItemEntityDiesProcedure {
       if (entity != null) {
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            ItemEntity var10000 = new ItemEntity;
+            ItemEntity var10000;
             ItemStack var10006;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var10006 = _livEnt.m_21205_();
+               var10006 = _livEnt.getMainHandItem();
             } else {
-               var10006 = ItemStack.f_41583_;
+               var10006 = ItemStack.EMPTY;
             }
 
-            var10000.<init>(_level, x, y, z, var10006);
+            var10000 = new ItemEntity(_level, x, y, z, var10006);
             ItemEntity entityToSpawn = var10000;
-            entityToSpawn.m_32010_(10);
-            _level.m_7967_(entityToSpawn);
+            entityToSpawn.setPickUpDelay(10);
+            _level.addFreshEntity(entityToSpawn);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            ItemEntity var26 = new ItemEntity;
+            ItemEntity var26;
             ItemStack var31;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var31 = _livEnt.m_21206_();
+               var31 = _livEnt.getOffhandItem();
             } else {
-               var31 = ItemStack.f_41583_;
+               var31 = ItemStack.EMPTY;
             }
 
-            var26.<init>(_level, x, y, z, var31);
+            var26 = new ItemEntity(_level, x, y, z, var31);
             ItemEntity entityToSpawn = var26;
-            entityToSpawn.m_32010_(10);
-            _level.m_7967_(entityToSpawn);
+            entityToSpawn.setPickUpDelay(10);
+            _level.addFreshEntity(entityToSpawn);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            ItemEntity var27 = new ItemEntity;
+            ItemEntity var27;
             ItemStack var32;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var32 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var32 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var32 = ItemStack.f_41583_;
+               var32 = ItemStack.EMPTY;
             }
 
-            var27.<init>(_level, x, y, z, var32);
+            var27 = new ItemEntity(_level, x, y, z, var32);
             ItemEntity entityToSpawn = var27;
-            entityToSpawn.m_32010_(10);
-            _level.m_7967_(entityToSpawn);
+            entityToSpawn.setPickUpDelay(10);
+            _level.addFreshEntity(entityToSpawn);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            ItemEntity var28 = new ItemEntity;
+            ItemEntity var28;
             ItemStack var33;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var33 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var33 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var33 = ItemStack.f_41583_;
+               var33 = ItemStack.EMPTY;
             }
 
-            var28.<init>(_level, x, y, z, var33);
+            var28 = new ItemEntity(_level, x, y, z, var33);
             ItemEntity entityToSpawn = var28;
-            entityToSpawn.m_32010_(10);
-            _level.m_7967_(entityToSpawn);
+            entityToSpawn.setPickUpDelay(10);
+            _level.addFreshEntity(entityToSpawn);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            ItemEntity var29 = new ItemEntity;
+            ItemEntity var29;
             ItemStack var34;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var34 = _entGetArmor.m_6844_(EquipmentSlot.LEGS);
+               var34 = _entGetArmor.getItemBySlot(EquipmentSlot.LEGS);
             } else {
-               var34 = ItemStack.f_41583_;
+               var34 = ItemStack.EMPTY;
             }
 
-            var29.<init>(_level, x, y, z, var34);
+            var29 = new ItemEntity(_level, x, y, z, var34);
             ItemEntity entityToSpawn = var29;
-            entityToSpawn.m_32010_(10);
-            _level.m_7967_(entityToSpawn);
+            entityToSpawn.setPickUpDelay(10);
+            _level.addFreshEntity(entityToSpawn);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            ItemEntity var30 = new ItemEntity;
+            ItemEntity var30;
             ItemStack var35;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var35 = _entGetArmor.m_6844_(EquipmentSlot.FEET);
+               var35 = _entGetArmor.getItemBySlot(EquipmentSlot.FEET);
             } else {
-               var35 = ItemStack.f_41583_;
+               var35 = ItemStack.EMPTY;
             }
 
-            var30.<init>(_level, x, y, z, var35);
+            var30 = new ItemEntity(_level, x, y, z, var35);
             ItemEntity entityToSpawn = var30;
-            entityToSpawn.m_32010_(10);
-            _level.m_7967_(entityToSpawn);
+            entityToSpawn.setPickUpDelay(10);
+            _level.addFreshEntity(entityToSpawn);
          }
 
-         if (!entity.m_9236_().m_5776_()) {
-            entity.m_146870_();
+         if (!entity.level().isClientSide()) {
+            entity.discard();
          }
 
       }

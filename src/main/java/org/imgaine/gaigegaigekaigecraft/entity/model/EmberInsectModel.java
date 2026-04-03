@@ -13,15 +13,15 @@ public class EmberInsectModel extends GeoModel<EmberInsectEntity> {
    }
 
    public ResourceLocation getAnimationResource(EmberInsectEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/ember_insects.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/ember_insects.animation.json");
    }
 
    public ResourceLocation getModelResource(EmberInsectEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/ember_insects.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/ember_insects.geo.json");
    }
 
    public ResourceLocation getTextureResource(EmberInsectEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EmberInsectEntity animatable, long instanceId, AnimationState animationState) {

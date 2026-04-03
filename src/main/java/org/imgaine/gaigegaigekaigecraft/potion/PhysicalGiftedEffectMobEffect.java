@@ -10,12 +10,16 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
+import net.minecraftforge.common.ForgeMod;
 
 public class PhysicalGiftedEffectMobEffect extends MobEffect {
    public PhysicalGiftedEffectMobEffect() {
       super(MobEffectCategory.BENEFICIAL, -1);
+      this.addAttributeModifier((Attribute)ForgeMod.STEP_HEIGHT_ADDITION.get(), "d34e81b1-9f9a-3b12-b688-a8fa20ee3502", 0.25, Operation.ADDITION);
    }
 
    public List<ItemStack> getCurativeItems() {
@@ -23,11 +27,11 @@ public class PhysicalGiftedEffectMobEffect extends MobEffect {
       return cures;
    }
 
-   public void m_6742_(LivingEntity entity, int amplifier) {
-      PhysicalGiftedEffectOnEffectActiveTickProcedure.execute(entity.m_9236_(), entity);
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
+      PhysicalGiftedEffectOnEffectActiveTickProcedure.execute(entity.level(), entity);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 

@@ -20,13 +20,13 @@ public class GetPowerFixProcedure {
          boolean logic_fix = false;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_(MobEffects.f_19600_)) {
+            if (_livEnt0.hasEffect(MobEffects.DAMAGE_BOOST)) {
                int var10000;
                label65: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                        var10000 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                     if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        var10000 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                         break label65;
                      }
                   }
@@ -39,19 +39,19 @@ public class GetPowerFixProcedure {
          }
 
          fix = 0.75 + playerLevel / 30.0;
-         if (entity.m_20072_() && !entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:swim_attackable")))) {
+         if (entity.isInWaterOrBubble() && !entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:swim_attackable")))) {
             double var14;
             double var10001;
             label57: {
                var14 = fix * 0.5;
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity4 = (LivingEntity)entity;
-                  if (_livingEntity4.m_21204_().m_22171_((Attribute)ForgeMod.SWIM_SPEED.get())) {
+                  if (_livingEntity4.getAttributes().hasAttribute((Attribute)ForgeMod.SWIM_SPEED.get())) {
                      label53: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livingEntity5 = (LivingEntity)entity;
-                           if (_livingEntity5.m_21204_().m_22171_((Attribute)ForgeMod.SWIM_SPEED.get())) {
-                              var10001 = _livingEntity5.getAttribute_((Attribute)ForgeMod.SWIM_SPEED.get()).m_22135_();
+                           if (_livingEntity5.getAttributes().hasAttribute((Attribute)ForgeMod.SWIM_SPEED.get())) {
+                              var10001 = _livingEntity5.getAttribute((Attribute)ForgeMod.SWIM_SPEED.get()).getValue();
                               break label53;
                            }
                         }
@@ -70,21 +70,21 @@ public class GetPowerFixProcedure {
             fix = var14 * var10001;
          }
 
-         entity.getPersistentData().m_128347_("x_power", entity.getPersistentData().m_128459_("x_power") * fix);
-         entity.getPersistentData().m_128347_("y_power", entity.getPersistentData().m_128459_("y_power") * fix);
-         entity.getPersistentData().m_128347_("z_power", entity.getPersistentData().m_128459_("z_power") * fix);
-         if (entity.getPersistentData().m_128471_("canFly")) {
-            entity.getPersistentData().m_128379_("canFly", false);
+         entity.getPersistentData().putDouble("x_power", entity.getPersistentData().getDouble("x_power") * fix);
+         entity.getPersistentData().putDouble("y_power", entity.getPersistentData().getDouble("y_power") * fix);
+         entity.getPersistentData().putDouble("z_power", entity.getPersistentData().getDouble("z_power") * fix);
+         if (entity.getPersistentData().getBoolean("canFly")) {
+            entity.getPersistentData().putBoolean("canFly", false);
          } else {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt14 = (LivingEntity)entity;
-               if (_livEnt14.m_21023_(MobEffects.f_19597_)) {
+               if (_livEnt14.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
                   int var10002;
                   label43: {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        if (_livEnt.m_21023_(MobEffects.f_19597_)) {
-                           var10002 = _livEnt.m_21124_(MobEffects.f_19597_).m_19564_();
+                        if (_livEnt.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
+                           var10002 = _livEnt.getEffect(MobEffects.MOVEMENT_SLOWDOWN).getAmplifier();
                            break label43;
                         }
                      }
@@ -93,13 +93,13 @@ public class GetPowerFixProcedure {
                   }
 
                   fix = Math.max(1.0 - 0.15 * (double)(var10002 + 1), 0.0);
-                  entity.getPersistentData().m_128347_("x_power", entity.getPersistentData().m_128459_("x_power") * fix);
-                  entity.getPersistentData().m_128347_("y_power", entity.getPersistentData().m_128459_("y_power") * fix);
-                  entity.getPersistentData().m_128347_("z_power", entity.getPersistentData().m_128459_("z_power") * fix);
+                  entity.getPersistentData().putDouble("x_power", entity.getPersistentData().getDouble("x_power") * fix);
+                  entity.getPersistentData().putDouble("y_power", entity.getPersistentData().getDouble("y_power") * fix);
+                  entity.getPersistentData().putDouble("z_power", entity.getPersistentData().getDouble("z_power") * fix);
                }
             }
 
-            entity.getPersistentData().m_128347_("y_power", Math.min(entity.getPersistentData().m_128459_("y_power"), 1.5));
+            entity.getPersistentData().putDouble("y_power", Math.min(entity.getPersistentData().getDouble("y_power"), 1.5));
          }
 
       }

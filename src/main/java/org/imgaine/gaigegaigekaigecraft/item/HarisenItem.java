@@ -17,42 +17,42 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class HarisenItem extends Item {
    public HarisenItem() {
-      super((new Item.Properties()).m_41503_(220));
+      super((new Item.Properties()).durability(220));
    }
 
-   public float m_8102_(ItemStack itemstack, BlockState blockstate) {
+   public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
       return 1.0F;
    }
 
-   public boolean m_6813_(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
-      itemstack.m_41622_(1, entity, (i) -> i.m_21166_(EquipmentSlot.MAINHAND));
+   public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
+      itemstack.hurtAndBreak(1, entity, (i) -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
       return true;
    }
 
-   public boolean m_7579_(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-      itemstack.m_41622_(2, entity, (i) -> i.m_21166_(EquipmentSlot.MAINHAND));
+   public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+      itemstack.hurtAndBreak(2, entity, (i) -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
       return true;
    }
 
-   public int m_6473_() {
+   public int getEnchantmentValue() {
       return 0;
    }
 
-   public Multimap<Attribute, AttributeModifier> m_7167_(EquipmentSlot equipmentSlot) {
+   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
       if (equipmentSlot == EquipmentSlot.MAINHAND) {
          ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-         builder.putAll(super.m_7167_(equipmentSlot));
-         builder.put(Attributes.f_22281_, new AttributeModifier(f_41374_, "Tool modifier", 0.0, Operation.ADDITION));
-         builder.put(Attributes.f_22283_, new AttributeModifier(f_41375_, "Tool modifier", -2.2, Operation.ADDITION));
+         builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
+         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 0.0, Operation.ADDITION));
+         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.2, Operation.ADDITION));
          return builder.build();
       } else {
-         return super.m_7167_(equipmentSlot);
+         return super.getDefaultAttributeModifiers(equipmentSlot);
       }
    }
 
    public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
       boolean retval = super.onEntitySwing(itemstack, entity);
-      HarisenEntitySwingsItemProcedure.execute(entity.m_9236_(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity);
+      HarisenEntitySwingsItemProcedure.execute(entity.level(), entity.getX(), entity.getY(), entity.getZ(), entity);
       return retval;
    }
 }

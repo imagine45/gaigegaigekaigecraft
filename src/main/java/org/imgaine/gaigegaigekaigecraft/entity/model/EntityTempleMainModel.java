@@ -9,14 +9,14 @@ public class EntityTempleMainModel extends GeoModel<EntityTempleMainEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityTempleMainEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/entity_temple_main.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/entity_temple_main.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityTempleMainEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/entity_temple_main.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/entity_temple_main.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityTempleMainEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

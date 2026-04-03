@@ -19,11 +19,11 @@ public class OCoolTimeProcedure {
             double NUM1 = 0.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt0 = (LivingEntity)entity;
-               if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+               if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                        var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19557_();
+                     if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                        var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).getDuration();
                         break label38;
                      }
                   }
@@ -35,8 +35,8 @@ public class OCoolTimeProcedure {
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get())) {
-                  var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get())) {
+                  var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get()).getDuration();
                   break label38;
                }
             }

@@ -9,14 +9,14 @@ public class CurseUser1Model extends GeoModel<CurseUser1Entity> {
    }
 
    public ResourceLocation getAnimationResource(CurseUser1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/human.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/human.animation.json");
    }
 
    public ResourceLocation getModelResource(CurseUser1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/human.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/human.geo.json");
    }
 
    public ResourceLocation getTextureResource(CurseUser1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

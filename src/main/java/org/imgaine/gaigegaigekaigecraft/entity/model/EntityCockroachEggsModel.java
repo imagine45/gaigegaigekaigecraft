@@ -9,14 +9,14 @@ public class EntityCockroachEggsModel extends GeoModel<EntityCockroachEggsEntity
    }
 
    public ResourceLocation getAnimationResource(EntityCockroachEggsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/cockroach_eggs.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/cockroach_eggs.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityCockroachEggsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/cockroach_eggs.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/cockroach_eggs.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityCockroachEggsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

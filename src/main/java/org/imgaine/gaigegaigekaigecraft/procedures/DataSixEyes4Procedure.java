@@ -7,6 +7,6 @@ public class DataSixEyes4Procedure {
    }
 
    public static String execute(Entity entity) {
-      return entity == null ? "" : entity.getPersistentData().m_128461_("DataSixEyes4");
+      return entity == null ? "" : entity.getPersistentData().getString("DataSixEyes4");
    }
 }

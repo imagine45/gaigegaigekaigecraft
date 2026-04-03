@@ -13,7 +13,7 @@ public class CursedTechniqueSukunaProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          double skill = 0.0;
-         skill = entity.getPersistentData().m_128459_("skill");
+         skill = entity.getPersistentData().getDouble("skill");
          if (skill <= 120.0) {
             if (skill == 105.0) {
                DismantleProcedure.execute(world, x, y, z, entity);
@@ -21,11 +21,17 @@ public class CursedTechniqueSukunaProcedure {
                CleaveProcedure.execute(world, entity);
             } else if (skill == 107.0) {
                OpenProcedure.execute(world, entity);
+            } else if (skill == 111.0) {
+               SkillSukunaCombo1Procedure.execute(world, x, y, z, entity);
+            } else if (skill == 112.0) {
+               SkillSukunaCombo2Procedure.execute(world, x, y, z, entity);
+            } else if (skill == 113.0) {
+               SkillSukunaCombo3Procedure.execute(world, x, y, z, entity);
             } else if (skill == 120.0) {
                MalevolentShrineProcedure.execute(world, x, y, z, entity);
             } else if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          } else if (skill >= 150.0 && skill < 200.0) {
             if (skill < 160.0) {
@@ -51,22 +57,22 @@ public class CursedTechniqueSukunaProcedure {
                   TechniqueMucusProcedure.execute(world, x, y, z, entity);
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
                }
             } else if (skill < 170.0) {
                if (skill == 160.0) {
                   SkillGaneshaProcedure.execute(world, entity);
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
                }
             } else if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
          }
 
       }

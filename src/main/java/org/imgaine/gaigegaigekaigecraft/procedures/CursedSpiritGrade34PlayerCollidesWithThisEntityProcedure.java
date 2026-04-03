@@ -13,8 +13,8 @@ public class CursedSpiritGrade34PlayerCollidesWithThisEntityProcedure {
       if (entity != null) {
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 10, 5, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 5, false, false));
             }
          }
 

@@ -38,35 +38,35 @@ public class ClothesDagonItem extends ArmorItem implements GeoItem {
 
    public ClothesDagonItem(ArmorItem.Type type, Item.Properties properties) {
       super(new ArmorMaterial() {
-         public int m_266425_(ArmorItem.Type type) {
-            return (new int[]{13, 15, 16, 11})[type.m_266308_().m_20749_()] * 0;
+         public int getDurabilityForType(ArmorItem.Type type) {
+            return (new int[]{13, 15, 16, 11})[type.getSlot().getIndex()] * 0;
          }
 
-         public int m_7366_(ArmorItem.Type type) {
-            return (new int[]{0, 0, 0, 0})[type.m_266308_().m_20749_()];
+         public int getDefenseForType(ArmorItem.Type type) {
+            return (new int[]{0, 0, 0, 0})[type.getSlot().getIndex()];
          }
 
-         public int m_6646_() {
+         public int getEnchantmentValue() {
             return 9;
          }
 
-         public SoundEvent m_7344_() {
-            return SoundEvents.f_271165_;
+         public SoundEvent getEquipSound() {
+            return SoundEvents.EMPTY;
          }
 
-         public Ingredient m_6230_() {
-            return Ingredient.m_151265_();
+         public Ingredient getRepairIngredient() {
+            return Ingredient.of();
          }
 
-         public String m_6082_() {
+         public String getName() {
             return "clothes_dagon";
          }
 
-         public float m_6651_() {
+         public float getToughness() {
             return 0.0F;
          }
 
-         public float m_6649_() {
+         public float getKnockbackResistance() {
             return 0.0F;
          }
       }, type, properties);
@@ -87,8 +87,8 @@ public class ClothesDagonItem extends ArmorItem implements GeoItem {
       });
    }
 
-   public void m_7373_(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, world, list, flag);
+   public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, world, list, flag);
    }
 
    private PlayState predicate(AnimationState event) {

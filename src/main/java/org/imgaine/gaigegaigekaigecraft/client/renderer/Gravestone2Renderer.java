@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class Gravestone2Renderer extends MobRenderer<Gravestone2Entity, Modelgravestone2<Gravestone2Entity>> {
    public Gravestone2Renderer(EntityRendererProvider.Context context) {
-      super(context, new Modelgravestone2(context.m_174023_(Modelgravestone2.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelgravestone2(context.bakeLayer(Modelgravestone2.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(Gravestone2Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/gravestone.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/gravestone.png");
    }
 }

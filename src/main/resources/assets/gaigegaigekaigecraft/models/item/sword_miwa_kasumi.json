@@ -1,0 +1,8 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/sword_miwa",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/sword_miwa1",
+    "1": "gaigegaigekaigecraft:block/silver",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

@@ -13,15 +13,15 @@ public class EntityCrackModel extends GeoModel<EntityCrackEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityCrackEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/crack.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/crack.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityCrackEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/crack.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/crack.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityCrackEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityCrackEntity animatable, long instanceId, AnimationState animationState) {

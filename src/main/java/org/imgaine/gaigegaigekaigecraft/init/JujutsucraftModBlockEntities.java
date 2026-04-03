@@ -13,8 +13,10 @@ import org.imgaine.gaigegaigekaigecraft.block.entity.DomainBlueSkyBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainBoneBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainCloudBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainDarkStoneBlockEntity;
+import org.imgaine.gaigegaigekaigecraft.block.entity.DomainFenceBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainFlowerBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainGrassBlockEntity;
+import org.imgaine.gaigegaigekaigecraft.block.entity.DomainHoleBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainIceBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainPlanksBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainPodzolBlockEntity;
@@ -58,16 +60,18 @@ public class JujutsucraftModBlockEntities {
    public static final RegistryObject<BlockEntityType<?>> DOMAIN_WHITE;
    public static final RegistryObject<BlockEntityType<?>> DOMAIN;
    public static final RegistryObject<BlockEntityType<?>> DOMAIN_DARK_STONE;
+   public static final RegistryObject<BlockEntityType<?>> DOMAIN_FENCE;
+   public static final RegistryObject<BlockEntityType<?>> DOMAIN_HOLE;
 
    public JujutsucraftModBlockEntities() {
    }
 
    private static RegistryObject<BlockEntityType<?>> register(String registryname, RegistryObject<Block> block, BlockEntityType.BlockEntitySupplier<?> supplier) {
-      return REGISTRY.register(registryname, () -> Builder.m_155273_(supplier, new Block[]{(Block)block.get()}).m_58966_((Type)null));
+      return REGISTRY.register(registryname, () -> Builder.of(supplier, block.get()).build(null));
    }
 
    static {
-      REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "jujutsucraft");
+      REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "gaigegaigekaigecraft");
       JUJUTSU_BARRIER = register("jujutsu_barrier", JujutsucraftModBlocks.JUJUTSU_BARRIER, JujutsuBarrierBlockEntity::new);
       COFFINOFTHE_IRONMOUNTAIN_1 = register("coffinofthe_ironmountain_1", JujutsucraftModBlocks.COFFINOFTHE_IRONMOUNTAIN_1, CoffinoftheIronmountain1BlockEntity::new);
       COFFINOFTHE_IRONMOUNTAIN_2 = register("coffinofthe_ironmountain_2", JujutsucraftModBlocks.COFFINOFTHE_IRONMOUNTAIN_2, CoffinoftheIronmountain2BlockEntity::new);
@@ -92,5 +96,7 @@ public class JujutsucraftModBlockEntities {
       DOMAIN_WHITE = register("domain_white", JujutsucraftModBlocks.DOMAIN_WHITE, DomainWhiteBlockEntity::new);
       DOMAIN = register("domain", JujutsucraftModBlocks.DOMAIN, DomainBlockEntity::new);
       DOMAIN_DARK_STONE = register("domain_dark_stone", JujutsucraftModBlocks.DOMAIN_DARK_STONE, DomainDarkStoneBlockEntity::new);
+      DOMAIN_FENCE = register("domain_fence", JujutsucraftModBlocks.DOMAIN_FENCE, DomainFenceBlockEntity::new);
+      DOMAIN_HOLE = register("domain_hole", JujutsucraftModBlocks.DOMAIN_HOLE, DomainHoleBlockEntity::new);
    }
 }

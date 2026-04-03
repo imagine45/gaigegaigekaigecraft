@@ -13,9 +13,9 @@ public class LogicAIProcedure {
       } else {
          boolean logic_a = false;
          if (entity instanceof CrowEntity) {
-            logic_a = entity.getPersistentData().m_128459_("NameRanged_ranged") == 0.0;
+            logic_a = entity.getPersistentData().getDouble("NameRanged_ranged") == 0.0;
          } else {
-            logic_a = entity.getPersistentData().m_128459_("friend_num") == 0.0;
+            logic_a = entity.getPersistentData().getDouble("friend_num") == 0.0;
          }
 
          return logic_a;

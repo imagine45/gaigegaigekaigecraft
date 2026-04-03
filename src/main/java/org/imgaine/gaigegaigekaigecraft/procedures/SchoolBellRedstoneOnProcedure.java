@@ -15,10 +15,10 @@ public class SchoolBellRedstoneOnProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z) {
       if (world instanceof Level _level) {
-         if (!_level.m_5776_()) {
-            _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:school_bell")), SoundSource.NEUTRAL, 3.0F, 1.0F);
+         if (!_level.isClientSide()) {
+            _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:school_bell")), SoundSource.NEUTRAL, 3.0F, 1.0F);
          } else {
-            _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:school_bell")), SoundSource.NEUTRAL, 3.0F, 1.0F, false);
+            _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:school_bell")), SoundSource.NEUTRAL, 3.0F, 1.0F, false);
          }
       }
 

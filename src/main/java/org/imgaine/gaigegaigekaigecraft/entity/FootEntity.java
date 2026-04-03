@@ -2,6 +2,7 @@ package org.imgaine.gaigegaigekaigecraft.entity;
 
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
 import org.imgaine.gaigegaigekaigecraft.procedures.AIFootProcedure;
+import org.imgaine.gaigegaigekaigecraft.procedures.SizeByNBTProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -27,56 +28,60 @@ public class FootEntity extends PathfinderMob {
 
    public FootEntity(EntityType<FootEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
-      this.m_6210_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
+   protected void registerGoals() {
+      super.registerGoals();
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIFootProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AIFootProcedure.execute(this.level(), this.getX(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose pose) {
-      return super.m_6972_(pose).m_20388_(2.0F);
+   public EntityDimensions getDimensions(Pose pose) {
+      Level world = this.level();
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      return super.getDimensions(pose).scale((float)SizeByNBTProcedure.execute(this));
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 120.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 120.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 }

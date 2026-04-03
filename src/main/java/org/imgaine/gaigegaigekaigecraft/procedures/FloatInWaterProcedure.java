@@ -10,7 +10,7 @@ public class FloatInWaterProcedure {
       if (entity == null) {
          return false;
       } else {
-         return entity.getPersistentData().m_128459_("skill") != 705.0;
+         return entity.getPersistentData().getDouble("skill") != 705.0;
       }
    }
 }

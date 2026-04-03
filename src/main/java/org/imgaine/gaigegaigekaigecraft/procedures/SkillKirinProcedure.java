@@ -27,23 +27,23 @@ public class SkillKirinProcedure {
          double z_pos = 0.0;
          double power = 0.0;
          String STR1 = "";
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-         x_pos = entity.m_20185_();
-         y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.5;
-         z_pos = entity.m_20189_();
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+         x_pos = entity.getX();
+         y_pos = entity.getY() + (double)entity.getBbHeight() * 0.5;
+         z_pos = entity.getZ();
          if (world instanceof Level) {
             Level _level = (Level)world;
-            if (!_level.m_5776_()) {
-               _level.m_5594_((Player)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.enchantment_table.use")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            if (!_level.isClientSide()) {
+               _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.enchantment_table.use")), SoundSource.NEUTRAL, 1.0F, 1.0F);
             } else {
-               _level.m_7785_(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.enchantment_table.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+               _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.enchantment_table.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
             }
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.EFFECT_KIRIN.get(), 3600, 0, true, true));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.EFFECT_KIRIN.get(), 3600, 0, true, true));
             }
          }
 
@@ -53,7 +53,7 @@ public class SkillKirinProcedure {
             capability.syncPlayerVariables(entity);
          });
          KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-         entity.getPersistentData().m_128347_("skill", 0.0);
+         entity.getPersistentData().putDouble("skill", 0.0);
       }
    }
 }

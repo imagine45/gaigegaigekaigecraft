@@ -24,46 +24,46 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DomainBlock extends Block implements EntityBlock {
    public DomainBlock() {
-      super(Properties.m_284310_().m_60918_(SoundType.f_279557_).m_60913_(-1.0F, 9999.0F).m_60953_((s) -> 15).m_60910_().m_60955_().m_60982_((bs, br, bp) -> true).m_60991_((bs, br, bp) -> true).m_60924_((bs, br, bp) -> false));
+      super(Properties.of().sound(SoundType.EMPTY).strength(-1.0F, 9999.0F).lightLevel((s) -> 15).noCollission().noOcclusion().hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true).isRedstoneConductor((bs, br, bp) -> false));
    }
 
-   public boolean m_7420_(BlockState state, BlockGetter reader, BlockPos pos) {
+   public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
       return true;
    }
 
-   public int m_7753_(BlockState state, BlockGetter worldIn, BlockPos pos) {
+   public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
       return 0;
    }
 
-   public VoxelShape m_5909_(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-      return Shapes.m_83040_();
+   public VoxelShape getVisualShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+      return Shapes.empty();
    }
 
    public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
       return BlockPathTypes.OPEN;
    }
 
-   public void m_6807_(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
-      super.m_6807_(blockstate, world, pos, oldState, moving);
-      world.m_186460_(pos, this, 200);
+   public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
+      super.onPlace(blockstate, world, pos, oldState, moving);
+      world.scheduleTick(pos, this, 80);
    }
 
-   public void m_213897_(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-      super.m_213897_(blockstate, world, pos, random);
-      int x = pos.m_123341_();
-      int y = pos.m_123342_();
-      int z = pos.m_123343_();
+   public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+      super.tick(blockstate, world, pos, random);
+      int x = pos.getX();
+      int y = pos.getY();
+      int z = pos.getZ();
       DomainOnTickUpdateProcedure.execute(world, (double)x, (double)y, (double)z);
-      world.m_186460_(pos, this, 200);
+      world.scheduleTick(pos, this, 80);
    }
 
-   public void m_7892_(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-      super.m_7892_(blockstate, world, pos, entity);
-      DomainEntityCollidesInTheBlockProcedure.execute(world, (double)pos.m_123341_(), (double)pos.m_123342_(), (double)pos.m_123343_(), entity);
+   public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
+      super.entityInside(blockstate, world, pos, entity);
+      DomainEntityCollidesInTheBlockProcedure.execute(world, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), entity);
    }
 
-   public MenuProvider m_7246_(BlockState state, Level worldIn, BlockPos pos) {
-      BlockEntity tileEntity = worldIn.m_7702_(pos);
+   public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+      BlockEntity tileEntity = worldIn.getBlockEntity(pos);
       MenuProvider var10000;
       if (tileEntity instanceof MenuProvider menuProvider) {
          var10000 = menuProvider;
@@ -74,13 +74,13 @@ public class DomainBlock extends Block implements EntityBlock {
       return var10000;
    }
 
-   public BlockEntity m_142194_(BlockPos pos, BlockState state) {
+   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
       return new DomainBlockEntity(pos, state);
    }
 
-   public boolean m_8133_(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-      super.m_8133_(state, world, pos, eventID, eventParam);
-      BlockEntity blockEntity = world.m_7702_(pos);
-      return blockEntity == null ? false : blockEntity.m_7531_(eventID, eventParam);
+   public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+      super.triggerEvent(state, world, pos, eventID, eventParam);
+      BlockEntity blockEntity = world.getBlockEntity(pos);
+      return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
    }
 }

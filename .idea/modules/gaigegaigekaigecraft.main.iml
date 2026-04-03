@@ -13,10 +13,10 @@
     </facet>
   </component>
   <component name="McpModuleSettings">
-    <option name="mappingFile" value="C:\Projects\GGKC\GaigeGaigeKaigeCraft\build\createMcpToSrg\output.tsrg" />
-    <option name="mcpVersion" value="official_1.20.1" />
+    <option name="mappingFile" value="C:\Users\lucas\IdeaProjects\gaigegaigekaigecraft\build\createMcpToSrg\output.tsrg" />
+    <option name="mcpVersion" value="parchment_2023.06.26-1.20.1" />
     <option name="minecraftVersion" value="1.20.1" />
-    <option name="platformVersion" value="47.4.16" />
+    <option name="platformVersion" value="47.4.10" />
     <option name="srgType" value="TSRG" />
   </component>
 </module>

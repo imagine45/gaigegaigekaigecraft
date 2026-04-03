@@ -21,30 +21,29 @@ public class TechniquePrayerSongProcedure {
          double z_pos = 0.0;
          double power = 0.0;
          String STR1 = "";
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-         x_pos = entity.m_20185_();
-         y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.5;
-         z_pos = entity.m_20189_();
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+         x_pos = entity.getX();
+         y_pos = entity.getY() + (double)entity.getBbHeight() * 0.5;
+         z_pos = entity.getZ();
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 5, 20, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 20, false, false));
             }
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
+            if (!_entity.level().isClientSide()) {
                MobEffectInstance var10001;
                MobEffect var10003;
                int var10005;
                label22: {
-                  var10001 = new MobEffectInstance;
                   var10003 = (MobEffect)JujutsucraftModMobEffects.PRAYER_SONG.get();
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                        var10005 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                     if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        var10005 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                         break label22;
                      }
                   }
@@ -52,8 +51,8 @@ public class TechniquePrayerSongProcedure {
                   var10005 = 0;
                }
 
-               var10001.<init>(var10003, 3600, var10005, true, true);
-               _entity.m_7292_(var10001);
+               var10001 = new MobEffectInstance(var10003, 3600, var10005, true, true);
+               _entity.addEffect(var10001);
             }
          }
 
@@ -63,7 +62,7 @@ public class TechniquePrayerSongProcedure {
             capability.syncPlayerVariables(entity);
          });
          KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-         entity.getPersistentData().m_128347_("skill", 0.0);
+         entity.getPersistentData().putDouble("skill", 0.0);
       }
    }
 }

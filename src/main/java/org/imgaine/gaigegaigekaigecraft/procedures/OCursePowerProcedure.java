@@ -13,7 +13,7 @@ public class OCursePowerProcedure {
       if (entity == null) {
          return "";
       } else {
-         String var10000 = Component.m_237115_("jujutsu.overlay.curse_power").getString();
+         String var10000 = Component.translatable("jujutsu.overlay.curse_power").getString();
          return var10000 + ": " + Math.round(((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePower);
       }
    }

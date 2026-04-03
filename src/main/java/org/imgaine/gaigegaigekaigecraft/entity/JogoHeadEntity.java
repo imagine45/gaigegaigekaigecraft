@@ -40,81 +40,81 @@ public class JogoHeadEntity extends Monster {
 
    public JogoHeadEntity(EntityType<JogoHeadEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
+   protected void registerGoals() {
+      super.registerGoals();
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      return damagesource.m_276093_(DamageTypes.f_268631_) ? false : super.m_6469_(damagesource, amount);
+   public boolean hurt(DamageSource damagesource, float amount) {
+      return damagesource.is(DamageTypes.IN_FIRE) ? false : super.hurt(damagesource, amount);
    }
 
-   public boolean m_5825_() {
+   public boolean fireImmune() {
       return true;
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagCursedSpritProcedure.execute(world, this);
       return retval;
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      super.m_6071_(sourceentity, hand);
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      super.mobInteract(sourceentity, hand);
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       JogoHeadRightClickedOnEntityProcedure.execute(world, x, y, z, this, sourceentity);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIJogoHeadProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIJogoHeadProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose pose) {
-      Level world = this.m_9236_();
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      return super.m_6972_(pose).m_20388_((float)SizeByNBTProcedure.execute(this));
+   public EntityDimensions getDimensions(Pose pose) {
+      Level world = this.level();
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      return super.getDimensions(pose).scale((float)SizeByNBTProcedure.execute(this));
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 60.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 60.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 }

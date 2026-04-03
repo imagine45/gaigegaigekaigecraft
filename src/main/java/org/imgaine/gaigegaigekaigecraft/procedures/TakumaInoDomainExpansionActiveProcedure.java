@@ -40,8 +40,8 @@ public class TakumaInoDomainExpansionActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label72;
                }
             }
@@ -50,13 +50,13 @@ public class TakumaInoDomainExpansionActiveProcedure {
          }
 
          double var29 = var10000;
-         if (!entity.getPersistentData().m_128471_("Failed") && var29 % 60.0 == 20.0) {
+         if (!entity.getPersistentData().getBoolean("Failed") && var29 % 60.0 == 20.0) {
             int var10001;
             label64: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                     var10001 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                  if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                     var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                      break label64;
                   }
                }
@@ -65,61 +65,61 @@ public class TakumaInoDomainExpansionActiveProcedure {
             }
 
             double var30 = (double)(40 + var10001 * 4);
-            double var27 = entity.getPersistentData().m_128459_("skill");
-            double var33 = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
-            entity.getPersistentData().m_128347_("skill", 4005.0);
-            entity.getPersistentData().m_128347_("COOLDOWN_TICKS", 75.0);
+            double var27 = entity.getPersistentData().getDouble("skill");
+            double var33 = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
+            entity.getPersistentData().putDouble("skill", 4005.0);
+            entity.getPersistentData().putDouble("COOLDOWN_TICKS", 75.0);
 
             for(int index0 = 0; index0 < 2; ++index0) {
                if (Math.random() < 0.5) {
                   double var31 = Math.toRadians(Math.random() * 360.0);
-                  double var34 = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(var31) * (range / 2.0 - 4.0);
-                  double var35 = entity.getPersistentData().m_128459_("y_pos_doma");
-                  double var36 = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(var31) * (range / 2.0 - 4.0);
+                  double var34 = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(var31) * (range / 2.0 - 4.0);
+                  double var35 = entity.getPersistentData().getDouble("y_pos_doma");
+                  double var36 = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(var31) * (range / 2.0 - 4.0);
                   double var28 = 0.5 + Math.random();
                   if (world instanceof ServerLevel) {
                      ServerLevel _serverLevel = (ServerLevel)world;
-                     Entity entityinstance = ((EntityType)JujutsucraftModEntities.KAICHI.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(var34, var35, var36), MobSpawnType.MOB_SUMMONED, false, false);
+                     Entity entityinstance = ((EntityType)JujutsucraftModEntities.KAICHI.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(var34, var35, var36), MobSpawnType.MOB_SUMMONED, false, false);
                      if (entityinstance != null) {
-                        entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                        entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                         SetRangedAmmoProcedure.execute(entity, entityinstance);
-                        if (!entityinstance.m_9236_().m_5776_() && entityinstance.m_20194_() != null) {
-                           entityinstance.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityinstance.m_20182_(), entityinstance.m_20155_(), entityinstance.m_9236_() instanceof ServerLevel ? (ServerLevel)entityinstance.m_9236_() : null, 4, entityinstance.m_7755_().getString(), entityinstance.m_5446_(), entityinstance.m_9236_().m_7654_(), entityinstance), "data merge entity @s {NoAI:1b}");
+                        if (!entityinstance.level().isClientSide() && entityinstance.getServer() != null) {
+                           entityinstance.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityinstance.position(), entityinstance.getRotationVector(), entityinstance.level() instanceof ServerLevel ? (ServerLevel)entityinstance.level() : null, 4, entityinstance.getName().getString(), entityinstance.getDisplayName(), entityinstance.level().getServer(), entityinstance), "data merge entity @s {NoAI:1b}");
                         }
 
-                        entityinstance.m_146922_((float)Math.toDegrees(var31));
-                        entityinstance.m_146926_(0.0F);
-                        entityinstance.m_5618_(entityinstance.m_146908_());
-                        entityinstance.m_5616_(entityinstance.m_146908_());
-                        entityinstance.f_19859_ = entityinstance.m_146908_();
-                        entityinstance.f_19860_ = entityinstance.m_146909_();
+                        entityinstance.setYRot((float)Math.toDegrees(var31));
+                        entityinstance.setXRot(0.0F);
+                        entityinstance.setYBodyRot(entityinstance.getYRot());
+                        entityinstance.setYHeadRot(entityinstance.getYRot());
+                        entityinstance.yRotO = entityinstance.getYRot();
+                        entityinstance.xRotO = entityinstance.getXRot();
                         if (entityinstance instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entityinstance;
-                           _entity.f_20884_ = _entity.m_146908_();
-                           _entity.f_20886_ = _entity.m_146908_();
+                           _entity.yBodyRotO = _entity.getYRot();
+                           _entity.yHeadRotO = _entity.getYRot();
                         }
 
                         if (entityinstance instanceof LivingEntity) {
                            LivingEntity _livingEntity16 = (LivingEntity)entityinstance;
-                           if (_livingEntity16.m_21204_().m_22171_(Attributes.f_22276_)) {
-                              _livingEntity16.getAttribute_(Attributes.f_22276_).m_22100_(var30);
+                           if (_livingEntity16.getAttributes().hasAttribute(Attributes.MAX_HEALTH)) {
+                              _livingEntity16.getAttribute(Attributes.MAX_HEALTH).setBaseValue(var30);
                            }
                         }
 
                         if (entityinstance instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entityinstance;
-                           _entity.m_21153_((float)var30);
+                           _entity.setHealth((float)var30);
                         }
 
-                        entityinstance.getPersistentData().m_128347_("cnt3", 1.0);
-                        _serverLevel.m_7967_(entityinstance);
+                        entityinstance.getPersistentData().putDouble("cnt3", 1.0);
+                        _serverLevel.addFreshEntity(entityinstance);
                      }
                   }
                }
             }
 
-            entity.getPersistentData().m_128347_("skill", var27);
-            entity.getPersistentData().m_128347_("COOLDOWN_TICKS", var33);
+            entity.getPersistentData().putDouble("skill", var27);
+            entity.getPersistentData().putDouble("COOLDOWN_TICKS", var33);
          }
 
       }

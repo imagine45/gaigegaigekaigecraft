@@ -2,6 +2,8 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import net.minecraftforge.common.util.NonNullConsumer;
 import org.imgaine.gaigegaigekaigecraft.entity.KashimoHajimeEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
@@ -22,6 +24,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 public class MythicalBeastAmberEffectOnEffectActiveTickProcedure {
    public MythicalBeastAmberEffectOnEffectActiveTickProcedure() {
@@ -29,30 +32,19 @@ public class MythicalBeastAmberEffectOnEffectActiveTickProcedure {
 
    public static void execute(LevelAccessor world, Entity entity) {
       if (entity != null) {
-         boolean kashimo = false;
          boolean Player = false;
-         ItemStack item_a = ItemStack.f_41583_;
-         double x_pos = 0.0;
-         double y_pos = 0.0;
-         double z_pos = 0.0;
-         double height = 0.0;
-         double width = 0.0;
-         double loop_num = 0.0;
-         double amount = 0.0;
-         double yaw = 0.0;
-         double pitch = 0.0;
-         double yaw_fix = 0.0;
-         double tick = 0.0;
-         double strength = 0.0;
+         boolean kashimo = false;
+         ItemStack item_a = ItemStack.EMPTY;
          double range = 0.0;
-         if (entity.m_6084_()) {
+         double tick = 0.0;
+         if (entity.isAlive()) {
             double var10000;
-            label201: {
+            label196: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get())) {
-                     var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get()).m_19557_();
-                     break label201;
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get())) {
+                     var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get()).getDuration();
+                     break label196;
                   }
                }
 
@@ -64,128 +56,131 @@ public class MythicalBeastAmberEffectOnEffectActiveTickProcedure {
             Player = entity instanceof Player;
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.ZONE.get(), 5, 0, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.ZONE.get(), 5, 0, false, false));
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19611_, 219, 1, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 219, 1, false, false));
                }
             }
-
-            label193: {
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get())) {
-                     var71 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get()).m_19564_();
-                     break label193;
-                  }
-               }
-
-               var71 = 0;
-            }
-
-            int var10001;
+            int var47;
             label188: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                     var10001 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get())) {
+                     var47 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get()).getAmplifier();
                      break label188;
+                  }
+               }
+
+               var47 = 0;
+            }
+
+            int var10001;
+            label183: {
+               if (entity instanceof LivingEntity) {
+                  LivingEntity _livEnt = (LivingEntity)entity;
+                  if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                     var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                     break label183;
                   }
                }
 
                var10001 = 0;
             }
 
-            if (var71 < var10001) {
+            if (var47 < var10001) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
+                  if (!_entity.level().isClientSide()) {
                      MobEffect var10003;
                      int var10004;
                      int var10005;
-                     label181: {
-                        var78 = new MobEffectInstance;
+                     MobEffectInstance var54;
+                     label176: {
                         var10003 = (MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get();
                         var10004 = (int)tick;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                              var10005 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                              break label181;
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var10005 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                              break label176;
                            }
                         }
 
                         var10005 = 0;
                      }
 
-                     var78.<init>(var10003, var10004, var10005, true, true);
-                     _entity.m_7292_(var78);
+                     var54 = new MobEffectInstance(var10003, var10004, var10005, true, true);
+                     _entity.addEffect(var54);
                   }
                }
             }
 
             if (Player) {
-               if (entity.f_19797_ % 10 == 0) {
-                  double _setval = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerChange - 10.0;
+               if (entity.tickCount % 10 == 0) {
                   entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                     capability.PlayerCursePowerChange = _setval;
-                     capability.syncPlayerVariables(entity);
+                     capability.PlayerCursePowerChange -= 10.0;
+                     if (capability.PlayerCursePower + capability.PlayerCursePowerChange <= 0.0 && entity instanceof LivingEntity _entity) {
+                        _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
+                     }
+
                   });
-                  if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePower + ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerChange <= 0.0 && entity instanceof LivingEntity) {
-                     LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
-                  }
                }
             } else {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19596_, 2, 2, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, 2, false, false));
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19603_, 2, 1, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, 1, false, false));
                   }
                }
             }
 
             if (Player) {
-               ItemStack var75;
+               ItemStack var51;
                if (entity instanceof LivingEntity) {
                   LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var75 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                  var51 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                } else {
-                  var75 = ItemStack.f_41583_;
+                  var51 = ItemStack.EMPTY;
                }
 
-               if (var75.m_41720_() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()) {
-                  item_a = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).m_41777_();
+               if (var51.getItem() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()) {
+                  item_a = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).copy();
                   AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
-                  LazyOptional var76 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
+                  LazyOptional var52 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                   Objects.requireNonNull(_iitemhandlerref);
-                  var76.ifPresent(_iitemhandlerref::set);
+                  var52.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                   if (_iitemhandlerref.get() != null) {
                      for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                        ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                        ItemStack _player = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx);
-                        if (_player.m_41720_() == JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get() && (!_player.m_41784_().m_128441_("hand") || !_player.m_41784_().m_128471_("hand")) && _player.m_41784_().m_128441_("effect_item") && _player.m_41784_().m_128471_("effect_item")) {
-                           item_a = _player.m_41777_();
+                        ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                        ItemStack _itemstack = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx);
+                        if (_itemstack.getItem() == JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get() && (!_itemstack.getOrCreateTag().contains("hand") || !_itemstack.getOrCreateTag().getBoolean("hand")) && _itemstack.getOrCreateTag().contains("effect_item") && _itemstack.getOrCreateTag().getBoolean("effect_item")) {
+                           item_a = _itemstack.copy();
                            if (entity instanceof Player) {
                               Player _player = (Player)entity;
-                              _player.m_150109_().m_36022_((p) -> _player.m_41720_() == p.m_41720_(), _player.m_41613_(), _player.f_36095_.m_39730_());
+                              _player.getInventory().clearOrCountMatchingItems((p) -> _itemstack.getItem() == p.getItem(), _itemstack.getCount(), _player.inventoryMenu.getCraftSlots());
                            }
                            break;
                         }
@@ -194,92 +189,92 @@ public class MythicalBeastAmberEffectOnEffectActiveTickProcedure {
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     ItemStack var77;
+                     ItemStack var53;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entGetArmor = (LivingEntity)entity;
-                        var77 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                        var53 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                      } else {
-                        var77 = ItemStack.f_41583_;
+                        var53 = ItemStack.EMPTY;
                      }
 
-                     ItemStack _setstack = var77.m_41777_().m_41777_();
-                     _setstack.m_41764_(1);
+                     ItemStack _setstack = var53.copy().copy();
+                     _setstack.setCount(1);
                      ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                   }
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(3, item_a);
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(3, item_a);
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.HEAD, item_a);
+                     _living.setItemSlot(EquipmentSlot.HEAD, item_a);
                   }
                }
             } else {
-               ItemStack var72;
+               ItemStack var48;
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  var72 = _livEnt.m_21205_();
+                  var48 = _livEnt.getMainHandItem();
                } else {
-                  var72 = ItemStack.f_41583_;
+                  var48 = ItemStack.EMPTY;
                }
 
-               if (var72.m_41720_() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get() && entity instanceof LivingEntity) {
+               if (var48.getItem() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get() && entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).m_41777_();
-                  _setstack.m_41764_(1);
-                  _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).copy();
+                  _setstack.setCount(1);
+                  _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                   if (_entity instanceof Player) {
                      Player _player = (Player)_entity;
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().setChanged();
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  var72 = _livEnt.m_21206_();
+                  var48 = _livEnt.getOffhandItem();
                } else {
-                  var72 = ItemStack.f_41583_;
+                  var48 = ItemStack.EMPTY;
                }
 
-               if (var72.m_41720_() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get() && entity instanceof LivingEntity) {
+               if (var48.getItem() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get() && entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).m_41777_();
-                  _setstack.m_41764_(1);
-                  _entity.m_21008_(InteractionHand.OFF_HAND, _setstack);
+                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get())).copy();
+                  _setstack.setCount(1);
+                  _entity.setItemInHand(InteractionHand.OFF_HAND, _setstack);
                   if (_entity instanceof Player) {
                      Player _player = (Player)_entity;
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().setChanged();
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var72 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                  var48 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                } else {
-                  var72 = ItemStack.f_41583_;
+                  var48 = ItemStack.EMPTY;
                }
 
-               if (var72.m_41720_() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()) {
+               if (var48.getItem() != JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()) {
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(3, new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()));
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(3, new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()));
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()));
+                     _living.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.MYTHICAL_BEAST_AMBER_HELMET.get()));
                   }
                }
             }
 
-            if (entity.getPersistentData().m_128459_("skill") == 0.0) {
+            if (entity.getPersistentData().getDouble("skill") == 0.0) {
                range = ReturnEntitySizeProcedure.execute(entity);
-               ParticleGeneratorCircleProcedure.execute(world, 1.0 * range, 90.0, 0.5 * range, 0.75 * range, 0.75 * range, entity.m_20185_(), entity.m_20185_(), entity.m_20186_(), entity.m_20186_() + Math.random() * range, 0.0, entity.m_20189_(), entity.m_20189_(), Math.random() < 0.75 ? "jujutsucraft:particle_flame_purple" : "jujutsucraft:particle_thunder_blue");
+               ParticleGeneratorCircleProcedure.execute(world, 1.0 * range, 90.0, 0.5 * range, 0.75 * range, 0.75 * range, entity.getX(), entity.getX(), entity.getY(), entity.getY() + Math.random() * range, 0.0, entity.getZ(), entity.getZ(), Math.random() < 0.75 ? "gaigegaigekaigecraft:particle_flame_purple" : "gaigegaigekaigecraft:particle_thunder_purple");
             }
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
          }
 
       }

@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import java.util.function.Consumer;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModBlocks;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
@@ -52,8 +51,8 @@ public class ChimeraShadowGardenActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label260;
                }
             }
@@ -62,13 +61,13 @@ public class ChimeraShadowGardenActiveProcedure {
          }
 
          double var39 = var10000;
-         double var44 = entity.getPersistentData().m_128459_("x_pos_doma");
-         double var43 = entity.getPersistentData().m_128459_("y_pos_doma");
-         double var40 = entity.getPersistentData().m_128459_("z_pos_doma");
-         if (entity.getPersistentData().m_128471_("Failed")) {
-            if (entity.m_20096_() && world instanceof ServerLevel) {
+         double var44 = entity.getPersistentData().getDouble("x_pos_doma");
+         double var43 = entity.getPersistentData().getDouble("y_pos_doma");
+         double var40 = entity.getPersistentData().getDouble("z_pos_doma");
+         if (entity.getPersistentData().getBoolean("Failed")) {
+            if (entity.onGround() && world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123765_, x, y, z, 20, 1.0, 0.0, 1.0, 0.05);
+               _level.sendParticles(ParticleTypes.SQUID_INK, x, y, z, 20, 1.0, 0.0, 1.0, 0.05);
             }
          } else {
             double var42 = Math.toRadians(90.0 * (var39 % 4.0));
@@ -83,7 +82,7 @@ public class ChimeraShadowGardenActiveProcedure {
                      z_pos = var40 + Math.sin(var42) * var38;
                      if (world instanceof ServerLevel) {
                         ServerLevel _level = (ServerLevel)world;
-                        _level.m_8767_(ParticleTypes.f_123765_, x_pos, y_pos, z_pos, 1, 0.2, 0.0, 0.2, 0.05);
+                        _level.sendParticles(ParticleTypes.SQUID_INK, x_pos, y_pos, z_pos, 1, 0.2, 0.0, 0.2, 0.05);
                      }
                   }
                }
@@ -92,49 +91,49 @@ public class ChimeraShadowGardenActiveProcedure {
             }
          }
 
-         if (entity.getPersistentData().m_128459_("friend_num") == 0.0) {
-            entity.getPersistentData().m_128347_("friend_num", Math.random());
+         if (entity.getPersistentData().getDouble("friend_num") == 0.0) {
+            entity.getPersistentData().putDouble("friend_num", Math.random());
          }
 
-         if (!entity.getPersistentData().m_128471_("Failed")) {
+         if (!entity.getPersistentData().getBoolean("Failed")) {
             boolean var45 = false;
             Vec3 _center = new Vec3(var44, var43, var40);
 
-            for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
+            for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
                if (entity != entityiterator && LogicAttackDomainProcedure.execute(world, entity, entityiterator)) {
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityiterator;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 10, 5, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 5, false, false));
                      }
                   }
 
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityiterator;
-                     _entity.m_21195_(MobEffects.f_19596_);
+                     _entity.removeEffect(MobEffects.MOVEMENT_SPEED);
                   }
 
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityiterator;
-                     _entity.m_21195_(MobEffects.f_19603_);
+                     _entity.removeEffect(MobEffects.JUMP);
                   }
 
-                  if (world.m_8055_(BlockPos.m_274561_(entityiterator.m_20185_(), entityiterator.m_20186_() - 0.0, entityiterator.m_20189_())).m_60734_() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get() || world.m_8055_(BlockPos.m_274561_(entityiterator.m_20185_(), entityiterator.m_20186_() - 1.0, entityiterator.m_20189_())).m_60734_() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get() || world.m_8055_(BlockPos.m_274561_(entityiterator.m_20185_(), entityiterator.m_20186_() - 2.0, entityiterator.m_20189_())).m_60734_() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get() || world.m_8055_(BlockPos.m_274561_(entityiterator.m_20185_(), entityiterator.m_20186_() - 3.0, entityiterator.m_20189_())).m_60734_() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get()) {
-                     entityiterator.m_20256_(new Vec3(0.0, Math.min(entityiterator.m_20184_().m_7098_(), 0.0), 0.0));
-                     if (!world.m_8055_(BlockPos.m_274561_(entityiterator.m_20185_(), entityiterator.m_20186_() - 0.5, entityiterator.m_20189_())).m_60815_()) {
-                        entityiterator.m_6021_(entityiterator.m_20185_(), entityiterator.m_20186_() - 0.5, entityiterator.m_20189_());
+                  if (world.getBlockState(BlockPos.containing(entityiterator.getX(), entityiterator.getY() - 0.0, entityiterator.getZ())).getBlock() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get() || world.getBlockState(BlockPos.containing(entityiterator.getX(), entityiterator.getY() - 1.0, entityiterator.getZ())).getBlock() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get() || world.getBlockState(BlockPos.containing(entityiterator.getX(), entityiterator.getY() - 2.0, entityiterator.getZ())).getBlock() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get() || world.getBlockState(BlockPos.containing(entityiterator.getX(), entityiterator.getY() - 3.0, entityiterator.getZ())).getBlock() == JujutsucraftModBlocks.BLOCK_UNIVERSE.get()) {
+                     entityiterator.setDeltaMovement(new Vec3(0.0, Math.min(entityiterator.getDeltaMovement().y(), 0.0), 0.0));
+                     if (!world.getBlockState(BlockPos.containing(entityiterator.getX(), entityiterator.getY() - 0.5, entityiterator.getZ())).canOcclude()) {
+                        entityiterator.teleportTo(entityiterator.getX(), entityiterator.getY() - 0.5, entityiterator.getZ());
                         if (entityiterator instanceof ServerPlayer) {
                            ServerPlayer _serverPlayer = (ServerPlayer)entityiterator;
-                           _serverPlayer.f_8906_.m_9774_(entityiterator.m_20185_(), entityiterator.m_20186_() - 0.5, entityiterator.m_20189_(), entityiterator.m_146908_(), entityiterator.m_146909_());
+                           _serverPlayer.connection.teleport(entityiterator.getX(), entityiterator.getY() - 0.5, entityiterator.getZ(), entityiterator.getYRot(), entityiterator.getXRot());
                         }
                      }
                   }
 
                   if (!var45 || Math.random() < 0.5) {
                      var45 = true;
-                     var44 = entityiterator.m_20185_();
-                     var43 = entityiterator.m_20186_();
-                     var40 = entityiterator.m_20189_();
+                     var44 = entityiterator.getX();
+                     var43 = entityiterator.getY();
+                     var40 = entityiterator.getZ();
                   }
                }
             }
@@ -142,16 +141,16 @@ public class ChimeraShadowGardenActiveProcedure {
             if (var39 % 40.0 == 0.0) {
                for(int index2 = 0; index2 < 2; ++index2) {
                   if (!var45) {
-                     var44 = entity.getPersistentData().m_128459_("x_pos_doma") + (Math.random() - 0.5) * range * 0.5;
-                     var43 = entity.getPersistentData().m_128459_("y_pos_doma") + Math.random() * 0.1;
-                     var40 = entity.getPersistentData().m_128459_("z_pos_doma") + (Math.random() - 0.5) * range * 0.5;
+                     var44 = entity.getPersistentData().getDouble("x_pos_doma") + (Math.random() - 0.5) * range * 0.5;
+                     var43 = entity.getPersistentData().getDouble("y_pos_doma") + Math.random() * 0.1;
+                     var40 = entity.getPersistentData().getDouble("z_pos_doma") + (Math.random() - 0.5) * range * 0.5;
                   }
 
                   for(int index3 = 0; index3 < 128; ++index3) {
                      x_pos = var44 + (Math.random() - 0.5) * 8.0;
                      y_pos = var43;
                      z_pos = var40 + (Math.random() - 0.5) * 8.0;
-                     if (Math.sqrt(Math.pow(x_pos - entity.getPersistentData().m_128459_("x_pos_doma"), 2.0) + Math.pow(var43 - entity.getPersistentData().m_128459_("y_pos_doma"), 2.0) + Math.pow(z_pos - entity.getPersistentData().m_128459_("z_pos_doma"), 2.0)) < range * 0.5 - 4.0) {
+                     if (Math.sqrt(Math.pow(x_pos - entity.getPersistentData().getDouble("x_pos_doma"), 2.0) + Math.pow(var43 - entity.getPersistentData().getDouble("y_pos_doma"), 2.0) + Math.pow(z_pos - entity.getPersistentData().getDouble("z_pos_doma"), 2.0)) < range * 0.5 - 4.0) {
                         break;
                      }
                   }
@@ -162,36 +161,36 @@ public class ChimeraShadowGardenActiveProcedure {
 
                      for(int index4 = 0; index4 < (int)(range / 2.0); ++index4) {
                         ++y_pos;
-                        if (world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos, y_pos + 1.0, z_pos)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos + 0.0, y_pos + 1.0, z_pos + 1.0)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos + 1.0, y_pos + 1.0, z_pos + 0.0)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos + 0.0, y_pos + 1.0, z_pos + -1.0)).m_60815_() || world.m_8055_(BlockPos.m_274561_(x_pos + -1.0, y_pos + 1.0, z_pos + 0.0)).m_60815_()) {
+                        if (world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos, y_pos + 1.0, z_pos)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos + 0.0, y_pos + 1.0, z_pos + 1.0)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos + 1.0, y_pos + 1.0, z_pos + 0.0)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos + 0.0, y_pos + 1.0, z_pos + -1.0)).canOcclude() || world.getBlockState(BlockPos.containing(x_pos + -1.0, y_pos + 1.0, z_pos + 0.0)).canOcclude()) {
                            break;
                         }
                      }
 
                      if (world instanceof ServerLevel) {
                         ServerLevel _serverLevel = (ServerLevel)world;
-                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.MAX_ELEPHANT.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.MAX_ELEPHANT.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                         if (entityinstance != null) {
-                           entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                           entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                            ChimeraShadowGardenSetProcedure.execute(entity, entityinstance);
-                           entityinstance.m_146922_((float)(Math.random() * 360.0));
-                           entityinstance.m_146926_(0.0F);
-                           entityinstance.m_5618_(entityinstance.m_146908_());
-                           entityinstance.m_5616_(entityinstance.m_146908_());
-                           entityinstance.f_19859_ = entityinstance.m_146908_();
-                           entityinstance.f_19860_ = entityinstance.m_146909_();
+                           entityinstance.setYRot((float)(Math.random() * 360.0));
+                           entityinstance.setXRot(0.0F);
+                           entityinstance.setYBodyRot(entityinstance.getYRot());
+                           entityinstance.setYHeadRot(entityinstance.getYRot());
+                           entityinstance.yRotO = entityinstance.getYRot();
+                           entityinstance.xRotO = entityinstance.getXRot();
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entityinstance;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
+                              _entity.yBodyRotO = _entity.getYRot();
+                              _entity.yHeadRotO = _entity.getYRot();
                            }
 
-                           _serverLevel.m_7967_(entityinstance);
+                           _serverLevel.addFreshEntity(entityinstance);
                         }
                      }
 
                      breakLoop = true;
                   } else if (var39 % 120.0 == 0.0) {
-                     for(int index5 = 0; index5 < 128 && !(Math.sqrt(Math.pow(x_pos - entity.getPersistentData().m_128459_("x_pos_doma"), 2.0) + Math.pow(y_pos - entity.getPersistentData().m_128459_("y_pos_doma"), 2.0) + Math.pow(z_pos - entity.getPersistentData().m_128459_("z_pos_doma"), 2.0)) < range * 0.5 - 4.0); ++index5) {
+                     for(int index5 = 0; index5 < 128 && !(Math.sqrt(Math.pow(x_pos - entity.getPersistentData().getDouble("x_pos_doma"), 2.0) + Math.pow(y_pos - entity.getPersistentData().getDouble("y_pos_doma"), 2.0) + Math.pow(z_pos - entity.getPersistentData().getDouble("z_pos_doma"), 2.0)) < range * 0.5 - 4.0); ++index5) {
                         x_pos = var44 + (Math.random() - 0.5) * 8.0;
                         y_pos = var43;
                         z_pos = var40 + (Math.random() - 0.5) * 8.0;
@@ -200,44 +199,44 @@ public class ChimeraShadowGardenActiveProcedure {
                      if (loop_num == 0.0) {
                         if (world instanceof ServerLevel) {
                            ServerLevel _serverLevel = (ServerLevel)world;
-                           Entity entityinstance = ((EntityType)JujutsucraftModEntities.DIVINE_DOG_BLACK.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                           Entity entityinstance = ((EntityType)JujutsucraftModEntities.DIVINE_DOG_BLACK.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                            if (entityinstance != null) {
-                              entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                              entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                               ChimeraShadowGardenSetProcedure.execute(entity, entityinstance);
-                              entityinstance.m_146922_((float)(Math.random() * 360.0));
-                              entityinstance.m_146926_(0.0F);
-                              entityinstance.m_5618_(entityinstance.m_146908_());
-                              entityinstance.m_5616_(entityinstance.m_146908_());
-                              entityinstance.f_19859_ = entityinstance.m_146908_();
-                              entityinstance.f_19860_ = entityinstance.m_146909_();
+                              entityinstance.setYRot((float)(Math.random() * 360.0));
+                              entityinstance.setXRot(0.0F);
+                              entityinstance.setYBodyRot(entityinstance.getYRot());
+                              entityinstance.setYHeadRot(entityinstance.getYRot());
+                              entityinstance.yRotO = entityinstance.getYRot();
+                              entityinstance.xRotO = entityinstance.getXRot();
                               if (entityinstance instanceof LivingEntity) {
                                  LivingEntity _entity = (LivingEntity)entityinstance;
-                                 _entity.f_20884_ = _entity.m_146908_();
-                                 _entity.f_20886_ = _entity.m_146908_();
+                                 _entity.yBodyRotO = _entity.getYRot();
+                                 _entity.yHeadRotO = _entity.getYRot();
                               }
 
-                              _serverLevel.m_7967_(entityinstance);
+                              _serverLevel.addFreshEntity(entityinstance);
                            }
                         }
                      } else if (world instanceof ServerLevel) {
                         ServerLevel _serverLevel = (ServerLevel)world;
-                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.DIVINE_DOG_WHITE.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.DIVINE_DOG_WHITE.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                         if (entityinstance != null) {
-                           entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                           entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                            ChimeraShadowGardenSetProcedure.execute(entity, entityinstance);
-                           entityinstance.m_146922_((float)(Math.random() * 360.0));
-                           entityinstance.m_146926_(0.0F);
-                           entityinstance.m_5618_(entityinstance.m_146908_());
-                           entityinstance.m_5616_(entityinstance.m_146908_());
-                           entityinstance.f_19859_ = entityinstance.m_146908_();
-                           entityinstance.f_19860_ = entityinstance.m_146909_();
+                           entityinstance.setYRot((float)(Math.random() * 360.0));
+                           entityinstance.setXRot(0.0F);
+                           entityinstance.setYBodyRot(entityinstance.getYRot());
+                           entityinstance.setYHeadRot(entityinstance.getYRot());
+                           entityinstance.yRotO = entityinstance.getYRot();
+                           entityinstance.xRotO = entityinstance.getXRot();
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entityinstance;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
+                              _entity.yBodyRotO = _entity.getYRot();
+                              _entity.yHeadRotO = _entity.getYRot();
                            }
 
-                           _serverLevel.m_7967_(entityinstance);
+                           _serverLevel.addFreshEntity(entityinstance);
                         }
                      }
                   } else if (var39 % 80.0 != 0.0) {
@@ -247,30 +246,30 @@ public class ChimeraShadowGardenActiveProcedure {
                         breakLoop = true;
                         if (world instanceof ServerLevel) {
                            ServerLevel _serverLevel = (ServerLevel)world;
-                           Entity entityinstance = ((EntityType)JujutsucraftModEntities.TOAD_2.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(var44, y_pos, var40), MobSpawnType.MOB_SUMMONED, false, false);
+                           Entity entityinstance = ((EntityType)JujutsucraftModEntities.TOAD_2.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(var44, y_pos, var40), MobSpawnType.MOB_SUMMONED, false, false);
                            if (entityinstance != null) {
-                              entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                              entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                               ChimeraShadowGardenSetProcedure.execute(entity, entityinstance);
-                              entityinstance.m_146922_((float)(Math.random() * 360.0));
-                              entityinstance.m_146926_(0.0F);
-                              entityinstance.m_5618_(entityinstance.m_146908_());
-                              entityinstance.m_5616_(entityinstance.m_146908_());
-                              entityinstance.f_19859_ = entityinstance.m_146908_();
-                              entityinstance.f_19860_ = entityinstance.m_146909_();
+                              entityinstance.setYRot((float)(Math.random() * 360.0));
+                              entityinstance.setXRot(0.0F);
+                              entityinstance.setYBodyRot(entityinstance.getYRot());
+                              entityinstance.setYHeadRot(entityinstance.getYRot());
+                              entityinstance.yRotO = entityinstance.getYRot();
+                              entityinstance.xRotO = entityinstance.getXRot();
                               if (entityinstance instanceof LivingEntity) {
                                  LivingEntity _entity = (LivingEntity)entityinstance;
-                                 _entity.f_20884_ = _entity.m_146908_();
-                                 _entity.f_20886_ = _entity.m_146908_();
+                                 _entity.yBodyRotO = _entity.getYRot();
+                                 _entity.yHeadRotO = _entity.getYRot();
                               }
 
-                              _serverLevel.m_7967_(entityinstance);
+                              _serverLevel.addFreshEntity(entityinstance);
                            }
                         }
                      }
                   } else {
                      y_pos += 4.0;
 
-                     for(int index6 = 0; index6 < 128 && !(Math.sqrt(Math.pow(x_pos - entity.getPersistentData().m_128459_("x_pos_doma"), 2.0) + Math.pow(y_pos - entity.getPersistentData().m_128459_("y_pos_doma"), 2.0) + Math.pow(z_pos - entity.getPersistentData().m_128459_("z_pos_doma"), 2.0)) < range * 0.5 - 4.0); ++index6) {
+                     for(int index6 = 0; index6 < 128 && !(Math.sqrt(Math.pow(x_pos - entity.getPersistentData().getDouble("x_pos_doma"), 2.0) + Math.pow(y_pos - entity.getPersistentData().getDouble("y_pos_doma"), 2.0) + Math.pow(z_pos - entity.getPersistentData().getDouble("z_pos_doma"), 2.0)) < range * 0.5 - 4.0); ++index6) {
                         x_pos = var44 + (Math.random() - 0.5) * 8.0;
                         y_pos = var43;
                         z_pos = var40 + (Math.random() - 0.5) * 8.0;
@@ -278,30 +277,30 @@ public class ChimeraShadowGardenActiveProcedure {
 
                      if (world instanceof ServerLevel) {
                         ServerLevel _serverLevel = (ServerLevel)world;
-                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.NUE.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.NUE.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                         if (entityinstance != null) {
-                           entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                           entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                            ChimeraShadowGardenSetProcedure.execute(entity, entityinstance);
-                           entityinstance.m_146922_((float)(Math.random() * 360.0));
-                           entityinstance.m_146926_(0.0F);
-                           entityinstance.m_5618_(entityinstance.m_146908_());
-                           entityinstance.m_5616_(entityinstance.m_146908_());
-                           entityinstance.f_19859_ = entityinstance.m_146908_();
-                           entityinstance.f_19860_ = entityinstance.m_146909_();
+                           entityinstance.setYRot((float)(Math.random() * 360.0));
+                           entityinstance.setXRot(0.0F);
+                           entityinstance.setYBodyRot(entityinstance.getYRot());
+                           entityinstance.setYHeadRot(entityinstance.getYRot());
+                           entityinstance.yRotO = entityinstance.getYRot();
+                           entityinstance.xRotO = entityinstance.getXRot();
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entityinstance;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
+                              _entity.yBodyRotO = _entity.getYRot();
+                              _entity.yHeadRotO = _entity.getYRot();
                            }
 
-                           _serverLevel.m_7967_(entityinstance);
+                           _serverLevel.addFreshEntity(entityinstance);
                         }
                      }
                   }
 
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_(ParticleTypes.f_123765_, x_pos, y_pos, z_pos, 20, 0.5, 0.5, 0.5, 0.1);
+                     _level.sendParticles(ParticleTypes.SQUID_INK, x_pos, y_pos, z_pos, 20, 0.5, 0.5, 0.5, 0.1);
                   }
 
                   ++loop_num;

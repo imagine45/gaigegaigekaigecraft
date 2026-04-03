@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RabbitEscapeRenderer extends MobRenderer<RabbitEscapeEntity, ModelRabbitEscape<RabbitEscapeEntity>> {
    public RabbitEscapeRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelRabbitEscape(context.m_174023_(ModelRabbitEscape.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelRabbitEscape(context.bakeLayer(ModelRabbitEscape.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(RabbitEscapeEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/rabbitescape.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/rabbitescape.png");
    }
 }

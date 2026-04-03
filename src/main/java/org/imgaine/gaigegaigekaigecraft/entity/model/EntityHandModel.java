@@ -13,15 +13,15 @@ public class EntityHandModel extends GeoModel<EntityHandEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityHandEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/hand.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/hand.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityHandEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/hand.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/hand.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityHandEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityHandEntity animatable, long instanceId, AnimationState animationState) {

@@ -13,34 +13,34 @@ import net.minecraft.world.level.Level;
 public class NaginataItem extends SwordItem {
    public NaginataItem() {
       super(new Tier() {
-         public int m_6609_() {
+         public int getUses() {
             return 400;
          }
 
-         public float m_6624_() {
+         public float getSpeed() {
             return 4.0F;
          }
 
-         public float m_6631_() {
+         public float getAttackDamageBonus() {
             return 2.0F;
          }
 
-         public int m_6604_() {
+         public int getLevel() {
             return 1;
          }
 
-         public int m_6601_() {
+         public int getEnchantmentValue() {
             return 2;
          }
 
-         public Ingredient m_6282_() {
-            return Ingredient.m_151265_();
+         public Ingredient getRepairIngredient() {
+            return Ingredient.of();
          }
       }, 3, -2.7F, new Item.Properties());
    }
 
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.naginata.description_0"));
+   public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, level, list, flag);
+      list.add(Component.translatable("item.gaigegaigekaigecraft.naginata.description_0"));
    }
 }

@@ -13,9 +13,32 @@ public class CursedTechniqueOnPotionActiveTick3Procedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          double skill = 0.0;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 2000.0);
-         if (skill >= 2000.0) {
-            if (skill >= 2300.0) {
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 2000.0);
+         if (skill >= 2500.0) {
+            if (skill >= 2900.0) {
+               if (entity instanceof LivingEntity) {
+                  LivingEntity _entity = (LivingEntity)entity;
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               }
+            } else if (skill >= 2800.0) {
+               if (entity instanceof LivingEntity) {
+                  LivingEntity _entity = (LivingEntity)entity;
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               }
+            } else if (skill >= 2700.0) {
+               CursedTechniqueCrystalProcedure.execute(world, x, y, z, entity);
+            } else if (skill >= 2600.0) {
+               CursedTechniqueRantaZeninProcedure.execute(world, x, y, z, entity);
+            } else if (skill >= 2500.0) {
+               CursedTechniqueHazenokiProcedure.execute(world, x, y, z, entity);
+            } else if (entity instanceof LivingEntity) {
+               LivingEntity _entity = (LivingEntity)entity;
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            }
+         } else if (skill >= 2000.0) {
+            if (skill >= 2400.0) {
+               CursedTechniqueReggieStarProcedure.execute(world, x, y, z, entity);
+            } else if (skill >= 2300.0) {
                CursedTechniqueRozetsuProcedure.execute(world, x, y, z, entity);
             } else if (skill >= 2200.0) {
                CursedTechniqueCombatProcedure.execute(world, x, y, z, entity);
@@ -25,7 +48,7 @@ public class CursedTechniqueOnPotionActiveTick3Procedure {
                CursedTechniqueInoProcedure.execute(world, x, y, z, entity);
             } else if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          } else if (skill >= 1500.0) {
             if (skill >= 1900.0) {
@@ -40,7 +63,7 @@ public class CursedTechniqueOnPotionActiveTick3Procedure {
                CursedTechniqueJunpeProcedure.execute(world, x, y, z, entity);
             } else if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          } else if (skill >= 1000.0) {
             if (skill >= 1400.0) {
@@ -55,7 +78,7 @@ public class CursedTechniqueOnPotionActiveTick3Procedure {
                CursedTechniqueMiguelProcedure.execute(world, x, y, z, entity);
             } else if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          } else if (skill >= 500.0) {
             if (skill >= 900.0) {
@@ -70,7 +93,7 @@ public class CursedTechniqueOnPotionActiveTick3Procedure {
                CursedTechniqueSmallpoxDeityProcedure.execute(world, x, y, z, entity);
             } else if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          } else if (skill >= 400.0) {
             CursedTechniqueUraumeProcedure.execute(world, x, y, z, entity);
@@ -84,7 +107,7 @@ public class CursedTechniqueOnPotionActiveTick3Procedure {
             CursedTechniqueTodoProcedure.execute(world, x, y, z, entity);
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
          }
 
       }

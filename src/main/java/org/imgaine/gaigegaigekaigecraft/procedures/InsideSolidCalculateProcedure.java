@@ -10,6 +10,6 @@ public class InsideSolidCalculateProcedure {
 
    public static boolean execute(LevelAccessor world, double x, double y, double z, double height, double width) {
       AABB testAABB = new AABB(x - width * 0.5, y, z - width * 0.5, x + width * 0.5, y + height, z + width * 0.5);
-      return !world.m_45756_((Entity)null, testAABB);
+      return !world.noCollision((Entity)null, testAABB);
    }
 }

@@ -13,15 +13,15 @@ public class KenjakuRightClickedOnEntityProcedure {
 
    public static void execute(Entity entity, Entity sourceentity) {
       if (entity != null && sourceentity != null) {
-         if (entity.getPersistentData().m_128459_("cnt_target") < 6.0 && sourceentity instanceof ServerPlayer) {
+         if (entity.getPersistentData().getDouble("cnt_target") < 6.0 && sourceentity instanceof ServerPlayer) {
             ServerPlayer _plr1 = (ServerPlayer)sourceentity;
-            if (_plr1.m_9236_() instanceof ServerLevel && _plr1.m_8960_().m_135996_(_plr1.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_domain_expansion"))).m_8193_() && sourceentity instanceof ServerPlayer) {
+            if (_plr1.level() instanceof ServerLevel && _plr1.getAdvancements().getOrStartProgress(_plr1.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_domain_expansion"))).isDone() && sourceentity instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)sourceentity;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_domain_amplification"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_domain_amplification"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }

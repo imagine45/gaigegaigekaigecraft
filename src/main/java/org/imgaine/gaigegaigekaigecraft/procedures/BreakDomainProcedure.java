@@ -1,6 +1,8 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.Comparator;
+
+import org.imgaine.gaigegaigekaigecraft.InlineMethodHandler;
 import org.imgaine.gaigegaigekaigecraft.entity.DomainExpansionEntityEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.world.effect.MobEffect;
@@ -29,8 +31,8 @@ public class BreakDomainProcedure {
             double loop_num = 0.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19564_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getAmplifier();
                   break label21;
                }
             }
@@ -39,15 +41,11 @@ public class BreakDomainProcedure {
          }
 
          if (var10000 <= 0) {
-            double var21 = entity.getPersistentData().m_128459_("x_pos_doma");
-            double var22 = entity.getPersistentData().m_128459_("y_pos_doma");
-            double var23 = entity.getPersistentData().m_128459_("z_pos_doma");
-            if (!world.m_6443_(DomainExpansionEntityEntity.class, AABB.m_165882_(new Vec3(var21, var22, var23), 0.1, 0.1, 0.1), (e) -> true).isEmpty()) {
-               ((Entity)world.m_6443_(DomainExpansionEntityEntity.class, AABB.m_165882_(new Vec3(var21, var22, var23), 0.1, 0.1, 0.1), (e) -> true).stream().sorted(((<undefinedtype>)(new Object() {
-                  Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                     return Comparator.comparingDouble((_entcnd) -> _entcnd.m_20275_(_x, _y, _z));
-                  }
-               })).compareDistOf(var21, var22, var23)).findFirst().orElse((Object)null)).getPersistentData().m_128379_("Break", true);
+            double var21 = entity.getPersistentData().getDouble("x_pos_doma");
+            double var22 = entity.getPersistentData().getDouble("y_pos_doma");
+            double var23 = entity.getPersistentData().getDouble("z_pos_doma");
+            if (!world.getEntitiesOfClass(DomainExpansionEntityEntity.class, AABB.ofSize(new Vec3(var21, var22, var23), 0.1, 0.1, 0.1), (e) -> true).isEmpty()) {
+               ((Entity)world.getEntitiesOfClass(DomainExpansionEntityEntity.class, AABB.ofSize(new Vec3(var21, var22, var23), 0.1, 0.1, 0.1), (e) -> true).stream().sorted(InlineMethodHandler.compareDistOf(var21, var22, var23)).findFirst().orElse((DomainExpansionEntityEntity) null)).getPersistentData().putBoolean("Break", true);
             }
          }
 

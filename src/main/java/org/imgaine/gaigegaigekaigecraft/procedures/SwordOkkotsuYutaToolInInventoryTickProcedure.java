@@ -16,28 +16,28 @@ public class SwordOkkotsuYutaToolInInventoryTickProcedure {
 
    public static void execute(LevelAccessor world, Entity entity, ItemStack itemstack) {
       if (entity != null) {
-         if (itemstack.m_41784_().m_128471_("Used")) {
+         if (itemstack.getOrCreateTag().getBoolean("Used")) {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt2 = (LivingEntity)entity;
-               if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+               if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
                   return;
                }
             }
 
-            if (entity.getPersistentData().m_128459_("skill") == 0.0) {
-               if (itemstack.m_41720_() == JujutsucraftModItems.COPIED_CURSED_TECHNIQUE.get()) {
-                  itemstack.m_41784_().m_128379_("Used", false);
+            if (entity.getPersistentData().getDouble("skill") == 0.0) {
+               if (itemstack.getItem() == JujutsucraftModItems.COPIED_CURSED_TECHNIQUE.get()) {
+                  itemstack.getOrCreateTag().putBoolean("Used", false);
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt8 = (LivingEntity)entity;
-                     if (_livEnt8.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && !entity.getPersistentData().m_128471_("Failed")) {
+                     if (_livEnt8.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && !entity.getPersistentData().getBoolean("Failed")) {
                         return;
                      }
                   }
 
-                  itemstack.m_41774_(1);
-               } else if (itemstack.m_220157_(9999, RandomSource.m_216327_(), (ServerPlayer)null)) {
-                  itemstack.m_41774_(1);
-                  itemstack.m_41721_(0);
+                  itemstack.shrink(1);
+               } else if (itemstack.hurt(9999, RandomSource.create(), (ServerPlayer)null)) {
+                  itemstack.shrink(1);
+                  itemstack.setDamageValue(0);
                }
             }
          }

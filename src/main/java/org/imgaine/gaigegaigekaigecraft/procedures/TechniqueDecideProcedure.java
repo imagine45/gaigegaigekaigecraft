@@ -27,21 +27,21 @@ public class TechniqueDecideProcedure {
             livingEntity = (LivingEntity)entity;
          }
 
-         if (livingEntity != null && livingEntity.m_21023_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get()) && playerVars.PhysicalAttack && (!livingEntity.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) || entity.getPersistentData().m_128471_("Failed"))) {
-            int starRageAmplifier = livingEntity.m_21124_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get()).m_19564_();
+         if (livingEntity != null && livingEntity.hasEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get()) && playerVars.PhysicalAttack && (!livingEntity.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) || entity.getPersistentData().getBoolean("Failed"))) {
+            int starRageAmplifier = livingEntity.getEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get()).getAmplifier();
             finalCost = (double)Math.round(cost + 10.0 + 9.0 * (double)(starRageAmplifier + 1));
          }
 
-         if (livingEntity != null && livingEntity.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+         if (livingEntity != null && livingEntity.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
             finalCost = (double)Math.round(finalCost * 0.5);
          }
 
-         if (livingEntity != null && livingEntity.m_21023_((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
-            int sixEyesAmplifier = livingEntity.m_21124_((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get()).m_19564_();
+         if (livingEntity != null && livingEntity.hasEffect((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
+            int sixEyesAmplifier = livingEntity.getEffect((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get()).getAmplifier();
             finalCost = (double)Math.round(finalCost * Math.pow(0.1, (double)(sixEyesAmplifier + 1)));
          }
 
-         if (livingEntity != null && livingEntity.m_21205_().m_41720_() == JujutsucraftModItems.LOUDSPEAKER.get() && !livingEntity.m_21205_().m_41784_().m_128471_("Used")) {
+         if (livingEntity != null && livingEntity.getMainHandItem().getItem() == JujutsucraftModItems.LOUDSPEAKER.get() && !livingEntity.getMainHandItem().getOrCreateTag().getBoolean("Used")) {
             finalCost = 0.0;
          }
 
@@ -52,8 +52,8 @@ public class TechniqueDecideProcedure {
          playerVars.PassiveTechnique = passive;
          playerVars.noChangeTechnique = false;
          playerVars.PlayerSelectCurseTechniqueName = name;
-         playerVars.OverlayCost = Component.m_237115_("jujutsu.overlay.cost").getString();
-         playerVars.OverlayCursePower = Component.m_237115_("jujutsu.overlay.curse_power").getString();
+         playerVars.OverlayCost = Component.translatable("jujutsu.overlay.cost").getString();
+         playerVars.OverlayCursePower = Component.translatable("jujutsu.overlay.curse_power").getString();
          playerVars.syncPlayerVariables(entity);
       }
    }

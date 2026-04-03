@@ -16,22 +16,22 @@ public class SixEyesEffectStartedappliedProcedure {
       if (entity != null) {
          if (entity instanceof ServerPlayer) {
             ServerPlayer _player = (ServerPlayer)entity;
-            Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:advancement_six_eyes"));
-            AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-            if (!_ap.m_8193_()) {
-               for(String criteria : _ap.m_8219_()) {
-                  _player.m_8960_().m_135988_(_adv, criteria);
+            Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:advancement_six_eyes"));
+            AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+            if (!_ap.isDone()) {
+               for(String criteria : _ap.getRemainingCriteria()) {
+                  _player.getAdvancements().award(_adv, criteria);
                }
             }
          }
 
          if ((((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 2.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 2.0) && entity instanceof ServerPlayer) {
             ServerPlayer _player = (ServerPlayer)entity;
-            Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_infinity"));
-            AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-            if (!_ap.m_8193_()) {
-               for(String criteria : _ap.m_8219_()) {
-                  _player.m_8960_().m_135988_(_adv, criteria);
+            Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_infinity"));
+            AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+            if (!_ap.isDone()) {
+               for(String criteria : _ap.getRemainingCriteria()) {
+                  _player.getAdvancements().award(_adv, criteria);
                }
             }
          }

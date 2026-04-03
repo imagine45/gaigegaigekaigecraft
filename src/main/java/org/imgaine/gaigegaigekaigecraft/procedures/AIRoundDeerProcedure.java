@@ -20,16 +20,16 @@ public class AIRoundDeerProcedure {
          double NUM2 = 0.0;
          double NUM3 = 0.0;
          double NUM1 = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             double var10001;
             label96: {
                AIActiveProcedure.execute(world, x, y, z, entity);
                FollowEntityProcedure.execute(world, entity);
-               NUM1 = (double)(4L + Math.round(entity.getPersistentData().m_128459_("Strength") * 0.5));
+               NUM1 = (double)(4L + Math.round(entity.getPersistentData().getDouble("Strength") * 0.5));
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity2 = (LivingEntity)entity;
-                  if (_livingEntity2.m_21204_().m_22171_(Attributes.f_22281_)) {
-                     var10001 = _livingEntity2.getAttribute_(Attributes.f_22281_).m_22115_();
+                  if (_livingEntity2.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                     var10001 = _livingEntity2.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                      break label96;
                   }
                }
@@ -42,15 +42,15 @@ public class AIRoundDeerProcedure {
                NUM3 = -60.0;
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt3 = (LivingEntity)entity;
-                  if (_livEnt3.m_21023_(MobEffects.f_19600_)) {
+                  if (_livEnt3.hasEffect(MobEffects.DAMAGE_BOOST)) {
                      break label91;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, (int)NUM1, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, (int)NUM1, false, false));
                   }
                }
             }
@@ -59,8 +59,8 @@ public class AIRoundDeerProcedure {
             label86: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_(MobEffects.f_19606_)) {
-                     var10000 = _livEnt.m_21124_(MobEffects.f_19606_).m_19564_();
+                  if (_livEnt.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
+                     var10000 = _livEnt.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier();
                      break label86;
                   }
                }
@@ -70,42 +70,42 @@ public class AIRoundDeerProcedure {
 
             if ((double)var10000 < NUM2 && entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, (int)NUM2, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, (int)NUM2, false, false));
                }
             }
 
             LivingEntity var29;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var29 = _mobEnt.m_5448_();
+               var29 = _mobEnt.getTarget();
             } else {
                var29 = null;
             }
 
             if (var29 instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
+               entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var29 = _mobEnt.m_5448_();
+                  var29 = _mobEnt.getTarget();
                } else {
                   var29 = null;
                }
 
-               if (!((Entity)var29).getPersistentData().m_128471_("CursedSpirit")) {
+               if (!((Entity)var29).getPersistentData().getBoolean("CursedSpirit")) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 20, 9, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 9, false, false));
                      }
                   }
-               } else if (entity.getPersistentData().m_128459_("friend_num") != 0.0) {
-                  for(Entity entityiterator : new ArrayList(world.m_6907_())) {
-                     if (entity.getPersistentData().m_128459_("friend_num") == entityiterator.getPersistentData().m_128459_("friend_num")) {
-                        if (entityiterator.m_6144_() && entity instanceof LivingEntity) {
+               } else if (entity.getPersistentData().getDouble("friend_num") != 0.0) {
+                  for(Entity entityiterator : new ArrayList<Entity>(world.players())) {
+                     if (entity.getPersistentData().getDouble("friend_num") == entityiterator.getPersistentData().getDouble("friend_num")) {
+                        if (entityiterator.isShiftKeyDown() && entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 5, 9, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 9, false, false));
                            }
                         }
                         break;
@@ -113,13 +113,13 @@ public class AIRoundDeerProcedure {
                   }
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt21 = (LivingEntity)entity;
-               if (_livEnt21.m_21023_((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get())) {
-                  entity.getPersistentData().m_128347_("BaseCursePower", Math.max(entity.getPersistentData().m_128459_("BaseCursePower") - 1.0, 0.0));
+               if (_livEnt21.hasEffect((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get())) {
+                  entity.getPersistentData().putDouble("BaseCursePower", Math.max(entity.getPersistentData().getDouble("BaseCursePower") - 1.0, 0.0));
                }
             }
          }

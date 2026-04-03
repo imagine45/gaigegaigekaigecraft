@@ -13,15 +13,15 @@ public class EntityTornadoModel extends GeoModel<EntityTornadoEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityTornadoEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/tornado.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/tornado.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityTornadoEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/tornado.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/tornado.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityTornadoEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityTornadoEntity animatable, long instanceId, AnimationState animationState) {

@@ -21,29 +21,29 @@ public class ParticleMagmaParticle extends TextureSheetParticle {
    protected ParticleMagmaParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(4.0F, 4.0F);
-      this.f_107663_ *= 8.0F;
-      this.f_107225_ = Math.max(1, 48 + (this.f_107223_.m_188503_(16) - 8));
-      this.f_107226_ = 0.1F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 0.1;
-      this.f_107216_ = vy * 0.1;
-      this.f_107217_ = vz * 0.1;
-      this.m_108339_(spriteSet);
+      this.setSize(4.0F, 4.0F);
+      this.quadSize *= 8.0F;
+      this.lifetime = Math.max(1, 48 + (this.random.nextInt(16) - 8));
+      this.gravity = 0.1F;
+      this.hasPhysics = false;
+      this.xd = vx * 0.1;
+      this.yd = vy * 0.1;
+      this.zd = vz * 0.1;
+      this.setSpriteFromAge(spriteSet);
    }
 
-   public int m_6355_(float partialTick) {
+   public int getLightColor(float partialTick) {
       return 15728880;
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107432_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_LIT;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
-      if (!this.f_107220_) {
-         this.m_108337_(this.spriteSet.m_5819_(this.f_107224_ / 4 % 12 + 1, 12));
+   public void tick() {
+      super.tick();
+      if (!this.removed) {
+         this.setSprite(this.spriteSet.get(this.age / 4 % 12 + 1, 12));
       }
 
    }

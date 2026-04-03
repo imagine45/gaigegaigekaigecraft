@@ -1,6 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import org.imgaine.gaigegaigekaigecraft.JujutsucraftConfig;
+import org.imgaine.gaigegaigekaigecraft.Config;
 
 public class ReturnConfigDoVanillaMobSpawningProcedure {
    public ReturnConfigDoVanillaMobSpawningProcedure() {
@@ -9,7 +9,7 @@ public class ReturnConfigDoVanillaMobSpawningProcedure {
    public static boolean execute() {
       try {
          try {
-            return (Boolean)JujutsucraftConfig.doVanillaMobSpawning.get();
+            return (Boolean)Config.doVanillaMobSpawning.get();
          } catch (NullPointerException var1) {
             return false;
          }

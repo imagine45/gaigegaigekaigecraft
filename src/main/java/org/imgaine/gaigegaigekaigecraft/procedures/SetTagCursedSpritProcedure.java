@@ -29,19 +29,19 @@ public class SetTagCursedSpritProcedure {
          double NUM1 = 0.0;
          double size = 0.0;
          SetTagProcedure.execute(world, entity);
-         entity.getPersistentData().m_128379_("CursedSpirit", true);
-         if (entity instanceof CursedSpiritGrade16Entity && !entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-            entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "data merge entity @s {Silent:1b}");
+         entity.getPersistentData().putBoolean("CursedSpirit", true);
+         if (entity instanceof CursedSpiritGrade16Entity && !entity.level().isClientSide() && entity.getServer() != null) {
+            entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "data merge entity @s {Silent:1b}");
          }
 
          if (entity instanceof CursedSpiritGrade21Entity || entity instanceof CursedSpiritGrade22Entity || entity instanceof CursedSpiritGrade23Entity || entity instanceof CursedSpiritGrade25Entity || entity instanceof CursedSpiritGrade26Entity || entity instanceof CursedSpiritGrade27Entity || entity instanceof CursedSpiritGrade28Entity || entity instanceof CursedSpiritGrade13Entity) {
-            entity.m_274367_(entity.getStepHeight() * 2.0F);
+            entity.setMaxUpStep(entity.getStepHeight() * 2.0F);
          }
 
          if ((entity instanceof RikaEntity || entity instanceof Rika2Entity) && entity instanceof LivingEntity) {
             LivingEntity _livingEntity15 = (LivingEntity)entity;
-            if (_livingEntity15.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.SIZE.get())) {
-               _livingEntity15.getAttribute_((Attribute)JujutsucraftModAttributes.SIZE.get()).m_22100_(2.5);
+            if (_livingEntity15.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.SIZE.get())) {
+               _livingEntity15.getAttribute((Attribute)JujutsucraftModAttributes.SIZE.get()).setBaseValue(2.5);
             }
          }
 

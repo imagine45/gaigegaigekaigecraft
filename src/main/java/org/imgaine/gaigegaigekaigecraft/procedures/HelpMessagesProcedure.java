@@ -21,7 +21,7 @@ public class HelpMessagesProcedure {
 
    @SubscribeEvent
    public static void onAdvancement(AdvancementEvent event) {
-      execute(event, event.getEntity().m_9236_(), event.getAdvancement(), event.getEntity());
+      execute(event, event.getEntity().level(), event.getAdvancement(), event.getEntity());
    }
 
    public static void execute(LevelAccessor world, Advancement advancement, Entity entity) {
@@ -30,30 +30,30 @@ public class HelpMessagesProcedure {
 
    private static void execute(@Nullable Event event, LevelAccessor world, Advancement advancement, Entity entity) {
       if (advancement != null && entity != null) {
-         if (entity.m_9236_().m_5776_()) {
+         if (entity.level().isClientSide()) {
             if (world instanceof Level) {
                Level _lvl0 = (Level)world;
-               if (_lvl0.m_7654_() != null && _lvl0.m_7654_().m_129889_().m_136041_(new ResourceLocation("jujutsucraft:advancement_select_technique")).equals(advancement) && !ModList.get().isLoaded("minepiece")) {
+               if (_lvl0.getServer() != null && _lvl0.getServer().getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:advancement_select_technique")).equals(advancement) && !ModList.get().isLoaded("minepiece")) {
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     if (!_player.m_9236_().m_5776_()) {
+                     if (!_player.level().isClientSide()) {
                         String var10001 = OverlayKeyRProcedure.execute(entity);
-                        _player.m_5661_(Component.m_237113_("§3§n" + var10001 + ": " + Component.m_237115_("minepiece.message.help.change_skill").getString()), false);
+                        _player.displayClientMessage(Component.literal("§3§n" + var10001 + ": " + Component.translatable("minepiece.message.help.change_skill").getString()), false);
                      }
                   }
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     if (!_player.m_9236_().m_5776_()) {
+                     if (!_player.level().isClientSide()) {
                         String var16 = OverlayKeyZProcedure.execute(entity);
-                        _player.m_5661_(Component.m_237113_("§3§n" + var16 + ": " + Component.m_237115_("minepiece.message.help.use_skill").getString()), false);
+                        _player.displayClientMessage(Component.literal("§3§n" + var16 + ": " + Component.translatable("minepiece.message.help.use_skill").getString()), false);
                      }
                   }
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     if (!_player.m_9236_().m_5776_()) {
-                        _player.m_5661_(Component.m_237113_("§3§n" + Component.m_237115_("minepiece.message.help.guard").getString()), false);
+                     if (!_player.level().isClientSide()) {
+                        _player.displayClientMessage(Component.literal("§3§n" + Component.translatable("minepiece.message.help.guard").getString()), false);
                      }
                   }
                }
@@ -61,43 +61,43 @@ public class HelpMessagesProcedure {
 
             if (world instanceof Level) {
                Level _lvl8 = (Level)world;
-               if (_lvl8.m_7654_() != null && _lvl8.m_7654_().m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_1")).equals(advancement) && entity instanceof Player) {
+               if (_lvl8.getServer() != null && _lvl8.getServer().getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_1")).equals(advancement) && entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
+                  if (!_player.level().isClientSide()) {
                      String var17 = OverlayKeyMProcedure.execute(entity);
-                     _player.m_5661_(Component.m_237113_("§3§n" + var17 + Component.m_237115_("jujutsucraft.message.help.use_reverse_cursed_technique").getString()), false);
+                     _player.displayClientMessage(Component.literal("§3§n" + var17 + Component.translatable("gaigegaigekaigecraft.message.help.use_reverse_cursed_technique").getString()), false);
                   }
                }
             }
 
             if (world instanceof Level) {
                Level _lvl11 = (Level)world;
-               if (_lvl11.m_7654_() != null && _lvl11.m_7654_().m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_domain_amplification")).equals(advancement) && entity instanceof Player) {
+               if (_lvl11.getServer() != null && _lvl11.getServer().getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_domain_amplification")).equals(advancement) && entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
+                  if (!_player.level().isClientSide()) {
                      String var18 = OverlayKeyNProcedure.execute(entity);
-                     _player.m_5661_(Component.m_237113_("§3§n" + var18 + Component.m_237115_("jujutsucraft.message.help.use_domain_amplification").getString()), false);
+                     _player.displayClientMessage(Component.literal("§3§n" + var18 + Component.translatable("gaigegaigekaigecraft.message.help.use_domain_amplification").getString()), false);
                   }
                }
             }
 
             if (world instanceof Level) {
                Level _lvl14 = (Level)world;
-               if (_lvl14.m_7654_() != null && _lvl14.m_7654_().m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_simple_domain")).equals(advancement) && entity instanceof Player) {
+               if (_lvl14.getServer() != null && _lvl14.getServer().getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_simple_domain")).equals(advancement) && entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
+                  if (!_player.level().isClientSide()) {
                      String var19 = OverlayKeyGProcedure.execute(entity);
-                     _player.m_5661_(Component.m_237113_("§3§n" + var19 + Component.m_237115_("jujutsucraft.message.help.use_simple_domain").getString()), false);
+                     _player.displayClientMessage(Component.literal("§3§n" + var19 + Component.translatable("gaigegaigekaigecraft.message.help.use_simple_domain").getString()), false);
                   }
                }
             }
 
             if (world instanceof Level) {
                Level _lvl17 = (Level)world;
-               if (_lvl17.m_7654_() != null && _lvl17.m_7654_().m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_falling_blossom_emotion")).equals(advancement) && entity instanceof Player) {
+               if (_lvl17.getServer() != null && _lvl17.getServer().getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_falling_blossom_emotion")).equals(advancement) && entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_("§3§n" + Component.m_237115_("jujutsucraft.message.help.use_falling_blossom_emotion").getString()), false);
+                  if (!_player.level().isClientSide()) {
+                     _player.displayClientMessage(Component.literal("§3§n" + Component.translatable("gaigegaigekaigecraft.message.help.use_falling_blossom_emotion").getString()), false);
                   }
                }
             }

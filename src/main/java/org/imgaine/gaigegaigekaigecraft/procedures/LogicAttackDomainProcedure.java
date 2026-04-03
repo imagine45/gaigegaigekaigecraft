@@ -1,25 +1,23 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import org.imgaine.gaigegaigekaigecraft.entity.DomainExpansionEntityEntity;
-import org.imgaine.gaigegaigekaigecraft.entity.EightHandledSwrodDivergentSilaDivineGeneralMahoragaEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.EightHandledSwordDivergentSilaDivineGeneralMahoragaEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.OkkotsuYutaCullingGameEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelAccessor;
 
 public class LogicAttackDomainProcedure {
@@ -28,178 +26,118 @@ public class LogicAttackDomainProcedure {
 
    public static boolean execute(LevelAccessor world, Entity entity, Entity entityiterator) {
       if (entity != null && entityiterator != null) {
-         String STR1 = "";
-         ItemStack ITM1 = ItemStack.f_41583_;
-         double NUM1 = 0.0;
-         double x_pos = 0.0;
-         double y_pos = 0.0;
-         double z_pos = 0.0;
-         Entity entity_a = null;
-         boolean logic_attack = false;
-         boolean old_domainAttack = false;
-         logic_attack = true;
-         if (entityiterator instanceof LivingEntity) {
-            label170: {
-               if (entityiterator instanceof Player) {
-                  if (((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerFormer != 0.0) {
-                     break label170;
-                  }
-               } else if (!entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:no_curse_power")))) {
-                  break label170;
+         if (!(entityiterator instanceof LivingEntity)) {
+            return false;
+         } else {
+            LivingEntity target = (LivingEntity)entityiterator;
+            if (target instanceof Player) {
+               Player p = (Player)target;
+               if (p.getAbilities().instabuild || p.isSpectator()) {
+                  return false;
                }
-
-               int var10000;
-               label160: {
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                        var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19564_();
-                        break label160;
-                     }
-                  }
-
-                  var10000 = 0;
-               }
-
-               logic_attack = var10000 != 0;
             }
 
-            if (logic_attack) {
-               label179: {
-                  label149: {
-                     label148: {
-                        if (entityiterator instanceof LivingEntity) {
-                           LivingEntity _livEnt4 = (LivingEntity)entityiterator;
-                           if (_livEnt4.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                              break label148;
-                           }
-                        }
+            if (target instanceof DomainExpansionEntityEntity) {
+               return false;
+            } else {
+               boolean isZeroCursePower = false;
+               if (target instanceof Player) {
+                  Player pTarget = (Player)target;
+                  isZeroCursePower = ((JujutsucraftModVariables.PlayerVariables)pTarget.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerFormer == 0.0;
+               } else {
+                  isZeroCursePower = target.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:no_curse_power")));
+               }
 
-                        if (entityiterator.getPersistentData().m_128459_("select") == 0.0) {
-                           label143: {
-                              if (entityiterator instanceof LivingEntity) {
-                                 LivingEntity _livEnt6 = (LivingEntity)entityiterator;
-                                 if (_livEnt6.m_21023_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()) && LogicSimpleDomainProcedure.execute()) {
-                                    int var26;
-                                    label138: {
-                                       if (entity instanceof LivingEntity) {
-                                          LivingEntity _livEnt = (LivingEntity)entity;
-                                          if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                                             var26 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19564_();
-                                             break label138;
-                                          }
+               if (isZeroCursePower) {
+                  MobEffectInstance var10000;
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity le = (LivingEntity)entity;
+                     var10000 = le.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
+                  } else {
+                     var10000 = null;
+                  }
+
+                  MobEffectInstance domainEffect = var10000;
+                  if (domainEffect == null || domainEffect.getAmplifier() == 0) {
+                     return false;
+                  }
+               }
+
+               if (!target.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && target.getPersistentData().getDouble("select") == 0.0) {
+                  MobEffectInstance var29;
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity le = (LivingEntity)entity;
+                     var29 = le.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
+                  } else {
+                     var29 = null;
+                  }
+
+                  MobEffectInstance attackerDomain = var29;
+                  if (target.hasEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()) && LogicSimpleDomainProcedure.execute() && attackerDomain != null && attackerDomain.getAmplifier() >= 0) {
+                     return false;
+                  } else if (!target.hasEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
+                     return false;
+                  } else if (!entity.getPersistentData().getBoolean("Failed") && !entity.getPersistentData().getBoolean("Cover")) {
+                     if (entity.getPersistentData().getBoolean("onlyLiving") && target.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living")))) {
+                        return false;
+                     } else {
+                        double friendNum = entity.getPersistentData().getDouble("friend_num");
+                        if (friendNum != 0.0 && friendNum == target.getPersistentData().getDouble("friend_num")) {
+                           return false;
+                        } else {
+                           double myRanged = entity.getPersistentData().getDouble("NameRanged_ranged");
+                           double myName = entity.getPersistentData().getDouble("NameRanged");
+                           double targetName = target.getPersistentData().getDouble("NameRanged");
+                           double targetRanged = target.getPersistentData().getDouble("NameRanged_ranged");
+                           if (myRanged == 0.0 || myRanged != targetName && myRanged != targetRanged) {
+                              if (myName == 0.0 || myName != targetName && myName != targetRanged) {
+                                 ItemStack helmet = target.getItemBySlot(EquipmentSlot.HEAD);
+                                 if (helmet.getItem() == JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get() || helmet.getItem() == JujutsucraftModItems.MAHORAGA_BODY_HELMET.get()) {
+                                    boolean isMahoraga = false;
+                                    if (!(target instanceof Player)) {
+                                       isMahoraga = target instanceof EightHandledSwordDivergentSilaDivineGeneralMahoragaEntity;
+                                    } else {
+                                       Player pTarget = (Player)target;
+                                       JujutsucraftModVariables.PlayerVariables pVars = (JujutsucraftModVariables.PlayerVariables)pTarget.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables());
+                                       isMahoraga = pVars.PlayerCurseTechnique == 16.0 || pVars.PlayerCurseTechnique2 == 16.0;
+                                    }
+
+                                    if (isMahoraga) {
+                                       CompoundTag var30 = helmet.getOrCreateTag();
+                                       CompoundTag var10001 = entity.getPersistentData();
+                                       if (var30.getDouble("domain" + Math.round(var10001.getDouble("skill_domain"))) >= 100.0) {
+                                          return false;
                                        }
-
-                                       var26 = 0;
-                                    }
-
-                                    if (var26 >= 0) {
-                                       break label143;
                                     }
                                  }
-                              }
 
-                              if (entityiterator instanceof LivingEntity) {
-                                 LivingEntity _livEnt8 = (LivingEntity)entityiterator;
-                                 if (_livEnt8.m_21023_((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
-                                    break label149;
+                                 if (entity instanceof OkkotsuYutaCullingGameEntity) {
+                                    boolean old_domainAttack = entity.getPersistentData().getBoolean("DomainAttack");
+                                    entity.getPersistentData().putBoolean("DomainAttack", false);
+                                    boolean canAttack = LogicAttackProcedure.execute(world, entity, entityiterator);
+                                    entity.getPersistentData().putBoolean("DomainAttack", old_domainAttack);
+                                    if (!canAttack) {
+                                       return false;
+                                    }
                                  }
+
+                                 return true;
+                              } else {
+                                 return false;
                               }
-                           }
-                        }
-                     }
-
-                     logic_attack = false;
-                  }
-
-                  if (entity.getPersistentData().m_128471_("Failed") || entity.getPersistentData().m_128471_("Cover")) {
-                     logic_attack = false;
-                  }
-
-                  if (entity.getPersistentData().m_128459_("NameRanged_ranged") != 0.0 && (entity.getPersistentData().m_128459_("NameRanged_ranged") == entityiterator.getPersistentData().m_128459_("NameRanged") || entity.getPersistentData().m_128459_("NameRanged_ranged") == entityiterator.getPersistentData().m_128459_("NameRanged_ranged"))) {
-                     logic_attack = false;
-                  }
-
-                  if (entity.getPersistentData().m_128459_("NameRanged") != 0.0 && (entity.getPersistentData().m_128459_("NameRanged") == entityiterator.getPersistentData().m_128459_("NameRanged") || entity.getPersistentData().m_128459_("NameRanged") == entityiterator.getPersistentData().m_128459_("NameRanged_ranged"))) {
-                     logic_attack = false;
-                  }
-
-                  if (entity.getPersistentData().m_128459_("friend_num") != 0.0 && entity.getPersistentData().m_128459_("friend_num") == entityiterator.getPersistentData().m_128459_("friend_num")) {
-                     logic_attack = false;
-                  }
-
-                  if (entity.getPersistentData().m_128471_("onlyLiving") && entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living")))) {
-                     logic_attack = false;
-                  }
-
-                  label108: {
-                     if (entityiterator instanceof Player) {
-                        Player _plr = (Player)entityiterator;
-                        if (_plr.m_150110_().f_35937_) {
-                           break label108;
-                        }
-                     }
-
-                     if (!((<undefinedtype>)(new Object() {
-                        public boolean checkGamemode(Entity _ent) {
-                           if (_ent instanceof ServerPlayer _serverPlayer) {
-                              return _serverPlayer.f_8941_.m_9290_() == GameType.SPECTATOR;
-                           } else if (_ent.m_9236_().m_5776_() && _ent instanceof Player _player) {
-                              return Minecraft.m_91087_().m_91403_().m_104949_(_player.m_36316_().getId()) != null && Minecraft.m_91087_().m_91403_().m_104949_(_player.m_36316_().getId()).m_105325_() == GameType.SPECTATOR;
                            } else {
                               return false;
                            }
                         }
-                     })).checkGamemode(entityiterator) && !(entityiterator instanceof DomainExpansionEntityEntity)) {
-                        break label179;
                      }
+                  } else {
+                     return false;
                   }
-
-                  logic_attack = false;
-               }
-            }
-
-            if (logic_attack) {
-               ItemStack var27;
-               if (entityiterator instanceof LivingEntity) {
-                  LivingEntity _entGetArmor = (LivingEntity)entityiterator;
-                  var27 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
                } else {
-                  var27 = ItemStack.f_41583_;
+                  return false;
                }
-
-               ITM1 = var27;
-               if (ITM1.m_41720_() == JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get() || ITM1.m_41720_() == JujutsucraftModItems.MAHORAGA_BODY_HELMET.get()) {
-                  label178: {
-                     if (entityiterator instanceof Player) {
-                        if (((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique != 16.0 && ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 != 16.0) {
-                           break label178;
-                        }
-                     } else if (!(entityiterator instanceof EightHandledSwrodDivergentSilaDivineGeneralMahoragaEntity)) {
-                        break label178;
-                     }
-
-                     CompoundTag var28 = ITM1.m_41784_();
-                     CompoundTag var10001 = entity.getPersistentData();
-                     if (var28.m_128459_("domain" + Math.round(var10001.m_128459_("skill_domain"))) >= 100.0) {
-                        logic_attack = false;
-                     }
-                  }
-               }
-            }
-
-            if (logic_attack && entity instanceof OkkotsuYutaCullingGameEntity) {
-               old_domainAttack = entity.getPersistentData().m_128471_("DomainAttack");
-               entity.getPersistentData().m_128379_("DomainAttack", false);
-               if (!LogicAttackProcedure.execute(world, entity, entityiterator)) {
-                  logic_attack = false;
-               }
-
-               entity.getPersistentData().m_128379_("DomainAttack", old_domainAttack);
             }
          }
-
-         return logic_attack;
       } else {
          return false;
       }

@@ -9,14 +9,14 @@ public class GuardEffectExpiresProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         if (entity.getPersistentData().m_128459_("skill") == 0.0) {
-            entity.getPersistentData().m_128347_("Damage", 0.0);
+         if (entity.getPersistentData().getDouble("skill") == 0.0) {
+            entity.getPersistentData().putDouble("Damage", 0.0);
          }
 
-         entity.getPersistentData().m_128379_("swing", false);
-         entity.getPersistentData().m_128379_("guard", false);
+         entity.getPersistentData().putBoolean("swing", false);
+         entity.getPersistentData().putBoolean("guard", false);
          if (!(entity instanceof Player)) {
-            entity.m_20260_(false);
+            entity.setShiftKeyDown(false);
          }
 
       }

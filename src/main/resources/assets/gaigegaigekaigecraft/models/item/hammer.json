@@ -1,0 +1,7 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/hammer",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/hammer",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

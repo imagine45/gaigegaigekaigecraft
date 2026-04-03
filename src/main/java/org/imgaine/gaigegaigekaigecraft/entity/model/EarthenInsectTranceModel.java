@@ -13,15 +13,15 @@ public class EarthenInsectTranceModel extends GeoModel<EarthenInsectTranceEntity
    }
 
    public ResourceLocation getAnimationResource(EarthenInsectTranceEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/earthen_insect_trance.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/earthen_insect_trance.animation.json");
    }
 
    public ResourceLocation getModelResource(EarthenInsectTranceEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/earthen_insect_trance.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/earthen_insect_trance.geo.json");
    }
 
    public ResourceLocation getTextureResource(EarthenInsectTranceEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EarthenInsectTranceEntity animatable, long instanceId, AnimationState animationState) {

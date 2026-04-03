@@ -23,40 +23,40 @@ public class AIYagaProcedure {
       if (entity != null) {
          double rnd = 0.0;
          double tick = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             AIActiveProcedure.execute(world, x, y, z, entity);
-            if (!entity.getPersistentData().m_128471_("flag_start")) {
-               entity.getPersistentData().m_128379_("flag_start", true);
+            if (!entity.getPersistentData().getBoolean("flag_start")) {
+               entity.getPersistentData().putBoolean("flag_start", true);
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_(MobEffects.f_19606_);
+                  _entity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, 3, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, 3, false, false));
                   }
                }
 
                for(int index0 = 0; index0 < 5; ++index0) {
-                  entity.m_146922_((float)(Math.random() * 720.0));
-                  entity.m_146926_(0.0F);
-                  entity.m_5618_(entity.m_146908_());
-                  entity.m_5616_(entity.m_146908_());
-                  entity.f_19859_ = entity.m_146908_();
-                  entity.f_19860_ = entity.m_146909_();
+                  entity.setYRot((float)(Math.random() * 720.0));
+                  entity.setXRot(0.0F);
+                  entity.setYBodyRot(entity.getYRot());
+                  entity.setYHeadRot(entity.getYRot());
+                  entity.yRotO = entity.getYRot();
+                  entity.xRotO = entity.getXRot();
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.f_20884_ = _entity.m_146908_();
-                     _entity.f_20886_ = _entity.m_146908_();
+                     _entity.yBodyRotO = _entity.getYRot();
+                     _entity.yHeadRotO = _entity.getYRot();
                   }
 
-                  SummonDollsProcedure.execute(world, (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(2.0)), Block.COLLIDER, Fluid.NONE, entity)).m_82425_().m_123341_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(2.0)), Block.COLLIDER, Fluid.NONE, entity)).m_82425_().m_123342_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(2.0)), Block.COLLIDER, Fluid.NONE, entity)).m_82425_().m_123343_(), entity);
+                  SummonDollsProcedure.execute(world, (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(2.0)), Block.COLLIDER, Fluid.NONE, entity)).getBlockPos().getX(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(2.0)), Block.COLLIDER, Fluid.NONE, entity)).getBlockPos().getY(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(2.0)), Block.COLLIDER, Fluid.NONE, entity)).getBlockPos().getZ(), entity);
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
                      }
                   }
                }
@@ -65,15 +65,15 @@ public class AIYagaProcedure {
             label97: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt10 = (LivingEntity)entity;
-                  if (_livEnt10.m_21023_(MobEffects.f_19600_)) {
+                  if (_livEnt10.hasEffect(MobEffects.DAMAGE_BOOST)) {
                      break label97;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, 10, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, 10, false, false));
                   }
                }
             }
@@ -81,15 +81,15 @@ public class AIYagaProcedure {
             label92: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt12 = (LivingEntity)entity;
-                  if (_livEnt12.m_21023_(MobEffects.f_19606_)) {
+                  if (_livEnt12.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
                      break label92;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, 3, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, 3, false, false));
                   }
                }
             }
@@ -97,25 +97,25 @@ public class AIYagaProcedure {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
             if (var10000 instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
-                  if (world.m_6443_(Doll1Entity.class, AABB.m_165882_(new Vec3(x, y, z), 15.0, 15.0, 15.0), (e) -> true).isEmpty() && LogicStartPassiveProcedure.execute(entity)) {
-                     SummonDollsProcedure.execute(world, (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(3.0)), Block.COLLIDER, Fluid.NONE, entity)).m_82425_().m_123341_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(3.0)), Block.COLLIDER, Fluid.NONE, entity)).m_82425_().m_123342_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(3.0)), Block.COLLIDER, Fluid.NONE, entity)).m_82425_().m_123343_(), entity);
+               entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
+                  if (world.getEntitiesOfClass(Doll1Entity.class, AABB.ofSize(new Vec3(x, y, z), 15.0, 15.0, 15.0), (e) -> true).isEmpty() && LogicStartPassiveProcedure.execute(entity)) {
+                     SummonDollsProcedure.execute(world, (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(3.0)), Block.COLLIDER, Fluid.NONE, entity)).getBlockPos().getX(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(3.0)), Block.COLLIDER, Fluid.NONE, entity)).getBlockPos().getY(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(3.0)), Block.COLLIDER, Fluid.NONE, entity)).getBlockPos().getZ(), entity);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), 10, 0, false, false));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), 10, 0, false, false));
                         }
                      }
                   }
 
-                  entity.getPersistentData().m_128347_("cnt_x", 0.0);
+                  entity.getPersistentData().putDouble("cnt_x", 0.0);
                   ResetCounterProcedure.execute(entity);
                   if (LogicStartProcedure.execute(entity)) {
                      if (Math.random() < 0.7) {
@@ -126,18 +126,18 @@ public class AIYagaProcedure {
                         tick = 125.0;
                      }
 
-                     entity.getPersistentData().m_128347_("skill", (double)Math.round(3300.0 + rnd));
+                     entity.getPersistentData().putDouble("skill", (double)Math.round(3300.0 + rnd));
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
                         }
                      }
 
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                         }
                      }
                   } else {
@@ -145,7 +145,7 @@ public class AIYagaProcedure {
                   }
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
             }
          }
 

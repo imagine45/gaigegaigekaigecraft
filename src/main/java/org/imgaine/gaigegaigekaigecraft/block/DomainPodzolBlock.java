@@ -1,5 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.block;
 
+import org.imgaine.gaigegaigekaigecraft.JujutsuBarrierBase;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainPodzolBlockEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModBlocks;
 import net.minecraft.client.renderer.BiomeColors;
@@ -22,12 +23,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.IPlantable;
 
-public class DomainPodzolBlock extends Block implements EntityBlock {
+public class DomainPodzolBlock extends JujutsuBarrierBase implements EntityBlock {
    public DomainPodzolBlock() {
-      super(Properties.m_284310_().m_60918_(SoundType.f_56739_).m_60913_(-1.0F, 9999.0F).m_278166_(PushReaction.BLOCK).m_60982_((bs, br, bp) -> true).m_60991_((bs, br, bp) -> true));
+      super(Properties.of().sound(SoundType.GRAVEL).strength(-1.0F, 9999.0F).pushReaction(PushReaction.BLOCK).hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true).isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false));
    }
 
-   public int m_7753_(BlockState state, BlockGetter worldIn, BlockPos pos) {
+   public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
       return 15;
    }
 
@@ -35,8 +36,8 @@ public class DomainPodzolBlock extends Block implements EntityBlock {
       return true;
    }
 
-   public MenuProvider m_7246_(BlockState state, Level worldIn, BlockPos pos) {
-      BlockEntity tileEntity = worldIn.m_7702_(pos);
+   public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+      BlockEntity tileEntity = worldIn.getBlockEntity(pos);
       MenuProvider var10000;
       if (tileEntity instanceof MenuProvider menuProvider) {
          var10000 = menuProvider;
@@ -47,23 +48,23 @@ public class DomainPodzolBlock extends Block implements EntityBlock {
       return var10000;
    }
 
-   public BlockEntity m_142194_(BlockPos pos, BlockState state) {
+   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
       return new DomainPodzolBlockEntity(pos, state);
    }
 
-   public boolean m_8133_(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-      super.m_8133_(state, world, pos, eventID, eventParam);
-      BlockEntity blockEntity = world.m_7702_(pos);
-      return blockEntity == null ? false : blockEntity.m_7531_(eventID, eventParam);
+   public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+      super.triggerEvent(state, world, pos, eventID, eventParam);
+      BlockEntity blockEntity = world.getBlockEntity(pos);
+      return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
    }
 
    @OnlyIn(Dist.CLIENT)
    public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
-      event.getBlockColors().m_92589_((bs, world, pos, index) -> world != null && pos != null ? BiomeColors.m_108793_(world, pos) : GrassColor.m_46415_(0.5, 1.0), new Block[]{(Block)JujutsucraftModBlocks.DOMAIN_PODZOL.get()});
+      event.getBlockColors().register((bs, world, pos, index) -> world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5, 1.0), new Block[]{(Block)JujutsucraftModBlocks.DOMAIN_PODZOL.get()});
    }
 
    @OnlyIn(Dist.CLIENT)
    public static void itemColorLoad(RegisterColorHandlersEvent.Item event) {
-      event.getItemColors().m_92689_((stack, index) -> GrassColor.m_46415_(0.5, 1.0), new ItemLike[]{(ItemLike)JujutsucraftModBlocks.DOMAIN_PODZOL.get()});
+      event.getItemColors().register((stack, index) -> GrassColor.get(0.5, 1.0), new ItemLike[]{(ItemLike)JujutsucraftModBlocks.DOMAIN_PODZOL.get()});
    }
 }

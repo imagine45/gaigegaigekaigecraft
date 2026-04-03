@@ -8,7 +8,7 @@ public class BrainDamageMobEffect extends MobEffect {
       super(MobEffectCategory.HARMFUL, -6750208);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

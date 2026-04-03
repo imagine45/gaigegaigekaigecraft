@@ -13,9 +13,9 @@ public class StarRageOnEffectActiveTickProcedure {
       if (entity != null) {
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()) && entity instanceof LivingEntity) {
+            if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()) && entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get());
             }
          }
 

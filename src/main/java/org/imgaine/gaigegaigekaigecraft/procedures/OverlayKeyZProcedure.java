@@ -15,9 +15,9 @@ public class OverlayKeyZProcedure {
       } else {
          String keyName = "";
          if (entity instanceof Player) {
-            for(KeyMapping key : Minecraft.m_91087_().f_91066_.f_92059_) {
-               if (key.m_90860_().equals("key.jujutsucraft.key_start_technique")) {
-                  keyName = key.m_90863_().getString();
+            for(KeyMapping key : Minecraft.getInstance().options.keyMappings) {
+               if (key.getName().equals("key.gaigegaigekaigecraft.key_start_technique")) {
+                  keyName = key.getTranslatedKeyMessage().getString();
                   break;
                }
             }

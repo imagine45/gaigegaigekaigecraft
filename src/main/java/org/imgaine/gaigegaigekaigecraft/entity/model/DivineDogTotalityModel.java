@@ -9,14 +9,14 @@ public class DivineDogTotalityModel extends GeoModel<DivineDogTotalityEntity> {
    }
 
    public ResourceLocation getAnimationResource(DivineDogTotalityEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/divinedogtotality.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/divinedogtotality.animation.json");
    }
 
    public ResourceLocation getModelResource(DivineDogTotalityEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/divinedogtotality.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/divinedogtotality.geo.json");
    }
 
    public ResourceLocation getTextureResource(DivineDogTotalityEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

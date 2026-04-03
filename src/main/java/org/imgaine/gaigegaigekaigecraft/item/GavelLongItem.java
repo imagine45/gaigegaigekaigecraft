@@ -2,15 +2,13 @@ package org.imgaine.gaigegaigekaigecraft.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import java.util.List;
+import java.util.function.Consumer;
+import org.imgaine.gaigegaigekaigecraft.item.renderer.GavelLongItemRenderer;
 import org.imgaine.gaigegaigekaigecraft.procedures.GavelRightclickedProcedure;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,86 +16,102 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimationController.State;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GavelLongItem extends TieredItem {
+public class GavelLongItem extends Item implements GeoItem {
+   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+   public String animationprocedure = "empty";
+   String prevAnim = "empty";
+
    public GavelLongItem() {
-      super(new Tier() {
-         public int m_6609_() {
-            return 0;
-         }
-
-         public float m_6624_() {
-            return 4.0F;
-         }
-
-         public float m_6631_() {
-            return 3.0F;
-         }
-
-         public int m_6604_() {
-            return 1;
-         }
-
-         public int m_6601_() {
-            return 2;
-         }
-
-         public Ingredient m_6282_() {
-            return Ingredient.m_151265_();
-         }
-      }, new Item.Properties());
+      super((new Item.Properties()).stacksTo(1).rarity(Rarity.COMMON));
    }
 
-   public boolean m_8096_(BlockState blockstate) {
-      return !blockstate.m_204336_(BlockTags.f_144285_) && !blockstate.m_204336_(BlockTags.f_144284_);
+   public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+      return false;
    }
 
-   public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-      return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+   public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+      super.initializeClient(consumer);
+      consumer.accept(new IClientItemExtensions() {
+         private final BlockEntityWithoutLevelRenderer renderer = new GavelLongItemRenderer();
+
+         public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+            return this.renderer;
+         }
+      });
    }
 
-   public float m_8102_(ItemStack itemstack, BlockState blockstate) {
-      return 4.0F;
-   }
-
-   public Multimap<Attribute, AttributeModifier> m_7167_(EquipmentSlot equipmentSlot) {
-      if (equipmentSlot == EquipmentSlot.MAINHAND) {
-         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-         builder.putAll(super.m_7167_(equipmentSlot));
-         builder.put(Attributes.f_22281_, new AttributeModifier(f_41374_, "Tool modifier", 4.0, Operation.ADDITION));
-         builder.put(Attributes.f_22283_, new AttributeModifier(f_41375_, "Tool modifier", -2.4, Operation.ADDITION));
-         return builder.build();
+   private PlayState idlePredicate(AnimationState event) {
+      if (this.animationprocedure.equals("empty")) {
+         event.getController().setAnimation(RawAnimation.begin().thenLoop("gavel_long"));
+         return PlayState.CONTINUE;
       } else {
-         return super.m_7167_(equipmentSlot);
+         return PlayState.STOP;
       }
    }
 
-   public boolean m_6813_(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
-      itemstack.m_41622_(1, entity, (i) -> i.m_21166_(EquipmentSlot.MAINHAND));
-      return true;
+   private PlayState procedurePredicate(AnimationState event) {
+      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+         if (!this.animationprocedure.equals(this.prevAnim)) {
+            event.getController().forceAnimationReset();
+         }
+
+         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+         if (event.getController().getAnimationState() == State.STOPPED) {
+            this.animationprocedure = "empty";
+            event.getController().forceAnimationReset();
+         }
+      } else if (this.animationprocedure.equals("empty")) {
+         this.prevAnim = "empty";
+         return PlayState.STOP;
+      }
+
+      this.prevAnim = this.animationprocedure;
+      return PlayState.CONTINUE;
    }
 
-   public boolean m_7579_(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-      itemstack.m_41622_(2, entity, (i) -> i.m_21166_(EquipmentSlot.MAINHAND));
-      return true;
+   public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+      AnimationController procedureController = new AnimationController(this, "procedureController", 0, this::procedurePredicate);
+      data.add(new AnimationController[]{procedureController});
+      AnimationController idleController = new AnimationController(this, "idleController", 0, this::idlePredicate);
+      data.add(new AnimationController[]{idleController});
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      GavelRightclickedProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity);
+   public AnimatableInstanceCache getAnimatableInstanceCache() {
+      return this.cache;
+   }
+
+   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+      if (equipmentSlot == EquipmentSlot.MAINHAND) {
+         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+         builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
+         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", 3.0, Operation.ADDITION));
+         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", -2.4, Operation.ADDITION));
+         return builder.build();
+      } else {
+         return super.getDefaultAttributeModifiers(equipmentSlot);
+      }
+   }
+
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      ItemStack itemstack = (ItemStack)ar.getObject();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
+      GavelRightclickedProcedure.execute(world, x, y, z, entity);
       return ar;
-   }
-
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.gavel_long.description_0"));
    }
 }

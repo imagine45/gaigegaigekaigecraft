@@ -13,16 +13,16 @@ public class JogoAshEntityDiesProcedure {
       if (entity != null) {
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123755_, x, y + 1.0, z, 20, 0.2, 0.4, 0.2, 0.2);
+            _level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y + 1.0, z, 20, 0.2, 0.4, 0.2, 0.2);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123783_, x, y + 1.0, z, 60, 0.2, 0.4, 0.2, 0.2);
+            _level.sendParticles(ParticleTypes.ASH, x, y + 1.0, z, 60, 0.2, 0.4, 0.2, 0.2);
          }
 
-         if (!entity.m_9236_().m_5776_()) {
-            entity.m_146870_();
+         if (!entity.level().isClientSide()) {
+            entity.discard();
          }
 
       }

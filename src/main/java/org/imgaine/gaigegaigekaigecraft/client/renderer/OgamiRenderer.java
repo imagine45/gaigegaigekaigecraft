@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class OgamiRenderer extends MobRenderer<OgamiEntity, Modelogami<OgamiEntity>> {
    public OgamiRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelogami(context.m_174023_(Modelogami.LAYER_LOCATION)), 0.5F);
+      super(context, new Modelogami(context.bakeLayer(Modelogami.LAYER_LOCATION)), 0.5F);
    }
 
    public ResourceLocation getTextureLocation(OgamiEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/ogami.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/ogami.png");
    }
 }

@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SeaSerpentMiniRenderer extends MobRenderer<SeaSerpentMiniEntity, Modeldagon_fish_mini<SeaSerpentMiniEntity>> {
    public SeaSerpentMiniRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modeldagon_fish_mini(context.m_174023_(Modeldagon_fish_mini.LAYER_LOCATION)), 0.0F);
+      super(context, new Modeldagon_fish_mini(context.bakeLayer(Modeldagon_fish_mini.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(SeaSerpentMiniEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/dagon_fish_mini.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/dagon_fish_mini.png");
    }
 }

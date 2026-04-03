@@ -2,6 +2,8 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import net.minecraftforge.common.util.NonNullConsumer;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class CursedTechniqueOnPotionActiveTickProcedure {
    public CursedTechniqueOnPotionActiveTickProcedure() {
@@ -34,29 +37,29 @@ public class CursedTechniqueOnPotionActiveTickProcedure {
          double num1 = 0.0;
          double skill = 0.0;
          double power = 0.0;
-         if (entity.m_6084_()) {
-            skill = (double)Math.round(entity.getPersistentData().m_128459_("skill"));
+         if (entity.isAlive()) {
+            skill = (double)Math.round(entity.getPersistentData().getDouble("skill"));
             if (skill == 0.0) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
                }
             } else {
                num1 = skill % 100.0;
                if (num1 == 21.0) {
-                  entity.getPersistentData().m_128347_("cnt3", entity.getPersistentData().m_128459_("cnt3") + 1.0);
-                  if (!entity.getPersistentData().m_128471_("PRESS_Z")) {
+                  entity.getPersistentData().putDouble("cnt3", entity.getPersistentData().getDouble("cnt3") + 1.0);
+                  if (!entity.getPersistentData().getBoolean("PRESS_Z")) {
                      if (entity instanceof Player) {
                         Player _player = (Player)entity;
-                        if (!_player.m_9236_().m_5776_()) {
-                           _player.m_5661_(Component.m_237113_(""), true);
+                        if (!_player.level().isClientSide()) {
+                           _player.displayClientMessage(Component.literal(""), true);
                         }
                      }
 
-                     entity.getPersistentData().m_128347_("skill", 0.0);
+                     entity.getPersistentData().putDouble("skill", 0.0);
                   } else {
-                     power = (double)Math.round((20.0 - entity.getPersistentData().m_128459_("cnt3")) * 0.25);
-                     STR1 = Component.m_237115_("jujutsu.message.long_press").getString();
+                     power = (double)Math.round((20.0 - entity.getPersistentData().getDouble("cnt3")) * 0.25);
+                     STR1 = Component.translatable("jujutsu.message.long_press").getString();
 
                      for(int index0 = 0; index0 < (int)power; ++index0) {
                         STR1 = "■" + STR1 + "■";
@@ -64,25 +67,25 @@ public class CursedTechniqueOnPotionActiveTickProcedure {
 
                      if (entity instanceof Player) {
                         Player _player = (Player)entity;
-                        if (!_player.m_9236_().m_5776_()) {
-                           _player.m_5661_(Component.m_237113_(STR1), true);
+                        if (!_player.level().isClientSide()) {
+                           _player.displayClientMessage(Component.literal(STR1), true);
                         }
                      }
 
-                     if (entity.getPersistentData().m_128459_("cnt3") >= 20.0) {
+                     if (entity.getPersistentData().getDouble("cnt3") >= 20.0) {
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           if (!_player.m_9236_().m_5776_()) {
-                              _player.m_5661_(Component.m_237113_(""), true);
+                           if (!_player.level().isClientSide()) {
+                              _player.displayClientMessage(Component.literal(""), true);
                            }
                         }
 
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
+                           _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
                         }
 
-                        entity.getPersistentData().m_128347_("skill", 0.0);
+                        entity.getPersistentData().putDouble("skill", 0.0);
                         boolean _setval = true;
                         entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                            capability.noChangeTechnique = _setval;
@@ -98,7 +101,7 @@ public class CursedTechniqueOnPotionActiveTickProcedure {
                      } else if (num1 == 1.0) {
                         AttackStrongProcedure.execute(world, x, y, z, entity);
                      } else if (num1 == 2.0) {
-                        AttackContinueProcedure.execute(world, entity);
+                        AttackContinueProcedure.execute(world, x, y, z, entity);
                      }
                   }
                } else if (skill >= 500.0) {
@@ -116,7 +119,7 @@ public class CursedTechniqueOnPotionActiveTickProcedure {
                      CursedTechniqueOkkotsuProcedure.execute(world, x, y, z, entity);
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+                     _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
                   }
                } else if (skill >= 400.0) {
                   CursedTechniqueJogoProcedure.execute(world, x, y, z, entity);
@@ -131,49 +134,49 @@ public class CursedTechniqueOnPotionActiveTickProcedure {
                } else if (!(skill <= -999.0)) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+                     _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
                   }
                } else {
                   if (skill == -999.0) {
                      if (entity instanceof Player) {
                         Player _player = (Player)entity;
-                        if (!_player.m_9236_().m_5776_()) {
-                           _player.m_5661_(Component.m_237113_("§k12345678901234567890123456789012345678901234567890123"), false);
+                        if (!_player.level().isClientSide()) {
+                           _player.displayClientMessage(Component.literal("§k12345678901234567890123456789012345678901234567890123"), false);
                         }
                      }
 
-                     if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                        entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "particle minecraft:enchant ~ ~" + entity.m_20206_() + " ~ 0.25 0.25 0.25 1 250 force @s");
+                     if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "particle minecraft:enchant ~ ~" + entity.getBbHeight() + " ~ 0.25 0.25 0.25 1 250 force @s");
                      }
 
                      ItemStack var10000;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entGetArmor = (LivingEntity)entity;
-                        var10000 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                        var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                      } else {
-                        var10000 = ItemStack.f_41583_;
+                        var10000 = ItemStack.EMPTY;
                      }
 
-                     if (var10000.m_41720_() == JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get()) {
+                     if (var10000.getItem() == JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get()) {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entGetArmor = (LivingEntity)entity;
-                           var10000 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                           var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                         } else {
-                           var10000 = ItemStack.f_41583_;
+                           var10000 = ItemStack.EMPTY;
                         }
 
-                        if (var10000.m_41784_().m_128459_("domain2") >= 100.0) {
+                        if (var10000.getOrCreateTag().getDouble("domain2") >= 100.0) {
                            label208: {
                               if (entity instanceof Player) {
                                  label205: {
                                     if (entity instanceof ServerPlayer) {
                                        ServerPlayer _plr23 = (ServerPlayer)entity;
-                                       if (_plr23.m_9236_() instanceof ServerLevel && _plr23.m_8960_().m_135996_(_plr23.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_mahoraga"))).m_8193_() && entity.getPersistentData().m_128459_("TenShadowsTechnique14") >= 0.0) {
+                                       if (_plr23.level() instanceof ServerLevel && _plr23.getAdvancements().getOrStartProgress(_plr23.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_mahoraga"))).isDone() && entity.getPersistentData().getDouble("TenShadowsTechnique14") >= 0.0) {
                                           break label205;
                                        }
                                     }
 
-                                    if (!(entity.getPersistentData().m_128459_("TenShadowsTechnique14") > 0.0)) {
+                                    if (!(entity.getPersistentData().getDouble("TenShadowsTechnique14") > 0.0)) {
                                        break label208;
                                     }
                                  }
@@ -181,7 +184,7 @@ public class CursedTechniqueOnPotionActiveTickProcedure {
                                  if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique != 6.0 && ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 != 6.0) {
                                     break label208;
                                  }
-                              } else if (!(entity.getPersistentData().m_128459_("TenShadowsTechnique14") > 0.0)) {
+                              } else if (!(entity.getPersistentData().getDouble("TenShadowsTechnique14") > 0.0)) {
                                  break label208;
                               }
 
@@ -194,45 +197,50 @@ public class CursedTechniqueOnPotionActiveTickProcedure {
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), 5, 0, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), 5, 0, false, false));
                      }
                   }
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), 5, 1, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), 5, 1, false, false));
                      }
                   }
 
                   AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                   LazyOptional var40 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                   Objects.requireNonNull(_iitemhandlerref);
-                  var40.ifPresent(_iitemhandlerref::set);
+                  var40.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                   if (_iitemhandlerref.get() != null) {
                      for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                        ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
+                        ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
                         if (entity instanceof Player) {
                            Player _plrCldCheck30 = (Player)entity;
-                           if (_plrCldCheck30.m_36335_().m_41519_(itemstackiterator.m_41720_())) {
+                           if (_plrCldCheck30.getCooldowns().isOnCooldown(itemstackiterator.getItem())) {
                               continue;
                            }
                         }
 
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_36335_().m_41524_(itemstackiterator.m_41720_(), 20);
+                           _player.getCooldowns().addCooldown(itemstackiterator.getItem(), 20);
                         }
                      }
                   }
 
-                  entity.getPersistentData().m_128347_("cnt_x", Math.min(entity.getPersistentData().m_128459_("cnt_x"), 0.0));
+                  entity.getPersistentData().putDouble("cnt_x", Math.min(entity.getPersistentData().getDouble("cnt_x"), 0.0));
                }
             }
 
-            if (entity.getPersistentData().m_128471_("betrayal") && entity.getPersistentData().m_128471_("PRESS_Z") && entity.getPersistentData().m_128459_("Damage") == 0.0) {
-               entity.getPersistentData().m_128379_("betrayal", false);
+            if (entity.getPersistentData().getBoolean("betrayal") && entity.getPersistentData().getBoolean("PRESS_Z") && entity.getPersistentData().getDouble("Damage") == 0.0) {
+               entity.getPersistentData().putBoolean("betrayal", false);
             }
          }
 

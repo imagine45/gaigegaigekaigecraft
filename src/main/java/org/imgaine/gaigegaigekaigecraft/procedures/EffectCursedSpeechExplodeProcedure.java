@@ -21,48 +21,49 @@ public class EffectCursedSpeechExplodeProcedure {
          double x_pos = 0.0;
          double y_pos = 0.0;
          double z_pos = 0.0;
-         Entity entity_a = null;
-         EffectCursedSpeech1Procedure.execute(world, entity, entityiterator);
-         x_pos = entityiterator.m_20185_();
-         y_pos = entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.5;
-         z_pos = entityiterator.m_20189_();
+         double range = 0.0;
+         EffectCursedSpeech1Procedure.execute(entity, entityiterator);
+         x_pos = entityiterator.getX();
+         y_pos = entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5;
+         z_pos = entityiterator.getZ();
+         range = ReturnEntitySizeProcedure.execute(entityiterator);
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123813_, x_pos, y_pos, z_pos, 100, 3.0, 3.0, 3.0, 0.25);
+            _level.sendParticles(ParticleTypes.EXPLOSION, x_pos, y_pos, z_pos, (int)(20.0 * range), 1.0 * range, 1.0 * range, 1.0 * range, 0.25);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123796_, x_pos, y_pos, z_pos, 100, 0.5, 0.5, 0.5, 0.5);
+            _level.sendParticles(ParticleTypes.CLOUD, x_pos, y_pos, z_pos, (int)(20.0 * range), 0.25 * range, 0.25 * range, 0.25 * range, 0.5);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123755_, x_pos, y_pos, z_pos, 100, 0.5, 0.5, 0.5, 0.5);
+            _level.sendParticles(ParticleTypes.LARGE_SMOKE, x_pos, y_pos, z_pos, (int)(20.0 * range), 0.25 * range, 0.25 * range, 0.25 * range, 0.5);
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123747_, x_pos, y_pos, z_pos, 20, 0.5, 0.5, 0.5, 0.5);
+            _level.sendParticles(ParticleTypes.FLASH, x_pos, y_pos, z_pos, (int)(4.0 * range), 0.25 * range, 0.25 * range, 0.25 * range, 0.5);
          }
 
          if (world instanceof Level) {
             Level _level = (Level)world;
-            if (!_level.m_5776_()) {
-               _level.m_254849_((Entity)null, x_pos, y_pos, z_pos, 2.0F, ExplosionInteraction.NONE);
+            if (!_level.isClientSide()) {
+               _level.explode((Entity)null, x_pos, y_pos, z_pos, 2.0F, ExplosionInteraction.NONE);
             }
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 20, 5, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 5, false, false));
             }
          }
 
-         entityiterator.m_20256_(new Vec3(0.0, 0.0, 0.0));
-         if (!(entityiterator instanceof Player) && !entityiterator.m_6084_() && !entityiterator.m_9236_().m_5776_()) {
-            entityiterator.m_146870_();
+         entityiterator.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
+         if (!(entityiterator instanceof Player) && !entityiterator.isAlive() && !entityiterator.level().isClientSide()) {
+            entityiterator.discard();
          }
 
       }

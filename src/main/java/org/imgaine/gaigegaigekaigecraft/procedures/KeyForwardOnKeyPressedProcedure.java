@@ -8,7 +8,7 @@ public class KeyForwardOnKeyPressedProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128379_("PRESS_W", true);
+         entity.getPersistentData().putBoolean("PRESS_W", true);
       }
    }
 }

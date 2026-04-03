@@ -9,14 +9,14 @@ public class DagonModel extends GeoModel<DagonEntity> {
    }
 
    public ResourceLocation getAnimationResource(DagonEntity entity) {
-      return (Integer)entity.m_20088_().m_135370_(DagonEntity.DATA_form) == 1 ? new ResourceLocation("jujutsucraft", "animations/dagon2.animation.json") : new ResourceLocation("jujutsucraft", "animations/dagon1.animation.json");
+      return (Integer)entity.getEntityData().get(DagonEntity.DATA_form) == 1 ? new ResourceLocation("gaigegaigekaigecraft", "animations/dagon2.animation.json") : new ResourceLocation("gaigegaigekaigecraft", "animations/dagon1.animation.json");
    }
 
    public ResourceLocation getModelResource(DagonEntity entity) {
-      return (Integer)entity.m_20088_().m_135370_(DagonEntity.DATA_form) == 1 ? new ResourceLocation("jujutsucraft", "geo/dagon2.geo.json") : new ResourceLocation("jujutsucraft", "geo/dagon1.geo.json");
+      return (Integer)entity.getEntityData().get(DagonEntity.DATA_form) == 1 ? new ResourceLocation("gaigegaigekaigecraft", "geo/dagon2.geo.json") : new ResourceLocation("gaigegaigekaigecraft", "geo/dagon1.geo.json");
    }
 
    public ResourceLocation getTextureResource(DagonEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

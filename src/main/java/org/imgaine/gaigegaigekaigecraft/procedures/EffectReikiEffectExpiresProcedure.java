@@ -13,15 +13,15 @@ public class EffectReikiEffectExpiresProcedure {
       if (entity != null) {
          if (entity instanceof LivingEntity) {
             LivingEntity _livingEntity1 = (LivingEntity)entity;
-            if (_livingEntity1.m_21204_().m_22171_(Attributes.f_22285_)) {
+            if (_livingEntity1.getAttributes().hasAttribute(Attributes.ARMOR_TOUGHNESS)) {
                AttributeInstance var10000;
                double var10001;
                label18: {
-                  var10000 = _livingEntity1.getAttribute_(Attributes.f_22285_);
+                  var10000 = _livingEntity1.getAttribute(Attributes.ARMOR_TOUGHNESS);
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livingEntity0 = (LivingEntity)entity;
-                     if (_livingEntity0.m_21204_().m_22171_(Attributes.f_22285_)) {
-                        var10001 = _livingEntity0.getAttribute_(Attributes.f_22285_).m_22115_();
+                     if (_livingEntity0.getAttributes().hasAttribute(Attributes.ARMOR_TOUGHNESS)) {
+                        var10001 = _livingEntity0.getAttribute(Attributes.ARMOR_TOUGHNESS).getBaseValue();
                         break label18;
                      }
                   }
@@ -29,7 +29,7 @@ public class EffectReikiEffectExpiresProcedure {
                   var10001 = 0.0;
                }
 
-               var10000.m_22100_(var10001 - 5.0);
+               var10000.setBaseValue(var10001 - 5.0);
             }
          }
 

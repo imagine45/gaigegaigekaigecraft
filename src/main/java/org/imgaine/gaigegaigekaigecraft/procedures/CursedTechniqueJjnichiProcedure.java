@@ -16,7 +16,7 @@ public class CursedTechniqueJjnichiProcedure {
       if (entity != null) {
          double level = 0.0;
          double skill = 0.0;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 2200.0);
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 2200.0);
          if (skill == 4.0) {
             AttackOverheadProcedure.execute(world, x, y, z, entity);
          } else if (skill == 5.0) {
@@ -34,14 +34,14 @@ public class CursedTechniqueJjnichiProcedure {
          } else {
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_("WIP Jinichi"), false);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal("WIP Jinichi"), false);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          }
 

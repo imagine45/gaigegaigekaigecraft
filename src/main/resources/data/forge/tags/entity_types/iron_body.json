@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "jujutsucraft:car",
-    "jujutsucraft:truck",
+    "gaigegaigekaigecraft:car",
+    "gaigegaigekaigecraft:truck",
     "iron_golem",
-    "jujutsucraft:entity_scissors",
-    "jujutsucraft:ticket_gate",
-    "jujutsucraft:projectile_slash"
+    "gaigegaigekaigecraft:entity_scissors",
+    "gaigegaigekaigecraft:ticket_gate",
+    "gaigegaigekaigecraft:projectile_slash"
   ]
 }

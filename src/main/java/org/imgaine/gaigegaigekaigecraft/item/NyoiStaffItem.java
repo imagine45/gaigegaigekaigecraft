@@ -29,74 +29,74 @@ import net.minecraftforge.common.ToolActions;
 public class NyoiStaffItem extends TieredItem {
    public NyoiStaffItem() {
       super(new Tier() {
-         public int m_6609_() {
+         public int getUses() {
             return 800;
          }
 
-         public float m_6624_() {
+         public float getSpeed() {
             return 4.0F;
          }
 
-         public float m_6631_() {
+         public float getAttackDamageBonus() {
             return 4.0F;
          }
 
-         public int m_6604_() {
+         public int getLevel() {
             return 1;
          }
 
-         public int m_6601_() {
+         public int getEnchantmentValue() {
             return 2;
          }
 
-         public Ingredient m_6282_() {
-            return Ingredient.m_151265_();
+         public Ingredient getRepairIngredient() {
+            return Ingredient.of();
          }
       }, new Item.Properties());
    }
 
-   public boolean m_8096_(BlockState blockstate) {
-      return !blockstate.m_204336_(BlockTags.f_144285_) && !blockstate.m_204336_(BlockTags.f_144284_);
+   public boolean isCorrectToolForDrops(BlockState blockstate) {
+      return !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
    }
 
    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
       return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
    }
 
-   public float m_8102_(ItemStack itemstack, BlockState blockstate) {
+   public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
       return 4.0F;
    }
 
-   public Multimap<Attribute, AttributeModifier> m_7167_(EquipmentSlot equipmentSlot) {
+   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
       if (equipmentSlot == EquipmentSlot.MAINHAND) {
          ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-         builder.putAll(super.m_7167_(equipmentSlot));
-         builder.put(Attributes.f_22281_, new AttributeModifier(f_41374_, "Tool modifier", 5.0, Operation.ADDITION));
-         builder.put(Attributes.f_22283_, new AttributeModifier(f_41375_, "Tool modifier", -2.2, Operation.ADDITION));
+         builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
+         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 5.0, Operation.ADDITION));
+         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.2, Operation.ADDITION));
          return builder.build();
       } else {
-         return super.m_7167_(equipmentSlot);
+         return super.getDefaultAttributeModifiers(equipmentSlot);
       }
    }
 
-   public boolean m_6813_(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
-      itemstack.m_41622_(1, entity, (i) -> i.m_21166_(EquipmentSlot.MAINHAND));
+   public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
+      itemstack.hurtAndBreak(1, entity, (i) -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
       return true;
    }
 
-   public boolean m_7579_(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-      itemstack.m_41622_(2, entity, (i) -> i.m_21166_(EquipmentSlot.MAINHAND));
+   public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+      itemstack.hurtAndBreak(2, entity, (i) -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
       return true;
    }
 
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.nyoi_staff.description_0"));
+   public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, level, list, flag);
+      list.add(Component.translatable("item.gaigegaigekaigecraft.nyoi_staff.description_0"));
    }
 
-   public InteractionResult m_6225_(UseOnContext context) {
-      super.m_6225_(context);
-      NyoiStaffRightclickedOnBlockProcedure.execute(context.m_43725_(), (double)context.m_8083_().m_123341_(), (double)context.m_8083_().m_123342_(), (double)context.m_8083_().m_123343_(), context.m_43719_(), context.m_43723_(), context.m_43722_());
+   public InteractionResult useOn(UseOnContext context) {
+      super.useOn(context);
+      NyoiStaffRightclickedOnBlockProcedure.execute(context.getLevel(), (double)context.getClickedPos().getX(), (double)context.getClickedPos().getY(), (double)context.getClickedPos().getZ(), context.getClickedFace(), context.getPlayer(), context.getItemInHand());
       return InteractionResult.SUCCESS;
    }
 }

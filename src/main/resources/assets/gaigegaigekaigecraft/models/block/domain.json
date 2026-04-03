@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "gaigegaigekaigecraft:block/purple_portal",
+    "particle": "gaigegaigekaigecraft:block/purple_portal"
+  },
+  "render_type": "translucent"
+}

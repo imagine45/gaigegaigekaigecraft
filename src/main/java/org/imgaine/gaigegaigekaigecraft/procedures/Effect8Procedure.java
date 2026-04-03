@@ -25,31 +25,31 @@ public class Effect8Procedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          Entity entity_a = null;
-         x_pos = entityiterator.m_20185_();
-         y_pos = entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.5;
-         z_pos = entityiterator.m_20189_();
+         x_pos = entityiterator.getX();
+         y_pos = entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5;
+         z_pos = entityiterator.getZ();
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CLAWS.get(), x_pos, y_pos, z_pos, 1, 0.2, 0.2, 0.2, 0.0);
+            _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CLAWS.get(), x_pos, y_pos, z_pos, 1, 0.2, 0.2, 0.2, 0.0);
          }
 
-         if (!entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("minecraft:skeletons"))) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living")))) {
-            if (entityiterator.getPersistentData().m_128471_("CursedSpirit")) {
+         if (!entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("minecraft:skeletons"))) && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living")))) {
+            if (entityiterator.getPersistentData().getBoolean("CursedSpirit")) {
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_PURPLE.get(), x_pos, y_pos, z_pos, 3, 0.2, 0.2, 0.2, 0.25);
+                  _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_PURPLE.get(), x_pos, y_pos, z_pos, 3, 0.2, 0.2, 0.2, 0.25);
                }
             } else if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_RED.get(), x_pos, y_pos, z_pos, 3, 0.2, 0.2, 0.2, 0.25);
+               _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BLOOD_RED.get(), x_pos, y_pos, z_pos, 3, 0.2, 0.2, 0.2, 0.25);
             }
 
             if (world instanceof Level) {
                Level _level = (Level)world;
-               if (!_level.m_5776_()) {
-                  _level.m_5594_((Player)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:crush")), SoundSource.NEUTRAL, 0.25F, 1.0F);
+               if (!_level.isClientSide()) {
+                  _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:crush")), SoundSource.NEUTRAL, 0.25F, 1.0F);
                } else {
-                  _level.m_7785_(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:crush")), SoundSource.NEUTRAL, 0.25F, 1.0F, false);
+                  _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:crush")), SoundSource.NEUTRAL, 0.25F, 1.0F, false);
                }
             }
          }

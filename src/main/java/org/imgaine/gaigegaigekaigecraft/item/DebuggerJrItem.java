@@ -12,19 +12,19 @@ import net.minecraft.world.level.Level;
 
 public class DebuggerJrItem extends Item {
    public DebuggerJrItem() {
-      super((new Item.Properties()).m_41487_(1).m_41497_(Rarity.EPIC));
+      super((new Item.Properties()).stacksTo(1).rarity(Rarity.EPIC));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.EAT;
    }
 
-   public int m_6473_() {
+   public int getEnchantmentValue() {
       return 1;
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
       DebuggerJrRightClickedInAirProcedure.execute(entity);
       return ar;
    }

@@ -9,14 +9,14 @@ public class ClothesDagonModel extends GeoModel<ClothesDagonItem> {
    }
 
    public ResourceLocation getAnimationResource(ClothesDagonItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/clothes_dagon.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/clothes_dagon.animation.json");
    }
 
    public ResourceLocation getModelResource(ClothesDagonItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/clothes_dagon.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/clothes_dagon.geo.json");
    }
 
    public ResourceLocation getTextureResource(ClothesDagonItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/dagon2.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/dagon2.png");
    }
 }

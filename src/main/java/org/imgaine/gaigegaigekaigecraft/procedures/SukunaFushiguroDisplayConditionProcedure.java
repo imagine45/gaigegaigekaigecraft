@@ -14,7 +14,7 @@ public class SukunaFushiguroDisplayConditionProcedure {
          boolean var10000;
          if (entity instanceof SukunaFushiguroEntity) {
             SukunaFushiguroEntity _datEntL0 = (SukunaFushiguroEntity)entity;
-            if ((Boolean)_datEntL0.m_20088_().m_135370_(SukunaFushiguroEntity.DATA_perfect_mode)) {
+            if ((Boolean)_datEntL0.getEntityData().get(SukunaFushiguroEntity.DATA_perfect_mode)) {
                var10000 = true;
                return var10000;
             }

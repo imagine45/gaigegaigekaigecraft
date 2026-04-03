@@ -21,23 +21,23 @@ public class ParticleBloodPurpleParticle extends TextureSheetParticle {
    protected ParticleBloodPurpleParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(0.5F, 0.5F);
-      this.f_107663_ *= 3.0F;
-      this.f_107225_ = Math.max(1, 30 + (this.f_107223_.m_188503_(8) - 4));
-      this.f_107226_ = 0.5F;
-      this.f_107219_ = true;
-      this.f_107215_ = vx * 0.3;
-      this.f_107216_ = vy * 0.3;
-      this.f_107217_ = vz * 0.3;
-      this.m_108335_(spriteSet);
+      this.setSize(0.5F, 0.5F);
+      this.quadSize *= 3.0F;
+      this.lifetime = Math.max(1, 30 + (this.random.nextInt(8) - 4));
+      this.gravity = 0.5F;
+      this.hasPhysics = true;
+      this.xd = vx * 0.3;
+      this.yd = vy * 0.3;
+      this.zd = vz * 0.3;
+      this.pickSprite(spriteSet);
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107430_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
+   public void tick() {
+      super.tick();
    }
 
    public static class ParticleBloodPurpleParticleProvider implements ParticleProvider<SimpleParticleType> {

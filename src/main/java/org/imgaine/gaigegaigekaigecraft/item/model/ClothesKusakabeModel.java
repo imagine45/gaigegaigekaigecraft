@@ -9,14 +9,14 @@ public class ClothesKusakabeModel extends GeoModel<ClothesKusakabeItem> {
    }
 
    public ResourceLocation getAnimationResource(ClothesKusakabeItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/clothes_kusakabe.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/clothes_kusakabe.animation.json");
    }
 
    public ResourceLocation getModelResource(ClothesKusakabeItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/clothes_kusakabe.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/clothes_kusakabe.geo.json");
    }
 
    public ResourceLocation getTextureResource(ClothesKusakabeItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/clothes_kusakabe.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/clothes_kusakabe.png");
    }
 }

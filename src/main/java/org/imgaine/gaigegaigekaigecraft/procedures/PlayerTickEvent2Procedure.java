@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -25,7 +24,7 @@ public class PlayerTickEvent2Procedure {
    @SubscribeEvent
    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
       if (event.phase == Phase.END) {
-         execute(event, event.player.m_9236_(), event.player.m_20185_(), event.player.m_20186_(), event.player.m_20189_(), event.player);
+         execute(event, event.player.level(), event.player.getX(), event.player.getY(), event.player.getZ(), event.player);
       }
 
    }
@@ -38,17 +37,13 @@ public class PlayerTickEvent2Procedure {
       if (entity != null) {
          boolean changeTechnique = false;
          String old_name = "";
-         if (entity.m_6084_() && entity instanceof ServerPlayer) {
+         if (entity.isAlive() && entity instanceof ServerPlayer) {
             ServerPlayer serverPlayer = (ServerPlayer)entity;
-            if (serverPlayer.f_19797_ % 2 == 0) {
+            if (serverPlayer.tickCount % 2 == 0) {
                JujutsucraftModVariables.PlayerVariables playerVars = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables());
-               if (entity.m_6144_()) {
+               if (entity.isShiftKeyDown()) {
                   StartGuardProcedure.execute(world, entity);
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_(MobEffects.f_19596_);
-                  }
-
+                  serverPlayer.removeEffect(MobEffects.MOVEMENT_SPEED);
                   if (!playerVars.flag_shift) {
                      playerVars.flag_shift = true;
                      changeTechnique = true;
@@ -59,12 +54,12 @@ public class PlayerTickEvent2Procedure {
                }
 
                if (changeTechnique && (playerVars.PlayerCurseTechnique == 6.0 || playerVars.PlayerCurseTechnique2 == 6.0)) {
-                  old_name = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechniqueName;
+                  old_name = playerVars.PlayerSelectCurseTechniqueName;
                   playerVars.noChangeTechnique = true;
                   playerVars.syncPlayerVariables(entity);
                   KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-                  if (!old_name.equals(playerVars.PlayerSelectCurseTechniqueName) && !entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                     entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "playsound ui.button.click master @s");
+                  if (!old_name.equals(playerVars.PlayerSelectCurseTechniqueName) && !entity.level().isClientSide() && entity.getServer() != null) {
+                     entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "playsound ui.button.click master @s");
                   }
                }
             }

@@ -3,6 +3,9 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraftforge.common.util.NonNullConsumer;
 import org.imgaine.gaigegaigekaigecraft.entity.RozetsuShikigamiEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
@@ -32,6 +35,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class NishimiyaDomainExpansionActiveProcedure {
    public NishimiyaDomainExpansionActiveProcedure() {
@@ -44,7 +48,7 @@ public class NishimiyaDomainExpansionActiveProcedure {
          double range;
          double var10000;
          label168: {
-            item_a = ItemStack.f_41583_;
+            item_a = ItemStack.EMPTY;
             double ticks = 0.0;
             double HP = 0.0;
             double num1 = 0.0;
@@ -57,8 +61,8 @@ public class NishimiyaDomainExpansionActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label168;
                }
             }
@@ -67,13 +71,13 @@ public class NishimiyaDomainExpansionActiveProcedure {
          }
 
          double var28 = var10000;
-         if (!entity.getPersistentData().m_128471_("Failed") && var28 % 60.0 == 20.0) {
+         if (!entity.getPersistentData().getBoolean("Failed") && var28 % 60.0 == 20.0) {
             int var10001;
             label160: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                     var10001 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                  if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                     var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                      break label160;
                   }
                }
@@ -85,14 +89,19 @@ public class NishimiyaDomainExpansionActiveProcedure {
 
             for(int index0 = 0; index0 < 8; ++index0) {
                if (Math.random() < 0.5) {
-                  AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
+                  final AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                   LazyOptional var50 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                   Objects.requireNonNull(_iitemhandlerref);
-                  var50.ifPresent(_iitemhandlerref::set);
+                  var50.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                   if (_iitemhandlerref.get() != null) {
                      for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                        ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                        if (itemstackiterator.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+                        ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                        if (itemstackiterator.getItem() != ItemStack.EMPTY.getItem()) {
                            ++num2;
                         }
                      }
@@ -101,71 +110,78 @@ public class NishimiyaDomainExpansionActiveProcedure {
                   if (num2 > 0.0) {
                      double var30 = Math.ceil(Math.random() * num2);
                      num2 = 0.0;
-                     _iitemhandlerref = new AtomicReference();
+                     AtomicReference<IItemHandler> _iitemhandlerref2 = new AtomicReference();
                      var50 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                      Objects.requireNonNull(_iitemhandlerref);
-                     var50.ifPresent(_iitemhandlerref::set);
+                     var50.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref2.set(o);
+                     }
+                  });
                      if (_iitemhandlerref.get() != null) {
                         for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                           ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
+                           ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
                            ++num2;
                            if (num2 >= var30) {
-                              item_a = itemstackiterator.m_41777_();
+                              item_a = itemstackiterator.copy();
                               break;
                            }
                         }
                      }
                   } else {
-                     double var33 = (double)Mth.m_216271_(RandomSource.m_216327_(), 1, 10);
+                     double var33 = (double)Mth.nextInt(RandomSource.create(), 1, 10);
                      if (var33 == 1.0) {
-                        item_a = (new ItemStack(Items.f_42430_)).m_41777_();
+                        item_a = (new ItemStack(Items.GOLDEN_SWORD)).copy();
                      } else if (var33 == 2.0) {
-                        item_a = (new ItemStack(Items.f_42434_)).m_41777_();
+                        item_a = (new ItemStack(Items.GOLDEN_HOE)).copy();
                      } else if (var33 == 3.0) {
-                        item_a = (new ItemStack(Items.f_42433_)).m_41777_();
+                        item_a = (new ItemStack(Items.GOLDEN_AXE)).copy();
                      } else if (var33 == 4.0) {
-                        item_a = (new ItemStack(Items.f_42614_)).m_41777_();
+                        item_a = (new ItemStack(Items.WRITABLE_BOOK)).copy();
                      } else if (var33 == 5.0) {
-                        item_a = (new ItemStack(Items.f_42590_)).m_41777_();
+                        item_a = (new ItemStack(Items.GLASS_BOTTLE)).copy();
                      } else if (var33 == 6.0) {
-                        item_a = (new ItemStack(Items.f_151049_)).m_41777_();
+                        item_a = (new ItemStack(Items.AMETHYST_SHARD)).copy();
                      } else if (var33 == 7.0) {
-                        item_a = (new ItemStack((ItemLike)JujutsucraftModItems.BROOM.get())).m_41777_();
+                        item_a = (new ItemStack((ItemLike)JujutsucraftModItems.BROOM.get())).copy();
                      } else if (var33 == 8.0) {
-                        item_a = (new ItemStack(Blocks.f_50310_)).m_41777_();
+                        item_a = (new ItemStack(Blocks.SKELETON_SKULL)).copy();
                      } else if (var33 == 9.0) {
-                        item_a = (new ItemStack(Items.f_42544_)).m_41777_();
+                        item_a = (new ItemStack(Items.CAULDRON)).copy();
                      } else {
-                        item_a = (new ItemStack((ItemLike)JujutsucraftModItems.KNIFE.get())).m_41777_();
+                        item_a = (new ItemStack((ItemLike)JujutsucraftModItems.KNIFE.get())).copy();
                      }
                   }
 
                   double var31 = Math.toRadians(Math.random() * 360.0);
-                  double var34 = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(var31) * (range / 2.0 - 4.0);
-                  double var35 = entity.getPersistentData().m_128459_("y_pos_doma");
-                  double var36 = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(var31) * (range / 2.0 - 4.0);
+                  double var34 = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(var31) * (range / 2.0 - 4.0);
+                  double var35 = entity.getPersistentData().getDouble("y_pos_doma");
+                  double var36 = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(var31) * (range / 2.0 - 4.0);
                   if (world instanceof ServerLevel) {
                      ServerLevel _serverLevel = (ServerLevel)world;
-                     Entity entityinstance = ((EntityType)JujutsucraftModEntities.ROZETSU_SHIKIGAMI.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(var34, var35, var36), MobSpawnType.MOB_SUMMONED, false, false);
+                     Entity entityinstance = ((EntityType)JujutsucraftModEntities.ROZETSU_SHIKIGAMI.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(var34, var35, var36), MobSpawnType.MOB_SUMMONED, false, false);
                      if (entityinstance != null) {
-                        entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
-                        entityinstance.getPersistentData().m_128359_("OWNER_UUID", entity.m_20149_());
+                        entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
+                        entityinstance.getPersistentData().putString("OWNER_UUID", entity.getStringUUID());
                         if (entityinstance instanceof LivingEntity) {
                            LivingEntity _livingEntity17 = (LivingEntity)entityinstance;
-                           if (_livingEntity17.m_21204_().m_22171_(Attributes.f_22276_)) {
-                              _livingEntity17.getAttribute_(Attributes.f_22276_).m_22100_(20.0);
+                           if (_livingEntity17.getAttributes().hasAttribute(Attributes.MAX_HEALTH)) {
+                              _livingEntity17.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
                            }
                         }
 
                         if (entityinstance instanceof LivingEntity) {
                            LivingEntity _livingEntity23 = (LivingEntity)entityinstance;
-                           if (_livingEntity23.m_21204_().m_22171_(Attributes.f_22281_)) {
+                           if (_livingEntity23.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                              AttributeInstance var52;
+                              double var53;
                               label130: {
-                                 var52 = _livingEntity23.getAttribute_(Attributes.f_22281_);
+                                 var52 = _livingEntity23.getAttribute(Attributes.ATTACK_DAMAGE);
                                  if (entityinstance instanceof LivingEntity) {
                                     LivingEntity _livingEntity19 = (LivingEntity)entityinstance;
-                                    if (_livingEntity19.m_21204_().m_22171_(Attributes.f_22281_)) {
-                                       var53 = _livingEntity19.getAttribute_(Attributes.f_22281_).m_22115_();
+                                    if (_livingEntity19.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                                       var53 = _livingEntity19.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                                        break label130;
                                     }
                                  }
@@ -177,8 +193,8 @@ public class NishimiyaDomainExpansionActiveProcedure {
                               label125: {
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livingEntity20 = (LivingEntity)entity;
-                                    if (_livingEntity20.m_21204_().m_22171_(Attributes.f_22281_)) {
-                                       var10002 = _livingEntity20.getAttribute_(Attributes.f_22281_).m_22115_();
+                                    if (_livingEntity20.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                                       var10002 = _livingEntity20.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                                        break label125;
                                     }
                                  }
@@ -190,8 +206,8 @@ public class NishimiyaDomainExpansionActiveProcedure {
                               label120: {
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                       var10003 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                                    if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                       var10003 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                        break label120;
                                     }
                                  }
@@ -199,15 +215,15 @@ public class NishimiyaDomainExpansionActiveProcedure {
                                  var10003 = 0;
                               }
 
-                              var52.m_22100_(var53 + (var10002 + (double)(var10003 * 3)) * 0.5);
+                              var52.setBaseValue(var53 + (var10002 + (double)(var10003 * 3)) * 0.5);
                            }
                         }
 
-                        entityinstance.getPersistentData().m_128347_("friend_num", entity.getPersistentData().m_128459_("friend_num"));
-                        entityinstance.getPersistentData().m_128347_("friend_num_worker", entity.getPersistentData().m_128459_("friend_num"));
-                        entityinstance.getPersistentData().m_128379_("Player", entity instanceof Player || entity.getPersistentData().m_128471_("Player"));
-                        entityinstance.getPersistentData().m_128379_("Shikigami", true);
-                        entityinstance.getPersistentData().m_128379_("domain_entity", true);
+                        entityinstance.getPersistentData().putDouble("friend_num", entity.getPersistentData().getDouble("friend_num"));
+                        entityinstance.getPersistentData().putDouble("friend_num_worker", entity.getPersistentData().getDouble("friend_num"));
+                        entityinstance.getPersistentData().putBoolean("Player", entity instanceof Player || entity.getPersistentData().getBoolean("Player"));
+                        entityinstance.getPersistentData().putBoolean("Shikigami", true);
+                        entityinstance.getPersistentData().putBoolean("domain_entity", true);
                         if (entityinstance instanceof RozetsuShikigamiEntity) {
                            RozetsuShikigamiEntity animatable = (RozetsuShikigamiEntity)entityinstance;
                            animatable.setTexture("clear");
@@ -215,17 +231,17 @@ public class NishimiyaDomainExpansionActiveProcedure {
 
                         if (entityinstance instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entityinstance;
-                           ItemStack _setstack = item_a.m_41777_();
-                           _setstack.m_41764_(1);
-                           _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                           ItemStack _setstack = item_a.copy();
+                           _setstack.setCount(1);
+                           _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                            if (_entity instanceof Player) {
                               Player _player = (Player)_entity;
-                              _player.m_150109_().m_6596_();
+                              _player.getInventory().setChanged();
                            }
                         }
 
-                        entityinstance.m_6593_(Component.m_237113_(""));
-                        _serverLevel.m_7967_(entityinstance);
+                        entityinstance.setCustomName(Component.literal(""));
+                        _serverLevel.addFreshEntity(entityinstance);
                      }
                   }
                }

@@ -9,14 +9,14 @@ public class MahitoHand1ItemModel extends GeoModel<MahitoHand1Item> {
    }
 
    public ResourceLocation getAnimationResource(MahitoHand1Item animatable) {
-      return new ResourceLocation("jujutsucraft", "animations/mahito_hand1.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/mahito_hand1.animation.json");
    }
 
    public ResourceLocation getModelResource(MahitoHand1Item animatable) {
-      return new ResourceLocation("jujutsucraft", "geo/mahito_hand1.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/mahito_hand1.geo.json");
    }
 
    public ResourceLocation getTextureResource(MahitoHand1Item animatable) {
-      return new ResourceLocation("jujutsucraft", "textures/item/mahito_hand1.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/mahito_hand1.png");
    }
 }

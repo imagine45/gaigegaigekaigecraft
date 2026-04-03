@@ -13,15 +13,15 @@ public class ZeninChojuroModel extends GeoModel<ZeninChojuroEntity> {
    }
 
    public ResourceLocation getAnimationResource(ZeninChojuroEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/zenin_chojuro.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/zenin_chojuro.animation.json");
    }
 
    public ResourceLocation getModelResource(ZeninChojuroEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/zenin_chojuro.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/zenin_chojuro.geo.json");
    }
 
    public ResourceLocation getTextureResource(ZeninChojuroEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(ZeninChojuroEntity animatable, long instanceId, AnimationState animationState) {

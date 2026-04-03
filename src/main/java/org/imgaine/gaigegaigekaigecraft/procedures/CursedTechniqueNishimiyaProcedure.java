@@ -14,7 +14,7 @@ public class CursedTechniqueNishimiyaProcedure {
       if (entity != null) {
          double level = 0.0;
          double skill = 0.0;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 3600.0);
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 3600.0);
          if (skill == 5.0) {
             WindScytheProcedure.execute(world, x, y, z, entity);
          } else if (skill == 6.0) {
@@ -25,7 +25,7 @@ public class CursedTechniqueNishimiyaProcedure {
             OtherDomainExpansionProcedure.execute(world, x, y, z, entity);
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
          }
 
       }

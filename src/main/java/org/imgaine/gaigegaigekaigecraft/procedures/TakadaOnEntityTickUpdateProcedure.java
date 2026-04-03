@@ -1,7 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.UUID;
-import java.util.function.BiFunction;
 import org.imgaine.gaigegaigekaigecraft.entity.JudgemanEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.TakadaEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
@@ -24,60 +22,45 @@ public class TakadaOnEntityTickUpdateProcedure {
          double z_pos = 0.0;
          double num1 = 0.0;
          if (LogicOwnerExistProcedure.execute(world, entity)) {
-            entity_a = (new BiFunction<LevelAccessor, String, Entity>() {
-               public Entity apply(LevelAccessor levelAccessor, String uuid) {
-                  if (levelAccessor instanceof ServerLevel serverLevel) {
-                     try {
-                        return serverLevel.m_8791_(UUID.fromString(uuid));
-                     } catch (Exception var5) {
-                     }
+            label51: {
+               entity_a = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("OWNER_UUID"));
+               if (entity_a instanceof LivingEntity) {
+                  LivingEntity _livEnt2 = (LivingEntity)entity_a;
+                  if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                     break label51;
                   }
-
-                  return null;
                }
-            }).apply(world, entity.getPersistentData().m_128461_("OWNER_UUID"));
-            if (entity_a instanceof LivingEntity) {
-               LivingEntity _livEnt2 = (LivingEntity)entity_a;
-               if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  if (entity instanceof JudgemanEntity && entity_a.getPersistentData().m_128459_("skill") == 2719.0 && entity_a.getPersistentData().m_128459_("cnt3") >= 20.0 && entity_a.getPersistentData().m_128459_("cnt1") > 0.0) {
-                     if (entity instanceof JudgemanEntity) {
-                        ((JudgemanEntity)entity).setAnimation("empty");
-                     }
 
-                     if (entity instanceof JudgemanEntity) {
-                        ((JudgemanEntity)entity).setAnimation("judgement");
-                     }
-
-                     num1 = 0.0;
-                     x_pos = entity.m_20185_();
-                     y_pos = entity.m_20186_();
-                     z_pos = entity.m_20189_();
+               if (entity_a.getPersistentData().getDouble("skill") == 0.0) {
+                  if (entity instanceof TakadaEntity) {
                      if (world instanceof ServerLevel) {
                         ServerLevel _level = (ServerLevel)world;
-                        _level.m_8767_(ParticleTypes.f_123765_, x_pos, y_pos, z_pos, 15, 2.0, 0.5, 2.0, 0.5);
-                        return;
+                        _level.sendParticles(ParticleTypes.END_ROD, x, y + (double)entity.getBbHeight() * 0.5, z, (int)(10.0F + entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() * 1.0F), (double)entity.getBbWidth() * 0.25, (double)entity.getBbHeight() * 0.25, (double)entity.getBbWidth() * 0.25, 0.0);
                      }
+                  } else if (entity instanceof JudgemanEntity && world instanceof ServerLevel) {
+                     ServerLevel _level = (ServerLevel)world;
+                     _level.sendParticles(ParticleTypes.SQUID_INK, x, y + (double)entity.getBbHeight() * 0.5, z, (int)(10.0F + entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() * 1.0F), (double)entity.getBbWidth() * 0.25, (double)entity.getBbHeight() * 0.25, (double)entity.getBbWidth() * 0.25, 0.0);
+                  }
+
+                  if (!entity.level().isClientSide()) {
+                     entity.discard();
                   }
 
                   return;
                }
             }
 
-            if (entity instanceof TakadaEntity) {
-               if (world instanceof ServerLevel) {
-                  ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123810_, x, y + (double)entity.m_20206_() * 0.5, z, 40, 0.2, 0.5, 0.2, 0.0);
+            if (entity instanceof JudgemanEntity && entity_a.getPersistentData().getDouble("skill") == 2719.0 && entity_a.getPersistentData().getDouble("cnt3") >= 20.0 && entity_a.getPersistentData().getDouble("cnt1") > 0.0) {
+               if (entity_a.getPersistentData().getDouble("cnt2") >= 1.0) {
+                  if (entity instanceof JudgemanEntity) {
+                     PlayAnimationEntity2Procedure.execute(entity, "judgement");
+                  }
+               } else if (entity instanceof JudgemanEntity) {
+                  PlayAnimationEntity2Procedure.execute(entity, "judgement_light");
                }
-            } else if (entity instanceof JudgemanEntity && world instanceof ServerLevel) {
-               ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123765_, x, y + (double)entity.m_20206_() * 0.5, z, 40, 0.2, 0.5, 0.2, 0.0);
             }
-
-            if (!entity.m_9236_().m_5776_()) {
-               entity.m_146870_();
-            }
-         } else if (!entity.m_9236_().m_5776_()) {
-            entity.m_146870_();
+         } else if (!entity.level().isClientSide()) {
+            entity.discard();
          }
 
       }

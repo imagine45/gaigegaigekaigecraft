@@ -21,24 +21,24 @@ public class ParticleRedParticle extends TextureSheetParticle {
    protected ParticleRedParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(0.2F, 0.2F);
-      this.f_107225_ = 15;
-      this.f_107226_ = 0.0F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 1.0;
-      this.f_107216_ = vy * 1.0;
-      this.f_107217_ = vz * 1.0;
-      this.m_108339_(spriteSet);
+      this.setSize(0.2F, 0.2F);
+      this.lifetime = 15;
+      this.gravity = 0.0F;
+      this.hasPhysics = false;
+      this.xd = vx * 1.0;
+      this.yd = vy * 1.0;
+      this.zd = vz * 1.0;
+      this.setSpriteFromAge(spriteSet);
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107430_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
-      if (!this.f_107220_) {
-         this.m_108337_(this.spriteSet.m_5819_(this.f_107224_ / 1 % 15 + 1, 15));
+   public void tick() {
+      super.tick();
+      if (!this.removed) {
+         this.setSprite(this.spriteSet.get(this.age / 1 % 15 + 1, 15));
       }
 
    }

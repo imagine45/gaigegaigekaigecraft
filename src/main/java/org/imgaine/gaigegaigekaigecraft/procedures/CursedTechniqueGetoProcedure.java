@@ -15,16 +15,16 @@ public class CursedTechniqueGetoProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          double skill = 0.0;
-         skill = entity.getPersistentData().m_128459_("skill");
+         skill = entity.getPersistentData().getDouble("skill");
          if (skill == 1805.0) {
-            entity.getPersistentData().m_128347_("skill", 4110.0);
+            entity.getPersistentData().putDouble("skill", 4110.0);
          } else if (skill == 1810.0) {
             GetoCancelTechniqueProcedure.execute(world, x, y, z, entity);
          } else if (skill >= 1811.0 && skill <= 1813.0) {
             if (entity instanceof Player) {
                Test2Procedure.execute(world, x, y, z, entity);
             } else {
-               GetoSpawnCurseRandomProcedure.execute(world, entity);
+               GetoSpawnCurseRandomProcedure.execute(world, x, y, z, entity);
             }
          } else if (skill == 1815.0) {
             SkillUzumakiProcedure.execute(world, x, y, z, entity);
@@ -37,14 +37,14 @@ public class CursedTechniqueGetoProcedure {
          } else {
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_("WIP Geto"), false);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal("WIP Geto"), false);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
             }
          }
 

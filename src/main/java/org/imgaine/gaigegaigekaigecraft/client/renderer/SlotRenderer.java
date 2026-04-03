@@ -16,13 +16,13 @@ import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 public class SlotRenderer extends DynamicGeoEntityRenderer<SlotEntity> {
    public SlotRenderer(EntityRendererProvider.Context renderManager) {
       super(renderManager, new SlotModel());
-      this.f_114477_ = 0.0F;
+      this.shadowRadius = 0.0F;
       this.addRenderLayer(new GenericArmorLayer(this));
       this.addRenderLayer(new GenericItemLayer(this));
    }
 
    public RenderType getRenderType(SlotEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.m_5478_(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 
    public void preRender(PoseStack poseStack, SlotEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

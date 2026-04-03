@@ -11,7 +11,7 @@ public class InsideSolidProcedure {
       if (entity == null) {
          return false;
       } else {
-         return entity.m_5830_() ? true : InsideSolidCalculateProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (double)entity.m_20206_(), (double)entity.m_20205_());
+         return entity.isInWall() ? true : InsideSolidCalculateProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), (double)entity.getBbHeight(), (double)entity.getBbWidth());
       }
    }
 }

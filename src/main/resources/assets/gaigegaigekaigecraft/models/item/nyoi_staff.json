@@ -1,0 +1,7 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/weapon_kashimo",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/weapon_kashimo",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

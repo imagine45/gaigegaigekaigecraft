@@ -13,15 +13,15 @@ public class SeaSerpentModel extends GeoModel<SeaSerpentEntity> {
    }
 
    public ResourceLocation getAnimationResource(SeaSerpentEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/dagon_fish1.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/dagon_fish1.animation.json");
    }
 
    public ResourceLocation getModelResource(SeaSerpentEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/dagon_fish1.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/dagon_fish1.geo.json");
    }
 
    public ResourceLocation getTextureResource(SeaSerpentEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(SeaSerpentEntity animatable, long instanceId, AnimationState animationState) {

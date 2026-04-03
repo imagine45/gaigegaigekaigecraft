@@ -66,141 +66,141 @@ public class TakadaEntity extends PathfinderMob implements GeoEntity {
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_274367_(0.6F);
-      this.m_21530_();
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setMaxUpStep(0.6F);
+      this.setPersistenceRequired();
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "takada");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "takada");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new MeleeAttackGoal(this, 1.2, true) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
       });
-      this.f_21345_.m_25352_(2, new FloatGoal(this));
-      this.f_21345_.m_25352_(3, new MoveBackToVillageGoal(this, 0.6, false));
-      this.f_21345_.m_25352_(4, new OpenDoorGoal(this, true));
-      this.f_21345_.m_25352_(5, new OpenDoorGoal(this, false));
+      this.goalSelector.addGoal(2, new FloatGoal(this));
+      this.goalSelector.addGoal(3, new MoveBackToVillageGoal(this, 0.6, false));
+      this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
+      this.goalSelector.addGoal(5, new OpenDoorGoal(this, false));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
-      SetTagJujutsuSorcererProcedure.execute(world, this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
+      SetTagJujutsuSorcererProcedure.execute(world, this.getX(), this.getY(), this.getZ(), this);
       return retval;
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      TakadaOnEntityTickUpdateProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      TakadaOnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      return super.m_6972_(p_33597_).m_20388_(1.0F);
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      return super.getDimensions(p_33597_).scale(1.0F);
    }
 
-   public boolean m_6094_() {
+   public boolean isPushable() {
       return false;
    }
 
-   protected void m_7324_(Entity entityIn) {
+   protected void doPush(Entity entityIn) {
    }
 
-   protected void m_6138_() {
+   protected void pushEntities() {
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_21203_();
+   public void aiStep() {
+      super.aiStep();
+      this.updateSwingTime();
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 20.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 20.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 
    private PlayState movementPredicate(AnimationState event) {
       if (!this.animationprocedure.equals("empty")) {
          return PlayState.STOP;
-      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.m_20142_()) {
+      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.isSprinting()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
-      } else if (this.m_21224_()) {
+      } else if (this.isDeadOrDying()) {
          return event.setAndContinue(RawAnimation.begin().thenPlay("death"));
-      } else if (this.m_6144_()) {
+      } else if (this.isShiftKeyDown()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("guard"));
       } else {
-         return this.m_20142_() ? event.setAndContinue(RawAnimation.begin().thenLoop("sprint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+         return this.isSprinting() ? event.setAndContinue(RawAnimation.begin().thenLoop("sprint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
       }
    }
 
    private PlayState attackingPredicate(AnimationState event) {
-      double d1 = this.m_20185_() - this.f_19790_;
-      double d0 = this.m_20189_() - this.f_19792_;
+      double d1 = this.getX() - this.xOld;
+      double d0 = this.getZ() - this.zOld;
       float velocity = (float)Math.sqrt(d1 * d1 + d0 * d0);
-      if (this.m_21324_(event.getPartialTick()) > 0.0F && !this.swinging) {
+      if (this.getAttackAnim(event.getPartialTick()) > 0.0F && !this.swinging) {
          this.swinging = true;
-         this.lastSwing = this.m_9236_().m_46467_();
+         this.lastSwing = this.level().getGameTime();
       }
 
-      if (this.swinging && this.lastSwing + 7L <= this.m_9236_().m_46467_()) {
+      if (this.swinging && this.lastSwing + 7L <= this.level().getGameTime()) {
          this.swinging = false;
       }
 
@@ -213,40 +213,47 @@ public class TakadaEntity extends PathfinderMob implements GeoEntity {
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -260,8 +267,8 @@ public class TakadaEntity extends PathfinderMob implements GeoEntity {
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(TakadaEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(TakadaEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(TakadaEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(TakadaEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(TakadaEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(TakadaEntity.class, EntityDataSerializers.STRING);
    }
 }

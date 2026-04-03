@@ -13,17 +13,17 @@ import net.minecraft.world.level.Level;
 
 public class CopiedCursedTechniqueItem extends Item {
    public CopiedCursedTechniqueItem() {
-      super((new Item.Properties()).m_41487_(10).m_41486_().m_41497_(Rarity.RARE));
+      super((new Item.Properties()).stacksTo(10).fireResistant().rarity(Rarity.RARE));
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      CopiedCursedTechniqueRightclickedProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity, (ItemStack)ar.m_19095_());
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      CopiedCursedTechniqueRightclickedProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), entity, (ItemStack)ar.getObject());
       return ar;
    }
 
-   public void m_6883_(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-      super.m_6883_(itemstack, world, entity, slot, selected);
+   public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+      super.inventoryTick(itemstack, world, entity, slot, selected);
       SwordOkkotsuYutaToolInInventoryTickProcedure.execute(world, entity, itemstack);
    }
 }

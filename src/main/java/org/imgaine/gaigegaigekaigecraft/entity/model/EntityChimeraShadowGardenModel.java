@@ -9,14 +9,14 @@ public class EntityChimeraShadowGardenModel extends GeoModel<EntityChimeraShadow
    }
 
    public ResourceLocation getAnimationResource(EntityChimeraShadowGardenEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/chimera_shadow_garden.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/chimera_shadow_garden.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityChimeraShadowGardenEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/chimera_shadow_garden.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/chimera_shadow_garden.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityChimeraShadowGardenEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

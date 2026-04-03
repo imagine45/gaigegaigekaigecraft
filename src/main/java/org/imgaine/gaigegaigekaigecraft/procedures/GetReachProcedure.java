@@ -14,19 +14,19 @@ public class GetReachProcedure {
          return 0.0;
       } else {
          double attack_reach = 0.0;
-         ItemStack item_a = ItemStack.f_41583_;
+         ItemStack item_a = ItemStack.EMPTY;
          ItemStack var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         item_a = var10000.m_41777_();
+         item_a = var10000.copy();
          attack_reach = 1.0;
-         if (item_a.m_41784_().m_128459_("Reach") != 0.0) {
-            attack_reach = 1.0 + item_a.m_41784_().m_128459_("Reach");
+         if (item_a.getOrCreateTag().getDouble("Reach") != 0.0) {
+            attack_reach = 1.0 + item_a.getOrCreateTag().getDouble("Reach");
          }
 
          if (entity instanceof ToadEntity) {

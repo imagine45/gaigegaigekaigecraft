@@ -2,6 +2,8 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import net.minecraftforge.common.util.NonNullConsumer;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class KugisakiRightClickProcedure {
    public KugisakiRightClickProcedure() {
@@ -26,11 +29,11 @@ public class KugisakiRightClickProcedure {
          double old_select = 0.0;
          double old_skill = 0.0;
          boolean logic_a = false;
-         if (entity.getPersistentData().m_128459_("skill") == 0.0) {
+         if (entity.getPersistentData().getDouble("skill") == 0.0) {
             label85: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt1 = (LivingEntity)entity;
-                  if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
+                  if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
                      break label85;
                   }
                }
@@ -38,11 +41,16 @@ public class KugisakiRightClickProcedure {
                AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                LazyOptional var10000 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                Objects.requireNonNull(_iitemhandlerref);
-               var10000.ifPresent(_iitemhandlerref::set);
+               var10000.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                if (_iitemhandlerref.get() != null) {
                   for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                     if (itemstackiterator.m_41720_() == JujutsucraftModItems.NAIL.get()) {
+                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                     if (itemstackiterator.getItem() == JujutsucraftModItems.NAIL.get()) {
                         logic_a = true;
                         break;
                      }
@@ -56,7 +64,7 @@ public class KugisakiRightClickProcedure {
                      }
 
                      Player _plr = (Player)entity;
-                     if (!_plr.m_150110_().f_35937_) {
+                     if (!_plr.getAbilities().instabuild) {
                         break label86;
                      }
                   }
@@ -69,7 +77,7 @@ public class KugisakiRightClickProcedure {
                   KugisakiNailProcedure.execute(world, x, y, z, entity);
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_36335_().m_41524_(itemstack.m_41720_(), 3);
+                     _player.getCooldowns().addCooldown(itemstack.getItem(), 3);
                   }
 
                   return;
@@ -77,8 +85,8 @@ public class KugisakiRightClickProcedure {
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.dont_use").getString()), true);
+                  if (!_player.level().isClientSide()) {
+                     _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.dont_use").getString()), true);
                      return;
                   }
                }
@@ -89,8 +97,8 @@ public class KugisakiRightClickProcedure {
 
          if (entity instanceof Player) {
             Player _player = (Player)entity;
-            if (!_player.m_9236_().m_5776_()) {
-               _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.dont_use").getString()), true);
+            if (!_player.level().isClientSide()) {
+               _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.dont_use").getString()), true);
             }
          }
 

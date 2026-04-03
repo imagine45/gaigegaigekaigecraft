@@ -1,9 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.UUID;
-import java.util.function.BiFunction;
 import org.imgaine.gaigegaigekaigecraft.entity.TrueSphereEntity;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
 
@@ -28,20 +25,9 @@ public class LocateTrueSphereProcedure {
          double HP = 0.0;
          Entity entity_rika = null;
          logic_a = false;
-         if (entity.getPersistentData().m_128459_("friend_num") != 0.0) {
-            entity_rika = (new BiFunction<LevelAccessor, String, Entity>() {
-               public Entity apply(LevelAccessor levelAccessor, String uuid) {
-                  if (levelAccessor instanceof ServerLevel serverLevel) {
-                     try {
-                        return serverLevel.m_8791_(UUID.fromString(uuid));
-                     } catch (Exception var5) {
-                     }
-                  }
-
-                  return null;
-               }
-            }).apply(world, entity.getPersistentData().m_128461_("TRUE_SPHERE_UUID"));
-            if (entity_rika instanceof TrueSphereEntity && entity.getPersistentData().m_128459_("friend_num") == entity_rika.getPersistentData().m_128459_("friend_num")) {
+         if (entity.getPersistentData().getDouble("friend_num") != 0.0) {
+            entity_rika = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("TRUE_SPHERE_UUID"));
+            if (entity_rika instanceof TrueSphereEntity && entity.getPersistentData().getDouble("friend_num") == entity_rika.getPersistentData().getDouble("friend_num")) {
                logic_a = true;
             }
          }

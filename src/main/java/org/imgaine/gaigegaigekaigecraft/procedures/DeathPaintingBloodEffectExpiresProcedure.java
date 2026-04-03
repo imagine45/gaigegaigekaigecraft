@@ -17,49 +17,25 @@ public class DeathPaintingBloodEffectExpiresProcedure {
    public static void execute(Entity entity, double amplifier) {
       if (entity != null) {
          double num_level = 0.0;
-         if (amplifier > 0.0 && (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 10.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 10.0 || entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:death_painting"))))) {
-            if (entity instanceof LivingEntity) {
-               LivingEntity _livingEntity2 = (LivingEntity)entity;
-               if (_livingEntity2.m_21204_().m_22171_(Attributes.f_22281_)) {
-                  AttributeInstance var10000;
-                  double var10001;
-                  label40: {
-                     var10000 = _livingEntity2.getAttribute_(Attributes.f_22281_);
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _livingEntity1 = (LivingEntity)entity;
-                        if (_livingEntity1.m_21204_().m_22171_(Attributes.f_22281_)) {
-                           var10001 = _livingEntity1.getAttribute_(Attributes.f_22281_).m_22115_();
-                           break label40;
-                        }
+         if (amplifier > 0.0 && (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 10.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 10.0 || entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:death_painting")))) && entity instanceof LivingEntity) {
+            LivingEntity _livingEntity2 = (LivingEntity)entity;
+            if (_livingEntity2.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+               AttributeInstance var10000;
+               double var10001;
+               label22: {
+                  var10000 = _livingEntity2.getAttribute(Attributes.ATTACK_DAMAGE);
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _livingEntity1 = (LivingEntity)entity;
+                     if (_livingEntity1.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                        var10001 = _livingEntity1.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+                        break label22;
                      }
-
-                     var10001 = 0.0;
                   }
 
-                  var10000.m_22100_(var10001 - amplifier * 0.6);
+                  var10001 = 0.0;
                }
-            }
 
-            if (entity instanceof LivingEntity) {
-               LivingEntity _livingEntity4 = (LivingEntity)entity;
-               if (_livingEntity4.m_21204_().m_22171_(Attributes.f_22284_)) {
-                  AttributeInstance var9;
-                  double var10;
-                  label29: {
-                     var9 = _livingEntity4.getAttribute_(Attributes.f_22284_);
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _livingEntity3 = (LivingEntity)entity;
-                        if (_livingEntity3.m_21204_().m_22171_(Attributes.f_22284_)) {
-                           var10 = _livingEntity3.getAttribute_(Attributes.f_22284_).m_22115_();
-                           break label29;
-                        }
-                     }
-
-                     var10 = 0.0;
-                  }
-
-                  var9.m_22100_(var10 - 10.0);
-               }
+               var10000.setBaseValue(var10001 - amplifier * 0.6);
             }
          }
 

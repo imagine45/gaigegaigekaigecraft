@@ -14,7 +14,7 @@ public class GojoSatoruDisplayConditionProcedure {
          boolean var10000;
          if (entity instanceof GojoSatoruEntity) {
             GojoSatoruEntity _datEntL0 = (GojoSatoruEntity)entity;
-            if ((Boolean)_datEntL0.m_20088_().m_135370_(GojoSatoruEntity.DATA_ghost)) {
+            if ((Boolean)_datEntL0.getEntityData().get(GojoSatoruEntity.DATA_ghost)) {
                var10000 = true;
                return var10000;
             }

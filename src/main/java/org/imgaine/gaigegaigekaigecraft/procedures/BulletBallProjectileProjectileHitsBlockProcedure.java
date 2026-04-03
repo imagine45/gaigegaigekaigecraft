@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import java.util.function.Consumer;
 import org.imgaine.gaigegaigekaigecraft.entity.EntityDoorsEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
@@ -41,8 +40,8 @@ public class BulletBallProjectileProjectileHitsBlockProcedure {
             double NUM1 = 0.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                  var10001 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+               if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                  var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                   break label168;
                }
             }
@@ -56,11 +55,11 @@ public class BulletBallProjectileProjectileHitsBlockProcedure {
          double var31 = z;
          Vec3 _center = new Vec3(x, var30, z);
 
-         for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(8.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-            if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo")))) {
-               var29 = entityiterator.m_20185_();
-               var30 = entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.75;
-               var31 = entityiterator.m_20189_();
+         for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(8.0), (e) -> true)) {
+            if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator) && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo")))) {
+               var29 = entityiterator.getX();
+               var30 = entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.75;
+               var31 = entityiterator.getZ();
                break;
             }
          }
@@ -69,18 +68,18 @@ public class BulletBallProjectileProjectileHitsBlockProcedure {
          label151: {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt8 = (LivingEntity)entity;
-               if (_livEnt8.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && !entity.getPersistentData().m_128471_("Failed")) {
+               if (_livEnt8.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && !entity.getPersistentData().getBoolean("Failed")) {
                   int var10000;
                   label145: {
                      var27 = 0.0;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt10 = (LivingEntity)entity;
-                        if (_livEnt10.m_21023_(MobEffects.f_19621_)) {
+                        if (_livEnt10.hasEffect(MobEffects.LUCK)) {
                            label141: {
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entity;
-                                 if (_livEnt.m_21023_(MobEffects.f_19621_)) {
-                                    var10000 = _livEnt.m_21124_(MobEffects.f_19621_).m_19564_();
+                                 if (_livEnt.hasEffect(MobEffects.LUCK)) {
+                                    var10000 = _livEnt.getEffect(MobEffects.LUCK).getAmplifier();
                                     break label141;
                                  }
                               }
@@ -97,7 +96,7 @@ public class BulletBallProjectileProjectileHitsBlockProcedure {
                   }
 
                   double var33 = (double)var10000;
-                  var33 += (double)(entity.getPersistentData().m_128459_("mode_hakari") != 1.0 && entity.getPersistentData().m_128459_("mode_hakari") != 2.0 ? 0 : 5);
+                  var33 += (double)(entity.getPersistentData().getDouble("mode_hakari") != 1.0 && entity.getPersistentData().getDouble("mode_hakari") != 2.0 ? 0 : 5);
 
                   for(int index0 = 0; index0 < (int)var33; ++index0) {
                      double var32 = var27;
@@ -124,8 +123,8 @@ public class BulletBallProjectileProjectileHitsBlockProcedure {
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt14 = (LivingEntity)entity;
-                     if (_livEnt14.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && entity.getPersistentData().m_128459_("Reserve") == 0.0) {
-                        entity.getPersistentData().m_128347_("Reserve", (double)Math.round(var27));
+                     if (_livEnt14.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && entity.getPersistentData().getDouble("Reserve") == 0.0) {
+                        entity.getPersistentData().putDouble("Reserve", (double)Math.round(var27));
                      }
                   }
                   break label151;
@@ -137,36 +136,36 @@ public class BulletBallProjectileProjectileHitsBlockProcedure {
 
          if (world instanceof ServerLevel) {
             ServerLevel _serverLevel = (ServerLevel)world;
-            Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_DOORS.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(var29, var30, var31), MobSpawnType.MOB_SUMMONED, false, false);
+            Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_DOORS.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(var29, var30, var31), MobSpawnType.MOB_SUMMONED, false, false);
             if (entityinstance != null) {
-               entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+               entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                SetRangedAmmoProcedure.execute(entity, entityinstance);
-               if (!entityinstance.m_9236_().m_5776_() && entityinstance.m_20194_() != null) {
-                  entityinstance.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityinstance.m_20182_(), entityinstance.m_20155_(), entityinstance.m_9236_() instanceof ServerLevel ? (ServerLevel)entityinstance.m_9236_() : null, 4, entityinstance.m_7755_().getString(), entityinstance.m_5446_(), entityinstance.m_9236_().m_7654_(), entityinstance), "data merge entity @s {NoAI:1b,Invulnerable:1b}");
+               if (!entityinstance.level().isClientSide() && entityinstance.getServer() != null) {
+                  entityinstance.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityinstance.position(), entityinstance.getRotationVector(), entityinstance.level() instanceof ServerLevel ? (ServerLevel)entityinstance.level() : null, 4, entityinstance.getName().getString(), entityinstance.getDisplayName(), entityinstance.level().getServer(), entityinstance), "data merge entity @s {NoAI:1b,Invulnerable:1b}");
                }
 
-               entityinstance.m_146922_(entity.m_146908_());
-               entityinstance.m_146926_(entity.m_146909_());
-               entityinstance.m_5618_(entityinstance.m_146908_());
-               entityinstance.m_5616_(entityinstance.m_146908_());
-               entityinstance.f_19859_ = entityinstance.m_146908_();
-               entityinstance.f_19860_ = entityinstance.m_146909_();
+               entityinstance.setYRot(entity.getYRot());
+               entityinstance.setXRot(entity.getXRot());
+               entityinstance.setYBodyRot(entityinstance.getYRot());
+               entityinstance.setYHeadRot(entityinstance.getYRot());
+               entityinstance.yRotO = entityinstance.getYRot();
+               entityinstance.xRotO = entityinstance.getXRot();
                if (entityinstance instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entityinstance;
-                  _entity.f_20884_ = _entity.m_146908_();
-                  _entity.f_20886_ = _entity.m_146908_();
+                  _entity.yBodyRotO = _entity.getYRot();
+                  _entity.yHeadRotO = _entity.getYRot();
                }
 
                if (entityinstance instanceof LivingEntity) {
                   LivingEntity _livingEntity25 = (LivingEntity)entityinstance;
-                  if (_livingEntity25.m_21204_().m_22171_(Attributes.f_22276_)) {
-                     _livingEntity25.getAttribute_(Attributes.f_22276_).m_22100_(var26);
+                  if (_livingEntity25.getAttributes().hasAttribute(Attributes.MAX_HEALTH)) {
+                     _livingEntity25.getAttribute(Attributes.MAX_HEALTH).setBaseValue(var26);
                   }
                }
 
                if (entityinstance instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entityinstance;
-                  _entity.m_21153_((float)var26);
+                  _entity.setHealth((float)var26);
                }
 
                if (var27 == 1.0) {
@@ -194,7 +193,7 @@ public class BulletBallProjectileProjectileHitsBlockProcedure {
                   animatable.setTexture("door_rainbow");
                }
 
-               _serverLevel.m_7967_(entityinstance);
+               _serverLevel.addFreshEntity(entityinstance);
             }
          }
 

@@ -33,7 +33,7 @@ public class WhenEntityAttackedNoSourceEntityProcedure {
    @SubscribeEvent
    public static void onEntityAttacked(LivingAttackEvent event) {
       if (event != null && event.getEntity() != null) {
-         execute(event, event.getEntity().m_9236_(), event.getSource(), event.getEntity());
+         execute(event, event.getEntity().level(), event.getSource(), event.getEntity());
       }
 
    }
@@ -44,15 +44,15 @@ public class WhenEntityAttackedNoSourceEntityProcedure {
 
    private static void execute(@Nullable Event event, LevelAccessor world, DamageSource damagesource, Entity entity) {
       if (damagesource != null && entity != null) {
-         if (!damagesource.m_269533_(TagKey.m_203882_(Registries.f_268580_, new ResourceLocation("forge:animation")))) {
+         if (!damagesource.is(TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("forge:animation")))) {
             label120: {
-               if (!damagesource.m_276093_(DamageTypes.f_286979_) && entity instanceof LivingEntity) {
+               if (!damagesource.is(DamageTypes.GENERIC_KILL) && entity instanceof LivingEntity) {
                   LivingEntity _livEnt2 = (LivingEntity)entity;
-                  if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
+                  if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
                      label119: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt3 = (LivingEntity)entity;
-                           if (_livEnt3.m_21023_((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
+                           if (_livEnt3.hasEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
                               break label119;
                            }
                         }
@@ -65,18 +65,18 @@ public class WhenEntityAttackedNoSourceEntityProcedure {
                   }
                }
 
-               if (entity.m_9236_().m_46472_() == ResourceKey.m_135785_(Registries.f_256858_, new ResourceLocation("jujutsucraft:cursed_spirit_manipulation_dimension")) && event != null && event.isCancelable()) {
+               if (entity.level().dimension() == ResourceKey.create(Registries.DIMENSION, new ResourceLocation("gaigegaigekaigecraft:cursed_spirit_manipulation_dimension")) && event != null && event.isCancelable()) {
                   event.setCanceled(true);
                }
             }
          }
 
-         if (damagesource.m_276093_(DamageTypes.f_268612_)) {
-            if (!entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living"))) && !(entity instanceof Killer1Entity) && !(entity instanceof GreatSerpentEntity)) {
+         if (damagesource.is(DamageTypes.IN_WALL)) {
+            if (!entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living"))) && !(entity instanceof Killer1Entity) && !(entity instanceof GreatSerpentEntity)) {
                label89: {
                   label88: {
                      if (!(entity instanceof CursedSpiritGrade15Entity) && !(entity instanceof CursedSpiritGrade23Entity)) {
-                        if (!entity.getPersistentData().m_128471_("CursedSpirit")) {
+                        if (!entity.getPersistentData().getBoolean("CursedSpirit")) {
                            break label88;
                         }
 
@@ -84,8 +84,8 @@ public class WhenEntityAttackedNoSourceEntityProcedure {
                         label83: {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                 var10000 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                              if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                 var10000 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                  break label83;
                               }
                            }
@@ -104,7 +104,7 @@ public class WhenEntityAttackedNoSourceEntityProcedure {
                      break label89;
                   }
 
-                  if (!world.m_6443_(CoffinEntity.class, AABB.m_165882_(new Vec3(entity.m_20185_(), entity.m_20186_(), entity.m_20189_()), 0.1, 0.1, 0.1), (e) -> true).isEmpty() && event != null && event.isCancelable()) {
+                  if (!world.getEntitiesOfClass(CoffinEntity.class, AABB.ofSize(new Vec3(entity.getX(), entity.getY(), entity.getZ()), 0.1, 0.1, 0.1), (e) -> true).isEmpty() && event != null && event.isCancelable()) {
                      event.setCanceled(true);
                   }
                }
@@ -113,7 +113,7 @@ public class WhenEntityAttackedNoSourceEntityProcedure {
             }
          }
 
-         if (entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living"))) && (damagesource.m_276093_(DamageTypes.f_268444_) || damagesource.m_276093_(DamageTypes.f_268469_) || damagesource.m_276093_(DamageTypes.f_268585_) || damagesource.m_276093_(DamageTypes.f_268722_) || damagesource.m_276093_(DamageTypes.f_268493_)) && event != null && event.isCancelable()) {
+         if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living"))) && (damagesource.is(DamageTypes.FREEZE) || damagesource.is(DamageTypes.SWEET_BERRY_BUSH) || damagesource.is(DamageTypes.CACTUS) || damagesource.is(DamageTypes.DROWN) || damagesource.is(DamageTypes.WITHER)) && event != null && event.isCancelable()) {
             event.setCanceled(true);
          }
 

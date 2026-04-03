@@ -76,219 +76,226 @@ public class ShikigamiPterosaurEntity extends Monster implements GeoEntity {
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_274367_(0.6F);
-      this.m_21530_();
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setMaxUpStep(0.6F);
+      this.setPersistenceRequired();
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "shikigami_dhruvrakdawala2");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "shikigami_dhruvrakdawala2");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new MeleeAttackGoal(this, 1.2, true) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = ShikigamiPterosaurEntity.this.m_20185_();
-            double y = ShikigamiPterosaurEntity.this.m_20186_();
-            double z = ShikigamiPterosaurEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = ShikigamiPterosaurEntity.this.getX();
+            double y = ShikigamiPterosaurEntity.this.getY();
+            double z = ShikigamiPterosaurEntity.this.getZ();
             Entity entity = ShikigamiPterosaurEntity.this;
-            Level world = ShikigamiPterosaurEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = ShikigamiPterosaurEntity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(2, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = ShikigamiPterosaurEntity.this.m_20185_();
-            double y = ShikigamiPterosaurEntity.this.m_20186_();
-            double z = ShikigamiPterosaurEntity.this.m_20189_();
+      this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = ShikigamiPterosaurEntity.this.getX();
+            double y = ShikigamiPterosaurEntity.this.getY();
+            double z = ShikigamiPterosaurEntity.this.getZ();
             Entity entity = ShikigamiPterosaurEntity.this;
-            Level world = ShikigamiPterosaurEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ShikigamiPterosaurEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = ShikigamiPterosaurEntity.this.m_20185_();
-            double y = ShikigamiPterosaurEntity.this.m_20186_();
-            double z = ShikigamiPterosaurEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = ShikigamiPterosaurEntity.this.getX();
+            double y = ShikigamiPterosaurEntity.this.getY();
+            double z = ShikigamiPterosaurEntity.this.getZ();
             Entity entity = ShikigamiPterosaurEntity.this;
-            Level world = ShikigamiPterosaurEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ShikigamiPterosaurEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = ShikigamiPterosaurEntity.this.m_20185_();
-            double y = ShikigamiPterosaurEntity.this.m_20186_();
-            double z = ShikigamiPterosaurEntity.this.m_20189_();
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = ShikigamiPterosaurEntity.this.getX();
+            double y = ShikigamiPterosaurEntity.this.getY();
+            double z = ShikigamiPterosaurEntity.this.getZ();
             Entity entity = ShikigamiPterosaurEntity.this;
-            Level world = ShikigamiPterosaurEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ShikigamiPterosaurEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = ShikigamiPterosaurEntity.this.m_20185_();
-            double y = ShikigamiPterosaurEntity.this.m_20186_();
-            double z = ShikigamiPterosaurEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = ShikigamiPterosaurEntity.this.getX();
+            double y = ShikigamiPterosaurEntity.this.getY();
+            double z = ShikigamiPterosaurEntity.this.getZ();
             Entity entity = ShikigamiPterosaurEntity.this;
-            Level world = ShikigamiPterosaurEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ShikigamiPterosaurEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(5, new RandomStrollGoal(this, 0.8));
-      this.f_21345_.m_25352_(6, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(7, new FloatGoal(this));
+      this.goalSelector.addGoal(5, new RandomStrollGoal(this, 0.8));
+      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(7, new FloatGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public double m_6048_() {
-      return super.m_6048_() + -1.0;
+   public double getPassengersRidingOffset() {
+      return super.getPassengersRidingOffset() + -1.0;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_6469_(DamageSource source, float amount) {
-      return source.m_276093_(DamageTypes.f_268671_) ? false : super.m_6469_(source, amount);
+   public boolean hurt(DamageSource source, float amount) {
+      return source.is(DamageTypes.FALL) ? false : super.hurt(source, amount);
    }
 
-   public void m_6667_(DamageSource source) {
-      super.m_6667_(source);
-      DieRikaProcedure.execute(this.m_9236_(), this);
+   public void die(DamageSource source) {
+      super.die(source);
+      DieRikaProcedure.execute(this.level(), this);
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      super.m_6071_(sourceentity, hand);
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      super.mobInteract(sourceentity, hand);
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       ShikigamiRightClickedOnEntityProcedure.execute(world, this, sourceentity);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIShikigamiDhruvLakdawallaProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIShikigamiDhruvLakdawallaProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      return super.m_6972_(p_33597_).m_20388_(2.0F);
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      return super.getDimensions(p_33597_).scale(2.0F);
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 80.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 0.5);
-      builder = builder.m_22268_(Attributes.f_22282_, 0.5);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 80.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 0.5);
       return builder;
    }
 
    private PlayState movementPredicate(AnimationState event) {
       if (this.animationprocedure.equals("empty")) {
-         return this.m_21224_() ? event.setAndContinue(RawAnimation.begin().thenPlay("death")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+         return this.isDeadOrDying() ? event.setAndContinue(RawAnimation.begin().thenPlay("death")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
       } else {
          return PlayState.STOP;
       }
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -301,8 +308,8 @@ public class ShikigamiPterosaurEntity extends Monster implements GeoEntity {
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(ShikigamiPterosaurEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(ShikigamiPterosaurEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(ShikigamiPterosaurEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(ShikigamiPterosaurEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(ShikigamiPterosaurEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(ShikigamiPterosaurEntity.class, EntityDataSerializers.STRING);
    }
 }

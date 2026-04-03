@@ -22,9 +22,9 @@ public class GetSukunaLevelProcedure {
          double num1 = 0.0;
          double cursed_technique2 = 0.0;
          double cursed_technique = 0.0;
-         if (ReturnInsideItemProcedure.execute(entity).m_41720_() == JujutsucraftModItems.SUKUNA_FINGER.get()) {
+         if (ReturnInsideItemProcedure.execute(entity).getItem() == JujutsucraftModItems.SUKUNA_FINGER.get()) {
             if (entity instanceof Player) {
-               num1 = (double)((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.m_41613_();
+               num1 = (double)((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).BodyItem.getCount();
             } else {
                if (entity instanceof SukunaEntity) {
                   num1 = 16.0;

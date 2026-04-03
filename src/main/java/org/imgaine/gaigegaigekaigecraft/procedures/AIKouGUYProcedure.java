@@ -1,8 +1,10 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade212Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade213Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade214Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade215Entity;
+import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade217Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade21Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade22Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade23Entity;
@@ -31,7 +33,7 @@ public class AIKouGUYProcedure {
          double level = 0.0;
          double lv_strength = 0.0;
          double tick = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             AIActiveProcedure.execute(world, x, y, z, entity);
             if (entity instanceof CursedSpiritGrade29Entity) {
                AIActiveFlyingProcedure.execute(world, entity);
@@ -41,25 +43,25 @@ public class AIKouGUYProcedure {
                lv_strength = 8.0;
                lv_resistance = 2.0;
             } else if (!(entity instanceof CursedSpiritGrade26Entity) && !(entity instanceof CursedSpiritGrade213Entity)) {
-               if (!(entity instanceof CursedSpiritGrade21Entity) && !(entity instanceof CursedSpiritGrade23Entity) && !(entity instanceof CursedSpiritGrade24Entity) && !(entity instanceof CursedSpiritGrade25Entity) && !(entity instanceof CursedSpiritGrade28Entity) && !(entity instanceof CursedSpiritGrade29Entity) && !(entity instanceof CursedSpiritGrade214Entity) && !(entity instanceof CursedSpiritGrade215Entity)) {
+               if (!(entity instanceof CursedSpiritGrade21Entity) && !(entity instanceof CursedSpiritGrade23Entity) && !(entity instanceof CursedSpiritGrade24Entity) && !(entity instanceof CursedSpiritGrade25Entity) && !(entity instanceof CursedSpiritGrade28Entity) && !(entity instanceof CursedSpiritGrade29Entity) && !(entity instanceof CursedSpiritGrade212Entity) && !(entity instanceof CursedSpiritGrade214Entity) && !(entity instanceof CursedSpiritGrade215Entity) && !(entity instanceof CursedSpiritGrade217Entity)) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get(), 10, 10, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get(), 10, 10, false, false));
                      }
                   }
 
-                  label130: {
+                  label132: {
                      if (entity instanceof LivingEntity) {
-                        LivingEntity _livEnt14 = (LivingEntity)entity;
-                        if (_livEnt14.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
-                           break label130;
+                        LivingEntity _livEnt16 = (LivingEntity)entity;
+                        if (_livEnt16.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+                           break label132;
                         }
                      }
 
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_(MobEffects.f_19597_);
+                        _entity.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
                      }
                   }
 
@@ -74,34 +76,34 @@ public class AIKouGUYProcedure {
                lv_resistance = 1.0;
             }
 
-            label123: {
+            label125: {
                if (entity instanceof LivingEntity) {
-                  LivingEntity _livEnt16 = (LivingEntity)entity;
-                  if (_livEnt16.m_21023_(MobEffects.f_19600_)) {
-                     break label123;
+                  LivingEntity _livEnt18 = (LivingEntity)entity;
+                  if (_livEnt18.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                     break label125;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, (int)lv_strength, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, (int)lv_strength, false, false));
                   }
                }
             }
 
-            label118: {
+            label120: {
                if (entity instanceof LivingEntity) {
-                  LivingEntity _livEnt18 = (LivingEntity)entity;
-                  if (_livEnt18.m_21023_(MobEffects.f_19606_)) {
-                     break label118;
+                  LivingEntity _livEnt20 = (LivingEntity)entity;
+                  if (_livEnt20.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
+                     break label120;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, (int)lv_resistance, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, (int)lv_resistance, false, false));
                   }
                }
             }
@@ -109,67 +111,67 @@ public class AIKouGUYProcedure {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
             if (var10000 instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
-                  entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
+                  entity.getPersistentData().putDouble("cnt_x", 0.0);
                   ResetCounterProcedure.execute(entity);
                   if (entity instanceof CursedSpiritGrade26Entity) {
-                     label160: {
+                     label164: {
                         distance = GetDistanceProcedure.execute(entity);
                         if (entity instanceof LivingEntity) {
-                           LivingEntity _livEnt28 = (LivingEntity)entity;
-                           if (_livEnt28.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
-                              break label160;
+                           LivingEntity _livEnt30 = (LivingEntity)entity;
+                           if (_livEnt30.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
+                              break label164;
                            }
                         }
 
                         if (distance < 32.0 && Math.random() < 0.5) {
-                           entity.getPersistentData().m_128347_("skill", (double)Math.round(1615.0F));
+                           entity.getPersistentData().putDouble("skill", (double)Math.round(1615.0F));
                            level = 1.0;
                            tick = 150.0;
                         }
                      }
                   }
 
-                  if (entity.getPersistentData().m_128459_("skill") != 0.0) {
-                     label167: {
+                  if (entity.getPersistentData().getDouble("skill") != 0.0) {
+                     label171: {
                         if (level > 0.0) {
                            if (entity instanceof LivingEntity) {
-                              LivingEntity _livEnt31 = (LivingEntity)entity;
-                              if (_livEnt31.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
-                                 break label167;
+                              LivingEntity _livEnt33 = (LivingEntity)entity;
+                              if (_livEnt33.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
+                                 break label171;
                               }
                            }
                         } else if (!LogicStartProcedure.execute(entity)) {
-                           break label167;
+                           break label171;
                         }
 
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                            }
                         }
 
                         if (level > 0.0) {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entity;
-                              if (!_entity.m_9236_().m_5776_()) {
-                                 _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)tick, 0, false, false));
+                              if (!_entity.level().isClientSide()) {
+                                 _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)tick, 0, false, false));
                               }
 
                               return;
                            }
                         } else if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
                            }
 
                            return;
@@ -182,7 +184,7 @@ public class AIKouGUYProcedure {
                   CalculateAttackProcedure.execute(world, entity);
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
             }
          }
 

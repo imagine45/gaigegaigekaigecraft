@@ -2,8 +2,6 @@ package org.imgaine.gaigegaigekaigecraft.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import org.imgaine.gaigegaigekaigecraft.GenericArmorLayer;
-import org.imgaine.gaigegaigekaigecraft.GenericItemLayer;
 import org.imgaine.gaigegaigekaigecraft.entity.EntityAttackSlashEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.layer.EntityAttackSlashLayer;
 import org.imgaine.gaigegaigekaigecraft.entity.model.EntityAttackSlashModel;
@@ -14,26 +12,24 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class EntityAttackSlashRenderer extends DynamicGeoEntityRenderer<EntityAttackSlashEntity> {
+public class EntityAttackSlashRenderer extends GeoEntityRenderer<EntityAttackSlashEntity> {
    public EntityAttackSlashRenderer(EntityRendererProvider.Context renderManager) {
       super(renderManager, new EntityAttackSlashModel());
-      this.f_114477_ = 0.0F;
+      this.shadowRadius = 0.0F;
       this.addRenderLayer(new EntityAttackSlashLayer(this));
-      this.addRenderLayer(new GenericArmorLayer(this));
-      this.addRenderLayer(new GenericItemLayer(this));
    }
 
    public RenderType getRenderType(EntityAttackSlashEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.m_5478_(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 
    public void preRender(PoseStack poseStack, EntityAttackSlashEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
       this.scaleHeight = scale;
       this.scaleWidth = scale;

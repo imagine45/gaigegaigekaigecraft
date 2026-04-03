@@ -17,14 +17,14 @@ public class LogicCooldownCombatProcedure {
          label32: {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt0 = (LivingEntity)entity;
-               if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
+               if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
                   break label32;
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt1 = (LivingEntity)entity;
-               if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+               if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
                   break label32;
                }
             }

@@ -1,6 +1,7 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.function.Consumer;
+import org.imgaine.gaigegaigekaigecraft.entity.CrowEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -28,14 +29,14 @@ public class MeimeiDomainActiveProcedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
-         if (!entity.getPersistentData().m_128471_("Failed")) {
+         if (!entity.getPersistentData().getBoolean("Failed")) {
             int var10000;
-            label54: {
+            label58: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                     var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
-                     break label54;
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                     var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
+                     break label58;
                   }
                }
 
@@ -43,33 +44,38 @@ public class MeimeiDomainActiveProcedure {
             }
 
             if (var10000 % 90 == 20) {
-               if (entity.getPersistentData().m_128459_("friend_num") == 0.0) {
-                  entity.getPersistentData().m_128347_("friend_num", Math.random());
+               if (entity.getPersistentData().getDouble("friend_num") == 0.0) {
+                  entity.getPersistentData().putDouble("friend_num", Math.random());
                }
 
                for(int index0 = 0; index0 < 8; ++index0) {
                   if (Math.random() < 0.5) {
                      num1 = Math.toRadians(Math.random() * 360.0);
-                     x_pos = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
-                     y_pos = entity.getPersistentData().m_128459_("y_pos_doma") + Math.random() * 0.5;
-                     z_pos = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
+                     x_pos = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
+                     y_pos = entity.getPersistentData().getDouble("y_pos_doma") + Math.random() * 0.5;
+                     z_pos = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
                      if (world instanceof ServerLevel) {
                         ServerLevel _serverLevel = (ServerLevel)world;
-                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.CROW.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.CROW.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                         if (entityinstance != null) {
-                           entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                           entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
+                           if (entityinstance instanceof CrowEntity) {
+                              CrowEntity _datEntSetL = (CrowEntity)entityinstance;
+                              _datEntSetL.getEntityData().set(CrowEntity.DATA_object, true);
+                           }
+
                            if (entityinstance instanceof TamableAnimal) {
                               TamableAnimal _toTame = (TamableAnimal)entityinstance;
                               if (entity instanceof Player) {
                                  Player _owner = (Player)entity;
-                                 _toTame.m_21828_(_owner);
+                                 _toTame.tame(_owner);
                               }
                            }
 
-                           entityinstance.getPersistentData().m_128359_("OWNER_UUID", entity.m_20149_());
-                           entityinstance.getPersistentData().m_128347_("friend_num", entity.getPersistentData().m_128459_("friend_num"));
-                           entityinstance.getPersistentData().m_128379_("Player", entity instanceof Player || entity.getPersistentData().m_128471_("Player"));
-                           _serverLevel.m_7967_(entityinstance);
+                           entityinstance.getPersistentData().putString("OWNER_UUID", entity.getStringUUID());
+                           entityinstance.getPersistentData().putDouble("friend_num", entity.getPersistentData().getDouble("friend_num"));
+                           entityinstance.getPersistentData().putBoolean("Player", entity instanceof Player || entity.getPersistentData().getBoolean("Player"));
+                           _serverLevel.addFreshEntity(entityinstance);
                         }
                      }
                   }

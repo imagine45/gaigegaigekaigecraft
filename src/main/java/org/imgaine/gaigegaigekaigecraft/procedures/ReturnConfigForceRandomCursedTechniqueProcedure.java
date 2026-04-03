@@ -1,6 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import org.imgaine.gaigegaigekaigecraft.JujutsucraftConfig;
+import org.imgaine.gaigegaigekaigecraft.Config;
 
 public class ReturnConfigForceRandomCursedTechniqueProcedure {
    public ReturnConfigForceRandomCursedTechniqueProcedure() {
@@ -9,7 +9,7 @@ public class ReturnConfigForceRandomCursedTechniqueProcedure {
    public static boolean execute() {
       try {
          try {
-            return (Boolean)JujutsucraftConfig.forceRandomCursedTechnique.get();
+            return (Boolean)Config.forceRandomCursedTechnique.get();
          } catch (NullPointerException var1) {
             return false;
          }

@@ -1,7 +1,10 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.Vec3;
 
 public class BulletFlameWhileBulletFlyingTickProcedure {
    public BulletFlameWhileBulletFlyingTickProcedure() {
@@ -21,28 +24,40 @@ public class BulletFlameWhileBulletFlyingTickProcedure {
          double range = 0.0;
          double old_cooldown = 0.0;
          BulletDomainHitProcedure.execute(world, entity, immediatesourceentity);
-         immediatesourceentity.getPersistentData().m_128347_("cnt_life", immediatesourceentity.getPersistentData().m_128459_("cnt_life") + 1.0);
-         if (immediatesourceentity.getPersistentData().m_128459_("cnt_life") == 1.0) {
-            immediatesourceentity.m_20242_(true);
-            immediatesourceentity.getPersistentData().m_128347_("cnt6", entity.getPersistentData().m_128459_("cnt6"));
-            immediatesourceentity.getPersistentData().m_128347_("skill", entity.getPersistentData().m_128459_("skill"));
-            immediatesourceentity.getPersistentData().m_128347_("COOLDOWN_TICKS", entity.getPersistentData().m_128459_("COOLDOWN_TICKS"));
-            immediatesourceentity.getPersistentData().m_128347_("old_x", entity.m_20185_());
-            immediatesourceentity.getPersistentData().m_128347_("old_y", entity.m_20186_() + (double)entity.m_20206_() * 0.5);
-            immediatesourceentity.getPersistentData().m_128347_("old_z", entity.m_20189_());
-            immediatesourceentity.getPersistentData().m_128347_("Damage", 13.0 * (1.0 + immediatesourceentity.getPersistentData().m_128459_("cnt6") * 0.1));
-            entity.getPersistentData().m_128347_("Damage", 13.0 * (1.0 + immediatesourceentity.getPersistentData().m_128459_("cnt6") * 0.1));
-            DamageFixProcedure.execute(entity);
-            immediatesourceentity.getPersistentData().m_128347_("bullet_power", entity.getPersistentData().m_128459_("Damage"));
+         immediatesourceentity.getPersistentData().putDouble("cnt_life", immediatesourceentity.getPersistentData().getDouble("cnt_life") + 1.0);
+         if (immediatesourceentity.getPersistentData().getDouble("cnt_life") == 1.0) {
+            immediatesourceentity.setNoGravity(true);
+            immediatesourceentity.getPersistentData().putDouble("cnt6", entity.getPersistentData().getDouble("cnt6"));
+            immediatesourceentity.getPersistentData().putDouble("skill", entity.getPersistentData().getDouble("skill"));
+            immediatesourceentity.getPersistentData().putDouble("COOLDOWN_TICKS", entity.getPersistentData().getDouble("COOLDOWN_TICKS"));
+            immediatesourceentity.getPersistentData().putDouble("old_x", x - immediatesourceentity.getDeltaMovement().x());
+            immediatesourceentity.getPersistentData().putDouble("old_y", y - immediatesourceentity.getDeltaMovement().y());
+            immediatesourceentity.getPersistentData().putDouble("old_z", z - immediatesourceentity.getDeltaMovement().z());
+            immediatesourceentity.getPersistentData().putDouble("Damage", 15.0 * (1.0 + immediatesourceentity.getPersistentData().getDouble("cnt6") * 0.1));
+            immediatesourceentity.getPersistentData().putDouble("x_power", immediatesourceentity.getDeltaMovement().x());
+            immediatesourceentity.getPersistentData().putDouble("y_power", immediatesourceentity.getDeltaMovement().y());
+            immediatesourceentity.getPersistentData().putDouble("z_power", immediatesourceentity.getDeltaMovement().z());
          }
 
-         old_skill = entity.getPersistentData().m_128459_("skill");
-         old_cooldown = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
-         entity.getPersistentData().m_128347_("skill", immediatesourceentity.getPersistentData().m_128459_("skill"));
-         entity.getPersistentData().m_128347_("COOLDOWN_TICKS", immediatesourceentity.getPersistentData().m_128459_("COOLDOWN_TICKS"));
-         x_pos = immediatesourceentity.getPersistentData().m_128459_("old_x");
-         y_pos = immediatesourceentity.getPersistentData().m_128459_("old_y");
-         z_pos = immediatesourceentity.getPersistentData().m_128459_("old_z");
+         if (!immediatesourceentity.getPersistentData().getBoolean("Stop")) {
+            x_power = immediatesourceentity.getPersistentData().getDouble("x_power") - immediatesourceentity.getDeltaMovement().x();
+            y_power = immediatesourceentity.getPersistentData().getDouble("y_power") - immediatesourceentity.getDeltaMovement().y();
+            z_power = immediatesourceentity.getPersistentData().getDouble("z_power") - immediatesourceentity.getDeltaMovement().z();
+            x_power = immediatesourceentity.getDeltaMovement().x() + Math.min(Math.abs(x_power), 0.1) * (double)(x_power > 0.0 ? 1 : -1);
+            y_power = immediatesourceentity.getDeltaMovement().y() + Math.min(Math.abs(y_power), 0.1) * (double)(y_power > 0.0 ? 1 : -1);
+            z_power = immediatesourceentity.getDeltaMovement().z() + Math.min(Math.abs(z_power), 0.1) * (double)(z_power > 0.0 ? 1 : -1);
+            immediatesourceentity.setDeltaMovement(new Vec3(x_power, y_power, z_power));
+         } else {
+            immediatesourceentity.getPersistentData().putBoolean("Stop", false);
+         }
+
+         old_skill = entity.getPersistentData().getDouble("skill");
+         old_cooldown = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
+         entity.getPersistentData().putDouble("skill", immediatesourceentity.getPersistentData().getDouble("skill"));
+         entity.getPersistentData().putDouble("COOLDOWN_TICKS", immediatesourceentity.getPersistentData().getDouble("COOLDOWN_TICKS"));
+         x_pos = immediatesourceentity.getPersistentData().getDouble("old_x");
+         y_pos = immediatesourceentity.getPersistentData().getDouble("old_y");
+         z_pos = immediatesourceentity.getPersistentData().getDouble("old_z");
          x_power = x - x_pos;
          y_power = y - y_pos;
          z_power = z - z_pos;
@@ -53,25 +68,34 @@ public class BulletFlameWhileBulletFlyingTickProcedure {
             z_power /= dis;
          }
 
-         for(int index0 = 0; index0 < (int)Math.round(Math.max(dis, 1.0)); ++index0) {
-            entity.getPersistentData().m_128347_("Damage", immediatesourceentity.getPersistentData().m_128459_("Damage"));
-            entity.getPersistentData().m_128347_("Range", 3.0);
-            entity.getPersistentData().m_128347_("knockback", 0.5);
-            entity.getPersistentData().m_128347_("effect", 10.0);
-            RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
-            AIBulletProcedure.execute();
-            x_pos += x_power * 1.0;
-            y_pos += y_power * 1.0;
-            z_pos += z_power * 1.0;
+         for(int index0 = 0; index0 < (int)Math.round(Math.max(dis, 1.0) * 5.0); ++index0) {
+            if (num > 0.0) {
+               num = -4.0;
+               entity.getPersistentData().putDouble("Damage", immediatesourceentity.getPersistentData().getDouble("Damage"));
+               entity.getPersistentData().putDouble("Range", 3.0);
+               entity.getPersistentData().putDouble("effect", 10.0);
+               entity.getPersistentData().putDouble("knockback", 0.5);
+               RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
+               AIBulletProcedure.execute();
+            }
+
+            if (Math.random() < 0.25) {
+               ParticleGeneratorProcedure.execute(world, 1.0, 1.0, 25.0, Mth.nextDouble(RandomSource.create(), 0.0, Math.min(dis, 1.0)), x_pos, x_pos + x_power, y_pos, y_pos + y_power, z_pos, z_pos + z_power, "flame");
+            }
+
+            x_pos += x_power * 0.2;
+            y_pos += y_power * 0.2;
+            z_pos += z_power * 0.2;
          }
 
-         immediatesourceentity.getPersistentData().m_128347_("old_x", x);
-         immediatesourceentity.getPersistentData().m_128347_("old_y", y);
-         immediatesourceentity.getPersistentData().m_128347_("old_z", z);
-         entity.getPersistentData().m_128347_("skill", old_skill);
-         entity.getPersistentData().m_128347_("COOLDOWN_TICKS", old_cooldown);
-         if (immediatesourceentity.getPersistentData().m_128459_("cnt_life") > 40.0 && !immediatesourceentity.m_9236_().m_5776_()) {
-            immediatesourceentity.m_146870_();
+         immediatesourceentity.getPersistentData().putDouble("old_x", x);
+         immediatesourceentity.getPersistentData().putDouble("old_y", y);
+         immediatesourceentity.getPersistentData().putDouble("old_z", z);
+         entity.getPersistentData().putDouble("skill", old_skill);
+         entity.getPersistentData().putDouble("COOLDOWN_TICKS", old_cooldown);
+         immediatesourceentity.getPersistentData().putDouble("Damage", Math.max(immediatesourceentity.getPersistentData().getDouble("Damage") * 0.99, 10.0));
+         if (immediatesourceentity.getPersistentData().getDouble("cnt_life") > 40.0 && !immediatesourceentity.level().isClientSide()) {
+            immediatesourceentity.discard();
          }
 
       }

@@ -34,37 +34,39 @@ public class JujutsucraftModSounds {
    public static final RegistryObject<SoundEvent> CRITICAL;
    public static final RegistryObject<SoundEvent> THUNDER_IMPACT;
    public static final RegistryObject<SoundEvent> GRAVITY;
+   public static final RegistryObject<SoundEvent> WATER_SPLASH;
 
    public JujutsucraftModSounds() {
    }
 
    static {
-      REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, "jujutsucraft");
-      GUARD = REGISTRY.register("guard", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "guard")));
-      SWORD_SWEEP = REGISTRY.register("sword_sweep", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "sword_sweep")));
-      FLAME_EXPLODE = REGISTRY.register("flame_explode", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "flame_explode")));
-      PUNCH = REGISTRY.register("punch", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "punch")));
-      WIND_CHIME = REGISTRY.register("wind_chime", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "wind_chime")));
-      SLOW_MOTION_END = REGISTRY.register("slow_motion_end", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "slow_motion_end")));
-      PIANO_HORROR = REGISTRY.register("piano_horror", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "piano_horror")));
-      TINNITUS = REGISTRY.register("tinnitus", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "tinnitus")));
-      ELECTRIC_SHOCK = REGISTRY.register("electric_shock", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "electric_shock")));
-      GUARD_JUST = REGISTRY.register("guard_just", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "guard_just")));
-      FRAME_SET = REGISTRY.register("frame_set", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "frame_set")));
-      STONE_CRASH = REGISTRY.register("stone_crash", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "stone_crash")));
-      GLASS_CRASH = REGISTRY.register("glass_crash", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "glass_crash")));
-      GACON = REGISTRY.register("gacon", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "gacon")));
-      SCHOOL_BELL = REGISTRY.register("school_bell", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "school_bell")));
-      DEVIL_LAUGH = REGISTRY.register("devil_laugh", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "devil_laugh")));
-      STRONG_HIT = REGISTRY.register("strong_hit", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "strong_hit")));
-      CLAP = REGISTRY.register("clap", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "clap")));
-      CRUSH = REGISTRY.register("crush", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "crush")));
-      GUARD_SWORD = REGISTRY.register("guard_sword", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "guard_sword")));
-      ICE_GENERATE = REGISTRY.register("ice_generate", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "ice_generate")));
-      HAKARI1 = REGISTRY.register("hakari1", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "hakari1")));
-      GAVEL = REGISTRY.register("gavel", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "gavel")));
-      CRITICAL = REGISTRY.register("critical", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "critical")));
-      THUNDER_IMPACT = REGISTRY.register("thunder_impact", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "thunder_impact")));
-      GRAVITY = REGISTRY.register("gravity", () -> SoundEvent.m_262824_(new ResourceLocation("jujutsucraft", "gravity")));
+      REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, "gaigegaigekaigecraft");
+      GUARD = REGISTRY.register("guard", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "guard")));
+      SWORD_SWEEP = REGISTRY.register("sword_sweep", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "sword_sweep")));
+      FLAME_EXPLODE = REGISTRY.register("flame_explode", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "flame_explode")));
+      PUNCH = REGISTRY.register("punch", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "punch")));
+      WIND_CHIME = REGISTRY.register("wind_chime", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "wind_chime")));
+      SLOW_MOTION_END = REGISTRY.register("slow_motion_end", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "slow_motion_end")));
+      PIANO_HORROR = REGISTRY.register("piano_horror", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "piano_horror")));
+      TINNITUS = REGISTRY.register("tinnitus", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "tinnitus")));
+      ELECTRIC_SHOCK = REGISTRY.register("electric_shock", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "electric_shock")));
+      GUARD_JUST = REGISTRY.register("guard_just", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "guard_just")));
+      FRAME_SET = REGISTRY.register("frame_set", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "frame_set")));
+      STONE_CRASH = REGISTRY.register("stone_crash", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "stone_crash")));
+      GLASS_CRASH = REGISTRY.register("glass_crash", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "glass_crash")));
+      GACON = REGISTRY.register("gacon", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "gacon")));
+      SCHOOL_BELL = REGISTRY.register("school_bell", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "school_bell")));
+      DEVIL_LAUGH = REGISTRY.register("devil_laugh", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "devil_laugh")));
+      STRONG_HIT = REGISTRY.register("strong_hit", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "strong_hit")));
+      CLAP = REGISTRY.register("clap", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "clap")));
+      CRUSH = REGISTRY.register("crush", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "crush")));
+      GUARD_SWORD = REGISTRY.register("guard_sword", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "guard_sword")));
+      ICE_GENERATE = REGISTRY.register("ice_generate", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "ice_generate")));
+      HAKARI1 = REGISTRY.register("hakari1", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "hakari1")));
+      GAVEL = REGISTRY.register("gavel", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "gavel")));
+      CRITICAL = REGISTRY.register("critical", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "critical")));
+      THUNDER_IMPACT = REGISTRY.register("thunder_impact", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "thunder_impact")));
+      GRAVITY = REGISTRY.register("gravity", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "gravity")));
+      WATER_SPLASH = REGISTRY.register("water_splash", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("gaigegaigekaigecraft", "water_splash")));
    }
 }

@@ -16,7 +16,7 @@ public class DataSixEyesDisplayOverlayIngameProcedure {
          boolean var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
+            if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
                var10000 = true;
                return var10000;
             }

@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EntityClockRenderer extends MobRenderer<EntityClockEntity, Modelclock<EntityClockEntity>> {
    public EntityClockRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelclock(context.m_174023_(Modelclock.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelclock(context.bakeLayer(Modelclock.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(EntityClockEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/clock.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/clock.png");
    }
 }

@@ -1,11 +1,11 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.entity.DomainExpansionEntityEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModBlocks;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModParticleTypes;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +21,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -32,78 +35,66 @@ public class JujutsuBarrierUpdateTickProcedure {
    }
 
    public static void execute(LevelAccessor world, double x, double y, double z) {
-      String old_block = "";
-      boolean logic_success = false;
-      double cnt = 0.0;
-      double x_pos = 0.0;
-      double y_pos = 0.0;
-      double z_pos = 0.0;
-      double y_fix = 0.0;
-      double y_fix_height = 0.0;
-      double y_floor = 0.0;
-      if (world.m_8055_(BlockPos.m_274561_(x, y, z)).m_60734_() == JujutsucraftModBlocks.JUJUTSU_BARRIER.get() && Math.random() < 0.1) {
-         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BROKEN_GLASS.get(), x, y, z, 1, 0.25, 0.25, 0.25, 0.25);
-         }
+      if (!world.isClientSide()) {
+         BlockPos currentPos = BlockPos.containing(x, y, z);
+         BlockState currentState = world.getBlockState(currentPos);
+         if (currentState.getBlock() == JujutsucraftModBlocks.JUJUTSU_BARRIER.get() && Math.random() < 0.1) {
+            if (world instanceof ServerLevel) {
+               ServerLevel _level = (ServerLevel)world;
+               _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BROKEN_GLASS.get(), x, y, z, 1, 0.25, 0.25, 0.25, 0.25);
+            }
 
-         if (world instanceof Level) {
-            Level _level = (Level)world;
-            if (!_level.m_5776_()) {
-               _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.5F);
-            } else {
-               _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.5F, false);
+            if (world instanceof Level) {
+               Level _level = (Level)world;
+               _level.playSound((Player)null, currentPos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.5F);
             }
          }
-      }
 
-      old_block = ((<undefinedtype>)(new Object() {
-         public String getValue(LevelAccessor world, BlockPos pos, String tag) {
-            BlockEntity blockEntity = world.m_7702_(pos);
-            return blockEntity != null ? blockEntity.getPersistentData().m_128461_(tag) : "";
-         }
-      })).getValue(world, BlockPos.m_274561_(x, y, z), "old_block");
-      if (world instanceof ServerLevel _level) {
-         _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x, y, z), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "setblock ~ ~ ~ " + old_block);
-      }
+         BlockEntity be = world.getBlockEntity(currentPos);
+         String oldBlock = be != null ? be.getPersistentData().getString("old_block") : "";
+         placeBlockSafe(world, currentPos, oldBlock);
+         BlockState restoredState = world.getBlockState(currentPos);
+         if (restoredState.is(BlockTags.create(new ResourceLocation("gaigegaigekaigecraft:barrier")))) {
+            world.setBlock(currentPos, Blocks.AIR.defaultBlockState(), 3);
+         } else if (restoredState.canOcclude()) {
+            for(Entity ent : world.getEntitiesOfClass(Entity.class, new AABB(x, y, z, x + 1.0, y + 1.0, z + 1.0), (e) -> true)) {
+               if (!(ent instanceof DomainExpansionEntityEntity) && !ent.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living")))) {
+                  double bbWidth = (double)ent.getBbWidth();
+                  double bbHeight = (double)ent.getBbHeight();
+                  double yFix = 0.0;
 
-      if (world.m_8055_(BlockPos.m_274561_(x, y, z)).m_204336_(BlockTags.create(new ResourceLocation("jujutsucraft:barrier")))) {
-         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x, y, z), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "setblock ~ ~ ~ air");
-         }
-      } else if (world.m_8055_(BlockPos.m_274561_(x, y, z)).m_60815_()) {
-         Vec3 _center = new Vec3(x + 0.5, y + 0.5, z + 0.5);
-
-         for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-            if (!(entityiterator instanceof DomainExpansionEntityEntity) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living")))) {
-               y_fix = 0.0;
-
-               for(int index0 = 0; index0 < 255; ++index0) {
-                  ++y_fix;
-                  if (!world.m_8055_(BlockPos.m_274561_(entityiterator.m_20185_(), entityiterator.m_20186_() + y_fix, entityiterator.m_20189_())).m_60815_()) {
-                     logic_success = true;
-                     y_fix_height = 0.0;
-
-                     for(int index1 = 0; index1 < (int)Math.max(Math.ceil((double)entityiterator.m_20206_()), 1.0); ++index1) {
-                        ++y_fix_height;
-                        if (world.m_8055_(BlockPos.m_274561_(entityiterator.m_20185_(), entityiterator.m_20186_() + y_fix + y_fix_height, entityiterator.m_20189_())).m_60815_()) {
-                           logic_success = false;
-                           break;
-                        }
-                     }
-
-                     if (logic_success) {
-                        entityiterator.m_6021_(entityiterator.m_20185_(), entityiterator.m_20186_() + y_fix, entityiterator.m_20189_());
-                        if (entityiterator instanceof ServerPlayer) {
-                           ServerPlayer _serverPlayer = (ServerPlayer)entityiterator;
-                           _serverPlayer.f_8906_.m_9774_(entityiterator.m_20185_(), entityiterator.m_20186_() + y_fix, entityiterator.m_20189_(), entityiterator.m_146908_(), entityiterator.m_146909_());
+                  for(int i = 0; i < 255; ++i) {
+                     if (!InsideSolidCalculateProcedure.execute(world, ent.getX(), ent.getY() + yFix, ent.getZ(), bbHeight, bbWidth)) {
+                        ent.teleportTo(ent.getX(), ent.getY() + yFix, ent.getZ());
+                        if (ent instanceof ServerPlayer) {
+                           ServerPlayer _serverPlayer = (ServerPlayer)ent;
+                           _serverPlayer.connection.teleport(ent.getX(), ent.getY() + yFix, ent.getZ(), ent.getYRot(), ent.getXRot());
                         }
                         break;
                      }
+
+                     ++yFix;
                   }
                }
             }
+         }
+
+      }
+   }
+
+   private static void placeBlockSafe(LevelAccessor world, BlockPos pos, String blockName) {
+      if (!world.isClientSide() && blockName != null && !blockName.isEmpty()) {
+         if (blockName.contains("[")) {
+            if (world instanceof ServerLevel) {
+               ServerLevel _level = (ServerLevel)world;
+               Commands var10000 = _level.getServer().getCommands();
+               CommandSourceStack var10001 = (new CommandSourceStack(CommandSource.NULL, new Vec3((double)pos.getX(), (double)pos.getY(), (double)pos.getZ()), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput();
+               int var10002 = pos.getX();
+               var10000.performPrefixedCommand(var10001, "setblock " + var10002 + " " + pos.getY() + " " + pos.getZ() + " " + blockName + " replace");
+            }
+         } else {
+            ResourceLocation res = new ResourceLocation(blockName.contains(":") ? blockName : "minecraft:" + blockName);
+            world.setBlock(pos, ((Block)ForgeRegistries.BLOCKS.getValue(res)).defaultBlockState(), 3);
          }
       }
 

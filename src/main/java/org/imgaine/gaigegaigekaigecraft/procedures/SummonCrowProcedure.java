@@ -27,8 +27,8 @@ public class SummonCrowProcedure {
          double z_pos = 0.0;
          double loop_num = 0.0;
          double HP = 0.0;
-         if (entity.getPersistentData().m_128459_("friend_num") == 0.0) {
-            entity.getPersistentData().m_128347_("friend_num", Math.random());
+         if (entity.getPersistentData().getDouble("friend_num") == 0.0) {
+            entity.getPersistentData().putDouble("friend_num", Math.random());
          }
 
          loop_num = (double)(3L + Math.round(Math.random() * 3.0));
@@ -38,22 +38,22 @@ public class SummonCrowProcedure {
                x_pos = x + (Math.random() - 0.5) * 20.0;
                y_pos = y + 8.0 + Math.random() * 12.0;
                z_pos = z + (Math.random() - 0.5) * 20.0;
-               if (!world.m_8055_(BlockPos.m_274561_(x_pos, y_pos, z_pos)).m_60815_()) {
+               if (!world.getBlockState(BlockPos.containing(x_pos, y_pos, z_pos)).canOcclude()) {
                   if (world instanceof ServerLevel) {
                      ServerLevel _serverLevel = (ServerLevel)world;
-                     Entity entityinstance = ((EntityType)JujutsucraftModEntities.CROW.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                     Entity entityinstance = ((EntityType)JujutsucraftModEntities.CROW.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                      if (entityinstance != null) {
-                        entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                        entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                         if (entityinstance instanceof TamableAnimal) {
                            TamableAnimal _toTame = (TamableAnimal)entityinstance;
                            if (entity instanceof Player) {
                               Player _owner = (Player)entity;
-                              _toTame.m_21828_(_owner);
+                              _toTame.tame(_owner);
                            }
                         }
 
-                        entityinstance.getPersistentData().m_128347_("friend_num", entity.getPersistentData().m_128459_("friend_num"));
-                        _serverLevel.m_7967_(entityinstance);
+                        entityinstance.getPersistentData().putDouble("friend_num", entity.getPersistentData().getDouble("friend_num"));
+                        _serverLevel.addFreshEntity(entityinstance);
                      }
                   }
                   break;
@@ -63,13 +63,13 @@ public class SummonCrowProcedure {
 
          if (entity instanceof Player) {
             Player _player = (Player)entity;
-            if (!_player.m_9236_().m_5776_()) {
-               _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.crow1").getString()), false);
+            if (!_player.level().isClientSide()) {
+               _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.crow1").getString()), false);
             }
          }
 
-         if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-            entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "playsound ui.button.click master @s");
+         if (!entity.level().isClientSide() && entity.getServer() != null) {
+            entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "playsound ui.button.click master @s");
          }
 
       }

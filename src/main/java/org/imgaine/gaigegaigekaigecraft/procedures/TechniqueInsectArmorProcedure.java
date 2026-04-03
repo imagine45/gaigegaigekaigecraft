@@ -28,16 +28,16 @@ public class TechniqueInsectArmorProcedure {
          String STR1 = "";
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_(ParticleTypes.f_123796_, x, y, z, 4, 0.5, 0.5, 0.5, 0.1);
+            _level.sendParticles(ParticleTypes.CLOUD, x, y, z, 4, 0.5, 0.5, 0.5, 0.1);
          }
 
          label50: {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt1 = (LivingEntity)entity;
-               if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get())) {
+               if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get())) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get());
+                     _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get());
                   }
                   break label50;
                }
@@ -45,22 +45,22 @@ public class TechniqueInsectArmorProcedure {
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 5, 20, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 20, false, false));
                }
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                Commands var10000;
                CommandSourceStack var10001;
                float var10002;
                label35: {
-                  var10000 = entity.m_20194_().m_129892_();
-                  var10001 = new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity);
+                  var10000 = entity.getServer().getCommands();
+                  var10001 = new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity);
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                        var10002 = (float)_livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                     if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        var10002 = (float)_livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                         break label35;
                      }
                   }
@@ -68,7 +68,7 @@ public class TechniqueInsectArmorProcedure {
                   var10002 = 0.0F;
                }
 
-               var10000.m_230957_(var10001, "effect give @s jujutsucraft:insect_armor_technique infinite " + Math.round(var10002));
+               var10000.performPrefixedCommand(var10001, "effect give @s gaigegaigekaigecraft:insect_armor_technique infinite " + Math.round(var10002));
             }
          }
 
@@ -78,7 +78,7 @@ public class TechniqueInsectArmorProcedure {
             capability.syncPlayerVariables(entity);
          });
          KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-         entity.getPersistentData().m_128347_("skill", 0.0);
+         entity.getPersistentData().putDouble("skill", 0.0);
       }
    }
 }

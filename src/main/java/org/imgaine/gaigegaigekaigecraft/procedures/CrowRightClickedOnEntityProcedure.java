@@ -16,22 +16,22 @@ public class CrowRightClickedOnEntityProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity sourceentity) {
       if (entity != null && sourceentity != null) {
          if (((JujutsucraftModVariables.PlayerVariables)sourceentity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 11.0 || ((JujutsucraftModVariables.PlayerVariables)sourceentity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 11.0) {
-            if (sourceentity.getPersistentData().m_128459_("friend_num") == 0.0) {
-               sourceentity.getPersistentData().m_128347_("friend_num", Math.random());
+            if (sourceentity.getPersistentData().getDouble("friend_num") == 0.0) {
+               sourceentity.getPersistentData().putDouble("friend_num", Math.random());
             }
 
-            entity.getPersistentData().m_128347_("friend_num", sourceentity.getPersistentData().m_128459_("friend_num"));
+            entity.getPersistentData().putDouble("friend_num", sourceentity.getPersistentData().getDouble("friend_num"));
             if (entity instanceof TamableAnimal) {
                TamableAnimal _toTame = (TamableAnimal)entity;
                if (sourceentity instanceof Player) {
                   Player _owner = (Player)sourceentity;
-                  _toTame.m_21828_(_owner);
+                  _toTame.tame(_owner);
                }
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123750_, x, y, z, 1, 0.0, 0.0, 0.0, 0.1);
+               _level.sendParticles(ParticleTypes.HEART, x, y, z, 1, 0.0, 0.0, 0.0, 0.1);
             }
          }
 

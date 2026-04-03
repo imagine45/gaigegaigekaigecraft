@@ -47,12 +47,15 @@ public class JujutsucraftModParticleTypes {
    public static final RegistryObject<SimpleParticleType> PARTICLE_RED;
    public static final RegistryObject<SimpleParticleType> PARTICLE_BLUE;
    public static final RegistryObject<SimpleParticleType> PARTICLE_FLAME_PURPLE;
+   public static final RegistryObject<SimpleParticleType> PARTICLE_SLASH_LARGE;
+   public static final RegistryObject<SimpleParticleType> PARTICLE_CURSE_POWER_WHITE;
+   public static final RegistryObject<SimpleParticleType> PARTICLE_THUNDER_PURPLE;
 
    public JujutsucraftModParticleTypes() {
    }
 
    static {
-      REGISTRY = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, "jujutsucraft");
+      REGISTRY = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, "gaigegaigekaigecraft");
       PARTICLE_CURSE_POWER_BLUE = REGISTRY.register("particle_curse_power_blue", () -> new SimpleParticleType(true));
       PARTICLE_CURSE_POWER_ORANGE = REGISTRY.register("particle_curse_power_orange", () -> new SimpleParticleType(true));
       PARTICLE_CURSE_POWER_RED = REGISTRY.register("particle_curse_power_red", () -> new SimpleParticleType(true));
@@ -92,5 +95,8 @@ public class JujutsucraftModParticleTypes {
       PARTICLE_RED = REGISTRY.register("particle_red", () -> new SimpleParticleType(true));
       PARTICLE_BLUE = REGISTRY.register("particle_blue", () -> new SimpleParticleType(true));
       PARTICLE_FLAME_PURPLE = REGISTRY.register("particle_flame_purple", () -> new SimpleParticleType(true));
+      PARTICLE_SLASH_LARGE = REGISTRY.register("particle_slash_large", () -> new SimpleParticleType(false));
+      PARTICLE_CURSE_POWER_WHITE = REGISTRY.register("particle_curse_power_white", () -> new SimpleParticleType(true));
+      PARTICLE_THUNDER_PURPLE = REGISTRY.register("particle_thunder_purple", () -> new SimpleParticleType(true));
    }
 }

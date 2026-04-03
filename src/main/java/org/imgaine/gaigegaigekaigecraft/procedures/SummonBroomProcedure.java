@@ -1,6 +1,8 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.function.Consumer;
+
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import net.minecraft.commands.CommandSource;
@@ -34,50 +36,51 @@ public class SummonBroomProcedure {
          ItemStack var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         if (var10000.m_41720_() == JujutsucraftModItems.BROOM.get()) {
+         if (var10000.getItem() == JujutsucraftModItems.BROOM.get()) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21011_(InteractionHand.MAIN_HAND, true);
+               _entity.swing(InteractionHand.MAIN_HAND, true);
             }
          } else {
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var10000 = _livEnt.m_21206_();
+               var10000 = _livEnt.getOffhandItem();
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == JujutsucraftModItems.BROOM.get() && entity instanceof LivingEntity) {
+            if (var10000.getItem() == JujutsucraftModItems.BROOM.get() && entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21011_(InteractionHand.OFF_HAND, true);
+               _entity.swing(InteractionHand.OFF_HAND, true);
             }
          }
 
-         if (entity.getPersistentData().m_128459_("friend_num") == 0.0) {
-            entity.getPersistentData().m_128347_("friend_num", Math.random());
+         if (entity.getPersistentData().getDouble("friend_num") == 0.0) {
+            entity.getPersistentData().putDouble("friend_num", Math.random());
          }
 
          y_pos = y + 0.5;
          if (world instanceof ServerLevel) {
             ServerLevel _serverLevel = (ServerLevel)world;
-            Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_BROOM.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x, y_pos, z), MobSpawnType.MOB_SUMMONED, false, false);
+            Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_BROOM.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x, y_pos, z), MobSpawnType.MOB_SUMMONED, false, false);
             if (entityinstance != null) {
-               entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+               entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                if (entityinstance instanceof LivingEntity) {
                   LivingEntity _livingEntity13 = (LivingEntity)entityinstance;
-                  if (_livingEntity13.m_21204_().m_22171_(Attributes.f_22281_)) {
+                  if (_livingEntity13.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
                      double var10001;
+                     AttributeInstance var35;
                      label82: {
-                        var35 = _livingEntity13.getAttribute_(Attributes.f_22281_);
+                        var35 = _livingEntity13.getAttribute(Attributes.ATTACK_DAMAGE);
                         if (entityinstance instanceof LivingEntity) {
                            LivingEntity _livingEntity9 = (LivingEntity)entityinstance;
-                           if (_livingEntity9.m_21204_().m_22171_(Attributes.f_22281_)) {
-                              var10001 = _livingEntity9.getAttribute_(Attributes.f_22281_).m_22115_();
+                           if (_livingEntity9.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                              var10001 = _livingEntity9.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                               break label82;
                            }
                         }
@@ -89,12 +92,12 @@ public class SummonBroomProcedure {
                      label77: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt10 = (LivingEntity)entity;
-                           if (_livEnt10.m_21023_(MobEffects.f_19600_)) {
+                           if (_livEnt10.hasEffect(MobEffects.DAMAGE_BOOST)) {
                               label72: {
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                       var36 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                                    if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                       var36 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                        break label72;
                                     }
                                  }
@@ -110,30 +113,30 @@ public class SummonBroomProcedure {
                         var36 = 0;
                      }
 
-                     var35.m_22100_(var10001 + (double)(1 * var36 * 3));
+                     var35.setBaseValue(var10001 + (double)(1 * var36 * 3));
                   }
                }
 
-               if (!entityinstance.m_9236_().m_5776_() && entityinstance.m_20194_() != null) {
-                  entityinstance.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityinstance.m_20182_(), entityinstance.m_20155_(), entityinstance.m_9236_() instanceof ServerLevel ? (ServerLevel)entityinstance.m_9236_() : null, 4, entityinstance.m_7755_().getString(), entityinstance.m_5446_(), entityinstance.m_9236_().m_7654_(), entityinstance), "data merge entity @s {Invulnerable:1b}");
+               if (!entityinstance.level().isClientSide() && entityinstance.getServer() != null) {
+                  entityinstance.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityinstance.position(), entityinstance.getRotationVector(), entityinstance.level() instanceof ServerLevel ? (ServerLevel)entityinstance.level() : null, 4, entityinstance.getName().getString(), entityinstance.getDisplayName(), entityinstance.level().getServer(), entityinstance), "data merge entity @s {Invulnerable:1b}");
                }
 
-               entityinstance.getPersistentData().m_128359_("OWNER_UUID", entity.m_20149_());
-               entityinstance.getPersistentData().m_128347_("friend_num", entity.getPersistentData().m_128459_("friend_num"));
-               entityinstance.m_146922_(entity.m_146908_());
-               entityinstance.m_146926_(entity.m_146909_());
-               entityinstance.m_5618_(entityinstance.m_146908_());
-               entityinstance.m_5616_(entityinstance.m_146908_());
-               entityinstance.f_19859_ = entityinstance.m_146908_();
-               entityinstance.f_19860_ = entityinstance.m_146909_();
+               entityinstance.getPersistentData().putString("OWNER_UUID", entity.getStringUUID());
+               entityinstance.getPersistentData().putDouble("friend_num", entity.getPersistentData().getDouble("friend_num"));
+               entityinstance.setYRot(entity.getYRot());
+               entityinstance.setXRot(entity.getXRot());
+               entityinstance.setYBodyRot(entityinstance.getYRot());
+               entityinstance.setYHeadRot(entityinstance.getYRot());
+               entityinstance.yRotO = entityinstance.getYRot();
+               entityinstance.xRotO = entityinstance.getXRot();
                if (entityinstance instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entityinstance;
-                  _entity.f_20884_ = _entity.m_146908_();
-                  _entity.f_20886_ = _entity.m_146908_();
+                  _entity.yBodyRotO = _entity.getYRot();
+                  _entity.yHeadRotO = _entity.getYRot();
                }
 
-               entity.m_20329_(entityinstance);
-               _serverLevel.m_7967_(entityinstance);
+               entity.startRiding(entityinstance);
+               _serverLevel.addFreshEntity(entityinstance);
             }
          }
 

@@ -16,7 +16,7 @@ public class EntityItemOnEntityTickUpdateProcedure {
          boolean logic_a = false;
          if (entity instanceof EntityItemEntity) {
             EntityItemEntity _datEntL0 = (EntityItemEntity)entity;
-            if ((Boolean)_datEntL0.m_20088_().m_135370_(EntityItemEntity.DATA_domain_decoration)) {
+            if ((Boolean)_datEntL0.getEntityData().get(EntityItemEntity.DATA_domain_decoration)) {
                AIGravestoneProcedure.execute(world, x, y, z, entity);
             }
          }
@@ -26,12 +26,12 @@ public class EntityItemOnEntityTickUpdateProcedure {
             ItemStack var10000;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var10000 = _livEnt.m_21205_();
+               var10000 = _livEnt.getMainHandItem();
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+            if (var10000.getItem() != ItemStack.EMPTY.getItem()) {
                logic_a = false;
             }
          }
@@ -40,12 +40,12 @@ public class EntityItemOnEntityTickUpdateProcedure {
             ItemStack var17;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               var17 = _livEnt.m_21206_();
+               var17 = _livEnt.getOffhandItem();
             } else {
-               var17 = ItemStack.f_41583_;
+               var17 = ItemStack.EMPTY;
             }
 
-            if (var17.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+            if (var17.getItem() != ItemStack.EMPTY.getItem()) {
                logic_a = false;
             }
          }
@@ -54,12 +54,12 @@ public class EntityItemOnEntityTickUpdateProcedure {
             ItemStack var18;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var18 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var18 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var18 = ItemStack.f_41583_;
+               var18 = ItemStack.EMPTY;
             }
 
-            if (var18.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+            if (var18.getItem() != ItemStack.EMPTY.getItem()) {
                logic_a = false;
             }
          }
@@ -68,12 +68,12 @@ public class EntityItemOnEntityTickUpdateProcedure {
             ItemStack var19;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var19 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var19 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var19 = ItemStack.f_41583_;
+               var19 = ItemStack.EMPTY;
             }
 
-            if (var19.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+            if (var19.getItem() != ItemStack.EMPTY.getItem()) {
                logic_a = false;
             }
          }
@@ -82,12 +82,12 @@ public class EntityItemOnEntityTickUpdateProcedure {
             ItemStack var20;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var20 = _entGetArmor.m_6844_(EquipmentSlot.LEGS);
+               var20 = _entGetArmor.getItemBySlot(EquipmentSlot.LEGS);
             } else {
-               var20 = ItemStack.f_41583_;
+               var20 = ItemStack.EMPTY;
             }
 
-            if (var20.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+            if (var20.getItem() != ItemStack.EMPTY.getItem()) {
                logic_a = false;
             }
          }
@@ -96,18 +96,18 @@ public class EntityItemOnEntityTickUpdateProcedure {
             ItemStack var21;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var21 = _entGetArmor.m_6844_(EquipmentSlot.FEET);
+               var21 = _entGetArmor.getItemBySlot(EquipmentSlot.FEET);
             } else {
-               var21 = ItemStack.f_41583_;
+               var21 = ItemStack.EMPTY;
             }
 
-            if (var21.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+            if (var21.getItem() != ItemStack.EMPTY.getItem()) {
                logic_a = false;
             }
          }
 
-         if (logic_a && !entity.m_9236_().m_5776_()) {
-            entity.m_146870_();
+         if (logic_a && !entity.level().isClientSide()) {
+            entity.discard();
          }
 
       }

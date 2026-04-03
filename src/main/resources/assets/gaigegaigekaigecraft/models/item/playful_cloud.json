@@ -1,0 +1,6 @@
+{
+  "parent": "gaigegaigekaigecraft:displaysettings/playful_cloud",
+  "textures": {
+    "layer0": "gaigegaigekaigecraft:item/playful_cloud"
+  }
+}

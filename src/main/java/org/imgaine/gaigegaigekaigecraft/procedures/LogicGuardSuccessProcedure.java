@@ -21,12 +21,12 @@ public class LogicGuardSuccessProcedure {
                double skill = 0.0;
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt0 = (LivingEntity)entity;
-                  if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
+                  if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
                      break label32;
                   }
                }
 
-               if (!entity.getPersistentData().m_128471_("guard")) {
+               if (!entity.getPersistentData().getBoolean("guard")) {
                   var10000 = false;
                   break label33;
                }
@@ -36,8 +36,8 @@ public class LogicGuardSuccessProcedure {
          }
 
          boolean var6 = var10000;
-         double var7 = entity.getPersistentData().m_128459_("skill");
-         return !entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && entity != sourceentity && (var7 != 0.0 || var6) && entity.getPersistentData().m_128459_("Damage") > 0.0;
+         double var7 = entity.getPersistentData().getDouble("skill");
+         return !entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && entity != sourceentity && (var7 != 0.0 || var6) && entity.getPersistentData().getDouble("Damage") > 0.0;
       } else {
          return false;
       }

@@ -13,15 +13,15 @@ public class EntityAttackSlashModel extends GeoModel<EntityAttackSlashEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityAttackSlashEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/entity_slash.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/entity_slash.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityAttackSlashEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/entity_slash.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/entity_slash.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityAttackSlashEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityAttackSlashEntity animatable, long instanceId, AnimationState animationState) {

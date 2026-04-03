@@ -1,6 +1,9 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import org.imgaine.gaigegaigekaigecraft.InlineMethodHandler;
 import org.imgaine.gaigegaigekaigecraft.entity.BulletCannonProjectileEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.Rika2Entity;
+import org.imgaine.gaigegaigekaigecraft.entity.RikaEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -43,131 +46,139 @@ public class RikaBlastProcedure {
          double pitch2 = 0.0;
          double damage = 0.0;
          double CNT6 = 0.0;
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
+         if (entity instanceof RikaEntity) {
+            PlayAnimationEntity2Procedure.execute(entity, "pure_love");
+         }
+
+         if (entity instanceof Rika2Entity) {
+            PlayAnimationEntity2Procedure.execute(entity, "pure_love");
+         }
+
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 10, 5, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 5, false, false));
             }
          }
 
-         yaw = Math.toRadians((double)(entity.m_146908_() + 90.0F));
-         picth = Math.toRadians((double)entity.m_146909_());
-         x_pos = entity.m_20185_() + Math.cos(yaw) * Math.cos(picth) * (double)(1.0F + entity.m_20205_());
-         y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.75 + Math.sin(picth) * -1.0 * (double)(1.0F + entity.m_20205_());
-         z_pos = entity.m_20189_() + Math.sin(yaw) * Math.cos(picth) * (double)(1.0F + entity.m_20205_());
-         CNT6 = 1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.1;
-         if (entity.getPersistentData().m_128459_("cnt1") < 10.0) {
+         yaw = Math.toRadians((double)(entity.getYRot() + 90.0F));
+         picth = Math.toRadians((double)entity.getXRot());
+         x_pos = entity.getX() + Math.cos(yaw) * Math.cos(picth) * (double)(1.0F + entity.getBbWidth());
+         y_pos = entity.getY() + (double)entity.getBbHeight() * 0.6 + Math.sin(picth) * -1.0 * (double)(1.0F + entity.getBbWidth());
+         z_pos = entity.getZ() + Math.sin(yaw) * Math.cos(picth) * (double)(1.0F + entity.getBbWidth());
+         CNT6 = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.1;
+         if (entity.getPersistentData().getDouble("cnt1") < 10.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)entity.getPersistentData().m_128459_("COOLDOWN_TICKS"), 0, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)entity.getPersistentData().getDouble("COOLDOWN_TICKS"), 0, false, false));
                }
             }
 
-            if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
-               entity.getPersistentData().m_128347_("cnt6", Math.min(entity.getPersistentData().m_128459_("cnt6"), -2.5));
+            if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
+               entity.getPersistentData().putDouble("cnt6", Math.min(entity.getPersistentData().getDouble("cnt6"), -2.5));
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                   } else {
-                     _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                   }
                }
             }
 
-            if (entity.getPersistentData().m_128459_("cnt6") >= 2.5) {
+            if (entity.getPersistentData().getDouble("cnt6") >= 2.5) {
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123808_, x_pos, y_pos, z_pos, (int)(1.0 + CNT6), 0.05, 0.05, 0.05, 0.05);
+                  _level.sendParticles(ParticleTypes.ENCHANTED_HIT, x_pos, y_pos, z_pos, (int)(1.0 + CNT6), 0.05, 0.05, 0.05, 0.05);
                }
             } else if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123797_, x_pos, y_pos, z_pos, (int)(1.0 * CNT6), 0.05, 0.05, 0.05, 0.05);
+               _level.sendParticles(ParticleTypes.CRIT, x_pos, y_pos, z_pos, (int)(1.0 * CNT6), 0.05, 0.05, 0.05, 0.05);
             }
 
-            if (entity.getPersistentData().m_128459_("cnt1") >= 8.0) {
+            if (entity.getPersistentData().getDouble("cnt1") >= 8.0) {
                LivingEntity var10000;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10000 = _mobEnt.m_5448_();
+                  var10000 = _mobEnt.getTarget();
                } else {
                   var10000 = null;
                }
 
                if (var10000 instanceof LivingEntity) {
-                  entity.getPersistentData().m_128379_("PRESS_Z", false);
+                  entity.getPersistentData().putBoolean("PRESS_Z", false);
                   if (GetDistanceProcedure.execute(entity) > 8.0) {
                      label222: {
                         if (entity instanceof Mob) {
                            Mob _mobEnt = (Mob)entity;
-                           var10000 = _mobEnt.m_5448_();
+                           var10000 = _mobEnt.getTarget();
                         } else {
                            var10000 = null;
                         }
 
-                        if (((Entity)var10000).getPersistentData().m_128459_("skill") != 0.0) {
+                        if (((Entity)var10000).getPersistentData().getDouble("skill") != 0.0) {
                            label214: {
                               if (entity instanceof Mob) {
                                  Mob _mobEnt = (Mob)entity;
-                                 var10000 = _mobEnt.m_5448_();
+                                 var10000 = _mobEnt.getTarget();
                               } else {
                                  var10000 = null;
                               }
 
-                              if (((Entity)var10000).getPersistentData().m_128459_("skill") != 0.0) {
+                              if (((Entity)var10000).getPersistentData().getDouble("skill") != 0.0) {
                                  if (entity instanceof Mob) {
                                     Mob _mobEnt = (Mob)entity;
-                                    var10000 = _mobEnt.m_5448_();
+                                    var10000 = _mobEnt.getTarget();
                                  } else {
                                     var10000 = null;
                                  }
 
-                                 if (((Entity)var10000).getPersistentData().m_128471_("attack")) {
+                                 if (((Entity)var10000).getPersistentData().getBoolean("attack")) {
                                     break label214;
                                  }
                               }
 
                               if (entity instanceof Mob) {
                                  Mob _mobEnt = (Mob)entity;
-                                 var10000 = _mobEnt.m_5448_();
+                                 var10000 = _mobEnt.getTarget();
                               } else {
                                  var10000 = null;
                               }
 
-                              if (((Entity)var10000).getPersistentData().m_128459_("Damage") != 0.0) {
+                              if (((Entity)var10000).getPersistentData().getDouble("Damage") != 0.0) {
                                  break label222;
                               }
                            }
                         }
 
-                        entity.getPersistentData().m_128379_("PRESS_Z", true);
+                        entity.getPersistentData().putBoolean("PRESS_Z", true);
                      }
                   }
 
-                  if (entity.getPersistentData().m_128459_("cnt6") >= 2.5) {
-                     entity.getPersistentData().m_128379_("PRESS_Z", false);
+                  if (entity.getPersistentData().getDouble("cnt6") >= 2.5) {
+                     entity.getPersistentData().putBoolean("PRESS_Z", false);
                   }
                }
 
-               if (entity.getPersistentData().m_128471_("PRESS_Z")) {
-                  entity.getPersistentData().m_128347_("cnt1", Math.min(entity.getPersistentData().m_128459_("cnt1"), 8.0));
-                  if (entity.getPersistentData().m_128459_("cnt6") > 2.5) {
+               if (entity.getPersistentData().getBoolean("PRESS_Z")) {
+                  entity.getPersistentData().putDouble("cnt1", Math.min(entity.getPersistentData().getDouble("cnt1"), 8.0));
+                  if (entity.getPersistentData().getDouble("cnt6") > 2.5) {
                      if (world instanceof Level) {
                         Level _level = (Level)world;
-                        if (!_level.m_5776_()) {
-                           _level.m_254849_((Entity)null, x_pos, y_pos, z_pos, 0.0F, ExplosionInteraction.NONE);
+                        if (!_level.isClientSide()) {
+                           _level.explode((Entity)null, x_pos, y_pos, z_pos, 0.0F, ExplosionInteraction.NONE);
                         }
                      }
 
-                     entity.getPersistentData().m_128347_("cnt6", 2.5);
-                  } else if (entity.getPersistentData().m_128459_("cnt6") == 2.5) {
-                     entity.getPersistentData().m_128347_("cnt6", 2.5);
+                     entity.getPersistentData().putDouble("cnt6", 2.5);
+                  } else if (entity.getPersistentData().getDouble("cnt6") == 2.5) {
+                     entity.getPersistentData().putDouble("cnt6", 2.5);
                   } else {
-                     entity.getPersistentData().m_128347_("cnt6", entity.getPersistentData().m_128459_("cnt6") + 0.1);
-                     if (entity.getPersistentData().m_128459_("cnt6") == 2.5) {
-                        entity.getPersistentData().m_128347_("cnt6", entity.getPersistentData().m_128459_("cnt6") + 0.01);
+                     entity.getPersistentData().putDouble("cnt6", entity.getPersistentData().getDouble("cnt6") + 0.1);
+                     if (entity.getPersistentData().getDouble("cnt6") == 2.5) {
+                        entity.getPersistentData().putDouble("cnt6", entity.getPersistentData().getDouble("cnt6") + 0.01);
                      }
 
                      if (entity instanceof Player) {
@@ -181,65 +192,65 @@ public class RikaBlastProcedure {
                }
             }
 
-            LivingEntity var68;
+            LivingEntity var66;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var68 = _mobEnt.m_5448_();
+               var66 = _mobEnt.getTarget();
             } else {
-               var68 = null;
+               var66 = null;
             }
 
-            if (var68 instanceof LivingEntity && (entity.getPersistentData().m_128459_("cnt1") < 5.0 || entity.getPersistentData().m_128459_("cnt1") >= 5.0 && entity.getPersistentData().m_128459_("cnt6") < 4.0)) {
+            if (var66 instanceof LivingEntity && (entity.getPersistentData().getDouble("cnt1") < 5.0 || entity.getPersistentData().getDouble("cnt1") >= 5.0 && entity.getPersistentData().getDouble("cnt6") < 4.0)) {
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var68 = _mobEnt.m_5448_();
+                  var66 = _mobEnt.getTarget();
                } else {
-                  var68 = null;
+                  var66 = null;
                }
 
-               double var70 = ((Entity)var68).m_20185_();
+               double var68 = ((Entity)var66).getX();
                LivingEntity var10001;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10001 = _mobEnt.m_5448_();
+                  var10001 = _mobEnt.getTarget();
                } else {
                   var10001 = null;
                }
 
-               double var71 = ((Entity)var10001).m_20186_();
+               double var69 = ((Entity)var10001).getY();
                LivingEntity var10002;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10002 = _mobEnt.m_5448_();
+                  var10002 = _mobEnt.getTarget();
                } else {
                   var10002 = null;
                }
 
-               var71 += (double)((Entity)var10002).m_20206_() * 0.5;
+               var69 += (double)((Entity)var10002).getBbHeight() * 0.5;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10002 = _mobEnt.m_5448_();
+                  var10002 = _mobEnt.getTarget();
                } else {
                   var10002 = null;
                }
 
-               RotateEntityProcedure.execute(var70, var71, ((Entity)var10002).m_20189_(), entity);
-               entity.getPersistentData().m_128347_("cnt5", 1.0);
-               entity.getPersistentData().m_128347_("yaw", (double)entity.m_146908_());
-               entity.getPersistentData().m_128347_("pitch", (double)entity.m_146909_());
+               RotateEntityProcedure.execute(var68, var69, ((Entity)var10002).getZ(), entity);
+               entity.getPersistentData().putDouble("cnt5", 1.0);
+               entity.getPersistentData().putDouble("yaw", (double)entity.getYRot());
+               entity.getPersistentData().putDouble("pitch", (double)entity.getXRot());
             }
-         } else if (entity.getPersistentData().m_128459_("cnt1") < 25.0 * CNT6) {
-            if (entity.getPersistentData().m_128459_("cnt5") == 0.0 && entity.getPersistentData().m_128459_("cnt1") == 10.0) {
-               entity.getPersistentData().m_128347_("yaw", (double)entity.m_146908_());
-               entity.getPersistentData().m_128347_("pitch", (double)entity.m_146909_());
+         } else if (entity.getPersistentData().getDouble("cnt1") < 25.0 * CNT6) {
+            if (entity.getPersistentData().getDouble("cnt5") == 0.0 && entity.getPersistentData().getDouble("cnt1") == 10.0) {
+               entity.getPersistentData().putDouble("yaw", (double)entity.getYRot());
+               entity.getPersistentData().putDouble("pitch", (double)entity.getXRot());
             }
 
-            if (entity.getPersistentData().m_128459_("cnt3") < 5.0) {
-               entity.getPersistentData().m_128347_("cnt3", entity.getPersistentData().m_128459_("cnt3") + 1.0);
-               damage = entity.getPersistentData().m_128459_("cnt6");
+            if (entity.getPersistentData().getDouble("cnt3") < 5.0) {
+               entity.getPersistentData().putDouble("cnt3", entity.getPersistentData().getDouble("cnt3") + 1.0);
+               damage = entity.getPersistentData().getDouble("cnt6");
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123797_, x_pos, y_pos, z_pos, (int)(damage * 5.0), 0.1 + damage * 0.2, 0.1 + damage * 0.2, 0.1 + damage * 0.2, 1.0);
+                  _level.sendParticles(ParticleTypes.CRIT, x_pos, y_pos, z_pos, (int)(damage * 5.0), 0.1 + damage * 0.2, 0.1 + damage * 0.2, 0.1 + damage * 0.2, 1.0);
                }
 
                picth = 0.8;
@@ -247,10 +258,10 @@ public class RikaBlastProcedure {
                for(int index0 = 0; index0 < (int)Math.round(damage + 1.0); ++index0) {
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.2F, (float)picth);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.2F, (float)picth);
                      } else {
-                        _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.2F, (float)picth, false);
+                        _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 1.2F, (float)picth, false);
                      }
                   }
 
@@ -258,62 +269,38 @@ public class RikaBlastProcedure {
                }
             }
 
-            entity.getPersistentData().m_128347_("Damage", 2.0 * CNT6);
+            entity.getPersistentData().putDouble("Damage", 2.0 * CNT6);
             DamageFixProcedure.execute(entity);
-            damage = entity.getPersistentData().m_128459_("Damage");
-            yaw = (double)entity.m_146908_();
-            picth = (double)entity.m_146909_();
+            damage = entity.getPersistentData().getDouble("Damage");
+            yaw = (double)entity.getYRot();
+            picth = (double)entity.getXRot();
 
             for(int index1 = 0; (long)index1 < Math.round(4.0 * CNT6); ++index1) {
-               entity.m_146922_((float)(entity.getPersistentData().m_128459_("yaw") + (Math.random() - 0.5) * (4.0 + entity.getPersistentData().m_128459_("cnt6") * 2.0)));
-               entity.m_146926_((float)(entity.getPersistentData().m_128459_("pitch") + (Math.random() - 0.5) * (4.0 + entity.getPersistentData().m_128459_("cnt6") * 2.0)));
-               entity.m_5618_(entity.m_146908_());
-               entity.m_5616_(entity.m_146908_());
-               entity.f_19859_ = entity.m_146908_();
-               entity.f_19860_ = entity.m_146909_();
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _entity = (LivingEntity)entity;
-                  _entity.f_20884_ = _entity.m_146908_();
-                  _entity.f_20886_ = _entity.m_146908_();
-               }
-
-               Level projectileLevel = entity.m_9236_();
-               if (!projectileLevel.m_5776_()) {
-                  Projectile _entityToSpawn = ((<undefinedtype>)(new Object() {
-                     public Projectile getArrow(Level level, Entity shooter, float damage, int knockback, byte piercing) {
+               if (world instanceof ServerLevel) {
+                  ServerLevel projectileLevel = (ServerLevel)world;
+                  Projectile _entityToSpawn = ((new InlineMethodHandler() {
+                     public Projectile getArrowO(Level level, Entity shooter, float damage, int knockback, byte piercing) {
                         AbstractArrow entityToSpawn = new BulletCannonProjectileEntity((EntityType)JujutsucraftModEntities.BULLET_CANNON_PROJECTILE.get(), level);
-                        entityToSpawn.m_5602_(shooter);
-                        entityToSpawn.m_36781_((double)damage);
-                        entityToSpawn.m_36735_(knockback);
-                        entityToSpawn.m_20225_(true);
-                        entityToSpawn.m_36767_(piercing);
+                        entityToSpawn.setOwner(shooter);
+                        entityToSpawn.setBaseDamage((double)damage);
+                        entityToSpawn.setKnockback(knockback);
+                        entityToSpawn.setSilent(true);
+                        entityToSpawn.setPierceLevel(piercing);
                         return entityToSpawn;
                      }
-                  })).getArrow(projectileLevel, entity, (float)damage, 0, (byte)1);
-                  _entityToSpawn.m_6034_(entity.m_20185_(), entity.m_20188_() - 0.1, entity.m_20189_());
-                  _entityToSpawn.m_6686_(entity.m_20154_().f_82479_, entity.m_20154_().f_82480_, entity.m_20154_().f_82481_, (float)(3.0 * CNT6 + Math.random() * 0.2), 0.0F);
-                  projectileLevel.m_7967_(_entityToSpawn);
+                  })).getArrowO(projectileLevel, entity, (float)damage, 0, (byte)1);
+                  _entityToSpawn.setPos(x_pos, y_pos, z_pos);
+                  _entityToSpawn.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, (float)(3.0 * CNT6 + Math.random() * 0.2), (float)(4.0 + entity.getPersistentData().getDouble("cnt6") * 2.0));
+                  projectileLevel.addFreshEntity(_entityToSpawn);
                }
             }
 
-            entity.m_146922_((float)yaw);
-            entity.m_146926_((float)picth);
-            entity.m_5618_(entity.m_146908_());
-            entity.m_5616_(entity.m_146908_());
-            entity.f_19859_ = entity.m_146908_();
-            entity.f_19860_ = entity.m_146909_();
-            if (entity instanceof LivingEntity) {
-               LivingEntity _entity = (LivingEntity)entity;
-               _entity.f_20884_ = _entity.m_146908_();
-               _entity.f_20886_ = _entity.m_146908_();
-            }
-
-            entity.getPersistentData().m_128347_("Damage", 15.0 * (1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.1));
-            entity.getPersistentData().m_128347_("Range", 4.0);
-            entity.getPersistentData().m_128347_("knockback", 2.0);
+            entity.getPersistentData().putDouble("Damage", 15.0 * (1.0 + entity.getPersistentData().getDouble("cnt6") * 0.1));
+            entity.getPersistentData().putDouble("Range", 4.0);
+            entity.getPersistentData().putDouble("knockback", 2.0);
             RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
-         } else if (entity.getPersistentData().m_128459_("cnt1") > 25.0 * CNT6 + 10.0) {
-            entity.getPersistentData().m_128347_("skill", 0.0);
+         } else if (entity.getPersistentData().getDouble("cnt1") > 25.0 * CNT6 + 10.0) {
+            entity.getPersistentData().putDouble("skill", 0.0);
          }
 
       }

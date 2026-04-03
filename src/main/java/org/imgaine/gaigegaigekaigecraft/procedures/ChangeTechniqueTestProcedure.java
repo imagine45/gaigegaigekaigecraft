@@ -1,36 +1,18 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
-import net.minecraft.client.Minecraft;
-import net.minecraft.commands.CommandSource;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
 
 public class ChangeTechniqueTestProcedure {
    public ChangeTechniqueTestProcedure() {
@@ -40,39 +22,34 @@ public class ChangeTechniqueTestProcedure {
       if (entity == null) {
          return false;
       } else {
+         boolean isCreative = false;
          boolean reChange = false;
-         double NUM1 = 0.0;
          double NUM2 = 0.0;
-         double cost = 0.0;
-         double NUM3 = 0.0;
-         reChange = false;
-         if (playerSelect >= 0.0 && playerSelect <= 2.0) {
+         double NUM1 = 0.0;
+         if (!(entity instanceof ServerPlayer)) {
+            return false;
+         } else if (playerSelect >= 0.0 && playerSelect <= 2.0) {
             return false;
          } else {
-            if (!((<undefinedtype>)(new Object() {
-               public boolean checkGamemode(Entity _ent) {
-                  if (_ent instanceof ServerPlayer _serverPlayer) {
-                     return _serverPlayer.f_8941_.m_9290_() == GameType.CREATIVE;
-                  } else if (_ent.m_9236_().m_5776_() && _ent instanceof Player _player) {
-                     return Minecraft.m_91087_().m_91403_().m_104949_(_player.m_36316_().getId()) != null && Minecraft.m_91087_().m_91403_().m_104949_(_player.m_36316_().getId()).m_105325_() == GameType.CREATIVE;
-                  } else {
-                     return false;
-                  }
-               }
-            })).checkGamemode(entity)) {
+            if (entity instanceof ServerPlayer) {
+               ServerPlayer _servPlayer = (ServerPlayer)entity;
+               isCreative = _servPlayer.gameMode.getGameModeForPlayer() == GameType.CREATIVE;
+            }
+
+            if (!isCreative) {
                if (playerSelect == 20.0) {
-                  label979: {
+                  label900: {
                      if (entity instanceof ServerPlayer) {
                         ServerPlayer _plr1 = (ServerPlayer)entity;
-                        if (_plr1.m_9236_() instanceof ServerLevel && _plr1.m_8960_().m_135996_(_plr1.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_domain_expansion"))).m_8193_()) {
-                           break label979;
+                        if (_plr1.level() instanceof ServerLevel && _plr1.getAdvancements().getOrStartProgress(_plr1.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_domain_expansion"))).isDone()) {
+                           break label900;
                         }
                      }
 
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt2 = (LivingEntity)entity;
-                        if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
-                           break label979;
+                        if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                           break label900;
                         }
                      }
 
@@ -82,20 +59,20 @@ public class ChangeTechniqueTestProcedure {
 
                if (playerCT < 10.0) {
                   if (playerCT == 1.0) {
-                     label907: {
+                     label826: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt3 = (LivingEntity)entity;
-                           if (_livEnt3.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
-                              break label907;
+                           if (_livEnt3.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                              break label826;
                            }
                         }
 
                         if (playerSelect == 7.0) {
-                           label902: {
+                           label821: {
                               if (entity instanceof ServerPlayer) {
                                  ServerPlayer _plr4 = (ServerPlayer)entity;
-                                 if (_plr4.m_9236_() instanceof ServerLevel && _plr4.m_8960_().m_135996_(_plr4.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_open"))).m_8193_()) {
-                                    break label902;
+                                 if (_plr4.level() instanceof ServerLevel && _plr4.getAdvancements().getOrStartProgress(_plr4.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_open"))).isDone()) {
+                                    break label821;
                                  }
                               }
 
@@ -104,38 +81,38 @@ public class ChangeTechniqueTestProcedure {
                         }
                      }
                   } else if (playerCT == 2.0) {
-                     label896: {
-                        label928: {
+                     label815: {
+                        label850: {
                            if (playerSelect == 5.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label928;
+                                 break label850;
                               }
 
                               ServerPlayer _plr5 = (ServerPlayer)entity;
-                              if (!(_plr5.m_9236_() instanceof ServerLevel) || !_plr5.m_8960_().m_135996_(_plr5.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_infinity"))).m_8193_()) {
-                                 break label928;
+                              if (!(_plr5.level() instanceof ServerLevel) || !_plr5.getAdvancements().getOrStartProgress(_plr5.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_infinity"))).isDone()) {
+                                 break label850;
                               }
                            }
 
                            if (playerSelect == 7.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label928;
+                                 break label850;
                               }
 
                               ServerPlayer _plr6 = (ServerPlayer)entity;
-                              if (!(_plr6.m_9236_() instanceof ServerLevel) || !_plr6.m_8960_().m_135996_(_plr6.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_cursed_technique_reversal_red"))).m_8193_()) {
-                                 break label928;
+                              if (!(_plr6.level() instanceof ServerLevel) || !_plr6.getAdvancements().getOrStartProgress(_plr6.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_cursed_technique_reversal_red"))).isDone()) {
+                                 break label850;
                               }
                            }
 
                            if (playerSelect != 15.0) {
-                              break label896;
+                              break label815;
                            }
 
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr7 = (ServerPlayer)entity;
-                              if (_plr7.m_9236_() instanceof ServerLevel && _plr7.m_8960_().m_135996_(_plr7.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_hollow_technique_purple"))).m_8193_()) {
-                                 break label896;
+                              if (_plr7.level() instanceof ServerLevel && _plr7.getAdvancements().getOrStartProgress(_plr7.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_hollow_technique_purple"))).isDone()) {
+                                 break label815;
                               }
                            }
                         }
@@ -143,49 +120,49 @@ public class ChangeTechniqueTestProcedure {
                         reChange = true;
                      }
                   } else if (playerCT == 4.0) {
-                     label872: {
-                        label931: {
+                     label791: {
+                        label853: {
                            if (playerSelect == 5.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label931;
+                                 break label853;
                               }
 
                               ServerPlayer _plr8 = (ServerPlayer)entity;
-                              if (!(_plr8.m_9236_() instanceof ServerLevel) || !_plr8.m_8960_().m_135996_(_plr8.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_disaster_flames"))).m_8193_()) {
-                                 break label931;
+                              if (!(_plr8.level() instanceof ServerLevel) || !_plr8.getAdvancements().getOrStartProgress(_plr8.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_disaster_flames"))).isDone()) {
+                                 break label853;
                               }
                            }
 
                            if (playerSelect == 8.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label931;
+                                 break label853;
                               }
 
                               ServerPlayer _plr9 = (ServerPlayer)entity;
-                              if (!(_plr9.m_9236_() instanceof ServerLevel) || !_plr9.m_8960_().m_135996_(_plr9.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_flame_laser"))).m_8193_()) {
-                                 break label931;
+                              if (!(_plr9.level() instanceof ServerLevel) || !_plr9.getAdvancements().getOrStartProgress(_plr9.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_flame_laser"))).isDone()) {
+                                 break label853;
                               }
                            }
 
                            if (playerSelect == 9.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label931;
+                                 break label853;
                               }
 
                               ServerPlayer _plr10 = (ServerPlayer)entity;
-                              if (!(_plr10.m_9236_() instanceof ServerLevel) || !_plr10.m_8960_().m_135996_(_plr10.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_lava_waves"))).m_8193_()) {
-                                 break label931;
+                              if (!(_plr10.level() instanceof ServerLevel) || !_plr10.getAdvancements().getOrStartProgress(_plr10.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_lava_waves"))).isDone()) {
+                                 break label853;
                               }
                            }
 
                            if (playerSelect != 15.0) {
-                              break label872;
+                              break label791;
                            }
 
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr11 = (ServerPlayer)entity;
-                              if (_plr11.m_9236_() instanceof ServerLevel && _plr11.m_8960_().m_135996_(_plr11.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_maximum_meteor"))).m_8193_()) {
-                                 break label872;
+                              if (_plr11.level() instanceof ServerLevel && _plr11.getAdvancements().getOrStartProgress(_plr11.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_maximum_meteor"))).isDone()) {
+                                 break label791;
                               }
                            }
                         }
@@ -193,66 +170,66 @@ public class ChangeTechniqueTestProcedure {
                         reChange = true;
                      }
                   } else if (playerCT == 5.0) {
-                     label839: {
-                        label936: {
+                     label758: {
+                        label858: {
                            if (playerSelect == 5.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label936;
+                                 break label858;
                               }
 
                               ServerPlayer _plr12 = (ServerPlayer)entity;
-                              if (!(_plr12.m_9236_() instanceof ServerLevel) || !_plr12.m_8960_().m_135996_(_plr12.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_copy_cursed_speech"))).m_8193_()) {
-                                 break label936;
+                              if (!(_plr12.level() instanceof ServerLevel) || !_plr12.getAdvancements().getOrStartProgress(_plr12.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_copy_cursed_speech"))).isDone()) {
+                                 break label858;
                               }
 
                               if (entity instanceof Player) {
                                  Player _playerHasItem = (Player)entity;
-                                 if (_playerHasItem.m_150109_().m_36063_(new ItemStack((ItemLike)JujutsucraftModItems.LOUDSPEAKER.get()))) {
-                                    break label936;
+                                 if (_playerHasItem.getInventory().contains(new ItemStack((ItemLike)JujutsucraftModItems.LOUDSPEAKER.get()))) {
+                                    break label858;
                                  }
                               }
                            }
 
-                           label938: {
+                           label860: {
                               if (playerSelect == 6.0) {
                                  if (!(entity instanceof ServerPlayer)) {
-                                    break label938;
+                                    break label860;
                                  }
 
                                  ServerPlayer _plr14 = (ServerPlayer)entity;
-                                 if (!(_plr14.m_9236_() instanceof ServerLevel) || !_plr14.m_8960_().m_135996_(_plr14.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_copy_dhruv_lakdawalla"))).m_8193_()) {
-                                    break label938;
+                                 if (!(_plr14.level() instanceof ServerLevel) || !_plr14.getAdvancements().getOrStartProgress(_plr14.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_copy_dhruv_lakdawalla"))).isDone()) {
+                                    break label860;
                                  }
                               }
 
                               if (playerSelect != 7.0) {
-                                 break label839;
+                                 break label758;
                               }
 
                               if (entity instanceof ServerPlayer) {
                                  ServerPlayer _plr15 = (ServerPlayer)entity;
-                                 if (_plr15.m_9236_() instanceof ServerLevel && _plr15.m_8960_().m_135996_(_plr15.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_copy_takako_uro"))).m_8193_()) {
-                                    break label839;
+                                 if (_plr15.level() instanceof ServerLevel && _plr15.getAdvancements().getOrStartProgress(_plr15.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_copy_takako_uro"))).isDone()) {
+                                    break label758;
                                  }
                               }
 
                               reChange = true;
-                              break label839;
+                              break label758;
                            }
 
                            reChange = true;
-                           break label839;
+                           break label758;
                         }
 
                         reChange = true;
                      }
 
                      if (playerSelect == 15.0 || playerSelect == 19.0) {
-                        label986: {
+                        label905: {
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr16 = (ServerPlayer)entity;
-                              if (_plr16.m_9236_() instanceof ServerLevel && _plr16.m_8960_().m_135996_(_plr16.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_rika_control"))).m_8193_()) {
-                                 break label986;
+                              if (_plr16.level() instanceof ServerLevel && _plr16.getAdvancements().getOrStartProgress(_plr16.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_rika_control"))).isDone()) {
+                                 break label905;
                               }
                            }
 
@@ -261,64 +238,64 @@ public class ChangeTechniqueTestProcedure {
                      }
                   } else if (playerCT == 6.0) {
                      if (playerSelect >= 5.0 && playerSelect < 20.0) {
-                        if (entity.getPersistentData().m_128459_("TenShadowsTechnique" + Math.round(playerSelect - 4.0)) < 0.0) {
+                        if (entity.getPersistentData().getDouble("TenShadowsTechnique" + Math.round(playerSelect - 4.0)) < 0.0) {
                            reChange = true;
                         }
 
                         if (playerSelect != 5.0 && playerSelect != 6.0) {
-                           if (playerSelect == 7.0 && (entity.getPersistentData().m_128459_("TenShadowsTechnique1") != -2.0 || !(entity.getPersistentData().m_128459_("TenShadowsTechnique2") >= 0.0)) && (!(entity.getPersistentData().m_128459_("TenShadowsTechnique1") >= 0.0) || entity.getPersistentData().m_128459_("TenShadowsTechnique2") != -2.0)) {
+                           if (playerSelect == 7.0 && (entity.getPersistentData().getDouble("TenShadowsTechnique1") != -2.0 || !(entity.getPersistentData().getDouble("TenShadowsTechnique2") >= 0.0)) && (!(entity.getPersistentData().getDouble("TenShadowsTechnique1") >= 0.0) || entity.getPersistentData().getDouble("TenShadowsTechnique2") != -2.0)) {
                               reChange = true;
                            }
-                        } else if (entity.getPersistentData().m_128459_("TenShadowsTechnique3") < 0.0) {
+                        } else if (entity.getPersistentData().getDouble("TenShadowsTechnique3") < 0.0) {
                            reChange = true;
                         }
 
                         if (playerSelect != 8.0 && playerSelect != 9.0 && playerSelect != 13.0 && playerSelect != 15.0) {
                            if (playerSelect == 17.0) {
-                              label777: {
+                              label696: {
                                  if (entity instanceof ServerPlayer) {
                                     ServerPlayer _plr24 = (ServerPlayer)entity;
-                                    if (_plr24.m_9236_() instanceof ServerLevel && _plr24.m_8960_().m_135996_(_plr24.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_nue"))).m_8193_() && entity.getPersistentData().m_128459_("TenShadowsTechnique4") >= 0.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique5") <= -2.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique9") <= -2.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique11") <= -2.0) {
-                                       break label777;
+                                    if (_plr24.level() instanceof ServerLevel && _plr24.getAdvancements().getOrStartProgress(_plr24.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_nue"))).isDone() && entity.getPersistentData().getDouble("TenShadowsTechnique4") >= 0.0 && entity.getPersistentData().getDouble("TenShadowsTechnique5") <= -2.0 && entity.getPersistentData().getDouble("TenShadowsTechnique9") <= -2.0 && entity.getPersistentData().getDouble("TenShadowsTechnique11") <= -2.0) {
+                                       break label696;
                                     }
                                  }
 
                                  reChange = true;
                               }
                            }
-                        } else if (entity.getPersistentData().m_128459_("TenShadowsTechnique13") < 0.0) {
+                        } else if (entity.getPersistentData().getDouble("TenShadowsTechnique13") < 0.0) {
                            reChange = true;
                         }
                      }
                   } else if (playerCT == 7.0) {
                      if (playerSelect == 10.0 && entity instanceof LivingEntity) {
                         LivingEntity _livEnt29 = (LivingEntity)entity;
-                        if (_livEnt29.m_21023_((MobEffect)JujutsucraftModMobEffects.ZONE.get())) {
+                        if (_livEnt29.hasEffect((MobEffect)JujutsucraftModMobEffects.ZONE.get())) {
                            reChange = true;
                         }
                      }
                   } else if (playerCT == 8.0) {
-                     label766: {
-                        label942: {
+                     label685: {
+                        label864: {
                            if (playerSelect == 9.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label942;
+                                 break label864;
                               }
 
                               ServerPlayer _plr30 = (ServerPlayer)entity;
-                              if (!(_plr30.m_9236_() instanceof ServerLevel) || !_plr30.m_8960_().m_135996_(_plr30.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_death_swarm"))).m_8193_()) {
-                                 break label942;
+                              if (!(_plr30.level() instanceof ServerLevel) || !_plr30.getAdvancements().getOrStartProgress(_plr30.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_death_swarm"))).isDone()) {
+                                 break label864;
                               }
                            }
 
                            if (playerSelect != 10.0) {
-                              break label766;
+                              break label685;
                            }
 
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr31 = (ServerPlayer)entity;
-                              if (_plr31.m_9236_() instanceof ServerLevel && _plr31.m_8960_().m_135996_(_plr31.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_bathynomus_giganteus"))).m_8193_()) {
-                                 break label766;
+                              if (_plr31.level() instanceof ServerLevel && _plr31.getAdvancements().getOrStartProgress(_plr31.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_bathynomus_giganteus"))).isDone()) {
+                                 break label685;
                               }
                            }
                         }
@@ -326,27 +303,27 @@ public class ChangeTechniqueTestProcedure {
                         reChange = true;
                      }
                   } else if (playerCT == 9.0) {
-                     label750: {
-                        label944: {
+                     label669: {
+                        label866: {
                            if (playerSelect == 5.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label944;
+                                 break label866;
                               }
 
                               ServerPlayer _plr32 = (ServerPlayer)entity;
-                              if (!(_plr32.m_9236_() instanceof ServerLevel) || !_plr32.m_8960_().m_135996_(_plr32.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_garuda_soccer"))).m_8193_()) {
-                                 break label944;
+                              if (!(_plr32.level() instanceof ServerLevel) || !_plr32.getAdvancements().getOrStartProgress(_plr32.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_garuda_soccer"))).isDone()) {
+                                 break label866;
                               }
                            }
 
                            if (playerSelect != 6.0) {
-                              break label750;
+                              break label669;
                            }
 
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr33 = (ServerPlayer)entity;
-                              if (_plr33.m_9236_() instanceof ServerLevel && _plr33.m_8960_().m_135996_(_plr33.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_garuda"))).m_8193_()) {
-                                 break label750;
+                              if (_plr33.level() instanceof ServerLevel && _plr33.getAdvancements().getOrStartProgress(_plr33.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_garuda"))).isDone()) {
+                                 break label669;
                               }
                            }
                         }
@@ -356,96 +333,96 @@ public class ChangeTechniqueTestProcedure {
                   }
                } else if (playerCT < 20.0) {
                   if (playerCT == 10.0) {
-                     label483: {
-                        label946: {
+                     label437: {
+                        label868: {
                            if (playerSelect == 6.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label946;
+                                 break label868;
                               }
 
                               ServerPlayer _plr34 = (ServerPlayer)entity;
-                              if (!(_plr34.m_9236_() instanceof ServerLevel) || !_plr34.m_8960_().m_135996_(_plr34.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_convergence"))).m_8193_()) {
-                                 break label946;
+                              if (!(_plr34.level() instanceof ServerLevel) || !_plr34.getAdvancements().getOrStartProgress(_plr34.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_convergence"))).isDone()) {
+                                 break label868;
                               }
                            }
 
-                           label948: {
+                           label870: {
                               if (playerSelect == 7.0) {
                                  if (!(entity instanceof ServerPlayer)) {
-                                    break label948;
+                                    break label870;
                                  }
 
                                  ServerPlayer _plr35 = (ServerPlayer)entity;
-                                 if (!(_plr35.m_9236_() instanceof ServerLevel) || !_plr35.m_8960_().m_135996_(_plr35.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_piercing_blood"))).m_8193_()) {
-                                    break label948;
+                                 if (!(_plr35.level() instanceof ServerLevel) || !_plr35.getAdvancements().getOrStartProgress(_plr35.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_piercing_blood"))).isDone()) {
+                                    break label870;
                                  }
                               }
 
-                              label950: {
+                              label872: {
                                  if (playerSelect == 8.0) {
                                     if (!(entity instanceof ServerPlayer)) {
-                                       break label950;
+                                       break label872;
                                     }
 
                                     ServerPlayer _plr36 = (ServerPlayer)entity;
-                                    if (!(_plr36.m_9236_() instanceof ServerLevel) || !_plr36.m_8960_().m_135996_(_plr36.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_supernova"))).m_8193_()) {
-                                       break label950;
+                                    if (!(_plr36.level() instanceof ServerLevel) || !_plr36.getAdvancements().getOrStartProgress(_plr36.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_supernova"))).isDone()) {
+                                       break label872;
                                     }
                                  }
 
-                                 label952: {
+                                 label874: {
                                     if (playerSelect == 9.0) {
                                        if (!(entity instanceof ServerPlayer)) {
-                                          break label952;
+                                          break label874;
                                        }
 
                                        ServerPlayer _plr37 = (ServerPlayer)entity;
-                                       if (!(_plr37.m_9236_() instanceof ServerLevel) || !_plr37.m_8960_().m_135996_(_plr37.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_flowing_red_scale"))).m_8193_()) {
-                                          break label952;
+                                       if (!(_plr37.level() instanceof ServerLevel) || !_plr37.getAdvancements().getOrStartProgress(_plr37.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_flowing_red_scale"))).isDone()) {
+                                          break label874;
                                        }
                                     }
 
-                                    label954: {
+                                    label876: {
                                        if (playerSelect == 16.0) {
                                           if (!(entity instanceof ServerPlayer)) {
-                                             break label954;
+                                             break label876;
                                           }
 
                                           ServerPlayer _plr38 = (ServerPlayer)entity;
-                                          if (!(_plr38.m_9236_() instanceof ServerLevel) || !_plr38.m_8960_().m_135996_(_plr38.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_blood_wave"))).m_8193_()) {
-                                             break label954;
+                                          if (!(_plr38.level() instanceof ServerLevel) || !_plr38.getAdvancements().getOrStartProgress(_plr38.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_blood_wave"))).isDone()) {
+                                             break label876;
                                           }
                                        }
 
                                        if (playerSelect != 18.0) {
-                                          break label483;
+                                          break label437;
                                        }
 
                                        if (entity instanceof ServerPlayer) {
                                           ServerPlayer _plr39 = (ServerPlayer)entity;
-                                          if (_plr39.m_9236_() instanceof ServerLevel && _plr39.m_8960_().m_135996_(_plr39.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_eso"))).m_8193_()) {
-                                             break label483;
+                                          if (_plr39.level() instanceof ServerLevel && _plr39.getAdvancements().getOrStartProgress(_plr39.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_eso"))).isDone()) {
+                                             break label437;
                                           }
                                        }
 
                                        reChange = true;
-                                       break label483;
+                                       break label437;
                                     }
 
                                     reChange = true;
-                                    break label483;
+                                    break label437;
                                  }
 
                                  reChange = true;
-                                 break label483;
+                                 break label437;
                               }
 
                               reChange = true;
-                              break label483;
+                              break label437;
                            }
 
                            reChange = true;
-                           break label483;
+                           break label437;
                         }
 
                         reChange = true;
@@ -453,17 +430,17 @@ public class ChangeTechniqueTestProcedure {
 
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt40 = (LivingEntity)entity;
-                        if (_livEnt40.m_21023_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get()) && playerSelect != 9.0 && playerSelect >= 5.0 && playerSelect < 20.0) {
+                        if (_livEnt40.hasEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get()) && playerSelect != 9.0 && playerSelect >= 5.0 && playerSelect < 20.0) {
                            reChange = true;
                         }
                      }
                   } else if (playerCT == 11.0) {
                      if (playerSelect == 5.0) {
-                        label731: {
+                        label650: {
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr41 = (ServerPlayer)entity;
-                              if (_plr41.m_9236_() instanceof ServerLevel && _plr41.m_8960_().m_135996_(_plr41.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_bird_strike"))).m_8193_()) {
-                                 break label731;
+                              if (_plr41.level() instanceof ServerLevel && _plr41.getAdvancements().getOrStartProgress(_plr41.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_bird_strike"))).isDone()) {
+                                 break label650;
                               }
                            }
 
@@ -472,11 +449,11 @@ public class ChangeTechniqueTestProcedure {
                      }
                   } else if (playerCT == 13.0) {
                      if (playerSelect == 10.0) {
-                        label724: {
+                        label643: {
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr42 = (ServerPlayer)entity;
-                              if (_plr42.m_9236_() instanceof ServerLevel && _plr42.m_8960_().m_135996_(_plr42.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_collapse"))).m_8193_()) {
-                                 break label724;
+                              if (_plr42.level() instanceof ServerLevel && _plr42.getAdvancements().getOrStartProgress(_plr42.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_collapse"))).isDone()) {
+                                 break label643;
                               }
                            }
 
@@ -485,11 +462,11 @@ public class ChangeTechniqueTestProcedure {
                      }
                   } else if (playerCT == 14.0) {
                      if (playerSelect == 10.0) {
-                        label717: {
+                        label636: {
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _plr43 = (ServerPlayer)entity;
-                              if (_plr43.m_9236_() instanceof ServerLevel && _plr43.m_8960_().m_135996_(_plr43.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_huge_roots"))).m_8193_()) {
-                                 break label717;
+                              if (_plr43.level() instanceof ServerLevel && _plr43.getAdvancements().getOrStartProgress(_plr43.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_huge_roots"))).isDone()) {
+                                 break label636;
                               }
                            }
 
@@ -497,67 +474,67 @@ public class ChangeTechniqueTestProcedure {
                         }
                      }
                   } else if (playerCT == 15.0) {
-                     label956: {
-                        label710: {
-                           label994: {
+                     label878: {
+                        label629: {
+                           label911: {
                               if (playerSelect == 8.0 || playerSelect == 9.0 || playerSelect == 10.0) {
                                  if (!(entity instanceof ServerPlayer)) {
-                                    break label994;
+                                    break label911;
                                  }
 
                                  ServerPlayer _plr44 = (ServerPlayer)entity;
-                                 if (!(_plr44.m_9236_() instanceof ServerLevel) || !_plr44.m_8960_().m_135996_(_plr44.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_soul_multiplicity"))).m_8193_()) {
-                                    break label994;
+                                 if (!(_plr44.level() instanceof ServerLevel) || !_plr44.getAdvancements().getOrStartProgress(_plr44.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_soul_multiplicity"))).isDone()) {
+                                    break label911;
                                  }
                               }
 
-                              label959: {
+                              label881: {
                                  if (playerSelect == 10.0) {
                                     if (!(entity instanceof ServerPlayer)) {
-                                       break label959;
+                                       break label881;
                                     }
 
                                     ServerPlayer _plr45 = (ServerPlayer)entity;
-                                    if (!(_plr45.m_9236_() instanceof ServerLevel) || !_plr45.m_8960_().m_135996_(_plr45.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_polymorphic_soul_isomer"))).m_8193_()) {
-                                       break label959;
+                                    if (!(_plr45.level() instanceof ServerLevel) || !_plr45.getAdvancements().getOrStartProgress(_plr45.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_polymorphic_soul_isomer"))).isDone()) {
+                                       break label881;
                                     }
                                  }
 
                                  if (playerSelect != 15.0) {
-                                    break label710;
+                                    break label629;
                                  }
 
                                  if (entity instanceof ServerPlayer) {
                                     ServerPlayer _plr46 = (ServerPlayer)entity;
-                                    if (_plr46.m_9236_() instanceof ServerLevel && _plr46.m_8960_().m_135996_(_plr46.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_instant_spirit_bodyof_distorted_killing"))).m_8193_()) {
-                                       break label710;
+                                    if (_plr46.level() instanceof ServerLevel && _plr46.getAdvancements().getOrStartProgress(_plr46.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_instant_spirit_bodyof_distorted_killing"))).isDone()) {
+                                       break label629;
                                     }
                                  }
 
                                  reChange = true;
-                                 break label710;
+                                 break label629;
                               }
 
                               reChange = true;
-                              break label710;
+                              break label629;
                            }
 
                            reChange = true;
                         }
 
-                        label961: {
+                        label883: {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt47 = (LivingEntity)entity;
-                              if (_livEnt47.m_21023_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get())) {
+                              if (_livEnt47.hasEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get())) {
                                  if (!(playerSelect >= 6.0) || !(playerSelect <= 15.0)) {
-                                    break label956;
+                                    break label878;
                                  }
-                                 break label961;
+                                 break label883;
                               }
                            }
 
                            if ((!(playerSelect >= 3.0) || !(playerSelect <= 4.0)) && (!(playerSelect >= 16.0) || !(playerSelect <= 19.0))) {
-                              break label956;
+                              break label878;
                            }
                         }
 
@@ -565,11 +542,11 @@ public class ChangeTechniqueTestProcedure {
                      }
                   } else if (playerCT == 17.0) {
                      if (playerSelect == 10.0) {
-                        label980: {
+                        label901: {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt48 = (LivingEntity)entity;
-                              if (_livEnt48.m_21023_((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get())) {
-                                 break label980;
+                              if (_livEnt48.hasEffect((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get())) {
+                                 break label901;
                               }
                            }
 
@@ -579,45 +556,45 @@ public class ChangeTechniqueTestProcedure {
 
                      if (playerSelect == 15.0 && entity instanceof LivingEntity) {
                         LivingEntity _livEnt49 = (LivingEntity)entity;
-                        if (_livEnt49.m_21023_((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get())) {
+                        if (_livEnt49.hasEffect((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get())) {
                            reChange = true;
                         }
                      }
                   } else if (playerCT == 18.0) {
-                     label662: {
-                        label661: {
+                     label581: {
+                        label580: {
                            if (playerSelect == 5.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label661;
+                                 break label580;
                               }
 
                               ServerPlayer _plr50 = (ServerPlayer)entity;
-                              if (!(_plr50.m_9236_() instanceof ServerLevel) || !_plr50.m_8960_().m_135996_(_plr50.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_1"))).m_8193_()) {
-                                 break label661;
+                              if (!(_plr50.level() instanceof ServerLevel) || !_plr50.getAdvancements().getOrStartProgress(_plr50.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_1"))).isDone()) {
+                                 break label580;
                               }
                            }
 
                            if (playerSelect == 15.0) {
                               if (entity instanceof ServerPlayer) {
                                  ServerPlayer _plr51 = (ServerPlayer)entity;
-                                 if (_plr51.m_9236_() instanceof ServerLevel && _plr51.m_8960_().m_135996_(_plr51.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_maximum_uzumaki"))).m_8193_()) {
-                                    break label662;
+                                 if (_plr51.level() instanceof ServerLevel && _plr51.getAdvancements().getOrStartProgress(_plr51.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_maximum_uzumaki"))).isDone()) {
+                                    break label581;
                                  }
                               }
 
                               reChange = true;
                            }
-                           break label662;
+                           break label581;
                         }
 
                         reChange = true;
                      }
                   } else if (playerCT == 19.0 && playerSelect == 10.0) {
-                     label644: {
+                     label563: {
                         if (entity instanceof ServerPlayer) {
                            ServerPlayer _plr52 = (ServerPlayer)entity;
-                           if (_plr52.m_9236_() instanceof ServerLevel && _plr52.m_8960_().m_135996_(_plr52.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_explodethe_air"))).m_8193_()) {
-                              break label644;
+                           if (_plr52.level() instanceof ServerLevel && _plr52.getAdvancements().getOrStartProgress(_plr52.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_explodethe_air"))).isDone()) {
+                              break label563;
                            }
                         }
 
@@ -625,174 +602,134 @@ public class ChangeTechniqueTestProcedure {
                      }
                   }
                } else if (playerCT < 30.0) {
-                  if (playerCT == 21.0) {
-                     label637: {
-                        label964: {
+                  if (playerCT == 20.0) {
+                     if (playerSelect == 15.0 && entity instanceof LivingEntity) {
+                        LivingEntity _livEnt53 = (LivingEntity)entity;
+                        if (_livEnt53.hasEffect((MobEffect)JujutsucraftModMobEffects.ZONE.get())) {
+                           reChange = true;
+                        }
+                     }
+                  } else if (playerCT == 21.0) {
+                     label555: {
+                        label886: {
                            if (playerSelect == 5.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label964;
+                                 break label886;
                               }
 
-                              ServerPlayer _plr53 = (ServerPlayer)entity;
-                              if (!(_plr53.m_9236_() instanceof ServerLevel) || !_plr53.m_8960_().m_135996_(_plr53.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_divergent_fist"))).m_8193_()) {
-                                 break label964;
+                              ServerPlayer _plr54 = (ServerPlayer)entity;
+                              if (!(_plr54.level() instanceof ServerLevel) || !_plr54.getAdvancements().getOrStartProgress(_plr54.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_divergent_fist"))).isDone()) {
+                                 break label886;
                               }
                            }
 
-                           label966: {
+                           label888: {
                               if (playerSelect == 8.0) {
                                  if (!(entity instanceof ServerPlayer)) {
-                                    break label966;
+                                    break label888;
                                  }
 
-                                 ServerPlayer _plr54 = (ServerPlayer)entity;
-                                 if (!(_plr54.m_9236_() instanceof ServerLevel) || !_plr54.m_8960_().m_135996_(_plr54.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_dismantle_itadori"))).m_8193_()) {
-                                    break label966;
+                                 ServerPlayer _plr55 = (ServerPlayer)entity;
+                                 if (!(_plr55.level() instanceof ServerLevel) || !_plr55.getAdvancements().getOrStartProgress(_plr55.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_dismantle_itadori"))).isDone()) {
+                                    break label888;
                                  }
                               }
 
-                              label968: {
+                              label890: {
                                  if (playerSelect == 13.0) {
                                     if (!(entity instanceof ServerPlayer)) {
-                                       break label968;
+                                       break label890;
                                     }
 
-                                    ServerPlayer _plr55 = (ServerPlayer)entity;
-                                    if (!(_plr55.m_9236_() instanceof ServerLevel) || !_plr55.m_8960_().m_135996_(_plr55.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_piercing_blood_itadori"))).m_8193_() || ReturnInsideItemProcedure.execute(entity).m_41720_() != JujutsucraftModItems.DEATH_PAINTING.get()) {
-                                       break label968;
+                                    ServerPlayer _plr56 = (ServerPlayer)entity;
+                                    if (!(_plr56.level() instanceof ServerLevel) || !_plr56.getAdvancements().getOrStartProgress(_plr56.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_piercing_blood_itadori"))).isDone() || ReturnInsideItemProcedure.execute(entity).getItem() != JujutsucraftModItems.DEATH_PAINTING.get()) {
+                                       break label890;
                                     }
                                  }
 
-                                 label604: {
+                                 label522: {
                                     if (playerSelect == 14.0) {
                                        if (!(entity instanceof ServerPlayer)) {
-                                          break label604;
+                                          break label522;
                                        }
 
-                                       ServerPlayer _plr57 = (ServerPlayer)entity;
-                                       if (!(_plr57.m_9236_() instanceof ServerLevel) || !_plr57.m_8960_().m_135996_(_plr57.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_supernova_itadori"))).m_8193_() || ReturnInsideItemProcedure.execute(entity).m_41720_() != JujutsucraftModItems.DEATH_PAINTING.get()) {
-                                          break label604;
+                                       ServerPlayer _plr58 = (ServerPlayer)entity;
+                                       if (!(_plr58.level() instanceof ServerLevel) || !_plr58.getAdvancements().getOrStartProgress(_plr58.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_supernova_itadori"))).isDone() || ReturnInsideItemProcedure.execute(entity).getItem() != JujutsucraftModItems.DEATH_PAINTING.get()) {
+                                          break label522;
                                        }
                                     }
 
                                     if (playerSelect == 18.0) {
                                        if (entity instanceof ServerPlayer) {
-                                          ServerPlayer _plr59 = (ServerPlayer)entity;
-                                          if (_plr59.m_9236_() instanceof ServerLevel && _plr59.m_8960_().m_135996_(_plr59.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_deep_concentration"))).m_8193_()) {
-                                             break label637;
+                                          ServerPlayer _plr60 = (ServerPlayer)entity;
+                                          if (_plr60.level() instanceof ServerLevel && _plr60.getAdvancements().getOrStartProgress(_plr60.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_deep_concentration"))).isDone()) {
+                                             break label555;
                                           }
                                        }
 
                                        reChange = true;
                                     }
-                                    break label637;
+                                    break label555;
                                  }
 
                                  reChange = true;
-                                 break label637;
+                                 break label555;
                               }
 
                               reChange = true;
-                              break label637;
+                              break label555;
                            }
 
                            reChange = true;
-                           break label637;
+                           break label555;
                         }
 
                         reChange = true;
                      }
                   } else if (playerCT == 24.0) {
-                     label586: {
-                        label585: {
+                     label504: {
+                        label503: {
                            if (playerSelect == 8.0) {
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label585;
+                                 break label503;
                               }
 
-                              ServerPlayer _plr60 = (ServerPlayer)entity;
-                              if (!(_plr60.m_9236_() instanceof ServerLevel) || !_plr60.m_8960_().m_135996_(_plr60.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_frost_calm"))).m_8193_()) {
-                                 break label585;
+                              ServerPlayer _plr61 = (ServerPlayer)entity;
+                              if (!(_plr61.level() instanceof ServerLevel) || !_plr61.getAdvancements().getOrStartProgress(_plr61.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_frost_calm"))).isDone()) {
+                                 break label503;
                               }
                            }
 
                            if (playerSelect == 9.0) {
                               if (entity instanceof ServerPlayer) {
-                                 ServerPlayer _plr61 = (ServerPlayer)entity;
-                                 if (_plr61.m_9236_() instanceof ServerLevel && _plr61.m_8960_().m_135996_(_plr61.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:skill_icefall"))).m_8193_()) {
-                                    break label586;
+                                 ServerPlayer _plr62 = (ServerPlayer)entity;
+                                 if (_plr62.level() instanceof ServerLevel && _plr62.getAdvancements().getOrStartProgress(_plr62.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:skill_icefall"))).isDone()) {
+                                    break label504;
                                  }
                               }
 
                               reChange = true;
                            }
-                           break label586;
+                           break label504;
                         }
 
                         reChange = true;
-                     }
-                  } else if (playerCT == 27.0) {
-                     if (playerSelect == 5.0) {
-                        AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
-                        LazyOptional var10000 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
-                        Objects.requireNonNull(_iitemhandlerref);
-                        var10000.ifPresent(_iitemhandlerref::set);
-                        if (_iitemhandlerref.get() != null) {
-                           for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                              ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                              if (itemstackiterator.m_41720_() == JujutsucraftModItems.GAVEL.get() || itemstackiterator.m_41720_() == JujutsucraftModItems.GAVEL_BIG.get() || itemstackiterator.m_41720_() == JujutsucraftModItems.EXECUTIONERS_SWORD.get() || itemstackiterator.m_41720_() == JujutsucraftModItems.GAVEL_LONG.get()) {
-                                 reChange = true;
-                                 break;
-                              }
-                           }
-                        }
-                     }
-                  } else if (playerCT == 29.0) {
-                     if (playerSelect == 5.0) {
-                        NUM3 = 0.0;
-                        AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
-                        LazyOptional var94 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
-                        Objects.requireNonNull(_iitemhandlerref);
-                        var94.ifPresent(_iitemhandlerref::set);
-                        if (_iitemhandlerref.get() != null) {
-                           for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                              ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                              if (itemstackiterator.m_41720_() == JujutsucraftModItems.BULLET_BALL.get()) {
-                                 NUM3 += (double)itemstackiterator.m_41613_();
-                                 if (NUM3 > 3.0) {
-                                    reChange = true;
-                                    break;
-                                 }
-                              }
-                           }
-                        }
-                     } else if (playerSelect == 7.0) {
-                        label540: {
-                           if (entity instanceof LivingEntity) {
-                              LivingEntity _livEnt76 = (LivingEntity)entity;
-                              if (_livEnt76.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) && !entity.getPersistentData().m_128471_("Failed") && entity.getPersistentData().m_128459_("mode_hakari") == 2.0) {
-                                 break label540;
-                              }
-                           }
-
-                           reChange = true;
-                        }
                      }
                   }
                } else if (playerCT < 40.0) {
                   if (playerCT == 30.0) {
                      if (playerSelect == 5.0 && entity instanceof LivingEntity) {
-                        LivingEntity _livEnt79 = (LivingEntity)entity;
-                        if (_livEnt79.m_21023_((MobEffect)JujutsucraftModMobEffects.PRAYER_SONG.get())) {
+                        LivingEntity _livEnt63 = (LivingEntity)entity;
+                        if (_livEnt63.hasEffect((MobEffect)JujutsucraftModMobEffects.PRAYER_SONG.get())) {
                            reChange = true;
                         }
                      }
                   } else if (playerCT == 39.0 && (playerSelect == 5.0 || playerSelect == 6.0 || playerSelect == 7.0)) {
-                     label990: {
+                     label909: {
                         if (entity instanceof LivingEntity) {
-                           LivingEntity _livEnt80 = (LivingEntity)entity;
-                           if (_livEnt80.m_21023_((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get())) {
-                              break label990;
+                           LivingEntity _livEnt64 = (LivingEntity)entity;
+                           if (_livEnt64.hasEffect((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get())) {
+                              break label909;
                            }
                         }
 
@@ -801,29 +738,29 @@ public class ChangeTechniqueTestProcedure {
                   }
                } else if (playerCT < 50.0) {
                   if (playerCT == 40.0) {
-                     label520: {
+                     label474: {
                         if (playerSelect == 6.0 && entity instanceof LivingEntity) {
-                           LivingEntity _livEnt81 = (LivingEntity)entity;
-                           if (_livEnt81.m_21023_((MobEffect)JujutsucraftModMobEffects.EFFECT_REIKI.get())) {
+                           LivingEntity _livEnt65 = (LivingEntity)entity;
+                           if (_livEnt65.hasEffect((MobEffect)JujutsucraftModMobEffects.EFFECT_REIKI.get())) {
                               reChange = true;
-                              break label520;
+                              break label474;
                            }
                         }
 
                         if (playerSelect == 7.0 && entity instanceof LivingEntity) {
-                           LivingEntity _livEnt82 = (LivingEntity)entity;
-                           if (_livEnt82.m_21023_((MobEffect)JujutsucraftModMobEffects.EFFECT_KIRIN.get())) {
+                           LivingEntity _livEnt66 = (LivingEntity)entity;
+                           if (_livEnt66.hasEffect((MobEffect)JujutsucraftModMobEffects.EFFECT_KIRIN.get())) {
                               reChange = true;
                            }
                         }
                      }
                   } else if (playerCT == 41.0) {
                      if (playerSelect == 10.0) {
-                        label513: {
+                        label467: {
                            if (entity instanceof ServerPlayer) {
-                              ServerPlayer _plr83 = (ServerPlayer)entity;
-                              if (_plr83.m_9236_() instanceof ServerLevel && _plr83.m_8960_().m_135996_(_plr83.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_1"))).m_8193_()) {
-                                 break label513;
+                              ServerPlayer _plr67 = (ServerPlayer)entity;
+                              if (_plr67.level() instanceof ServerLevel && _plr67.getAdvancements().getOrStartProgress(_plr67.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_1"))).isDone()) {
+                                 break label467;
                               }
                            }
 
@@ -831,39 +768,28 @@ public class ChangeTechniqueTestProcedure {
                         }
                      }
                   } else if (playerCT == 43.0 && playerSelect == 7.0) {
-                     label506: {
-                        label505: {
-                           label976: {
+                     label460: {
+                        label459: {
+                           label895: {
                               if (entity instanceof ServerPlayer) {
-                                 ServerPlayer _plr84 = (ServerPlayer)entity;
-                                 if (_plr84.m_9236_() instanceof ServerLevel && _plr84.m_8960_().m_135996_(_plr84.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_megumi_fushiguro"))).m_8193_()) {
-                                    break label976;
+                                 ServerPlayer _plr68 = (ServerPlayer)entity;
+                                 if (_plr68.level() instanceof ServerLevel && _plr68.getAdvancements().getOrStartProgress(_plr68.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_megumi_fushiguro"))).isDone()) {
+                                    break label895;
                                  }
                               }
 
                               if (!(entity instanceof ServerPlayer)) {
-                                 break label505;
+                                 break label459;
                               }
 
-                              ServerPlayer _plr85 = (ServerPlayer)entity;
-                              if (!(_plr85.m_9236_() instanceof ServerLevel) || !_plr85.m_8960_().m_135996_(_plr85.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_megumi_fushiguro_shibuya"))).m_8193_()) {
-                                 break label505;
+                              ServerPlayer _plr69 = (ServerPlayer)entity;
+                              if (!(_plr69.level() instanceof ServerLevel) || !_plr69.getAdvancements().getOrStartProgress(_plr69.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_megumi_fushiguro_shibuya"))).isDone()) {
+                                 break label459;
                               }
                            }
 
-                           if (!((new BiFunction<LevelAccessor, String, Entity>() {
-                              public Entity apply(LevelAccessor levelAccessor, String uuid) {
-                                 if (levelAccessor instanceof ServerLevel serverLevel) {
-                                    try {
-                                       return serverLevel.m_8791_(UUID.fromString(uuid));
-                                    } catch (Exception var5) {
-                                    }
-                                 }
-
-                                 return null;
-                              }
-                           }).apply(world, entity.getPersistentData().m_128461_("SHIKIGAMI_ROZETSU_UUID")) instanceof LivingEntity)) {
-                              break label506;
+                           if (!(GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("SHIKIGAMI_ROZETSU_UUID")) instanceof LivingEntity)) {
+                              break label460;
                            }
                         }
 
@@ -874,32 +800,6 @@ public class ChangeTechniqueTestProcedure {
             }
 
             reChange = reChange || ChangeTechniqueTest2Procedure.execute(world, x, y, z, entity, playerCT, playerSelect);
-            NUM1 = -200.0 - Math.random();
-            if (reChange && world instanceof ServerLevel) {
-               ServerLevel _level = (ServerLevel)world;
-               Entity entityToSpawn = EntityType.f_20549_.m_262496_(_level, BlockPos.m_274561_(entity.m_20185_(), NUM1, entity.m_20189_()), MobSpawnType.MOB_SUMMONED);
-               if (entityToSpawn != null) {
-                  entityToSpawn.m_146922_(world.m_213780_().m_188501_() * 360.0F);
-               }
-            }
-
-            reChange = false;
-            Vec3 _center = new Vec3(entity.m_20185_(), NUM1, entity.m_20189_());
-
-            for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-               if (entityiterator instanceof Bat && entityiterator.m_6084_()) {
-                  reChange = true;
-                  if (!entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-                     entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "kill @s");
-                  }
-
-                  if (!entityiterator.m_9236_().m_5776_()) {
-                     entityiterator.m_146870_();
-                  }
-                  break;
-               }
-            }
-
             return reChange;
          }
       }

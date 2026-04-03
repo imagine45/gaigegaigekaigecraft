@@ -15,26 +15,26 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class Modelframe<T extends Entity> extends EntityModel<T> {
-   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("jujutsucraft", "modelframe"), "main");
+   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("gaigegaigekaigecraft", "modelframe"), "main");
    public final ModelPart bone;
 
    public Modelframe(ModelPart root) {
-      this.bone = root.m_171324_("bone");
+      this.bone = root.getChild("bone");
    }
 
    public static LayerDefinition createBodyLayer() {
       MeshDefinition meshdefinition = new MeshDefinition();
-      PartDefinition partdefinition = meshdefinition.m_171576_();
-      partdefinition.m_171599_("bone", CubeListBuilder.m_171558_().m_171514_(0, 0).m_171488_(-16.0F, -24.0F, 0.0F, 32.0F, 48.0F, 0.0F, new CubeDeformation(0.01F)), PartPose.m_171419_(0.0F, 16.0F, 0.0F));
-      return LayerDefinition.m_171565_(meshdefinition, 64, 64);
+      PartDefinition partdefinition = meshdefinition.getRoot();
+      partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 0).addBox(-16.0F, -24.0F, 0.0F, 32.0F, 48.0F, 0.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+      return LayerDefinition.create(meshdefinition, 64, 64);
    }
 
-   public void m_7695_(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      this.bone.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+   public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      this.bone.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
    }
 
-   public void m_6973_(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-      this.bone.f_104204_ = netHeadYaw / 57.295776F;
-      this.bone.f_104203_ = headPitch / 57.295776F;
+   public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+      this.bone.yRot = netHeadYaw / 57.295776F;
+      this.bone.xRot = headPitch / 57.295776F;
    }
 }

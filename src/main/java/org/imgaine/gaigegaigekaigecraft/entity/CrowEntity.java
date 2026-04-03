@@ -9,6 +9,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -58,306 +61,330 @@ import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class CrowEntity extends TamableAnimal {
+   public static final EntityDataAccessor<Boolean> DATA_object;
+
    public CrowEntity(PlayMessages.SpawnEntity packet, Level world) {
       this((EntityType)JujutsucraftModEntities.CROW.get(), world);
    }
 
    public CrowEntity(EntityType<CrowEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 1;
-      this.m_21557_(false);
-      this.f_21342_ = new FlyingMoveControl(this, 10, true);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 1;
+      this.setNoAi(false);
+      this.moveControl = new FlyingMoveControl(this, 10, true);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected PathNavigation m_6037_(Level world) {
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(DATA_object, false);
+   }
+
+   protected PathNavigation createNavigation(Level world) {
       return new FlyingPathNavigation(this, world);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new FollowOwnerGoal(this, 1.0, 32.0F, 16.0F, false) {
-         public boolean m_8036_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 1.0, 32.0F, 16.0F, false) {
+         public boolean canUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8036_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canUse() && LogicAIProcedure.execute(entity);
          }
 
-         public boolean m_8045_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8045_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canContinueToUse() && LogicAIProcedure.execute(entity);
          }
       });
-      this.f_21345_.m_25352_(2, new Goal() {
+      this.goalSelector.addGoal(2, new Goal() {
          {
-            this.m_7021_(EnumSet.of(Flag.MOVE));
+            this.setFlags(EnumSet.of(Flag.MOVE));
          }
 
-         public boolean m_8036_() {
-            if (CrowEntity.this.m_5448_() != null && !CrowEntity.this.m_21566_().m_24995_()) {
-               double x = CrowEntity.this.m_20185_();
-               double y = CrowEntity.this.m_20186_();
-               double z = CrowEntity.this.m_20189_();
+         public boolean canUse() {
+            if (CrowEntity.this.getTarget() != null && !CrowEntity.this.getMoveControl().hasWanted()) {
+               double x = CrowEntity.this.getX();
+               double y = CrowEntity.this.getY();
+               double z = CrowEntity.this.getZ();
                Entity entity = CrowEntity.this;
-               Level world = CrowEntity.this.m_9236_();
+               Level world = CrowEntity.this.level();
                return LogicAIProcedure.execute(entity);
             } else {
                return false;
             }
          }
 
-         public boolean m_8045_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return LogicAIProcedure.execute(entity) && CrowEntity.this.m_21566_().m_24995_() && CrowEntity.this.m_5448_() != null && CrowEntity.this.m_5448_().m_6084_();
+            Level world = CrowEntity.this.level();
+            return LogicAIProcedure.execute(entity) && CrowEntity.this.getMoveControl().hasWanted() && CrowEntity.this.getTarget() != null && CrowEntity.this.getTarget().isAlive();
          }
 
-         public void m_8056_() {
-            LivingEntity livingentity = CrowEntity.this.m_5448_();
-            Vec3 vec3d = livingentity.m_20299_(1.0F);
-            CrowEntity.this.f_21342_.m_6849_(vec3d.f_82479_, vec3d.f_82480_, vec3d.f_82481_, 1.0);
+         public void start() {
+            LivingEntity livingentity = CrowEntity.this.getTarget();
+            Vec3 vec3d = livingentity.getEyePosition(1.0F);
+            CrowEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.0);
          }
 
-         public void m_8037_() {
-            LivingEntity livingentity = CrowEntity.this.m_5448_();
-            if (CrowEntity.this.m_20191_().m_82381_(livingentity.m_20191_())) {
-               CrowEntity.this.m_7327_(livingentity);
+         public void tick() {
+            LivingEntity livingentity = CrowEntity.this.getTarget();
+            if (CrowEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
+               CrowEntity.this.doHurtTarget(livingentity);
             } else {
-               double d0 = CrowEntity.this.m_20280_(livingentity);
+               double d0 = CrowEntity.this.distanceToSqr(livingentity);
                if (d0 < 16.0) {
-                  Vec3 vec3d = livingentity.m_20299_(1.0F);
-                  CrowEntity.this.f_21342_.m_6849_(vec3d.f_82479_, vec3d.f_82480_, vec3d.f_82481_, 1.0);
+                  Vec3 vec3d = livingentity.getEyePosition(1.0F);
+                  CrowEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.0);
                }
             }
 
          }
       });
-      this.f_21346_.m_25352_(3, (new HurtByTargetGoal(this, new Class[0]) {
-         public boolean m_8036_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+      this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0]) {
+         public boolean canUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8036_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canUse() && LogicAIProcedure.execute(entity);
          }
 
-         public boolean m_8045_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8045_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canContinueToUse() && LogicAIProcedure.execute(entity);
          }
-      }).m_26044_(new Class[0]));
-      this.f_21345_.m_25352_(4, new RandomStrollGoal(this, 1.0, 20) {
-         protected Vec3 m_7037_() {
-            RandomSource random = CrowEntity.this.m_217043_();
-            double dir_x = CrowEntity.this.m_20185_() + (double)((random.m_188501_() * 2.0F - 1.0F) * 16.0F);
-            double dir_y = CrowEntity.this.m_20186_() + (double)((random.m_188501_() * 2.0F - 1.0F) * 16.0F);
-            double dir_z = CrowEntity.this.m_20189_() + (double)((random.m_188501_() * 2.0F - 1.0F) * 16.0F);
+      }).setAlertOthers(new Class[0]));
+      this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0, 20) {
+         protected Vec3 getPosition() {
+            RandomSource random = CrowEntity.this.getRandom();
+            double dir_x = CrowEntity.this.getX() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double dir_y = CrowEntity.this.getY() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double dir_z = CrowEntity.this.getZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             return new Vec3(dir_x, dir_y, dir_z);
          }
 
-         public boolean m_8036_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8036_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canUse() && LogicAIProcedure.execute(entity);
          }
 
-         public boolean m_8045_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8045_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canContinueToUse() && LogicAIProcedure.execute(entity);
          }
       });
-      this.f_21345_.m_25352_(5, new RandomLookAroundGoal(this) {
-         public boolean m_8036_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+      this.goalSelector.addGoal(5, new RandomLookAroundGoal(this) {
+         public boolean canUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8036_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canUse() && LogicAIProcedure.execute(entity);
          }
 
-         public boolean m_8045_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8045_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canContinueToUse() && LogicAIProcedure.execute(entity);
          }
       });
-      this.f_21345_.m_25352_(6, new FloatGoal(this) {
-         public boolean m_8036_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+      this.goalSelector.addGoal(6, new FloatGoal(this) {
+         public boolean canUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8036_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canUse() && LogicAIProcedure.execute(entity);
          }
 
-         public boolean m_8045_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8045_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canContinueToUse() && LogicAIProcedure.execute(entity);
          }
       });
-      this.f_21345_.m_25352_(7, new LeapAtTargetGoal(this, 0.5F) {
-         public boolean m_8036_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+      this.goalSelector.addGoal(7, new LeapAtTargetGoal(this, 0.5F) {
+         public boolean canUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8036_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canUse() && LogicAIProcedure.execute(entity);
          }
 
-         public boolean m_8045_() {
-            double x = CrowEntity.this.m_20185_();
-            double y = CrowEntity.this.m_20186_();
-            double z = CrowEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CrowEntity.this.getX();
+            double y = CrowEntity.this.getY();
+            double z = CrowEntity.this.getZ();
             Entity entity = CrowEntity.this;
-            Level world = CrowEntity.this.m_9236_();
-            return super.m_8045_() && LogicAIProcedure.execute(entity);
+            Level world = CrowEntity.this.level();
+            return super.canContinueToUse() && LogicAIProcedure.execute(entity);
          }
       });
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_142535_(float l, float d, DamageSource source) {
+   public boolean causeFallDamage(float l, float d, DamageSource source) {
       return false;
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      return damagesource.m_276093_(DamageTypes.f_268671_) ? false : super.m_6469_(damagesource, amount);
+   public boolean hurt(DamageSource damagesource, float amount) {
+      return damagesource.is(DamageTypes.FALL) ? false : super.hurt(damagesource, amount);
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      ItemStack itemstack = sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      Item item = itemstack.m_41720_();
-      if (itemstack.m_41720_() instanceof SpawnEggItem) {
-         retval = super.m_6071_(sourceentity, hand);
-      } else if (this.m_9236_().m_5776_()) {
-         retval = (!this.m_21824_() || !this.m_21830_(sourceentity)) && !this.m_6898_(itemstack) ? InteractionResult.PASS : InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      } else if (this.m_21824_()) {
-         if (this.m_21830_(sourceentity)) {
-            if (item.m_41472_() && this.m_6898_(itemstack) && this.m_21223_() < this.m_21233_()) {
-               this.m_142075_(sourceentity, hand, itemstack);
-               this.m_5634_((float)item.m_41473_().m_38744_());
-               retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-            } else if (this.m_6898_(itemstack) && this.m_21223_() < this.m_21233_()) {
-               this.m_142075_(sourceentity, hand, itemstack);
-               this.m_5634_(4.0F);
-               retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putBoolean("Dataobject", (Boolean)this.entityData.get(DATA_object));
+   }
+
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Dataobject")) {
+         this.entityData.set(DATA_object, compound.getBoolean("Dataobject"));
+      }
+
+   }
+
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      ItemStack itemstack = sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      Item item = itemstack.getItem();
+      if (itemstack.getItem() instanceof SpawnEggItem) {
+         retval = super.mobInteract(sourceentity, hand);
+      } else if (this.level().isClientSide()) {
+         retval = (!this.isTame() || !this.isOwnedBy(sourceentity)) && !this.isFood(itemstack) ? InteractionResult.PASS : InteractionResult.sidedSuccess(this.level().isClientSide());
+      } else if (this.isTame()) {
+         if (this.isOwnedBy(sourceentity)) {
+            if (item.isEdible() && this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+               this.usePlayerItem(sourceentity, hand, itemstack);
+               this.heal((float)item.getFoodProperties().getNutrition());
+               retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+            } else if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+               this.usePlayerItem(sourceentity, hand, itemstack);
+               this.heal(4.0F);
+               retval = InteractionResult.sidedSuccess(this.level().isClientSide());
             } else {
-               retval = super.m_6071_(sourceentity, hand);
+               retval = super.mobInteract(sourceentity, hand);
             }
          }
-      } else if (this.m_6898_(itemstack)) {
-         this.m_142075_(sourceentity, hand, itemstack);
-         if (this.f_19796_.m_188503_(3) == 0 && !ForgeEventFactory.onAnimalTame(this, sourceentity)) {
-            this.m_21828_(sourceentity);
-            this.m_9236_().m_7605_(this, (byte)7);
+      } else if (this.isFood(itemstack)) {
+         this.usePlayerItem(sourceentity, hand, itemstack);
+         if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, sourceentity)) {
+            this.tame(sourceentity);
+            this.level().broadcastEntityEvent(this, (byte)7);
          } else {
-            this.m_9236_().m_7605_(this, (byte)6);
+            this.level().broadcastEntityEvent(this, (byte)6);
          }
 
-         this.m_21530_();
-         retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
+         this.setPersistenceRequired();
+         retval = InteractionResult.sidedSuccess(this.level().isClientSide());
       } else {
-         retval = super.m_6071_(sourceentity, hand);
+         retval = super.mobInteract(sourceentity, hand);
          if (retval == InteractionResult.SUCCESS || retval == InteractionResult.CONSUME) {
-            this.m_21530_();
+            this.setPersistenceRequired();
          }
       }
 
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       CrowRightClickedOnEntityProcedure.execute(world, x, y, z, this, sourceentity);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AICrowProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AICrowProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
    }
 
-   public AgeableMob m_142606_(ServerLevel serverWorld, AgeableMob ageable) {
-      CrowEntity retval = (CrowEntity)((EntityType)JujutsucraftModEntities.CROW.get()).m_20615_(serverWorld);
-      retval.m_6518_(serverWorld, serverWorld.m_6436_(retval.m_20183_()), MobSpawnType.BREEDING, (SpawnGroupData)null, (CompoundTag)null);
+   public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+      CrowEntity retval = (CrowEntity)((EntityType)JujutsucraftModEntities.CROW.get()).create(serverWorld);
+      retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, (SpawnGroupData)null, (CompoundTag)null);
       return retval;
    }
 
-   public boolean m_6898_(ItemStack stack) {
-      return Ingredient.m_43927_(new ItemStack[]{new ItemStack(Items.f_42404_), new ItemStack(Items.f_42577_), new ItemStack(Items.f_42578_), new ItemStack(Items.f_42733_), new ItemStack(Items.f_42410_), new ItemStack(Items.f_42687_), new ItemStack(Items.f_42572_), new ItemStack(Items.f_42575_), new ItemStack(Items.f_42780_), new ItemStack(Items.f_42526_), new ItemStack(Items.f_42527_), new ItemStack(Items.f_42485_), new ItemStack(Items.f_42579_), new ItemStack(Items.f_42581_), new ItemStack(Items.f_42697_), new ItemStack(Items.f_42658_)}).test(stack);
+   public boolean isFood(ItemStack stack) {
+      return Ingredient.of(new ItemStack[]{new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Items.MELON_SEEDS), new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.APPLE), new ItemStack(Items.PUMPKIN_PIE), new ItemStack(Items.COOKIE), new ItemStack(Items.MELON_SLICE), new ItemStack(Items.SWEET_BERRIES), new ItemStack(Items.COD), new ItemStack(Items.SALMON), new ItemStack(Items.PORKCHOP), new ItemStack(Items.BEEF), new ItemStack(Items.CHICKEN), new ItemStack(Items.RABBIT), new ItemStack(Items.MUTTON)}).test(stack);
    }
 
-   protected void m_7840_(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+   protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
    }
 
-   public void m_20242_(boolean ignored) {
-      super.m_20242_(true);
+   public void setNoGravity(boolean ignored) {
+      super.setNoGravity(true);
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_20242_(true);
+   public void aiStep() {
+      super.aiStep();
+      this.setNoGravity(true);
    }
 
    public static void init() {
-      SpawnPlacements.m_21754_((EntityType)JujutsucraftModEntities.CROW.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> world.m_8055_(pos.m_7495_()).m_204336_(BlockTags.f_184228_) && world.m_45524_(pos, 0) > 8);
+      SpawnPlacements.register((EntityType)JujutsucraftModEntities.CROW.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && world.getRawBrightness(pos, 0) > 8);
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 6.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 2.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22280_, 0.3);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 6.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 2.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.FLYING_SPEED, 0.3);
       return builder;
+   }
+
+   static {
+      DATA_object = SynchedEntityData.defineId(CrowEntity.class, EntityDataSerializers.BOOLEAN);
    }
 }

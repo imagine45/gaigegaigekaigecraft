@@ -9,14 +9,14 @@ public class EntityJinichiDomain1Model extends GeoModel<EntityJinichiDomain1Enti
    }
 
    public ResourceLocation getAnimationResource(EntityJinichiDomain1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/jinichi_domain1.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/jinichi_domain1.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityJinichiDomain1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/jinichi_domain1.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/jinichi_domain1.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityJinichiDomain1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

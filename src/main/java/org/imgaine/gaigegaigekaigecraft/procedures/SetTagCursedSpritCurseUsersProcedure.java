@@ -9,7 +9,7 @@ public class SetTagCursedSpritCurseUsersProcedure {
 
    public static void execute(LevelAccessor world, Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128379_("CurseUser", true);
+         entity.getPersistentData().putBoolean("CurseUser", true);
          SetTagProcedure.execute(world, entity);
       }
    }

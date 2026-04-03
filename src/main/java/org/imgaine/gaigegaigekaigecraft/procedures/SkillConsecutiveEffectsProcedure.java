@@ -20,8 +20,8 @@ public class SkillConsecutiveEffectsProcedure {
          double dis = 0.0;
          double old_rnd = 0.0;
          double NUM1 = 0.0;
-         entity.getPersistentData().m_128347_("Reserve", 13.0);
-         entity.getPersistentData().m_128347_("skill", 0.0);
+         entity.getPersistentData().putDouble("Reserve", 13.0);
+         entity.getPersistentData().putDouble("skill", 0.0);
       }
    }
 }

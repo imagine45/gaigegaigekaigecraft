@@ -21,7 +21,7 @@ public class NeutralizationMobEffect extends MobEffect {
       return cures;
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 

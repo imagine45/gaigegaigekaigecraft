@@ -9,10 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EntityWaterRenderer extends MobRenderer<EntityWaterEntity, PigModel<EntityWaterEntity>> {
    public EntityWaterRenderer(EntityRendererProvider.Context context) {
-      super(context, new PigModel(context.m_174023_(ModelLayers.f_171205_)), 0.0F);
+      super(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(EntityWaterEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/clear.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/clear.png");
    }
 }

@@ -13,15 +13,15 @@ public class GetDistanceIteratorProcedure {
          double widthTotal = 0.0;
          double z_distance = 0.0;
          double x_distance = 0.0;
-         if (entityiterator.m_20186_() > entity.m_20186_()) {
-            y_distance = Math.max(entityiterator.m_20186_() - (entity.m_20186_() + (double)entity.m_20206_()), 0.0);
+         if (entityiterator.getY() > entity.getY()) {
+            y_distance = Math.max(entityiterator.getY() - (entity.getY() + (double)entity.getBbHeight()), 0.0);
          } else {
-            y_distance = Math.max(entity.m_20186_() - (entityiterator.m_20186_() + (double)entityiterator.m_20206_()), 0.0);
+            y_distance = Math.max(entity.getY() - (entityiterator.getY() + (double)entityiterator.getBbHeight()), 0.0);
          }
 
-         widthTotal = (double)entity.m_20205_() * 0.5 + (double)entityiterator.m_20205_() * 0.5;
-         x_distance = Math.max(Math.abs(entity.m_20185_() - entityiterator.m_20185_()) - widthTotal, 0.0);
-         z_distance = Math.max(Math.abs(entity.m_20189_() - entityiterator.m_20189_()) - widthTotal, 0.0);
+         widthTotal = (double)entity.getBbWidth() * 0.5 + (double)entityiterator.getBbWidth() * 0.5;
+         x_distance = Math.max(Math.abs(entity.getX() - entityiterator.getX()) - widthTotal, 0.0);
+         z_distance = Math.max(Math.abs(entity.getZ() - entityiterator.getZ()) - widthTotal, 0.0);
          return Math.sqrt(x_distance * x_distance + y_distance * y_distance + z_distance * z_distance);
       } else {
          return 0.0;

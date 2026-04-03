@@ -30,13 +30,13 @@ public class KurourushiDomainExpansionActiveProcedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
-         if (!entity.getPersistentData().m_128471_("Failed")) {
+         if (!entity.getPersistentData().getBoolean("Failed")) {
             int var10000;
             label40: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                     var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                     var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                      break label40;
                   }
                }
@@ -45,48 +45,48 @@ public class KurourushiDomainExpansionActiveProcedure {
             }
 
             if (var10000 % 45 == 20) {
-               old_skill = entity.getPersistentData().m_128459_("skill");
-               old_cooldown = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
-               entity.getPersistentData().m_128347_("skill", 2306.0);
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", 100.0);
+               old_skill = entity.getPersistentData().getDouble("skill");
+               old_cooldown = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
+               entity.getPersistentData().putDouble("skill", 2306.0);
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", 100.0);
 
                for(int index0 = 0; index0 < 4; ++index0) {
                   if (Math.random() < 0.5) {
                      num1 = Math.toRadians(Math.random() * 360.0);
-                     x_pos = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
-                     y_pos = entity.getPersistentData().m_128459_("y_pos_doma") + Math.random() * 0.5;
-                     z_pos = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
+                     x_pos = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
+                     y_pos = entity.getPersistentData().getDouble("y_pos_doma") + Math.random() * 0.5;
+                     z_pos = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
                      if (world instanceof ServerLevel) {
                         ServerLevel _serverLevel = (ServerLevel)world;
-                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.COCKROACHES.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.COCKROACHES.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                         if (entityinstance != null) {
-                           entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                           entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                            SetRangedAmmoProcedure.execute(entity, entityinstance);
-                           entityinstance.m_146922_((float)(Math.toDegrees(num1) - 90.0));
-                           entityinstance.m_146926_(0.0F);
-                           entityinstance.m_5618_(entityinstance.m_146908_());
-                           entityinstance.m_5616_(entityinstance.m_146908_());
-                           entityinstance.f_19859_ = entityinstance.m_146908_();
-                           entityinstance.f_19860_ = entityinstance.m_146909_();
+                           entityinstance.setYRot((float)(Math.toDegrees(num1) - 90.0));
+                           entityinstance.setXRot(0.0F);
+                           entityinstance.setYBodyRot(entityinstance.getYRot());
+                           entityinstance.setYHeadRot(entityinstance.getYRot());
+                           entityinstance.yRotO = entityinstance.getYRot();
+                           entityinstance.xRotO = entityinstance.getXRot();
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entityinstance;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
+                              _entity.yBodyRotO = _entity.getYRot();
+                              _entity.yHeadRotO = _entity.getYRot();
                            }
 
-                           entityinstance.getPersistentData().m_128379_("domain_entity", true);
-                           entityinstance.m_7618_(Anchor.EYES, new Vec3(entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma")));
-                           entityinstance.getPersistentData().m_128347_("x_power", entityinstance.m_20154_().f_82479_);
-                           entityinstance.getPersistentData().m_128347_("y_power", entityinstance.m_20154_().f_82480_);
-                           entityinstance.getPersistentData().m_128347_("z_power", entityinstance.m_20154_().f_82481_);
-                           _serverLevel.m_7967_(entityinstance);
+                           entityinstance.getPersistentData().putBoolean("domain_entity", true);
+                           entityinstance.lookAt(Anchor.EYES, new Vec3(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma")));
+                           entityinstance.getPersistentData().putDouble("x_power", entityinstance.getLookAngle().x);
+                           entityinstance.getPersistentData().putDouble("y_power", entityinstance.getLookAngle().y);
+                           entityinstance.getPersistentData().putDouble("z_power", entityinstance.getLookAngle().z);
+                           _serverLevel.addFreshEntity(entityinstance);
                         }
                      }
                   }
                }
 
-               entity.getPersistentData().m_128347_("skill", old_skill);
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", old_cooldown);
+               entity.getPersistentData().putDouble("skill", old_skill);
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", old_cooldown);
             }
          }
 

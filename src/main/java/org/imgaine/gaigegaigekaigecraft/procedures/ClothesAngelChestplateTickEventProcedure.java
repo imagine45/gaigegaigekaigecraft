@@ -42,74 +42,74 @@ public class ClothesAngelChestplateTickEventProcedure {
          ItemStack var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _entGetArmor = (LivingEntity)entity;
-            var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+            var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         if (var10000.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+         if (var10000.getItem() != ItemStack.EMPTY.getItem()) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == JujutsucraftModItems.CLOTHES_ANGEL_CHESTPLATE.get()) {
+            if (var10000.getItem() == JujutsucraftModItems.CLOTHES_ANGEL_CHESTPLATE.get()) {
                can_fly = true;
-               if (!entity.m_20096_()) {
+               if (!entity.onGround()) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                     var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                   } else {
-                     var10000 = ItemStack.f_41583_;
+                     var10000 = ItemStack.EMPTY;
                   }
 
-                  Item var9 = var10000.m_41720_();
+                  Item var9 = var10000.getItem();
                   if (var9 instanceof ClothesDagonItem) {
                      ClothesDagonItem armor = (ClothesDagonItem)var9;
                      if (armor instanceof GeoItem) {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entGetArmor = (LivingEntity)entity;
-                           var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                           var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                         } else {
-                           var10000 = ItemStack.f_41583_;
+                           var10000 = ItemStack.EMPTY;
                         }
 
-                        var10000.m_41784_().m_128359_("geckoAnim", "flying");
+                        var10000.getOrCreateTag().putString("geckoAnim", "flying");
                      }
                   }
                }
             } else {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                  var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                } else {
-                  var10000 = ItemStack.f_41583_;
+                  var10000 = ItemStack.EMPTY;
                }
 
-               if (var10000.m_41720_() == JujutsucraftModItems.CLOTHES_DAGON_CHESTPLATE.get()) {
+               if (var10000.getItem() == JujutsucraftModItems.CLOTHES_DAGON_CHESTPLATE.get()) {
                   can_fly = true;
-                  if (!entity.m_20096_()) {
+                  if (!entity.onGround()) {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entGetArmor = (LivingEntity)entity;
-                        var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                        var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                      } else {
-                        var10000 = ItemStack.f_41583_;
+                        var10000 = ItemStack.EMPTY;
                      }
 
-                     Item var24 = var10000.m_41720_();
+                     Item var24 = var10000.getItem();
                      if (var24 instanceof ClothesDagonItem) {
                         ClothesDagonItem armor = (ClothesDagonItem)var24;
                         if (armor instanceof GeoItem) {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _entGetArmor = (LivingEntity)entity;
-                              var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                              var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                            } else {
-                              var10000 = ItemStack.f_41583_;
+                              var10000 = ItemStack.EMPTY;
                            }
 
-                           var10000.m_41784_().m_128359_("geckoAnim", "flying");
+                           var10000.getOrCreateTag().putString("geckoAnim", "flying");
                         }
                      }
                   }
@@ -118,33 +118,33 @@ public class ClothesAngelChestplateTickEventProcedure {
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == JujutsucraftModItems.INSECT_ARMOR_CHESTPLATE.get()) {
+            if (var10000.getItem() == JujutsucraftModItems.INSECT_ARMOR_CHESTPLATE.get()) {
                can_fly = true;
-               if (!entity.m_20096_()) {
+               if (!entity.onGround()) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                     var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                   } else {
-                     var10000 = ItemStack.f_41583_;
+                     var10000 = ItemStack.EMPTY;
                   }
 
-                  Item var23 = var10000.m_41720_();
+                  Item var23 = var10000.getItem();
                   if (var23 instanceof InsectArmorItem) {
                      InsectArmorItem armor = (InsectArmorItem)var23;
                      if (armor instanceof GeoItem) {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entGetArmor = (LivingEntity)entity;
-                           var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                           var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                         } else {
-                           var10000 = ItemStack.f_41583_;
+                           var10000 = ItemStack.EMPTY;
                         }
 
-                        var10000.m_41784_().m_128359_("geckoAnim", "fly");
+                        var10000.getOrCreateTag().putString("geckoAnim", "fly");
                      }
                   }
                }
@@ -152,39 +152,40 @@ public class ClothesAngelChestplateTickEventProcedure {
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            if (var10000.m_41720_() == JujutsucraftModItems.WING_KING_CHESTPLATE.get()) {
+            if (var10000.getItem() == JujutsucraftModItems.WING_KING_CHESTPLATE.get()) {
                can_fly = true;
                if (!LogicStartPassiveProcedure.execute(entity)) {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get());
+                     _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get());
                   }
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                     var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                   } else {
-                     var10000 = ItemStack.f_41583_;
+                     var10000 = ItemStack.EMPTY;
                   }
 
-                  var10000.m_41774_(1);
+                  var10000.shrink(1);
                }
             }
          }
 
          if (can_fly) {
-            entity.f_19789_ = 0.0F;
-            if (entity.m_20096_() || entity.m_20069_()) {
+            entity.fallDistance = 0.0F;
+            if (entity.onGround() || entity.isInWater()) {
+               int var36;
                label134: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get())) {
-                        var36 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get()).m_19564_();
+                     if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get())) {
+                        var36 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_BACK_STEP.get()).getAmplifier();
                         break label134;
                      }
                   }
@@ -194,17 +195,16 @@ public class ClothesAngelChestplateTickEventProcedure {
 
                if (var36 < 5 && entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
+                  if (!_entity.level().isClientSide()) {
                      MobEffectInstance var10001;
                      MobEffect var10003;
                      int var10004;
                      label126: {
-                        var10001 = new MobEffectInstance;
                         var10003 = (MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get();
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get())) {
-                              var10004 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get()).m_19557_();
+                           if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get())) {
+                              var10004 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get()).getDuration();
                               break label126;
                            }
                         }
@@ -212,8 +212,8 @@ public class ClothesAngelChestplateTickEventProcedure {
                         var10004 = 0;
                      }
 
-                     var10001.<init>(var10003, Math.min(var10004 + 4, 60), 0, true, true);
-                     _entity.m_7292_(var10001);
+                     var10001 = new MobEffectInstance(var10003, Math.min(var10004 + 4, 60), 0, true, true);
+                     _entity.addEffect(var10001);
                   }
                }
             }

@@ -13,15 +13,15 @@ public class EntityRozetsuDomainModel extends GeoModel<EntityRozetsuDomainEntity
    }
 
    public ResourceLocation getAnimationResource(EntityRozetsuDomainEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/rouzetsu_domain.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/rouzetsu_domain.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityRozetsuDomainEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/rouzetsu_domain.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/rouzetsu_domain.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityRozetsuDomainEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityRozetsuDomainEntity animatable, long instanceId, AnimationState animationState) {

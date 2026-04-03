@@ -27,15 +27,15 @@ public class InsectArmorExpiresProcedure {
          if (num_level > 0.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity1 = (LivingEntity)entity;
-               if (_livingEntity1.m_21204_().m_22171_(Attributes.f_22281_)) {
+               if (_livingEntity1.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
                   AttributeInstance var10000;
                   double var10001;
                   label126: {
-                     var10000 = _livingEntity1.getAttribute_(Attributes.f_22281_);
+                     var10000 = _livingEntity1.getAttribute(Attributes.ATTACK_DAMAGE);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livingEntity0 = (LivingEntity)entity;
-                        if (_livingEntity0.m_21204_().m_22171_(Attributes.f_22281_)) {
-                           var10001 = _livingEntity0.getAttribute_(Attributes.f_22281_).m_22115_();
+                        if (_livingEntity0.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                           var10001 = _livingEntity0.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                            break label126;
                         }
                      }
@@ -43,21 +43,21 @@ public class InsectArmorExpiresProcedure {
                      var10001 = 0.0;
                   }
 
-                  var10000.m_22100_(var10001 - num_level * 0.6);
+                  var10000.setBaseValue(var10001 - num_level * 0.6);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity3 = (LivingEntity)entity;
-               if (_livingEntity3.m_21204_().m_22171_(Attributes.f_22278_)) {
+               if (_livingEntity3.getAttributes().hasAttribute(Attributes.KNOCKBACK_RESISTANCE)) {
                   AttributeInstance var21;
                   double var22;
                   label115: {
-                     var21 = _livingEntity3.getAttribute_(Attributes.f_22278_);
+                     var21 = _livingEntity3.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livingEntity2 = (LivingEntity)entity;
-                        if (_livingEntity2.m_21204_().m_22171_(Attributes.f_22278_)) {
-                           var22 = _livingEntity2.getAttribute_(Attributes.f_22278_).m_22115_();
+                        if (_livingEntity2.getAttributes().hasAttribute(Attributes.KNOCKBACK_RESISTANCE)) {
+                           var22 = _livingEntity2.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getBaseValue();
                            break label115;
                         }
                      }
@@ -65,7 +65,7 @@ public class InsectArmorExpiresProcedure {
                      var22 = 0.0;
                   }
 
-                  var21.m_22100_(var22 - 2.0);
+                  var21.setBaseValue(var22 - 2.0);
                }
             }
          }
@@ -81,41 +81,41 @@ public class InsectArmorExpiresProcedure {
 
          Player = entity instanceof Player;
          if (Player) {
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:insect_armor_helmet");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:insect_armor_helmet");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:insect_armor_chestplate");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:insect_armor_chestplate");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:insect_armor_leggings");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:insect_armor_leggings");
             }
          } else {
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.head with air");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.head with air");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.chest with air");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.chest with air");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.legs with air");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.legs with air");
             }
 
-            if (entity instanceof YorozuEntity && !entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.chest with jujutsucraft:clothes_yorozu_chestplate");
+            if (entity instanceof YorozuEntity && !entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.chest with gaigegaigekaigecraft:clothes_yorozu_chestplate");
             }
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.FLY_EFFECT.get());
          }
 
-         entity.getPersistentData().m_128379_("canFly", false);
+         entity.getPersistentData().putBoolean("canFly", false);
       }
    }
 }

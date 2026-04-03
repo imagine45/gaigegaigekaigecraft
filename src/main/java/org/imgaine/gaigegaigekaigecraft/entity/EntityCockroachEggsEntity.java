@@ -60,129 +60,129 @@ public class EntityCockroachEggsEntity extends PathfinderMob implements GeoEntit
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 0;
-      this.m_21557_(true);
-      this.m_274367_(0.6F);
-      this.m_21530_();
+      this.xpReward = 0;
+      this.setNoAi(true);
+      this.setMaxUpStep(0.6F);
+      this.setPersistenceRequired();
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "cockroach_eggs");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "cockroach_eggs");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_6469_(DamageSource source, float amount) {
-      if (source.m_276093_(DamageTypes.f_268631_)) {
+   public boolean hurt(DamageSource source, float amount) {
+      if (source.is(DamageTypes.IN_FIRE)) {
          return false;
-      } else if (source.m_7640_() instanceof AbstractArrow) {
+      } else if (source.getDirectEntity() instanceof AbstractArrow) {
          return false;
-      } else if (source.m_7640_() instanceof Player) {
+      } else if (source.getDirectEntity() instanceof Player) {
          return false;
-      } else if (!(source.m_7640_() instanceof ThrownPotion) && !(source.m_7640_() instanceof AreaEffectCloud)) {
-         if (source.m_276093_(DamageTypes.f_268671_)) {
+      } else if (!(source.getDirectEntity() instanceof ThrownPotion) && !(source.getDirectEntity() instanceof AreaEffectCloud)) {
+         if (source.is(DamageTypes.FALL)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268585_)) {
+         } else if (source.is(DamageTypes.CACTUS)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268722_)) {
+         } else if (source.is(DamageTypes.DROWN)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268450_)) {
+         } else if (source.is(DamageTypes.LIGHTNING_BOLT)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268565_)) {
+         } else if (source.is(DamageTypes.EXPLOSION)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268714_)) {
+         } else if (source.is(DamageTypes.TRIDENT)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268526_)) {
+         } else if (source.is(DamageTypes.FALLING_ANVIL)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268482_)) {
+         } else if (source.is(DamageTypes.DRAGON_BREATH)) {
             return false;
-         } else if (source.m_276093_(DamageTypes.f_268493_)) {
+         } else if (source.is(DamageTypes.WITHER)) {
             return false;
          } else {
-            return source.m_276093_(DamageTypes.f_268641_) ? false : super.m_6469_(source, amount);
+            return source.is(DamageTypes.WITHER_SKULL) ? false : super.hurt(source, amount);
          }
       } else {
          return false;
       }
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIGravestoneProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIGravestoneProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      return super.m_6972_(p_33597_).m_20388_(2.0F);
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      return super.getDimensions(p_33597_).scale(2.0F);
    }
 
-   public boolean m_6094_() {
+   public boolean isPushable() {
       return false;
    }
 
-   protected void m_7324_(Entity entityIn) {
+   protected void doPush(Entity entityIn) {
    }
 
-   protected void m_6138_() {
+   protected void pushEntities() {
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_21203_();
+   public void aiStep() {
+      super.aiStep();
+      this.updateSwingTime();
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 10.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 10.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 
@@ -191,40 +191,47 @@ public class EntityCockroachEggsEntity extends PathfinderMob implements GeoEntit
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -237,8 +244,8 @@ public class EntityCockroachEggsEntity extends PathfinderMob implements GeoEntit
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(EntityCockroachEggsEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(EntityCockroachEggsEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(EntityCockroachEggsEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(EntityCockroachEggsEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(EntityCockroachEggsEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(EntityCockroachEggsEntity.class, EntityDataSerializers.STRING);
    }
 }

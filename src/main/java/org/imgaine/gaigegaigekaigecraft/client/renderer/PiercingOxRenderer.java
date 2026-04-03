@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PiercingOxRenderer extends MobRenderer<PiercingOxEntity, ModelPiercing_Ox<PiercingOxEntity>> {
    public PiercingOxRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelPiercing_Ox(context.m_174023_(ModelPiercing_Ox.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelPiercing_Ox(context.bakeLayer(ModelPiercing_Ox.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(PiercingOxEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/piercingox.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/piercingox.png");
    }
 }

@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CockroachesRenderer extends MobRenderer<CockroachesEntity, Modelrock_fragment<CockroachesEntity>> {
    public CockroachesRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelrock_fragment(context.m_174023_(Modelrock_fragment.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelrock_fragment(context.bakeLayer(Modelrock_fragment.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(CockroachesEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/clear.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/clear.png");
    }
 }

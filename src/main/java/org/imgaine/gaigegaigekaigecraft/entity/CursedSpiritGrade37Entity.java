@@ -48,88 +48,88 @@ public class CursedSpiritGrade37Entity extends Monster {
 
    public CursedSpiritGrade37Entity(EntityType<CursedSpiritGrade37Entity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new PanicGoal(this, 1.0));
-      this.f_21345_.m_25352_(2, new MeleeAttackGoal(this, 1.0, true) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new PanicGoal(this, 1.0));
+      this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = CursedSpiritGrade37Entity.this.m_20185_();
-            double y = CursedSpiritGrade37Entity.this.m_20186_();
-            double z = CursedSpiritGrade37Entity.this.m_20189_();
+         public boolean canUse() {
+            double x = CursedSpiritGrade37Entity.this.getX();
+            double y = CursedSpiritGrade37Entity.this.getY();
+            double z = CursedSpiritGrade37Entity.this.getZ();
             Entity entity = CursedSpiritGrade37Entity.this;
-            Level world = CursedSpiritGrade37Entity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = CursedSpiritGrade37Entity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Player.class, false, false));
-      this.f_21345_.m_25352_(4, new RandomStrollGoal(this, 1.0));
-      this.f_21345_.m_25352_(5, new RandomLookAroundGoal(this));
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Player.class, false, false));
+      this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0));
+      this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public void m_6667_(DamageSource source) {
-      super.m_6667_(source);
-      CursedSpiritGrade37EntityDiesProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_());
+   public void die(DamageSource source) {
+      super.die(source);
+      CursedSpiritGrade37EntityDiesProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagCursedSpritProcedure.execute(world, this);
       return retval;
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      super.m_6071_(sourceentity, hand);
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      super.mobInteract(sourceentity, hand);
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       CursedSpiritGrade37RightClickedOnEntityProcedure.execute(world, x, y, z, this, sourceentity);
       return retval;
    }
 
    public static void init() {
-      SpawnPlacements.m_21754_((EntityType)JujutsucraftModEntities.CURSED_SPIRIT_GRADE_37.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
-         int x = pos.m_123341_();
-         int y = pos.m_123342_();
-         int z = pos.m_123343_();
+      SpawnPlacements.register((EntityType)JujutsucraftModEntities.CURSED_SPIRIT_GRADE_37.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
+         int x = pos.getX();
+         int y = pos.getY();
+         int z = pos.getZ();
          return SpawnLevel1Procedure.execute();
       });
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.2);
-      builder = builder.m_22268_(Attributes.f_22276_, 15.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.2);
+      builder = builder.add(Attributes.MAX_HEALTH, 15.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 }

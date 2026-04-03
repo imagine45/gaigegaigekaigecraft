@@ -19,45 +19,45 @@ import net.minecraft.world.level.Level;
 public class SwordOkkotsuYutaItem extends SwordItem {
    public SwordOkkotsuYutaItem() {
       super(new Tier() {
-         public int m_6609_() {
+         public int getUses() {
             return 1200;
          }
 
-         public float m_6624_() {
+         public float getSpeed() {
             return 4.0F;
          }
 
-         public float m_6631_() {
+         public float getAttackDamageBonus() {
             return 1.0F;
          }
 
-         public int m_6604_() {
+         public int getLevel() {
             return 1;
          }
 
-         public int m_6601_() {
+         public int getEnchantmentValue() {
             return 2;
          }
 
-         public Ingredient m_6282_() {
-            return Ingredient.m_151265_();
+         public Ingredient getRepairIngredient() {
+            return Ingredient.of();
          }
       }, 3, -2.4F, new Item.Properties());
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      CopiedCursedTechniqueRightclickedProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity, (ItemStack)ar.m_19095_());
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      CopiedCursedTechniqueRightclickedProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), entity, (ItemStack)ar.getObject());
       return ar;
    }
 
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.sword_okkotsu_yuta.description_0"));
+   public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, level, list, flag);
+      list.add(Component.translatable("item.gaigegaigekaigecraft.sword_okkotsu_yuta.description_0"));
    }
 
-   public void m_6883_(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-      super.m_6883_(itemstack, world, entity, slot, selected);
+   public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+      super.inventoryTick(itemstack, world, entity, slot, selected);
       SwordOkkotsuYutaToolInInventoryTickProcedure.execute(world, entity, itemstack);
    }
 }

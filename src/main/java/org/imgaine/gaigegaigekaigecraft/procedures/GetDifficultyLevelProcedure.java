@@ -9,9 +9,9 @@ public class GetDifficultyLevelProcedure {
 
    public static double execute(LevelAccessor world) {
       double num1 = 0.0;
-      if (world.m_46791_() == Difficulty.HARD) {
+      if (world.getDifficulty() == Difficulty.HARD) {
          num1 = 0.325;
-      } else if (world.m_46791_() == Difficulty.NORMAL) {
+      } else if (world.getDifficulty() == Difficulty.NORMAL) {
          num1 = 0.3;
       } else {
          num1 = 0.275;

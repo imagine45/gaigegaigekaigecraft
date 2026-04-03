@@ -9,22 +9,22 @@ public class ZeninNaoyaCursedSpiritModel extends GeoModel<ZeninNaoyaCursedSpirit
    }
 
    public ResourceLocation getAnimationResource(ZeninNaoyaCursedSpiritEntity entity) {
-      if ((Integer)entity.m_20088_().m_135370_(ZeninNaoyaCursedSpiritEntity.DATA_form) == 3) {
-         return new ResourceLocation("jujutsucraft", "animations/human.animation.json");
+      if ((Integer)entity.getEntityData().get(ZeninNaoyaCursedSpiritEntity.DATA_form) == 3) {
+         return new ResourceLocation("gaigegaigekaigecraft", "animations/human.animation.json");
       } else {
-         return (Integer)entity.m_20088_().m_135370_(ZeninNaoyaCursedSpiritEntity.DATA_form) == 2 ? new ResourceLocation("jujutsucraft", "animations/naoya_cursed_spirit2.animation.json") : new ResourceLocation("jujutsucraft", "animations/naoya_cursed_spirit1.animation.json");
+         return (Integer)entity.getEntityData().get(ZeninNaoyaCursedSpiritEntity.DATA_form) == 2 ? new ResourceLocation("gaigegaigekaigecraft", "animations/naoya_cursed_spirit2.animation.json") : new ResourceLocation("gaigegaigekaigecraft", "animations/naoya_cursed_spirit1.animation.json");
       }
    }
 
    public ResourceLocation getModelResource(ZeninNaoyaCursedSpiritEntity entity) {
-      if ((Integer)entity.m_20088_().m_135370_(ZeninNaoyaCursedSpiritEntity.DATA_form) == 3) {
-         return new ResourceLocation("jujutsucraft", "geo/human.geo.json");
+      if ((Integer)entity.getEntityData().get(ZeninNaoyaCursedSpiritEntity.DATA_form) == 3) {
+         return new ResourceLocation("gaigegaigekaigecraft", "geo/human.geo.json");
       } else {
-         return (Integer)entity.m_20088_().m_135370_(ZeninNaoyaCursedSpiritEntity.DATA_form) == 2 ? new ResourceLocation("jujutsucraft", "geo/naoya_cursed_spirit2.geo.json") : new ResourceLocation("jujutsucraft", "geo/naoya_cursed_spirit1.geo.json");
+         return (Integer)entity.getEntityData().get(ZeninNaoyaCursedSpiritEntity.DATA_form) == 2 ? new ResourceLocation("gaigegaigekaigecraft", "geo/naoya_cursed_spirit2.geo.json") : new ResourceLocation("gaigegaigekaigecraft", "geo/naoya_cursed_spirit1.geo.json");
       }
    }
 
    public ResourceLocation getTextureResource(ZeninNaoyaCursedSpiritEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

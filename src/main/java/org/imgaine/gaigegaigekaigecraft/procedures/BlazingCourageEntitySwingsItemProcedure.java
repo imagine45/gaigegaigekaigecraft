@@ -14,9 +14,9 @@ public class BlazingCourageEntitySwingsItemProcedure {
       if (entity != null) {
          boolean old_second = false;
          double old_technique = 0.0;
-         double old_select = 0.0;
-         if (entity instanceof Player && entity.getPersistentData().m_128459_("skill") == 0.0) {
-            old_select = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique;
+
+         if (entity instanceof Player && entity.getPersistentData().getDouble("skill") == 0.0) {
+            final double old_select = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique;
             double _setval = 0.0;
             entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                capability.PlayerSelectCurseTechnique = _setval;
@@ -27,9 +27,9 @@ public class BlazingCourageEntitySwingsItemProcedure {
                capability.PlayerSelectCurseTechnique = old_select;
                capability.syncPlayerVariables(entity);
             });
-            boolean _setval = true;
+            boolean _boolsetval = true;
             entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-               capability.noChangeTechnique = _setval;
+               capability.noChangeTechnique = _boolsetval;
                capability.syncPlayerVariables(entity);
             });
             KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);

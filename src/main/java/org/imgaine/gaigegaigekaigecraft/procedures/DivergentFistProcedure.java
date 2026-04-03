@@ -33,11 +33,11 @@ public class DivergentFistProcedure {
             double weapon_size = 0.0;
             double loop_num = 0.0;
             double attack_reach = 0.0;
-            CNT6 = 1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.1;
+            CNT6 = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.1;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                  var10000 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+               if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                  var10000 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                   break label77;
                }
             }
@@ -47,72 +47,72 @@ public class DivergentFistProcedure {
 
          double var42 = (double)Math.min(var10000, 50) * CNT6;
          double var45 = ReturnEntitySizeProcedure.execute(entity);
-         if (entity.getPersistentData().m_128459_("cnt7") == 0.0) {
-            double var44 = entity.getPersistentData().m_128459_("skill");
+         if (entity.getPersistentData().getDouble("cnt7") == 0.0) {
+            double var44 = entity.getPersistentData().getDouble("skill");
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity4 = (LivingEntity)entity;
-               if (_livingEntity4.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                  _livingEntity4.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(-7.0);
+               if (_livingEntity4.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                  _livingEntity4.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(-7.0);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity5 = (LivingEntity)entity;
-               if (_livingEntity5.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
-                  _livingEntity5.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).m_22100_(0.0);
+               if (_livingEntity5.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
+                  _livingEntity5.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).setBaseValue(0.0);
                }
             }
 
             AttackWeakProcedure.execute(world, x, y, z, entity);
-            if (entity.getPersistentData().m_128459_("cnt2") == 1.0) {
+            if (entity.getPersistentData().getDouble("cnt2") == 1.0) {
                PlayAnimationProcedure.execute(world, entity);
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity7 = (LivingEntity)entity;
-               if (_livingEntity7.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                  _livingEntity7.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(0.0);
+               if (_livingEntity7.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                  _livingEntity7.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(0.0);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity8 = (LivingEntity)entity;
-               if (_livingEntity8.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
-                  _livingEntity8.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).m_22100_(0.0);
+               if (_livingEntity8.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
+                  _livingEntity8.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).setBaseValue(0.0);
                }
             }
 
-            if (entity.getPersistentData().m_128459_("skill") == 0.0) {
-               entity.getPersistentData().m_128347_("skill", var44);
-               entity.getPersistentData().m_128347_("cnt7", 1.0);
-               entity.getPersistentData().m_128347_("cnt1", 0.0);
-               entity.getPersistentData().m_128379_("attack", false);
-               double var51 = Math.toRadians((double)(entity.m_146908_() + 90.0F));
-               double var48 = Math.toRadians((double)entity.m_146909_());
-               entity.getPersistentData().m_128347_("x_pos", entity.m_20185_() + Math.cos(var51) * Math.cos(var48) * 0.0);
-               entity.getPersistentData().m_128347_("y_pos", entity.m_20186_() + (double)entity.m_20206_() * 0.75 + Math.sin(var48) * -1.0 * 0.0);
-               entity.getPersistentData().m_128347_("z_pos", entity.m_20189_() + Math.sin(var51) * Math.cos(var48) * 0.0);
-               entity.getPersistentData().m_128347_("x_power", entity.m_20154_().f_82479_ * 0.5 * var45);
-               entity.getPersistentData().m_128347_("y_power", entity.m_20154_().f_82480_ * 0.5 * var45);
-               entity.getPersistentData().m_128347_("z_power", entity.m_20154_().f_82481_ * 0.5 * var45);
+            if (entity.getPersistentData().getDouble("skill") == 0.0) {
+               entity.getPersistentData().putDouble("skill", var44);
+               entity.getPersistentData().putDouble("cnt7", 1.0);
+               entity.getPersistentData().putDouble("cnt1", 0.0);
+               entity.getPersistentData().putBoolean("attack", false);
+               double var51 = Math.toRadians((double)(entity.getYRot() + 90.0F));
+               double var48 = Math.toRadians((double)entity.getXRot());
+               entity.getPersistentData().putDouble("x_pos", entity.getX() + Math.cos(var51) * Math.cos(var48) * 0.0);
+               entity.getPersistentData().putDouble("y_pos", entity.getY() + (double)entity.getBbHeight() * 0.75 + Math.sin(var48) * -1.0 * 0.0);
+               entity.getPersistentData().putDouble("z_pos", entity.getZ() + Math.sin(var51) * Math.cos(var48) * 0.0);
+               entity.getPersistentData().putDouble("x_power", entity.getLookAngle().x * 0.5 * var45);
+               entity.getPersistentData().putDouble("y_power", entity.getLookAngle().y * 0.5 * var45);
+               entity.getPersistentData().putDouble("z_power", entity.getLookAngle().z * 0.5 * var45);
             }
          } else {
-            entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
+            entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt31 = (LivingEntity)entity;
-               if (_livEnt31.m_21023_((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get())) {
-                  entity.getPersistentData().m_128347_("skill", 0.0);
+               if (_livEnt31.hasEffect((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get())) {
+                  entity.getPersistentData().putDouble("skill", 0.0);
                   return;
                }
             }
 
-            if (entity.getPersistentData().m_128459_("cnt1") > 0.0) {
+            if (entity.getPersistentData().getDouble("cnt1") > 0.0) {
                label65: {
-                  CNT6 = 1.0 + entity.getPersistentData().m_128459_("cnt6") * 0.2;
+                  CNT6 = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.2;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                        var10000 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                     if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        var10000 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                         break label65;
                      }
                   }
@@ -125,20 +125,20 @@ public class DivergentFistProcedure {
                double var52 = 11.0;
 
                for(int index0 = 0; index0 < (int)var52; ++index0) {
-                  entity.getPersistentData().m_128347_("x_pos", entity.getPersistentData().m_128459_("x_pos") + entity.getPersistentData().m_128459_("x_power"));
-                  entity.getPersistentData().m_128347_("y_pos", entity.getPersistentData().m_128459_("y_pos") + entity.getPersistentData().m_128459_("y_power"));
-                  entity.getPersistentData().m_128347_("z_pos", entity.getPersistentData().m_128459_("z_pos") + entity.getPersistentData().m_128459_("z_power"));
-                  double var47 = entity.getPersistentData().m_128459_("x_pos");
-                  double var49 = entity.getPersistentData().m_128459_("y_pos");
-                  double var50 = entity.getPersistentData().m_128459_("z_pos");
-                  entity.getPersistentData().m_128347_("Damage", 12.0 * CNT6);
-                  entity.getPersistentData().m_128347_("knockback", 0.25 * CNT6);
-                  entity.getPersistentData().m_128347_("Range", 4.0 * var45);
-                  entity.getPersistentData().m_128347_("projectile_type", 1.0);
+                  entity.getPersistentData().putDouble("x_pos", entity.getPersistentData().getDouble("x_pos") + entity.getPersistentData().getDouble("x_power"));
+                  entity.getPersistentData().putDouble("y_pos", entity.getPersistentData().getDouble("y_pos") + entity.getPersistentData().getDouble("y_power"));
+                  entity.getPersistentData().putDouble("z_pos", entity.getPersistentData().getDouble("z_pos") + entity.getPersistentData().getDouble("z_power"));
+                  double var47 = entity.getPersistentData().getDouble("x_pos");
+                  double var49 = entity.getPersistentData().getDouble("y_pos");
+                  double var50 = entity.getPersistentData().getDouble("z_pos");
+                  entity.getPersistentData().putDouble("Damage", 12.0 * CNT6);
+                  entity.getPersistentData().putDouble("knockback", 0.25 * CNT6);
+                  entity.getPersistentData().putDouble("Range", 4.0 * var45);
+                  entity.getPersistentData().putDouble("projectile_type", 1.0);
                   RangeAttackProcedure.execute(world, var47, var49, var50, entity);
                }
 
-               entity.getPersistentData().m_128347_("skill", 0.0);
+               entity.getPersistentData().putDouble("skill", 0.0);
             }
          }
 

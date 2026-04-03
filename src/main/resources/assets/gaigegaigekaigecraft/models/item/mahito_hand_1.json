@@ -1,0 +1,6 @@
+{
+  "parent": "gaigegaigekaigecraft:displaysettings/mahito_hand1",
+  "textures": {
+    "layer0": "gaigegaigekaigecraft:item/mahito_hand1"
+  }
+}

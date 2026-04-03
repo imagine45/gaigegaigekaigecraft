@@ -15,27 +15,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class Modelgravestone4<T extends Entity> extends EntityModel<T> {
-   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("jujutsucraft", "modelgravestone_4"), "main");
+   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("gaigegaigekaigecraft", "modelgravestone_4"), "main");
    public final ModelPart bb_main;
 
    public Modelgravestone4(ModelPart root) {
-      this.bb_main = root.m_171324_("bb_main");
+      this.bb_main = root.getChild("bb_main");
    }
 
    public static LayerDefinition createBodyLayer() {
       MeshDefinition meshdefinition = new MeshDefinition();
-      PartDefinition partdefinition = meshdefinition.m_171576_();
-      PartDefinition bb_main = partdefinition.m_171599_("bb_main", CubeListBuilder.m_171558_().m_171514_(0, 0).m_171488_(-3.0F, -31.0F, -3.0F, 6.0F, 39.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.m_171419_(0.0F, 24.0F, 0.0F));
-      bb_main.m_171599_("bb_main_r1", CubeListBuilder.m_171558_().m_171514_(3, 3).m_171488_(-2.5F, -12.0F, -2.5F, 5.0F, 24.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.m_171423_(0.0F, -20.5F, 0.0F, -1.5708F, 0.0F, 1.5708F));
-      return LayerDefinition.m_171565_(meshdefinition, 64, 64);
+      PartDefinition partdefinition = meshdefinition.getRoot();
+      PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -31.0F, -3.0F, 6.0F, 39.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+      bb_main.addOrReplaceChild("bb_main_r1", CubeListBuilder.create().texOffs(3, 3).addBox(-2.5F, -12.0F, -2.5F, 5.0F, 24.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -20.5F, 0.0F, -1.5708F, 0.0F, 1.5708F));
+      return LayerDefinition.create(meshdefinition, 64, 64);
    }
 
-   public void m_7695_(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      this.bb_main.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+   public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      this.bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
    }
 
-   public void m_6973_(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-      this.bb_main.f_104204_ = netHeadYaw / 57.295776F;
-      this.bb_main.f_104203_ = headPitch / 57.295776F;
+   public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+      this.bb_main.yRot = netHeadYaw / 57.295776F;
+      this.bb_main.xRot = headPitch / 57.295776F;
    }
 }

@@ -9,14 +9,14 @@ public class DeathPaintingItemModel extends GeoModel<DeathPaintingItem> {
    }
 
    public ResourceLocation getAnimationResource(DeathPaintingItem animatable) {
-      return new ResourceLocation("jujutsucraft", "animations/death_paintings.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/death_paintings.animation.json");
    }
 
    public ResourceLocation getModelResource(DeathPaintingItem animatable) {
-      return new ResourceLocation("jujutsucraft", "geo/death_paintings.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/death_paintings.geo.json");
    }
 
    public ResourceLocation getTextureResource(DeathPaintingItem animatable) {
-      return new ResourceLocation("jujutsucraft", "textures/item/death_paintings.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/death_paintings.png");
    }
 }

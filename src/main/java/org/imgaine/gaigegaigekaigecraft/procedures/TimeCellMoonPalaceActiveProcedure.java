@@ -22,8 +22,8 @@ public class TimeCellMoonPalaceActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label23;
                }
             }
@@ -31,25 +31,26 @@ public class TimeCellMoonPalaceActiveProcedure {
             var10000 = 0;
          }
 
-         if (var10000 % 2 == 1 || entity.getPersistentData().m_128471_("StartDomainAttack")) {
-            entity.getPersistentData().m_128379_("StartDomainAttack", false);
-            double var9 = entity.getPersistentData().m_128459_("skill");
-            double var11 = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
-            entity.getPersistentData().m_128347_("COOLDOWN_TICKS", 20.0);
-            entity.getPersistentData().m_128347_("skill", 1905.0);
-            entity.getPersistentData().m_128347_("Damage", 15.0);
-            entity.getPersistentData().m_128347_("Range", range);
-            entity.getPersistentData().m_128347_("effect", 1.0);
-            entity.getPersistentData().m_128379_("swing", false);
-            entity.getPersistentData().m_128379_("attack", false);
-            entity.getPersistentData().m_128379_("onlyLiving", true);
-            entity.getPersistentData().m_128379_("DomainAttack", true);
-            entity.getPersistentData().m_128347_("target_type", 2.0);
-            RangeAttackProcedure.execute(world, entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma"), entity);
-            entity.getPersistentData().m_128347_("target_type", 0.0);
-            entity.getPersistentData().m_128347_("skill", var9);
-            entity.getPersistentData().m_128347_("COOLDOWN_TICKS", var11);
-            entity.getPersistentData().m_128379_("onlyLiving", false);
+         if (var10000 % 2 == 1 || entity.getPersistentData().getBoolean("StartDomainAttack")) {
+            entity.getPersistentData().putBoolean("StartDomainAttack", false);
+            double var9 = entity.getPersistentData().getDouble("skill");
+            double var11 = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
+            entity.getPersistentData().putDouble("COOLDOWN_TICKS", 20.0);
+            entity.getPersistentData().putDouble("skill", 1905.0);
+            entity.getPersistentData().putDouble("Damage", 15.0);
+            entity.getPersistentData().putDouble("Range", range);
+            entity.getPersistentData().putDouble("effect", 1.0);
+            entity.getPersistentData().putDouble("knockback", 0.0);
+            entity.getPersistentData().putBoolean("swing", false);
+            entity.getPersistentData().putBoolean("attack", false);
+            entity.getPersistentData().putBoolean("onlyLiving", true);
+            entity.getPersistentData().putBoolean("DomainAttack", true);
+            entity.getPersistentData().putDouble("target_type", 2.0);
+            RangeAttackProcedure.execute(world, entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"), entity);
+            entity.getPersistentData().putDouble("target_type", 0.0);
+            entity.getPersistentData().putDouble("skill", var9);
+            entity.getPersistentData().putDouble("COOLDOWN_TICKS", var11);
+            entity.getPersistentData().putBoolean("onlyLiving", false);
          }
 
       }

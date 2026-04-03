@@ -34,16 +34,20 @@ import org.imgaine.gaigegaigekaigecraft.item.ClothesYorozuItem;
 import org.imgaine.gaigegaigekaigecraft.item.ClothesZenin2Item;
 import org.imgaine.gaigegaigekaigecraft.item.ClothesZeninItem;
 import org.imgaine.gaigegaigekaigecraft.item.ClothesZeninNaobitoItem;
+import org.imgaine.gaigegaigekaigecraft.item.ConfiscationItem;
 import org.imgaine.gaigegaigekaigecraft.item.CopiedCursedTechniqueItem;
 import org.imgaine.gaigegaigekaigecraft.item.CostumeTakabaItem;
 import org.imgaine.gaigegaigekaigecraft.item.CursedSpiritArmouryItem;
 import org.imgaine.gaigegaigekaigecraft.item.CursedSpiritBallItem;
 import org.imgaine.gaigegaigekaigecraft.item.CursedTechniqueChangerItem;
 import org.imgaine.gaigegaigekaigecraft.item.CursedTechniqueStarterItem;
+import org.imgaine.gaigegaigekaigecraft.item.DaitenguFanItem;
 import org.imgaine.gaigegaigekaigecraft.item.DeathPaintingItem;
 import org.imgaine.gaigegaigekaigecraft.item.DebuggerJrItem;
+import org.imgaine.gaigegaigekaigecraft.item.Demotion1Item;
 import org.imgaine.gaigegaigekaigecraft.item.DragonBoneItem;
 import org.imgaine.gaigegaigekaigecraft.item.ExecutionersSwordItem;
+import org.imgaine.gaigegaigekaigecraft.item.EyeItem;
 import org.imgaine.gaigegaigekaigecraft.item.FesterLifeBladeItem;
 import org.imgaine.gaigegaigekaigecraft.item.GStaffItem;
 import org.imgaine.gaigegaigekaigecraft.item.GarudaItemBallItem;
@@ -66,6 +70,7 @@ import org.imgaine.gaigegaigekaigecraft.item.InsectArmorItem;
 import org.imgaine.gaigegaigekaigecraft.item.InvertedSpearOfHeavenItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItadoriArmItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItadoriYujiPaperItem;
+import org.imgaine.gaigegaigekaigecraft.item.ItemBulletItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItemDollItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItemInsectItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItemMasterDomainAmplificationItem;
@@ -75,6 +80,7 @@ import org.imgaine.gaigegaigekaigecraft.item.ItemMasterPhysicalGiftedItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItemMasterReverseCursedTechniqueItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItemMasterSimpleDomainItem;
 import org.imgaine.gaigegaigekaigecraft.item.ItemMasterSixEyesItem;
+import org.imgaine.gaigegaigekaigecraft.item.KitchenKnifeItem;
 import org.imgaine.gaigegaigekaigecraft.item.KnifeItem;
 import org.imgaine.gaigegaigekaigecraft.item.KurourushiBodyItem;
 import org.imgaine.gaigegaigekaigecraft.item.LoudspeakerItem;
@@ -92,6 +98,7 @@ import org.imgaine.gaigegaigekaigecraft.item.NyoiStaffItem;
 import org.imgaine.gaigegaigekaigecraft.item.PendantTodoAoiItem;
 import org.imgaine.gaigegaigekaigecraft.item.PistolItem;
 import org.imgaine.gaigegaigekaigecraft.item.PlayfulCloudItem;
+import org.imgaine.gaigegaigekaigecraft.item.ProfessionChangerItem;
 import org.imgaine.gaigegaigekaigecraft.item.Recommendation1Item;
 import org.imgaine.gaigegaigekaigecraft.item.Recommendation2Item;
 import org.imgaine.gaigegaigekaigecraft.item.RikaBodyItem;
@@ -111,6 +118,7 @@ import org.imgaine.gaigegaigekaigecraft.item.SwordOgiItem;
 import org.imgaine.gaigegaigekaigecraft.item.SwordOkkotsuYutaItem;
 import org.imgaine.gaigegaigekaigecraft.item.SwordOptionItem;
 import org.imgaine.gaigegaigekaigecraft.item.SwordShigemoItem;
+import org.imgaine.gaigegaigekaigecraft.item.ToothItem;
 import org.imgaine.gaigegaigekaigecraft.item.UniformGetoItem;
 import org.imgaine.gaigegaigekaigecraft.item.UniformGojoItem;
 import org.imgaine.gaigegaigekaigecraft.item.UniformHigurumaItem;
@@ -327,6 +335,7 @@ public class JujutsucraftModItems {
    public static final RegistryObject<Item> CLOTHES_JOGO_HELMET;
    public static final RegistryObject<Item> CLOTHES_JOGO_CHESTPLATE;
    public static final RegistryObject<Item> CLAWS;
+   public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_17_SPAWN_EGG;
    public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_18_SPAWN_EGG;
    public static final RegistryObject<Item> SCISSORS;
    public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_06_SPAWN_EGG;
@@ -338,13 +347,10 @@ public class JujutsucraftModItems {
    public static final RegistryObject<Item> ITEM_MASTER_DOMAIN_AMPLIFICATION;
    public static final RegistryObject<Item> DOMAIN_PLANKS;
    public static final RegistryObject<Item> EXECUTIONERS_SWORD;
-   public static final RegistryObject<Item> GAVEL_LONG;
-   public static final RegistryObject<Item> GAVEL_BIG;
    public static final RegistryObject<Item> UNIFORM_HIGURUMA_CHESTPLATE;
    public static final RegistryObject<Item> UNIFORM_HIGURUMA_LEGGINGS;
    public static final RegistryObject<Item> TOAD_SPAWN_EGG;
    public static final RegistryObject<Item> TODO_AOI_SPAWN_EGG;
-   public static final RegistryObject<Item> EIGHT_HANDLED_SWROD_DIVERGENT_SILA_DIVINE_GENERAL_MAHORAGA_SPAWN_EGG;
    public static final RegistryObject<Item> TRUCK_SPAWN_EGG;
    public static final RegistryObject<ClothesAngelItem> CLOTHES_ANGEL_HELMET;
    public static final RegistryObject<ClothesAngelItem> CLOTHES_ANGEL_CHESTPLATE;
@@ -362,6 +368,7 @@ public class JujutsucraftModItems {
    public static final RegistryObject<ClothesUroItem> CLOTHES_URO_CHESTPLATE;
    public static final RegistryObject<Item> CLOTHES_KIRARA_HELMET;
    public static final RegistryObject<Item> CLOTHES_KIRARA_CHESTPLATE;
+   public static final RegistryObject<Item> CLOTHES_KIRARA_LEGGINGS;
    public static final RegistryObject<Item> CLOTHES_HAKARI_KINJI_HELMET;
    public static final RegistryObject<Item> CLOTHES_HAKARI_KINJI_CHESTPLATE;
    public static final RegistryObject<Item> CLOTHES_HAKARI_KINJI_LEGGINGS;
@@ -520,16 +527,39 @@ public class JujutsucraftModItems {
    public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_011_SPAWN_EGG;
    public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_012_SPAWN_EGG;
    public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_11_SPAWN_EGG;
+   public static final RegistryObject<Item> DOMAIN_FENCE;
+   public static final RegistryObject<Item> KITCHEN_KNIFE;
+   public static final RegistryObject<Item> TOOTH;
+   public static final RegistryObject<Item> EYE;
+   public static final RegistryObject<Item> SUDA_MANAMI_SPAWN_EGG;
+   public static final RegistryObject<Item> BAYER_SPAWN_EGG;
+   public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_320_SPAWN_EGG;
+   public static final RegistryObject<Item> ZENIN_NOBUAKI_SPAWN_EGG;
+   public static final RegistryObject<Item> ITEM_BULLET;
+   public static final RegistryObject<Item> DOMAIN_HOLE;
+   public static final RegistryObject<Item> EIGHT_HANDLED_SWORD_DIVERGENT_SILA_DIVINE_GENERAL_MAHORAGA_SPAWN_EGG;
+   public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_217_SPAWN_EGG;
+   public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_013_SPAWN_EGG;
+   public static final RegistryObject<Item> ENTITY_TSUCHIGUMO_SPAWN_EGG;
+   public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_112_SPAWN_EGG;
+   public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_014_SPAWN_EGG;
+   public static final RegistryObject<Item> CURSED_SPIRIT_GRADE_015_SPAWN_EGG;
+   public static final RegistryObject<Item> DAITENGU_FAN;
+   public static final RegistryObject<Item> PROFESSION_CHANGER;
+   public static final RegistryObject<Item> DEMOTION_1;
+   public static final RegistryObject<Item> GAVEL_LONG;
+   public static final RegistryObject<Item> GAVEL_BIG;
+   public static final RegistryObject<Item> CONFISCATION;
 
    public JujutsucraftModItems() {
    }
 
    private static RegistryObject<Item> block(RegistryObject<Block> block) {
-      return REGISTRY.register(block.getId().m_135815_(), () -> new BlockItem((Block)block.get(), new Item.Properties()));
+      return REGISTRY.register(block.getId().getPath(), () -> new BlockItem((Block)block.get(), new Item.Properties()));
    }
 
    static {
-      REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, "jujutsucraft");
+      REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, "gaigegaigekaigecraft");
       CURSED_TECHNIQUE_CHANGER = REGISTRY.register("cursed_technique_changer", () -> new CursedTechniqueChangerItem());
       JUJUTSU_BARRIER = block(JujutsucraftModBlocks.JUJUTSU_BARRIER);
       CURSED_SPIRIT_GRADE_31_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_31_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_31, -1, -1, new Item.Properties()));
@@ -726,6 +756,7 @@ public class JujutsucraftModItems {
       CLOTHES_JOGO_HELMET = REGISTRY.register("clothes_jogo_helmet", () -> new ClothesJogoItem.Helmet());
       CLOTHES_JOGO_CHESTPLATE = REGISTRY.register("clothes_jogo_chestplate", () -> new ClothesJogoItem.Chestplate());
       CLAWS = REGISTRY.register("claws", () -> new ClawsItem());
+      CURSED_SPIRIT_GRADE_17_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_17_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_17, -6710887, -6710887, new Item.Properties()));
       CURSED_SPIRIT_GRADE_18_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_18_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_18, -6710887, -6710887, new Item.Properties()));
       SCISSORS = REGISTRY.register("scissors", () -> new ScissorsItem());
       CURSED_SPIRIT_GRADE_06_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_06_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_06, -10066330, -10066330, new Item.Properties()));
@@ -737,13 +768,10 @@ public class JujutsucraftModItems {
       ITEM_MASTER_DOMAIN_AMPLIFICATION = REGISTRY.register("item_master_domain_amplification", () -> new ItemMasterDomainAmplificationItem());
       DOMAIN_PLANKS = block(JujutsucraftModBlocks.DOMAIN_PLANKS);
       EXECUTIONERS_SWORD = REGISTRY.register("executioners_sword", () -> new ExecutionersSwordItem());
-      GAVEL_LONG = REGISTRY.register("gavel_long", () -> new GavelLongItem());
-      GAVEL_BIG = REGISTRY.register("gavel_big", () -> new GavelBigItem());
       UNIFORM_HIGURUMA_CHESTPLATE = REGISTRY.register("uniform_higuruma_chestplate", () -> new UniformHigurumaItem.Chestplate());
       UNIFORM_HIGURUMA_LEGGINGS = REGISTRY.register("uniform_higuruma_leggings", () -> new UniformHigurumaItem.Leggings());
       TOAD_SPAWN_EGG = REGISTRY.register("toad_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.TOAD, -16777216, -16777216, new Item.Properties()));
       TODO_AOI_SPAWN_EGG = REGISTRY.register("todo_aoi_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.TODO_AOI, -26317, -16777216, new Item.Properties()));
-      EIGHT_HANDLED_SWROD_DIVERGENT_SILA_DIVINE_GENERAL_MAHORAGA_SPAWN_EGG = REGISTRY.register("eight_handled_swrod_divergent_sila_divine_general_mahoraga_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.EIGHT_HANDLED_SWROD_DIVERGENT_SILA_DIVINE_GENERAL_MAHORAGA, -16777216, -16777216, new Item.Properties()));
       TRUCK_SPAWN_EGG = REGISTRY.register("truck_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.TRUCK, -1, -1, new Item.Properties()));
       CLOTHES_ANGEL_HELMET = REGISTRY.register("clothes_angel_helmet", () -> new ClothesAngelItem(Type.HELMET, new Item.Properties()));
       CLOTHES_ANGEL_CHESTPLATE = REGISTRY.register("clothes_angel_chestplate", () -> new ClothesAngelItem(Type.CHESTPLATE, new Item.Properties()));
@@ -761,6 +789,7 @@ public class JujutsucraftModItems {
       CLOTHES_URO_CHESTPLATE = REGISTRY.register("clothes_uro_chestplate", () -> new ClothesUroItem(Type.CHESTPLATE, new Item.Properties()));
       CLOTHES_KIRARA_HELMET = REGISTRY.register("clothes_kirara_helmet", () -> new ClothesKiraraItem.Helmet());
       CLOTHES_KIRARA_CHESTPLATE = REGISTRY.register("clothes_kirara_chestplate", () -> new ClothesKiraraItem.Chestplate());
+      CLOTHES_KIRARA_LEGGINGS = REGISTRY.register("clothes_kirara_leggings", () -> new ClothesKiraraItem.Leggings());
       CLOTHES_HAKARI_KINJI_HELMET = REGISTRY.register("clothes_hakari_kinji_helmet", () -> new ClothesHakariKinjiItem.Helmet());
       CLOTHES_HAKARI_KINJI_CHESTPLATE = REGISTRY.register("clothes_hakari_kinji_chestplate", () -> new ClothesHakariKinjiItem.Chestplate());
       CLOTHES_HAKARI_KINJI_LEGGINGS = REGISTRY.register("clothes_hakari_kinji_leggings", () -> new ClothesHakariKinjiItem.Leggings());
@@ -897,7 +926,7 @@ public class JujutsucraftModItems {
       TRANSFIGURED_HUMAN_SPAWN_EGG = REGISTRY.register("transfigured_human_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.TRANSFIGURED_HUMAN, -6710887, -6710887, new Item.Properties()));
       POLYMORPHIC_SOUL_ISOMER_SPAWN_EGG = REGISTRY.register("polymorphic_soul_isomer_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.POLYMORPHIC_SOUL_ISOMER, -6710887, -6710887, new Item.Properties()));
       HANAMI_EYE_HELMET = REGISTRY.register("hanami_eye_helmet", () -> new HanamiEyeItem(Type.HELMET, new Item.Properties()));
-      MYTHICAL_BEAST_AMBER_HELMET = REGISTRY.register("mythical_beast_amber_helmet", () -> new MythicalBeastAmberItem(Type.HELMET, (new Item.Properties()).m_41486_()));
+      MYTHICAL_BEAST_AMBER_HELMET = REGISTRY.register("mythical_beast_amber_helmet", () -> new MythicalBeastAmberItem(Type.HELMET, (new Item.Properties()).fireResistant()));
       ITADORI_YUJI_PAPER_HELMET = REGISTRY.register("itadori_yuji_paper_helmet", () -> new ItadoriYujiPaperItem(Type.HELMET, new Item.Properties()));
       ZENIN_NAOYA_CURSED_SPIRIT_SPAWN_EGG = REGISTRY.register("zenin_naoya_cursed_spirit_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.ZENIN_NAOYA_CURSED_SPIRIT, -10092442, -154, new Item.Properties()));
       DAGON_SPAWN_EGG = REGISTRY.register("dagon_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.DAGON, -65536, -16777216, new Item.Properties()));
@@ -919,5 +948,28 @@ public class JujutsucraftModItems {
       CURSED_SPIRIT_GRADE_011_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_011_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_011, -10066330, -10066330, new Item.Properties()));
       CURSED_SPIRIT_GRADE_012_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_012_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_012, -10066330, -10066330, new Item.Properties()));
       CURSED_SPIRIT_GRADE_11_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_11_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_11, -6710887, -6710887, new Item.Properties()));
+      DOMAIN_FENCE = block(JujutsucraftModBlocks.DOMAIN_FENCE);
+      KITCHEN_KNIFE = REGISTRY.register("kitchen_knife", () -> new KitchenKnifeItem());
+      TOOTH = REGISTRY.register("tooth", () -> new ToothItem());
+      EYE = REGISTRY.register("eye", () -> new EyeItem());
+      SUDA_MANAMI_SPAWN_EGG = REGISTRY.register("suda_manami_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.SUDA_MANAMI, -10092493, -26215, new Item.Properties()));
+      BAYER_SPAWN_EGG = REGISTRY.register("bayer_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.BAYER, -3355444, -10066330, new Item.Properties()));
+      CURSED_SPIRIT_GRADE_320_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_320_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_320, -1, -1, new Item.Properties()));
+      ZENIN_NOBUAKI_SPAWN_EGG = REGISTRY.register("zenin_nobuaki_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.ZENIN_NOBUAKI, -10066330, -6710887, new Item.Properties()));
+      ITEM_BULLET = REGISTRY.register("item_bullet", () -> new ItemBulletItem());
+      DOMAIN_HOLE = block(JujutsucraftModBlocks.DOMAIN_HOLE);
+      EIGHT_HANDLED_SWORD_DIVERGENT_SILA_DIVINE_GENERAL_MAHORAGA_SPAWN_EGG = REGISTRY.register("eight_handled_sword_divergent_sila_divine_general_mahoraga_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.EIGHT_HANDLED_SWORD_DIVERGENT_SILA_DIVINE_GENERAL_MAHORAGA, -16777216, -16777216, new Item.Properties()));
+      CURSED_SPIRIT_GRADE_217_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_217_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_217, -3355444, -3355444, new Item.Properties()));
+      CURSED_SPIRIT_GRADE_013_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_013_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_013, -10066330, -10066330, new Item.Properties()));
+      ENTITY_TSUCHIGUMO_SPAWN_EGG = REGISTRY.register("entity_tsuchigumo_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.ENTITY_TSUCHIGUMO, -1, -1, new Item.Properties()));
+      CURSED_SPIRIT_GRADE_112_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_112_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_112, -6710887, -6710887, new Item.Properties()));
+      CURSED_SPIRIT_GRADE_014_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_014_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_014, -10066330, -10066330, new Item.Properties()));
+      CURSED_SPIRIT_GRADE_015_SPAWN_EGG = REGISTRY.register("cursed_spirit_grade_015_spawn_egg", () -> new ForgeSpawnEggItem(JujutsucraftModEntities.CURSED_SPIRIT_GRADE_015, -10066330, -10066330, new Item.Properties()));
+      DAITENGU_FAN = REGISTRY.register("daitengu_fan", () -> new DaitenguFanItem());
+      PROFESSION_CHANGER = REGISTRY.register("profession_changer", () -> new ProfessionChangerItem());
+      DEMOTION_1 = REGISTRY.register("demotion_1", () -> new Demotion1Item());
+      GAVEL_LONG = REGISTRY.register("gavel_long", () -> new GavelLongItem());
+      GAVEL_BIG = REGISTRY.register("gavel_big", () -> new GavelBigItem());
+      CONFISCATION = REGISTRY.register("confiscation", () -> new ConfiscationItem());
    }
 }

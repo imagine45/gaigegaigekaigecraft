@@ -13,15 +13,15 @@ public class ProjectileSlashModel extends GeoModel<ProjectileSlashEntity> {
    }
 
    public ResourceLocation getAnimationResource(ProjectileSlashEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/projectile_slash.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/projectile_slash.animation.json");
    }
 
    public ResourceLocation getModelResource(ProjectileSlashEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/projectile_slash.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/projectile_slash.geo.json");
    }
 
    public ResourceLocation getTextureResource(ProjectileSlashEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(ProjectileSlashEntity animatable, long instanceId, AnimationState animationState) {

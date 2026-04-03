@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.entity.BloodBallEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
@@ -27,11 +26,11 @@ public class LocateBloodBallProcedure {
          double pitch2 = 0.0;
          double HP = 0.0;
          logic_a = false;
-         if (entity.getPersistentData().m_128459_("NameRanged") != 0.0) {
+         if (entity.getPersistentData().getDouble("NameRanged") != 0.0) {
             Vec3 _center = new Vec3(x, y, z);
 
-            for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(25.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-               if (entity != entityiterator && entityiterator instanceof BloodBallEntity && entity.getPersistentData().m_128459_("NameRanged") == entityiterator.getPersistentData().m_128459_("NameRanged_ranged")) {
+            for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(25.0), (e) -> true)) {
+               if (entity != entityiterator && entityiterator instanceof BloodBallEntity && entity.getPersistentData().getDouble("NameRanged") == entityiterator.getPersistentData().getDouble("NameRanged_ranged")) {
                   logic_a = true;
                   break;
                }

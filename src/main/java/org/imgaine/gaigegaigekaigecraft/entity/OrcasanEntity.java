@@ -67,176 +67,176 @@ public class OrcasanEntity extends TamableAnimal implements GeoEntity {
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_274367_(0.6F);
-      this.m_21530_();
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setMaxUpStep(0.6F);
+      this.setPersistenceRequired();
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "orca");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "orca");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
+   protected void registerGoals() {
+      super.registerGoals();
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      ItemStack itemstack = sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      Item item = itemstack.m_41720_();
-      if (itemstack.m_41720_() instanceof SpawnEggItem) {
-         retval = super.m_6071_(sourceentity, hand);
-      } else if (this.m_9236_().m_5776_()) {
-         retval = (!this.m_21824_() || !this.m_21830_(sourceentity)) && !this.m_6898_(itemstack) ? InteractionResult.PASS : InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      } else if (this.m_21824_()) {
-         if (this.m_21830_(sourceentity)) {
-            if (item.m_41472_() && this.m_6898_(itemstack) && this.m_21223_() < this.m_21233_()) {
-               this.m_142075_(sourceentity, hand, itemstack);
-               this.m_5634_((float)item.m_41473_().m_38744_());
-               retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-            } else if (this.m_6898_(itemstack) && this.m_21223_() < this.m_21233_()) {
-               this.m_142075_(sourceentity, hand, itemstack);
-               this.m_5634_(4.0F);
-               retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      ItemStack itemstack = sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      Item item = itemstack.getItem();
+      if (itemstack.getItem() instanceof SpawnEggItem) {
+         retval = super.mobInteract(sourceentity, hand);
+      } else if (this.level().isClientSide()) {
+         retval = (!this.isTame() || !this.isOwnedBy(sourceentity)) && !this.isFood(itemstack) ? InteractionResult.PASS : InteractionResult.sidedSuccess(this.level().isClientSide());
+      } else if (this.isTame()) {
+         if (this.isOwnedBy(sourceentity)) {
+            if (item.isEdible() && this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+               this.usePlayerItem(sourceentity, hand, itemstack);
+               this.heal((float)item.getFoodProperties().getNutrition());
+               retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+            } else if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+               this.usePlayerItem(sourceentity, hand, itemstack);
+               this.heal(4.0F);
+               retval = InteractionResult.sidedSuccess(this.level().isClientSide());
             } else {
-               retval = super.m_6071_(sourceentity, hand);
+               retval = super.mobInteract(sourceentity, hand);
             }
          }
-      } else if (this.m_6898_(itemstack)) {
-         this.m_142075_(sourceentity, hand, itemstack);
-         if (this.f_19796_.m_188503_(3) == 0 && !ForgeEventFactory.onAnimalTame(this, sourceentity)) {
-            this.m_21828_(sourceentity);
-            this.m_9236_().m_7605_(this, (byte)7);
+      } else if (this.isFood(itemstack)) {
+         this.usePlayerItem(sourceentity, hand, itemstack);
+         if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, sourceentity)) {
+            this.tame(sourceentity);
+            this.level().broadcastEntityEvent(this, (byte)7);
          } else {
-            this.m_9236_().m_7605_(this, (byte)6);
+            this.level().broadcastEntityEvent(this, (byte)6);
          }
 
-         this.m_21530_();
-         retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
+         this.setPersistenceRequired();
+         retval = InteractionResult.sidedSuccess(this.level().isClientSide());
       } else {
-         retval = super.m_6071_(sourceentity, hand);
+         retval = super.mobInteract(sourceentity, hand);
          if (retval == InteractionResult.SUCCESS || retval == InteractionResult.CONSUME) {
-            this.m_21530_();
+            this.setPersistenceRequired();
          }
       }
 
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       OrcasanRightClickedOnEntityProcedure.execute(this, sourceentity);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
+   public void baseTick() {
+      super.baseTick();
       AIOrcaProcedure.execute(this);
-      this.m_6210_();
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      return super.m_6972_(p_33597_).m_20388_(1.0F);
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      return super.getDimensions(p_33597_).scale(1.0F);
    }
 
-   public AgeableMob m_142606_(ServerLevel serverWorld, AgeableMob ageable) {
-      OrcasanEntity retval = (OrcasanEntity)((EntityType)JujutsucraftModEntities.ORCASAN.get()).m_20615_(serverWorld);
-      retval.m_6518_(serverWorld, serverWorld.m_6436_(retval.m_20183_()), MobSpawnType.BREEDING, (SpawnGroupData)null, (CompoundTag)null);
+   public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+      OrcasanEntity retval = (OrcasanEntity)((EntityType)JujutsucraftModEntities.ORCASAN.get()).create(serverWorld);
+      retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, (SpawnGroupData)null, (CompoundTag)null);
       return retval;
    }
 
-   public boolean m_6898_(ItemStack stack) {
-      return List.of().contains(stack.m_41720_());
+   public boolean isFood(ItemStack stack) {
+      return List.of().contains(stack.getItem());
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_21203_();
+   public void aiStep() {
+      super.aiStep();
+      this.updateSwingTime();
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 20.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 20.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 
    private PlayState movementPredicate(AnimationState event) {
       if (!this.animationprocedure.equals("empty")) {
          return PlayState.STOP;
-      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.m_5912_() && !this.m_20142_()) {
+      } else if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F) || !(event.getLimbSwingAmount() < 0.15F)) && !this.isAggressive() && !this.isSprinting()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
-      } else if (this.m_21224_()) {
+      } else if (this.isDeadOrDying()) {
          return event.setAndContinue(RawAnimation.begin().thenPlay("death"));
-      } else if (this.m_6144_()) {
+      } else if (this.isShiftKeyDown()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("guard"));
-      } else if (this.m_20142_()) {
+      } else if (this.isSprinting()) {
          return event.setAndContinue(RawAnimation.begin().thenLoop("sprint"));
       } else {
-         return this.m_5912_() && event.isMoving() ? event.setAndContinue(RawAnimation.begin().thenLoop("sprint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+         return this.isAggressive() && event.isMoving() ? event.setAndContinue(RawAnimation.begin().thenLoop("sprint")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
       }
    }
 
    private PlayState attackingPredicate(AnimationState event) {
-      double d1 = this.m_20185_() - this.f_19790_;
-      double d0 = this.m_20189_() - this.f_19792_;
+      double d1 = this.getX() - this.xOld;
+      double d0 = this.getZ() - this.zOld;
       float velocity = (float)Math.sqrt(d1 * d1 + d0 * d0);
-      if (this.m_21324_(event.getPartialTick()) > 0.0F && !this.swinging) {
+      if (this.getAttackAnim(event.getPartialTick()) > 0.0F && !this.swinging) {
          this.swinging = true;
-         this.lastSwing = this.m_9236_().m_46467_();
+         this.lastSwing = this.level().getGameTime();
       }
 
-      if (this.swinging && this.lastSwing + 7L <= this.m_9236_().m_46467_()) {
+      if (this.swinging && this.lastSwing + 7L <= this.level().getGameTime()) {
          this.swinging = false;
       }
 
@@ -249,40 +249,47 @@ public class OrcasanEntity extends TamableAnimal implements GeoEntity {
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -296,8 +303,8 @@ public class OrcasanEntity extends TamableAnimal implements GeoEntity {
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(OrcasanEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(OrcasanEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(OrcasanEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(OrcasanEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(OrcasanEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(OrcasanEntity.class, EntityDataSerializers.STRING);
    }
 }

@@ -20,35 +20,35 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class HanamiHandItem extends Item {
    public HanamiHandItem() {
-      super((new Item.Properties()).m_41487_(1).m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).stacksTo(1).rarity(Rarity.COMMON));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.EAT;
    }
 
-   public int m_6473_() {
+   public int getEnchantmentValue() {
       return 1;
    }
 
    @OnlyIn(Dist.CLIENT)
-   public boolean m_5812_(ItemStack itemstack) {
+   public boolean isFoil(ItemStack itemstack) {
       return HanamiHandMakeItemGlowProcedure.execute(itemstack);
    }
 
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.hanami_hand.description_0"));
+   public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, level, list, flag);
+      list.add(Component.translatable("item.gaigegaigekaigecraft.hanami_hand.description_0"));
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      HanamiHandRightclickedProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity, (ItemStack)ar.m_19095_());
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      HanamiHandRightclickedProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), entity, (ItemStack)ar.getObject());
       return ar;
    }
 
-   public void m_6883_(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-      super.m_6883_(itemstack, world, entity, slot, selected);
+   public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+      super.inventoryTick(itemstack, world, entity, slot, selected);
       HanamiHandItemInHandTickProcedure.execute(world, entity, itemstack);
    }
 }

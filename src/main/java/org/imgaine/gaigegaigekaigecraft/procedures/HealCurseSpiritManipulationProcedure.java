@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import javax.annotation.Nullable;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.core.Direction;
@@ -28,7 +27,7 @@ public class HealCurseSpiritManipulationProcedure {
    @SubscribeEvent
    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
       if (event.phase == Phase.END) {
-         execute(event, event.player.m_9236_(), event.player.m_20185_(), event.player.m_20186_(), event.player.m_20189_(), event.player);
+         execute(event, event.player.level(), event.player.getX(), event.player.getY(), event.player.getZ(), event.player);
       }
 
    }
@@ -43,18 +42,18 @@ public class HealCurseSpiritManipulationProcedure {
          double z_pos = 0.0;
          double y_pos = 0.0;
          double heal_amount = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 18.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 18.0) {
-               entity.getPersistentData().m_128347_("cnt_cursed_spirit_manipulation", entity.getPersistentData().m_128459_("cnt_cursed_spirit_manipulation") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_cursed_spirit_manipulation") > 100.0) {
-                  entity.getPersistentData().m_128347_("cnt_cursed_spirit_manipulation", 0.0);
-                  if (entity.getPersistentData().m_128459_("friend_num") != 0.0) {
+               entity.getPersistentData().putDouble("cnt_cursed_spirit_manipulation", entity.getPersistentData().getDouble("cnt_cursed_spirit_manipulation") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_cursed_spirit_manipulation") > 100.0) {
+                  entity.getPersistentData().putDouble("cnt_cursed_spirit_manipulation", 0.0);
+                  if (entity.getPersistentData().getDouble("friend_num") != 0.0) {
                      label74: {
                         x_pos = 0.0;
                         z_pos = 0.0;
                         if (entity instanceof Player) {
                            Player _plr = (Player)entity;
-                           if (_plr.m_150110_().f_35937_) {
+                           if (_plr.getAbilities().instabuild) {
                               heal_amount = 9999.0;
                               break label74;
                            }
@@ -66,16 +65,16 @@ public class HealCurseSpiritManipulationProcedure {
                      if (world instanceof ServerLevel) {
                         ServerLevel _origLevel = (ServerLevel)world;
                         LevelAccessor _worldorig = world;
-                        LevelAccessor var28 = _origLevel.m_7654_().m_129880_(ResourceKey.m_135785_(Registries.f_256858_, new ResourceLocation("jujutsucraft:cursed_spirit_manipulation_dimension")));
+                        LevelAccessor var28 = _origLevel.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, new ResourceLocation("gaigegaigekaigecraft:cursed_spirit_manipulation_dimension")));
                         if (var28 != null) {
                            Vec3 _center = new Vec3(0.0, 128.0, 0.0);
 
-                           for(Entity entityiterator : var28.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(128.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                              if (!(entityiterator instanceof Player) && entityiterator.m_6084_() && entity.getPersistentData().m_128459_("friend_num") == entityiterator.getPersistentData().m_128459_("friend_num_worker")) {
+                           for(Entity entityiterator : var28.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(128.0), (e) -> true)) {
+                              if (!(entityiterator instanceof Player) && entityiterator.isAlive() && entity.getPersistentData().getDouble("friend_num") == entityiterator.getPersistentData().getDouble("friend_num_worker")) {
                                  float var10000;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    var10000 = _livEnt.m_21223_();
+                                    var10000 = _livEnt.getHealth();
                                  } else {
                                     var10000 = -1.0F;
                                  }
@@ -83,7 +82,7 @@ public class HealCurseSpiritManipulationProcedure {
                                  float var10001;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    var10001 = _livEnt.m_21233_();
+                                    var10001 = _livEnt.getMaxHealth();
                                  } else {
                                     var10001 = -1.0F;
                                  }
@@ -92,7 +91,7 @@ public class HealCurseSpiritManipulationProcedure {
                                     LivingEntity _entity = (LivingEntity)entityiterator;
                                     if (entityiterator instanceof LivingEntity) {
                                        LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                       var10001 = _livEnt.m_21223_();
+                                       var10001 = _livEnt.getHealth();
                                     } else {
                                        var10001 = -1.0F;
                                     }
@@ -101,12 +100,12 @@ public class HealCurseSpiritManipulationProcedure {
                                     double var10002;
                                     if (entityiterator instanceof LivingEntity) {
                                        LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                       var10002 = (double)_livEnt.m_21233_();
+                                       var10002 = (double)_livEnt.getMaxHealth();
                                     } else {
                                        var10002 = -1.0;
                                     }
 
-                                    _entity.m_21153_((float)Math.min(var35, var10002));
+                                    _entity.setHealth((float)Math.min(var35, var10002));
                                  }
                               }
                            }
@@ -118,8 +117,8 @@ public class HealCurseSpiritManipulationProcedure {
                }
             }
 
-            if (entity.getPersistentData().m_128471_("UpdateSkills")) {
-               entity.getPersistentData().m_128379_("UpdateSkills", false);
+            if (entity.getPersistentData().getBoolean("UpdateSkills")) {
+               entity.getPersistentData().putBoolean("UpdateSkills", false);
                boolean _setval = true;
                entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                   capability.noChangeTechnique = _setval;

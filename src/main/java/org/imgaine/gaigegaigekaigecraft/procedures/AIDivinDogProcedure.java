@@ -22,19 +22,19 @@ public class AIDivinDogProcedure {
          double rnd = 0.0;
          double level_resistance = 0.0;
          double NUM1 = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             AIActiveProcedure.execute(world, x, y, z, entity);
             FollowEntityProcedure.execute(world, entity);
             if (entity instanceof DivineDogTotalityEntity) {
-               NUM1 = (double)(6L + Math.round(entity.getPersistentData().m_128459_("Strength") * 0.5));
+               NUM1 = (double)(6L + Math.round(entity.getPersistentData().getDouble("Strength") * 0.5));
                NUM2 = 2.0;
                NUM3 = -60.0;
             } else {
-               NUM1 = (double)(3L + Math.round(entity.getPersistentData().m_128459_("Strength") * 0.5));
+               NUM1 = (double)(3L + Math.round(entity.getPersistentData().getDouble("Strength") * 0.5));
                NUM2 = 1.0;
                NUM3 = -60.0;
-               if (entity.getPersistentData().m_128459_("cnt_howl") < 0.0) {
-                  entity.getPersistentData().m_128347_("cnt_howl", entity.getPersistentData().m_128459_("cnt_howl") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_howl") < 0.0) {
+                  entity.getPersistentData().putDouble("cnt_howl", entity.getPersistentData().getDouble("cnt_howl") + 1.0);
                }
             }
 
@@ -42,8 +42,8 @@ public class AIDivinDogProcedure {
             label79: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity7 = (LivingEntity)entity;
-                  if (_livingEntity7.m_21204_().m_22171_(Attributes.f_22281_)) {
-                     var10001 = _livingEntity7.getAttribute_(Attributes.f_22281_).m_22115_();
+                  if (_livingEntity7.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                     var10001 = _livingEntity7.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                      break label79;
                   }
                }
@@ -55,15 +55,15 @@ public class AIDivinDogProcedure {
                level_resistance = (double)Math.round(Math.floor(Math.min((NUM1 + var10001 * 3.0) / 4.0, 3.0)));
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt8 = (LivingEntity)entity;
-                  if (_livEnt8.m_21023_(MobEffects.f_19600_)) {
+                  if (_livEnt8.hasEffect(MobEffects.DAMAGE_BOOST)) {
                      break label74;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, (int)NUM1, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, (int)NUM1, false, false));
                   }
                }
             }
@@ -72,8 +72,8 @@ public class AIDivinDogProcedure {
             label69: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_(MobEffects.f_19606_)) {
-                     var10000 = _livEnt.m_21124_(MobEffects.f_19606_).m_19564_();
+                  if (_livEnt.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
+                     var10000 = _livEnt.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier();
                      break label69;
                   }
                }
@@ -83,38 +83,38 @@ public class AIDivinDogProcedure {
 
             if ((double)var10000 < level_resistance && entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, (int)level_resistance, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, (int)level_resistance, false, false));
                }
             }
 
-            if (entity.getPersistentData().m_128459_("skill") == 1.0) {
+            if (entity.getPersistentData().getDouble("skill") == 1.0) {
                AttackBeastProcedure.execute(world, x, y, z, entity);
             } else {
                LivingEntity var30;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var30 = _mobEnt.m_5448_();
+                  var30 = _mobEnt.getTarget();
                } else {
                   var30 = null;
                }
 
-               if (!(var30 instanceof LivingEntity) && !(entity.getPersistentData().m_128459_("cnt_target") > 6.0)) {
-                  entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               if (!(var30 instanceof LivingEntity) && !(entity.getPersistentData().getDouble("cnt_target") > 6.0)) {
+                  entity.getPersistentData().putDouble("cnt_x", 0.0);
                } else {
-                  entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-                  if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
+                  entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+                  if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
                      ResetCounterProcedure.execute(entity);
                      if (entity instanceof DivineDogTotalityEntity) {
-                        entity.getPersistentData().m_128347_("cnt_x", 0.0);
+                        entity.getPersistentData().putDouble("cnt_x", 0.0);
                         CalculateAttackProcedure.execute(world, entity);
                      } else {
-                        entity.getPersistentData().m_128347_("cnt_x", NUM3 + (double)Math.round(NUM3 / 2.0 * Math.random()));
-                        entity.getPersistentData().m_128347_("skill", 1.0);
+                        entity.getPersistentData().putDouble("cnt_x", NUM3 + (double)Math.round(NUM3 / 2.0 * Math.random()));
+                        entity.getPersistentData().putDouble("skill", 1.0);
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                            }
                         }
                      }

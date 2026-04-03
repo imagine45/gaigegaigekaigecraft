@@ -18,11 +18,11 @@ public class EffectInfinityMobEffect extends MobEffect {
       return cures;
    }
 
-   public void m_6742_(LivingEntity entity, int amplifier) {
-      InfinityActiveTickProcedure.execute(entity.m_9236_(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity);
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
+      InfinityActiveTickProcedure.execute(entity.level(), entity);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

@@ -9,14 +9,14 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CursedSpiritGrade319Renderer extends MobRenderer<CursedSpiritGrade319Entity, Modelcursedspirit3_19<CursedSpiritGrade319Entity>> {
    public CursedSpiritGrade319Renderer(EntityRendererProvider.Context context) {
-      super(context, new Modelcursedspirit3_19(context.m_174023_(Modelcursedspirit3_19.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelcursedspirit3_19(context.bakeLayer(Modelcursedspirit3_19.LAYER_LOCATION)), 0.0F);
    }
 
    protected void scale(CursedSpiritGrade319Entity entity, PoseStack poseStack, float f) {
-      poseStack.m_85841_(2.0F, 2.0F, 2.0F);
+      poseStack.scale(2.0F, 2.0F, 2.0F);
    }
 
    public ResourceLocation getTextureLocation(CursedSpiritGrade319Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/cursedspirit3_19.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/cursedspirit3_19.png");
    }
 }

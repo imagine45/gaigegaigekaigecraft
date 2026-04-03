@@ -1,7 +1,7 @@
 package org.imgaine.gaigegaigekaigecraft.network;
 
 import java.util.function.Supplier;
-import org.imgaine.gaigegaigekaigecraft.JujutsucraftMod;
+import org.imgaine.gaigegaigekaigecraft.Gaigegaigekaigecraft;
 import org.imgaine.gaigegaigekaigecraft.procedures.KeyStartTechniqueOnKeyPressedProcedure;
 import org.imgaine.gaigegaigekaigecraft.procedures.KeyStartTechniqueOnKeyReleasedProcedure;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,11 +42,11 @@ public class KeyStartTechniqueMessage {
    }
 
    public static void pressAction(Player entity, int type, int pressedms) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
-      if (world.m_46805_(entity.m_20183_())) {
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
+      if (world.hasChunkAt(entity.blockPosition())) {
          if (type == 0) {
             KeyStartTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
          }
@@ -60,6 +60,6 @@ public class KeyStartTechniqueMessage {
 
    @SubscribeEvent
    public static void registerMessage(FMLCommonSetupEvent event) {
-      JujutsucraftMod.addNetworkMessage(KeyStartTechniqueMessage.class, KeyStartTechniqueMessage::buffer, KeyStartTechniqueMessage::new, KeyStartTechniqueMessage::handler);
+      Gaigegaigekaigecraft.addNetworkMessage(KeyStartTechniqueMessage.class, KeyStartTechniqueMessage::buffer, KeyStartTechniqueMessage::new, KeyStartTechniqueMessage::handler);
    }
 }

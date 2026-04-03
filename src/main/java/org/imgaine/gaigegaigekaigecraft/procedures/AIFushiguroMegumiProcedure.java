@@ -42,25 +42,25 @@ public class AIFushiguroMegumiProcedure {
          double level_strength = 0.0;
          double level_resistance = 0.0;
          double level_physical_gifted = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             young = entity instanceof FushiguroMegumiEntity;
             sukuna = entity instanceof SukunaFushiguroEntity;
             if (!sukuna) {
                label508: {
                   AIActiveProcedure.execute(world, x, y, z, entity);
-                  if (!entity.getPersistentData().m_128471_("flag_start")) {
-                     entity.getPersistentData().m_128379_("flag_start", true);
-                     entity.getPersistentData().m_128379_("HasWeapon1", true);
+                  if (!entity.getPersistentData().getBoolean("flag_start")) {
+                     entity.getPersistentData().putBoolean("flag_start", true);
+                     entity.getPersistentData().putBoolean("HasWeapon1", true);
                      rnd = 4.0;
 
                      for(int index0 = 0; index0 < 5; ++index0) {
-                        entity.getPersistentData().m_128347_("TenShadowsTechnique" + Math.round(rnd), 1.0);
+                        entity.getPersistentData().putDouble("TenShadowsTechnique" + Math.round(rnd), 1.0);
                         ++rnd;
                      }
 
                      if (!young) {
-                        entity.getPersistentData().m_128347_("TenShadowsTechnique1", -2.0);
-                        entity.getPersistentData().m_128347_("TenShadowsTechnique5", -2.0);
+                        entity.getPersistentData().putDouble("TenShadowsTechnique1", -2.0);
+                        entity.getPersistentData().putDouble("TenShadowsTechnique5", -2.0);
                      }
                   }
 
@@ -75,30 +75,30 @@ public class AIFushiguroMegumiProcedure {
                   label468: {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt9 = (LivingEntity)entity;
-                        if (_livEnt9.m_21023_(MobEffects.f_19600_)) {
+                        if (_livEnt9.hasEffect(MobEffects.DAMAGE_BOOST)) {
                            break label468;
                         }
                      }
 
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, (int)NUM1, false, false));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, (int)NUM1, false, false));
                         }
                      }
                   }
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt11 = (LivingEntity)entity;
-                     if (_livEnt11.m_21023_(MobEffects.f_19606_)) {
+                     if (_livEnt11.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
                         break label508;
                      }
                   }
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, (int)NUM2, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, (int)NUM2, false, false));
                      }
                   }
                }
@@ -107,26 +107,28 @@ public class AIFushiguroMegumiProcedure {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
-            if (var10000 instanceof LivingEntity && entity.getPersistentData().m_128459_("cnt_target") > 6.0) {
-               if (entity.getPersistentData().m_128459_("skill") == 0.0) {
-                  entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-                  entity.getPersistentData().m_128347_("cnt_rest", 0.0);
-                  if (entity.getPersistentData().m_128459_("TenShadowsTechnique14") < (double)(sukuna ? 1 : 0)) {
+            if (var10000 instanceof LivingEntity && entity.getPersistentData().getDouble("cnt_target") > 6.0) {
+               if (entity.getPersistentData().getDouble("skill") == 0.0) {
+                  entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+                  entity.getPersistentData().putDouble("cnt_rest", 0.0);
+                  if (entity.getPersistentData().getDouble("TenShadowsTechnique14") < (double)(sukuna ? 1 : 0)) {
                      flagMahorage = false;
                   } else {
+                     boolean var76;
                      label449: {
-                        flagMahorage = entity.getPersistentData().m_128471_("flag_mahoraga");
+                        flagMahorage = entity.getPersistentData().getBoolean("flag_mahoraga");
                         if (!flagMahorage) {
+                           int var74;
                            label446: {
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entity;
-                                 if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                    var74 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                                 if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                    var74 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                     break label446;
                                  }
                               }
@@ -138,17 +140,17 @@ public class AIFushiguroMegumiProcedure {
                            LivingEntity var10001;
                            if (entity instanceof Mob) {
                               Mob _mobEnt = (Mob)entity;
-                              var10001 = _mobEnt.m_5448_();
+                              var10001 = _mobEnt.getTarget();
                            } else {
                               var10001 = null;
                            }
-
+                           int var88;
                            label440: {
                               LivingEntity var36 = var10001;
                               if (var36 instanceof LivingEntity) {
                                  LivingEntity _livEnt = var36;
-                                 if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                    var88 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                                 if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                    var88 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                     break label440;
                                  }
                               }
@@ -164,7 +166,7 @@ public class AIFushiguroMegumiProcedure {
 
                         var76 = true;
                      }
-
+                     boolean var79;
                      label522: {
                         flagMahorage = var76;
                         if (!flagMahorage) {
@@ -173,7 +175,7 @@ public class AIFushiguroMegumiProcedure {
                                  float var77;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var77 = _livEnt.m_21223_();
+                                    var77 = _livEnt.getHealth();
                                  } else {
                                     var77 = -1.0F;
                                  }
@@ -182,7 +184,7 @@ public class AIFushiguroMegumiProcedure {
                                  float var89;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var89 = _livEnt.m_21233_();
+                                    var89 = _livEnt.getMaxHealth();
                                  } else {
                                     var89 = -1.0F;
                                  }
@@ -199,7 +201,7 @@ public class AIFushiguroMegumiProcedure {
 
                         var79 = true;
                      }
-
+                     boolean var82;
                      label523: {
                         flagMahorage = var79;
                         if (!flagMahorage) {
@@ -208,7 +210,7 @@ public class AIFushiguroMegumiProcedure {
                                  float var80;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var80 = _livEnt.m_21223_();
+                                    var80 = _livEnt.getHealth();
                                  } else {
                                     var80 = -1.0F;
                                  }
@@ -217,7 +219,7 @@ public class AIFushiguroMegumiProcedure {
                                  float var90;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var90 = _livEnt.m_21233_();
+                                    var90 = _livEnt.getMaxHealth();
                                  } else {
                                     var90 = -1.0F;
                                  }
@@ -239,11 +241,12 @@ public class AIFushiguroMegumiProcedure {
                   }
 
                   if (!sukuna) {
+                     int var83;
                      label409: {
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                              var83 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var83 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                               break label409;
                            }
                         }
@@ -255,17 +258,17 @@ public class AIFushiguroMegumiProcedure {
                      LivingEntity var91;
                      if (entity instanceof Mob) {
                         Mob _mobEnt = (Mob)entity;
-                        var91 = _mobEnt.m_5448_();
+                        var91 = _mobEnt.getTarget();
                      } else {
                         var91 = null;
                      }
-
+                     int var92;
                      label403: {
                         LivingEntity var71 = var91;
                         if (var71 instanceof LivingEntity) {
                            LivingEntity _livEnt = var71;
-                           if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                              var92 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var92 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                               break label403;
                            }
                         }
@@ -278,7 +281,7 @@ public class AIFushiguroMegumiProcedure {
                      float var10002;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        var10002 = _livEnt.m_21223_();
+                        var10002 = _livEnt.getHealth();
                      } else {
                         var10002 = -1.0F;
                      }
@@ -287,50 +290,50 @@ public class AIFushiguroMegumiProcedure {
                      float var10003;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        var10003 = _livEnt.m_21233_();
+                        var10003 = _livEnt.getMaxHealth();
                      } else {
                         var10003 = -1.0F;
                      }
 
-                     var85.m_128379_("flag_domain", var93 < (double)var10003 * 0.5 && StrongEnemy);
+                     var85.putBoolean("flag_domain", var93 < (double)var10003 * 0.5 && StrongEnemy);
                      domain = LogicConfilmDomainProcedure.execute(world, x, y, z, entity) && !young && !sukuna;
                   }
 
-                  if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
-                     entity.getPersistentData().m_128347_("cnt_x", 0.0);
+                  if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
+                     entity.getPersistentData().putDouble("cnt_x", 0.0);
                      DespawnTenShadowsTechniqueProcedure.execute(world, x, y, z, entity);
                      ResetCounterProcedure.execute(entity);
-                     if ((!LogicStartProcedure.execute(entity) || (entity.getPersistentData().m_128459_("NUM_TenShadowsTechnique") != 0.0 && (entity.getPersistentData().m_128459_("NUM_TenShadowsTechnique") != 1.0 || !(Math.random() > 0.75)) && (!(entity.getPersistentData().m_128459_("NUM_TenShadowsTechnique") > 1.0) || !(Math.random() > 0.95)) || !StrongEnemy) && !flagMahorage && !sukuna) && !domain) {
+                     if ((!LogicStartProcedure.execute(entity) || (entity.getPersistentData().getDouble("NUM_TenShadowsTechnique") != 0.0 && (entity.getPersistentData().getDouble("NUM_TenShadowsTechnique") != 1.0 || !(Math.random() > 0.75)) && (!(entity.getPersistentData().getDouble("NUM_TenShadowsTechnique") > 1.0) || !(Math.random() > 0.95)) || !StrongEnemy) && !flagMahorage && !sukuna) && !domain) {
                         CalculateAttackProcedure.execute(world, entity);
                         if (!sukuna) {
                            ItemStack var86;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var86 = _livEnt.m_21205_();
+                              var86 = _livEnt.getMainHandItem();
                            } else {
-                              var86 = ItemStack.f_41583_;
+                              var86 = ItemStack.EMPTY;
                            }
 
-                           if (!(var86.m_41720_() instanceof SwordItem) && entity.getPersistentData().m_128471_("HasWeapon1")) {
+                           if (!(var86.getItem() instanceof SwordItem) && entity.getPersistentData().getBoolean("HasWeapon1")) {
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _entity = (LivingEntity)entity;
-                                 ItemStack _setstack = (young ? new ItemStack((ItemLike)JujutsucraftModItems.SWORD_BLACK.get()) : new ItemStack(Items.f_42383_)).m_41777_();
-                                 _setstack.m_41764_(1);
-                                 _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                                 ItemStack _setstack = (young ? new ItemStack((ItemLike)JujutsucraftModItems.SWORD_BLACK.get()) : new ItemStack(Items.IRON_SWORD)).copy();
+                                 _setstack.setCount(1);
+                                 _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                                  if (_entity instanceof Player) {
                                     Player _player = (Player)_entity;
-                                    _player.m_150109_().m_6596_();
+                                    _player.getInventory().setChanged();
                                  }
                               }
 
-                              entity.getPersistentData().m_128379_("HasWeapon1", false);
+                              entity.getPersistentData().putBoolean("HasWeapon1", false);
                            }
                         }
                      } else {
                         if (domain) {
                            rnd = 20.0;
                            tick = 20.0;
-                           entity.getPersistentData().m_128379_("flag_domain", false);
+                           entity.getPersistentData().putBoolean("flag_domain", false);
                         } else {
                            for(int index1 = 0; index1 < 256; ++index1) {
                               rnd = 4.0 + Math.ceil(Math.random() * 16.0);
@@ -341,28 +344,28 @@ public class AIFushiguroMegumiProcedure {
                               }
 
                               if (flagMahorage) {
-                                 if (!(entity.getPersistentData().m_128459_("TenShadowsTechnique14") >= (double)(sukuna ? 1 : 0))) {
+                                 if (!(entity.getPersistentData().getDouble("TenShadowsTechnique14") >= (double)(sukuna ? 1 : 0))) {
                                     flagMahorage = false;
                                     continue;
                                  }
 
                                  rnd = 18.0;
-                              } else if (entity.getPersistentData().m_128471_("flag_agito")) {
-                                 if (!(entity.getPersistentData().m_128459_("TenShadowsTechnique13") >= 0.0)) {
-                                    entity.getPersistentData().m_128379_("flag_agito", false);
+                              } else if (entity.getPersistentData().getBoolean("flag_agito")) {
+                                 if (!(entity.getPersistentData().getDouble("TenShadowsTechnique13") >= 0.0)) {
+                                    entity.getPersistentData().putBoolean("flag_agito", false);
                                     continue;
                                  }
 
                                  rnd = 17.0;
-                              } else if (entity.getPersistentData().m_128459_("TenShadowsTechnique" + Math.round(rnd - 4.0)) <= 0.0 && rnd != 7.0 && rnd != 17.0) {
+                              } else if (entity.getPersistentData().getDouble("TenShadowsTechnique" + Math.round(rnd - 4.0)) <= 0.0 && rnd != 7.0 && rnd != 17.0) {
                                  continue;
                               }
 
-                              if ((!(entity.getPersistentData().m_128459_("TenShadowsTechnique3") < 0.0) || rnd != 5.0 && rnd != 6.0) && (!(entity.getPersistentData().m_128459_("TenShadowsTechnique13") < 0.0) || rnd != 8.0 && rnd != 9.0 && rnd != 13.0 && rnd != 15.0)) {
+                              if ((!(entity.getPersistentData().getDouble("TenShadowsTechnique3") < 0.0) || rnd != 5.0 && rnd != 6.0) && (!(entity.getPersistentData().getDouble("TenShadowsTechnique13") < 0.0) || rnd != 8.0 && rnd != 9.0 && rnd != 13.0 && rnd != 15.0)) {
                                  if (rnd != 5.0 && rnd != 6.0) {
                                     if (rnd == 7.0) {
                                        tick = 20.0;
-                                       if (entity.getPersistentData().m_128459_("TenShadowsTechnique1") <= -2.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique2") >= 0.0 || entity.getPersistentData().m_128459_("TenShadowsTechnique1") >= 0.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique2") <= -2.0) {
+                                       if (entity.getPersistentData().getDouble("TenShadowsTechnique1") <= -2.0 && entity.getPersistentData().getDouble("TenShadowsTechnique2") >= 0.0 || entity.getPersistentData().getDouble("TenShadowsTechnique1") >= 0.0 && entity.getPersistentData().getDouble("TenShadowsTechnique2") <= -2.0) {
                                           break;
                                        }
                                     } else {
@@ -409,7 +412,7 @@ public class AIFushiguroMegumiProcedure {
 
                                           if (rnd == 17.0) {
                                              tick = 20.0;
-                                             if (entity.getPersistentData().m_128459_("TenShadowsTechnique4") > 0.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique5") <= -2.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique9") <= -2.0 && entity.getPersistentData().m_128459_("TenShadowsTechnique11") <= -2.0) {
+                                             if (entity.getPersistentData().getDouble("TenShadowsTechnique4") > 0.0 && entity.getPersistentData().getDouble("TenShadowsTechnique5") <= -2.0 && entity.getPersistentData().getDouble("TenShadowsTechnique9") <= -2.0 && entity.getPersistentData().getDouble("TenShadowsTechnique11") <= -2.0) {
                                                 break;
                                              }
                                           } else if (rnd == 18.0) {
@@ -438,52 +441,52 @@ public class AIFushiguroMegumiProcedure {
                         if (failed) {
                            CalculateAttackProcedure.execute(world, entity);
                         } else {
-                           entity.getPersistentData().m_128347_("cnt_x", 0.0);
+                           entity.getPersistentData().putDouble("cnt_x", 0.0);
                            ItemStack var87;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var87 = _livEnt.m_21205_();
+                              var87 = _livEnt.getMainHandItem();
                            } else {
-                              var87 = ItemStack.f_41583_;
+                              var87 = ItemStack.EMPTY;
                            }
 
-                           if (var87.m_41720_() == (young ? (Item)JujutsucraftModItems.SWORD_BLACK.get() : Items.f_42383_)) {
-                              entity.getPersistentData().m_128379_("HasWeapon1", true);
+                           if (var87.getItem() == (young ? (Item)JujutsucraftModItems.SWORD_BLACK.get() : Items.IRON_SWORD)) {
+                              entity.getPersistentData().putBoolean("HasWeapon1", true);
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _entity = (LivingEntity)entity;
-                                 ItemStack _setstack = ItemStack.f_41583_.m_41777_();
-                                 _setstack.m_41764_(1);
-                                 _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                                 ItemStack _setstack = ItemStack.EMPTY.copy();
+                                 _setstack.setCount(1);
+                                 _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                                  if (_entity instanceof Player) {
                                     Player _player = (Player)_entity;
-                                    _player.m_150109_().m_6596_();
+                                    _player.getInventory().setChanged();
                                  }
                               }
                            }
 
                            if (entity instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entity;
-                              ItemStack _setstack = ItemStack.f_41583_.m_41777_();
-                              _setstack.m_41764_(1);
-                              _entity.m_21008_(InteractionHand.OFF_HAND, _setstack);
+                              ItemStack _setstack = ItemStack.EMPTY.copy();
+                              _setstack.setCount(1);
+                              _entity.setItemInHand(InteractionHand.OFF_HAND, _setstack);
                               if (_entity instanceof Player) {
                                  Player _player = (Player)_entity;
-                                 _player.m_150109_().m_6596_();
+                                 _player.getInventory().setChanged();
                               }
                            }
 
-                           entity.getPersistentData().m_128347_("skill", (double)(600L + Math.round(rnd)));
+                           entity.getPersistentData().putDouble("skill", (double)(600L + Math.round(rnd)));
                            if (entity instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entity;
-                              if (!_entity.m_9236_().m_5776_()) {
-                                 _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
+                              if (!_entity.level().isClientSide()) {
+                                 _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
                               }
                            }
 
                            if (entity instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entity;
-                              if (!_entity.m_9236_().m_5776_()) {
-                                 _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                              if (!_entity.level().isClientSide()) {
+                                 _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                               }
                            }
                         }
@@ -491,13 +494,13 @@ public class AIFushiguroMegumiProcedure {
                   }
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
-               entity.getPersistentData().m_128347_("cnt_rest", entity.getPersistentData().m_128459_("cnt_rest") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_rest") > 120.0) {
-                  entity.getPersistentData().m_128347_("cnt_rest", 0.0);
-                  entity.getPersistentData().m_128347_("skill", 1.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_rest", entity.getPersistentData().getDouble("cnt_rest") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_rest") > 120.0) {
+                  entity.getPersistentData().putDouble("cnt_rest", 0.0);
+                  entity.getPersistentData().putDouble("skill", 1.0);
                   ReturnShadowProcedure.execute(world, x, y, z, entity);
-                  entity.getPersistentData().m_128347_("skill", 0.0);
+                  entity.getPersistentData().putDouble("skill", 0.0);
                }
             }
          }

@@ -28,35 +28,35 @@ public class OverlayKeyOverlay {
       priority = EventPriority.LOW
    )
    public static void eventHandler(RenderGuiEvent.Pre event) {
-      int w = event.getWindow().m_85445_();
-      int h = event.getWindow().m_85446_();
+      int w = event.getWindow().getGuiScaledWidth();
+      int h = event.getWindow().getGuiScaledHeight();
       Level world = null;
       double x = 0.0;
       double y = 0.0;
       double z = 0.0;
-      Player entity = Minecraft.m_91087_().f_91074_;
+      Player entity = Minecraft.getInstance().player;
       if (entity != null) {
-         world = entity.m_9236_();
-         x = entity.m_20185_();
-         y = entity.m_20186_();
-         z = entity.m_20189_();
+         world = entity.level();
+         x = entity.getX();
+         y = entity.getY();
+         z = entity.getZ();
       }
 
       RenderSystem.disableDepthTest();
       RenderSystem.depthMask(false);
       RenderSystem.enableBlend();
-      RenderSystem.setShader(GameRenderer::m_172817_);
+      RenderSystem.setShader(GameRenderer::getPositionTexShader);
       RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
       if (OverlayHaveCursedTechniqueProcedure.execute(entity)) {
-         event.getGuiGraphics().m_280163_(new ResourceLocation("jujutsucraft:textures/screens/overlay_technique.png"), w / 2 + 91, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
-         event.getGuiGraphics().m_280163_(new ResourceLocation("jujutsucraft:textures/screens/overlay_simple_domain.png"), w / 2 + 117, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
-         event.getGuiGraphics().m_280163_(new ResourceLocation("jujutsucraft:textures/screens/overlay_reversed_cursed_technique.png"), w / 2 + 143, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
-         event.getGuiGraphics().m_280163_(new ResourceLocation("jujutsucraft:textures/screens/overlay_domain_amplification.png"), w / 2 + 169, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OverlayKeyVProcedure.execute(entity), w / 2 + 102, h - 9, -1, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OverlayKeyGProcedure.execute(entity), w / 2 + 128, h - 9, -1, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OverlayKeyMProcedure.execute(entity), w / 2 + 154, h - 9, -1, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OverlayKeyNProcedure.execute(entity), w / 2 + 180, h - 9, -1, false);
+         event.getGuiGraphics().blit(new ResourceLocation("gaigegaigekaigecraft:textures/screens/overlay_technique.png"), w / 2 + 91, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
+         event.getGuiGraphics().blit(new ResourceLocation("gaigegaigekaigecraft:textures/screens/overlay_simple_domain.png"), w / 2 + 117, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
+         event.getGuiGraphics().blit(new ResourceLocation("gaigegaigekaigecraft:textures/screens/overlay_reversed_cursed_technique.png"), w / 2 + 143, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
+         event.getGuiGraphics().blit(new ResourceLocation("gaigegaigekaigecraft:textures/screens/overlay_domain_amplification.png"), w / 2 + 169, h - 25, 0.0F, 0.0F, 26, 26, 26, 26);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, OverlayKeyVProcedure.execute(entity), w / 2 + 102, h - 9, -1, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, OverlayKeyGProcedure.execute(entity), w / 2 + 128, h - 9, -1, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, OverlayKeyMProcedure.execute(entity), w / 2 + 154, h - 9, -1, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, OverlayKeyNProcedure.execute(entity), w / 2 + 180, h - 9, -1, false);
       }
 
       RenderSystem.depthMask(true);

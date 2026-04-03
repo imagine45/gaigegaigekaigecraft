@@ -9,14 +9,14 @@ public class TruckModel extends GeoModel<TruckEntity> {
    }
 
    public ResourceLocation getAnimationResource(TruckEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/truck.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/truck.animation.json");
    }
 
    public ResourceLocation getModelResource(TruckEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/truck.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/truck.geo.json");
    }
 
    public ResourceLocation getTextureResource(TruckEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

@@ -18,44 +18,44 @@ public class EffectConfirm4Procedure {
          Entity entity_a = null;
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get());
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get());
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get());
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_EFFECT.get());
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INSECT_ARMOR_TECHNIQUE.get());
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get());
          }
 
-         entityiterator.getPersistentData().m_128347_("Damage", 0.0);
+         entityiterator.getPersistentData().putDouble("Damage", 0.0);
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 40, 0, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 40, 0, false, false));
             }
          }
 

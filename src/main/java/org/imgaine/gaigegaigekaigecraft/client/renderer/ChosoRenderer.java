@@ -16,13 +16,13 @@ import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 public class ChosoRenderer extends DynamicGeoEntityRenderer<ChosoEntity> {
    public ChosoRenderer(EntityRendererProvider.Context renderManager) {
       super(renderManager, new ChosoModel());
-      this.f_114477_ = 0.5F;
+      this.shadowRadius = 0.5F;
       this.addRenderLayer(new GenericArmorLayer(this));
       this.addRenderLayer(new GenericItemLayer(this));
    }
 
    public RenderType getRenderType(ChosoEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.m_5478_(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 
    public void preRender(PoseStack poseStack, ChosoEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

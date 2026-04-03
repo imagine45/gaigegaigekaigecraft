@@ -12,17 +12,17 @@ public class DomainExpansionEffectStartedappliedProcedure {
       if (entity != null) {
          double tick = 0.0;
          double level = 0.0;
-         entity.getPersistentData().m_128347_("totalDamage", 0.0);
+         entity.getPersistentData().putDouble("totalDamage", 0.0);
          CompoundTag var10000 = entity.getPersistentData();
          double var10002;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10002 = (double)_livEnt.m_21223_();
+            var10002 = (double)_livEnt.getHealth();
          } else {
             var10002 = -1.0;
          }
 
-         var10000.m_128347_("oldHealth", var10002);
+         var10000.putDouble("oldHealth", var10002);
       }
    }
 }

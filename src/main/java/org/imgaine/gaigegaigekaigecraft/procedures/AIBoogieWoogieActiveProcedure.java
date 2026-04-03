@@ -19,25 +19,25 @@ public class AIBoogieWoogieActiveProcedure {
          double x_pos = 0.0;
          double y_pos = 0.0;
          double z_pos = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
             if (var10000 instanceof LivingEntity) {
                if (LogicStartPassiveProcedure.execute(entity)) {
-                  entity.getPersistentData().m_128347_("cnt_boogie_woogie", entity.getPersistentData().m_128459_("cnt_boogie_woogie") + 1.0);
-                  if (entity.getPersistentData().m_128459_("cnt_boogie_woogie") > 10.0) {
-                     entity.getPersistentData().m_128347_("cnt_boogie_woogie", 0.0);
+                  entity.getPersistentData().putDouble("cnt_boogie_woogie", entity.getPersistentData().getDouble("cnt_boogie_woogie") + 1.0);
+                  if (entity.getPersistentData().getDouble("cnt_boogie_woogie") > 10.0) {
+                     entity.getPersistentData().putDouble("cnt_boogie_woogie", 0.0);
                      SkillBoogieWoogieProcedure.execute(world, x, y, z, entity);
                   }
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_boogie_woogie", 0.0);
+               entity.getPersistentData().putDouble("cnt_boogie_woogie", 0.0);
             }
          }
 

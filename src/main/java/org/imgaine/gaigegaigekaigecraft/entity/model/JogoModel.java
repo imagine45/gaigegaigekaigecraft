@@ -9,14 +9,14 @@ public class JogoModel extends GeoModel<JogoEntity> {
    }
 
    public ResourceLocation getAnimationResource(JogoEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/jogo.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/jogo.animation.json");
    }
 
    public ResourceLocation getModelResource(JogoEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/jogo.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/jogo.geo.json");
    }
 
    public ResourceLocation getTextureResource(JogoEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

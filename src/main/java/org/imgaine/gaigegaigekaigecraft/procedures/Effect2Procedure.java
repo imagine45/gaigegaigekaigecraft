@@ -13,12 +13,12 @@ public class Effect2Procedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          Entity entity_a = null;
-         x_pos = entityiterator.m_20185_();
-         y_pos = entityiterator.m_20186_() + (double)(entityiterator.m_20206_() * 0.0F);
-         z_pos = entityiterator.m_20189_();
+         x_pos = entityiterator.getX();
+         y_pos = entityiterator.getY() + (double)(entityiterator.getBbHeight() * 0.0F);
+         z_pos = entityiterator.getZ();
          Effect4Procedure.execute(world, entity, entityiterator);
-         entity.getPersistentData().m_128347_("BlockRange", 4.0);
-         entity.getPersistentData().m_128347_("BlockDamage", 6.0);
+         entity.getPersistentData().putDouble("BlockRange", 4.0);
+         entity.getPersistentData().putDouble("BlockDamage", 6.0);
          BlockDestroyAllDirectionProcedure.execute(world, x_pos, y_pos, z_pos, entity);
       }
    }

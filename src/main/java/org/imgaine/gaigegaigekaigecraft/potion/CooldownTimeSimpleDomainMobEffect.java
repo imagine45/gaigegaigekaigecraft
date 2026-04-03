@@ -8,7 +8,7 @@ public class CooldownTimeSimpleDomainMobEffect extends MobEffect {
       super(MobEffectCategory.HARMFUL, -1);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

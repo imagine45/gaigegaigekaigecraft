@@ -9,14 +9,14 @@ public class TodoAoiModel extends GeoModel<TodoAoiEntity> {
    }
 
    public ResourceLocation getAnimationResource(TodoAoiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/todo_aoi.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/todo_aoi.animation.json");
    }
 
    public ResourceLocation getModelResource(TodoAoiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/todo_aoi.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/todo_aoi.geo.json");
    }
 
    public ResourceLocation getTextureResource(TodoAoiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

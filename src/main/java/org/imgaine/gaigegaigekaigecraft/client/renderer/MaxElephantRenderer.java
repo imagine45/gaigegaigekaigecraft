@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MaxElephantRenderer extends MobRenderer<MaxElephantEntity, ModelMaxElephant<MaxElephantEntity>> {
    public MaxElephantRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelMaxElephant(context.m_174023_(ModelMaxElephant.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelMaxElephant(context.bakeLayer(ModelMaxElephant.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(MaxElephantEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/maxelephant.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/maxelephant.png");
    }
 }

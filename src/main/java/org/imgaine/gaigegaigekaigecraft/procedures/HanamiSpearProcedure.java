@@ -22,11 +22,11 @@ public class HanamiSpearProcedure {
          double range = 0.0;
          double num2 = 0.0;
          double mode = 0.0;
-         if (entity.getPersistentData().m_128459_("cnt7") == 0.0) {
+         if (entity.getPersistentData().getDouble("cnt7") == 0.0) {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
@@ -34,13 +34,13 @@ public class HanamiSpearProcedure {
             if (var10000 instanceof LivingEntity) {
                mode = Math.random() < 0.5 ? 2.0 : 1.0;
             } else {
-               mode = entity.m_6144_() ? 2.0 : 1.0;
+               mode = entity.isShiftKeyDown() ? 2.0 : 1.0;
             }
 
-            entity.getPersistentData().m_128347_("cnt7", (double)Math.round(mode));
+            entity.getPersistentData().putDouble("cnt7", (double)Math.round(mode));
          }
 
-         if (entity.getPersistentData().m_128459_("cnt7") == 1.0) {
+         if (entity.getPersistentData().getDouble("cnt7") == 1.0) {
             HanamiSpear1Procedure.execute(world, entity);
          } else {
             HanamiSpear2Procedure.execute(world, entity);

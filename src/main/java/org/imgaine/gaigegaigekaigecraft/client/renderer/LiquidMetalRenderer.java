@@ -11,19 +11,19 @@ import net.minecraft.world.level.Level;
 
 public class LiquidMetalRenderer extends MobRenderer<LiquidMetalEntity, Modelrock_fragment<LiquidMetalEntity>> {
    public LiquidMetalRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelrock_fragment(context.m_174023_(Modelrock_fragment.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelrock_fragment(context.bakeLayer(Modelrock_fragment.LAYER_LOCATION)), 0.0F);
    }
 
    protected void scale(LiquidMetalEntity entity, PoseStack poseStack, float f) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.scale(scale, scale, scale);
    }
 
    public ResourceLocation getTextureLocation(LiquidMetalEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/clear.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/clear.png");
    }
 }

@@ -20,12 +20,12 @@ public class KeyUseMainSkillOnKeyPressedProcedure {
          p_skill1 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).SecondTechnique ? ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 : ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
          if (p_skill1 == -1.0) {
             int var10000;
-            label173: {
+            label189: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get())) {
-                     var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get()).m_19564_();
-                     break label173;
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get())) {
+                     var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get()).getAmplifier();
+                     break label189;
                   }
                }
 
@@ -60,7 +60,7 @@ public class KeyUseMainSkillOnKeyPressedProcedure {
          }
 
          if (p_skill1 == 11.0) {
-            select = 5.0;
+            select = 15.0;
          } else if (p_skill1 == 12.0) {
             select = 5.0;
          } else if (p_skill1 == 13.0) {
@@ -74,7 +74,7 @@ public class KeyUseMainSkillOnKeyPressedProcedure {
          if (p_skill1 == 16.0) {
             select = 5.0;
          } else if (p_skill1 == 17.0) {
-            select = 15.0;
+            select = 6.0;
          } else if (p_skill1 == 18.0) {
             select = 10.0;
          } else if (p_skill1 == 19.0) {
@@ -138,24 +138,37 @@ public class KeyUseMainSkillOnKeyPressedProcedure {
          } else if (p_skill1 == 43.0) {
             select = 5.0;
          } else if (p_skill1 == 44.0) {
-            select = 0.0;
+            select = 5.0;
          } else if (p_skill1 == 45.0) {
-            select = 0.0;
+            select = 5.0;
          }
 
-         boolean _setval = true;
+         if (p_skill1 == 46.0) {
+            select = 10.0;
+         } else if (p_skill1 == 47.0) {
+            select = 5.0;
+         } else if (p_skill1 == 48.0) {
+            select = 5.0;
+         } else if (p_skill1 == 49.0) {
+            select = 5.0;
+         } else if (p_skill1 == 50.0) {
+            select = 5.0;
+         }
+
+         boolean _setval1 = true;
          entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-            capability.use_mainSkill = _setval;
+            capability.use_mainSkill = _setval1;
             capability.syncPlayerVariables(entity);
          });
          old_select = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerSelectCurseTechnique;
+         double select_new = select;
          entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-            capability.PlayerSelectCurseTechnique = select;
+            capability.PlayerSelectCurseTechnique = select_new;
             capability.syncPlayerVariables(entity);
          });
-         _setval = true;
+         boolean _setval2 = true;
          entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-            capability.noChangeTechnique = _setval;
+            capability.noChangeTechnique = _setval2;
             capability.syncPlayerVariables(entity);
          });
          KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
@@ -163,18 +176,19 @@ public class KeyUseMainSkillOnKeyPressedProcedure {
             KeyStartTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
          }
 
-         _setval = false;
+         boolean _setval3 = false;
          entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-            capability.use_mainSkill = _setval;
+            capability.use_mainSkill = _setval3;
             capability.syncPlayerVariables(entity);
          });
+         double old_select_new = old_select;
          entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-            capability.PlayerSelectCurseTechnique = old_select;
+            capability.PlayerSelectCurseTechnique = old_select_new;
             capability.syncPlayerVariables(entity);
          });
-         _setval = true;
+         boolean _setval4 = true;
          entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-            capability.noChangeTechnique = _setval;
+            capability.noChangeTechnique = _setval4;
             capability.syncPlayerVariables(entity);
          });
          KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);

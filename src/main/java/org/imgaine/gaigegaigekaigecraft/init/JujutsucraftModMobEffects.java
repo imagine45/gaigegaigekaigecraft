@@ -3,6 +3,7 @@ package org.imgaine.gaigegaigekaigecraft.init;
 import org.imgaine.gaigegaigekaigecraft.potion.AttackingMobEffect;
 import org.imgaine.gaigegaigekaigecraft.potion.BrainDamageMobEffect;
 import org.imgaine.gaigegaigekaigecraft.potion.CancelCursedTechniqueMobEffect;
+import org.imgaine.gaigegaigekaigecraft.potion.ColorMobEffect;
 import org.imgaine.gaigegaigekaigecraft.potion.ComedianMobEffect;
 import org.imgaine.gaigegaigekaigecraft.potion.ConvergenceMobEffect;
 import org.imgaine.gaigegaigekaigecraft.potion.CooldownTimeBackStepMobEffect;
@@ -97,12 +98,13 @@ public class JujutsucraftModMobEffects {
    public static final RegistryObject<MobEffect> COOLDOWN_TIME_GUARD;
    public static final RegistryObject<MobEffect> STUN;
    public static final RegistryObject<MobEffect> ATTACKING;
+   public static final RegistryObject<MobEffect> COLOR;
 
    public JujutsucraftModMobEffects() {
    }
 
    static {
-      REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, "jujutsucraft");
+      REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, "gaigegaigekaigecraft");
       CURSED_TECHNIQUE = REGISTRY.register("cursed_technique", () -> new CursedTechniqueMobEffect());
       INFINITY_EFFECT = REGISTRY.register("infinity_effect", () -> new EffectInfinityMobEffect());
       DOMAIN_EXPANSION = REGISTRY.register("domain_expansion", () -> new DomainExpansionMobEffect());
@@ -148,5 +150,6 @@ public class JujutsucraftModMobEffects {
       COOLDOWN_TIME_GUARD = REGISTRY.register("cooldown_time_guard", () -> new CooldownTimeGuardMobEffect());
       STUN = REGISTRY.register("stun", () -> new StunMobEffect());
       ATTACKING = REGISTRY.register("attacking", () -> new AttackingMobEffect());
+      COLOR = REGISTRY.register("color", () -> new ColorMobEffect());
    }
 }

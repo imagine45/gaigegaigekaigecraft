@@ -15,12 +15,12 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 public class MoonDregsRenderer extends GeoEntityRenderer<MoonDregsEntity> {
    public MoonDregsRenderer(EntityRendererProvider.Context renderManager) {
       super(renderManager, new MoonDregsModel());
-      this.f_114477_ = 0.0F;
+      this.shadowRadius = 0.0F;
       this.addRenderLayer(new MoonDregsLayer(this));
    }
 
    public RenderType getRenderType(MoonDregsEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.m_5478_(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 
    public void preRender(PoseStack poseStack, MoonDregsEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

@@ -1,9 +1,10 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import net.minecraft.commands.CommandSource;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.server.level.ServerLevel;
+import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class SukunaEffectOnEffectActiveTickProcedure {
    public SukunaEffectOnEffectActiveTickProcedure() {
@@ -11,8 +12,21 @@ public class SukunaEffectOnEffectActiveTickProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         if (entity.m_6084_() && entity.m_20096_() && !entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-            entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "effect give @s jujutsucraft:double_jump_effect infinite 4 true");
+         if (entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity)entity;
+            if (livingEntity.isAlive()) {
+               if (livingEntity.tickCount % 10 == 0 && entity.onGround()) {
+                  MobEffectInstance doubleJump = livingEntity.getEffect((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get());
+                  int currentAmp = doubleJump != null ? doubleJump.getAmplifier() : -1;
+                  if (currentAmp < 4) {
+                     livingEntity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get(), 999999, currentAmp + 1, false, false));
+                  } else if (doubleJump.getDuration() < 20) {
+                     livingEntity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get(), 999999, 4, false, false));
+                  }
+               }
+
+               return;
+            }
          }
 
       }

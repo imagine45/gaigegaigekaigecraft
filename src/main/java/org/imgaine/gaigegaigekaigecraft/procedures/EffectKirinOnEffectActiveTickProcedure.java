@@ -14,11 +14,11 @@ public class EffectKirinOnEffectActiveTickProcedure {
          double NUM2 = 0.0;
          double tick = 0.0;
          double NUM1 = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             label29: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt1 = (LivingEntity)entity;
-                  if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                  if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
                      break label29;
                   }
                }
@@ -28,14 +28,14 @@ public class EffectKirinOnEffectActiveTickProcedure {
                }
 
                LivingEntity _livEnt2 = (LivingEntity)entity;
-               if (!_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
+               if (!_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
                   return;
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.EFFECT_KIRIN.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.EFFECT_KIRIN.get());
             }
          }
 

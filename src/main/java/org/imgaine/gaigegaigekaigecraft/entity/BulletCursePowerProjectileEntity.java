@@ -1,6 +1,7 @@
 package org.imgaine.gaigegaigekaigecraft.entity;
 
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
+import org.imgaine.gaigegaigekaigecraft.procedures.BulletCursePowerProjectileProjectileHitsLivingEntityProcedure;
 import org.imgaine.gaigegaigekaigecraft.procedures.BulletCursePowerWhileBulletFlyingTickProcedure;
 import org.imgaine.gaigegaigekaigecraft.procedures.BulletSkeletonBulletHitsBlockProcedure;
 import net.minecraft.network.protocol.Packet;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
@@ -47,34 +49,39 @@ public class BulletCursePowerProjectileEntity extends AbstractArrow implements I
       super(type, entity, world);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
    @OnlyIn(Dist.CLIENT)
-   public ItemStack m_7846_() {
+   public ItemStack getItem() {
       return PROJECTILE_ITEM;
    }
 
-   protected ItemStack m_7941_() {
+   protected ItemStack getPickupItem() {
       return PROJECTILE_ITEM;
    }
 
-   protected void m_7761_(LivingEntity entity) {
-      super.m_7761_(entity);
-      entity.m_21317_(entity.m_21234_() - 1);
+   protected void doPostHurtEffects(LivingEntity entity) {
+      super.doPostHurtEffects(entity);
+      entity.setArrowCount(entity.getArrowCount() - 1);
    }
 
-   public void m_8060_(BlockHitResult blockHitResult) {
-      super.m_8060_(blockHitResult);
-      BulletSkeletonBulletHitsBlockProcedure.execute(this.m_9236_(), (double)blockHitResult.m_82425_().m_123341_(), (double)blockHitResult.m_82425_().m_123342_(), (double)blockHitResult.m_82425_().m_123343_(), this.m_19749_(), this);
+   public void onHitEntity(EntityHitResult entityHitResult) {
+      super.onHitEntity(entityHitResult);
+      BulletCursePowerProjectileProjectileHitsLivingEntityProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, this.getOwner());
    }
 
-   public void m_8119_() {
-      super.m_8119_();
-      BulletCursePowerWhileBulletFlyingTickProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this.m_19749_(), this);
-      if (this.f_36703_) {
-         this.m_146870_();
+   public void onHitBlock(BlockHitResult blockHitResult) {
+      super.onHitBlock(blockHitResult);
+      BulletSkeletonBulletHitsBlockProcedure.execute(this.level(), (double)blockHitResult.getBlockPos().getX(), (double)blockHitResult.getBlockPos().getY(), (double)blockHitResult.getBlockPos().getZ(), this.getOwner(), this);
+   }
+
+   public void tick() {
+      super.tick();
+      BulletCursePowerWhileBulletFlyingTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this.getOwner(), this);
+      if (this.inGround) {
+         this.discard();
       }
 
    }
@@ -89,32 +96,32 @@ public class BulletCursePowerProjectileEntity extends AbstractArrow implements I
 
    public static BulletCursePowerProjectileEntity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
       BulletCursePowerProjectileEntity entityarrow = new BulletCursePowerProjectileEntity((EntityType)JujutsucraftModEntities.BULLET_CURSE_POWER_PROJECTILE.get(), entity, world);
-      entityarrow.m_6686_(entity.m_20252_(1.0F).f_82479_, entity.m_20252_(1.0F).f_82480_, entity.m_20252_(1.0F).f_82481_, power * 2.0F, 0.0F);
-      entityarrow.m_20225_(true);
-      entityarrow.m_36762_(false);
-      entityarrow.m_36781_(damage);
-      entityarrow.m_36735_(knockback);
-      world.m_7967_(entityarrow);
-      world.m_6263_((Player)null, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.m_188501_() * 0.5F + 1.0F) + power / 2.0F);
+      entityarrow.shoot(entity.getViewVector(1.0F).x, entity.getViewVector(1.0F).y, entity.getViewVector(1.0F).z, power * 2.0F, 0.0F);
+      entityarrow.setSilent(true);
+      entityarrow.setCritArrow(false);
+      entityarrow.setBaseDamage(damage);
+      entityarrow.setKnockback(knockback);
+      world.addFreshEntity(entityarrow);
+      world.playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + power / 2.0F);
       return entityarrow;
    }
 
    public static BulletCursePowerProjectileEntity shoot(LivingEntity entity, LivingEntity target) {
-      BulletCursePowerProjectileEntity entityarrow = new BulletCursePowerProjectileEntity((EntityType)JujutsucraftModEntities.BULLET_CURSE_POWER_PROJECTILE.get(), entity, entity.m_9236_());
-      double dx = target.m_20185_() - entity.m_20185_();
-      double dy = target.m_20186_() + (double)target.m_20192_() - 1.1;
-      double dz = target.m_20189_() - entity.m_20189_();
-      entityarrow.m_6686_(dx, dy - entityarrow.m_20186_() + Math.hypot(dx, dz) * 0.20000000298023224, dz, 2.0F, 12.0F);
-      entityarrow.m_20225_(true);
-      entityarrow.m_36781_(5.0);
-      entityarrow.m_36735_(5);
-      entityarrow.m_36762_(false);
-      entity.m_9236_().m_7967_(entityarrow);
-      entity.m_9236_().m_6263_((Player)null, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / (RandomSource.m_216327_().m_188501_() * 0.5F + 1.0F));
+      BulletCursePowerProjectileEntity entityarrow = new BulletCursePowerProjectileEntity((EntityType)JujutsucraftModEntities.BULLET_CURSE_POWER_PROJECTILE.get(), entity, entity.level());
+      double dx = target.getX() - entity.getX();
+      double dy = target.getY() + (double)target.getEyeHeight() - 1.1;
+      double dz = target.getZ() - entity.getZ();
+      entityarrow.shoot(dx, dy - entityarrow.getY() + Math.hypot(dx, dz) * 0.20000000298023224, dz, 2.0F, 12.0F);
+      entityarrow.setSilent(true);
+      entityarrow.setBaseDamage(5.0);
+      entityarrow.setKnockback(5);
+      entityarrow.setCritArrow(false);
+      entity.level().addFreshEntity(entityarrow);
+      entity.level().playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.wither.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / (RandomSource.create().nextFloat() * 0.5F + 1.0F));
       return entityarrow;
    }
 
    static {
-      PROJECTILE_ITEM = new ItemStack(Blocks.f_50016_);
+      PROJECTILE_ITEM = new ItemStack(Blocks.AIR);
    }
 }

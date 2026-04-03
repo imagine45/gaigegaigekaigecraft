@@ -1,14 +1,12 @@
 {
   "replace": false,
   "values": [
-    "jujutsucraft:gavel_long",
-    "jujutsucraft:black_rope",
-    "jujutsucraft:mahito_hand_1",
-    "jujutsucraft:sickle",
-    "jujutsucraft:claws",
-    "jujutsucraft:sword_option",
-    "jujutsucraft:clothes_dagon_helmet",
-    "minecraft:chain",
-    "jujutsucraft:hanami_eye_helmet"
+    "gaigegaigekaigecraft:gavel_long",
+    "gaigegaigekaigecraft:black_rope",
+    "gaigegaigekaigecraft:mahito_hand_1",
+    "gaigegaigekaigecraft:sickle",
+    "gaigegaigekaigecraft:claws",
+    "gaigegaigekaigecraft:sword_option",
+    "minecraft:chain"
   ]
 }

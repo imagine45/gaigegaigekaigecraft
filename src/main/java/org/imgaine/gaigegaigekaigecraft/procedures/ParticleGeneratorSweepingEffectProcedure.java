@@ -42,7 +42,7 @@ public class ParticleGeneratorSweepingEffectProcedure {
          up_z = look_dir_x * normal_y - look_dir_y * normal_x;
 
          for(int index0 = 0; index0 < (int)Math.max(count, 1.0); ++index0) {
-            rad = Math.toRadians(Mth.m_216263_(RandomSource.m_216327_(), -0.5, 0.5) * inaccuracyDegree);
+            rad = Math.toRadians(Mth.nextDouble(RandomSource.create(), -0.5, 0.5) * inaccuracyDegree);
             cosTheta = Math.cos(rad);
             sinTheta = Math.sin(rad);
             x_pos = cosTheta * up_x + sinTheta * normal_x;

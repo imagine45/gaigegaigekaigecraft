@@ -10,9 +10,9 @@ public class LoudspeakerToolInInventoryTickProcedure {
    }
 
    public static void execute(LevelAccessor world, ItemStack itemstack) {
-      if (itemstack.m_41784_().m_128471_("Used") && itemstack.m_220157_(1, RandomSource.m_216327_(), (ServerPlayer)null)) {
-         itemstack.m_41774_(1);
-         itemstack.m_41721_(0);
+      if (itemstack.getOrCreateTag().getBoolean("Used") && itemstack.hurt(1, RandomSource.create(), (ServerPlayer)null)) {
+         itemstack.shrink(1);
+         itemstack.setDamageValue(0);
       }
 
    }

@@ -40,88 +40,88 @@ public class FistEntity extends PathfinderMob {
 
    public FistEntity(EntityType<FistEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
-      this.f_21342_ = new FlyingMoveControl(this, 10, true);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
+      this.moveControl = new FlyingMoveControl(this, 10, true);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected PathNavigation m_6037_(Level world) {
+   protected PathNavigation createNavigation(Level world) {
       return new FlyingPathNavigation(this, world);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
+   protected void registerGoals() {
+      super.registerGoals();
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_142535_(float l, float d, DamageSource source) {
+   public boolean causeFallDamage(float l, float d, DamageSource source) {
       return false;
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       FistOnInitialEntitySpawnProcedure.execute(this);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIFistProcedure.execute(this.m_9236_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIFistProcedure.execute(this.level(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose pose) {
-      Level world = this.m_9236_();
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      return super.m_6972_(pose).m_20388_((float)SizeByNBTProcedure.execute(this));
+   public EntityDimensions getDimensions(Pose pose) {
+      Level world = this.level();
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      return super.getDimensions(pose).scale((float)SizeByNBTProcedure.execute(this));
    }
 
-   protected void m_7840_(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+   protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
    }
 
-   public void m_20242_(boolean ignored) {
-      super.m_20242_(true);
+   public void setNoGravity(boolean ignored) {
+      super.setNoGravity(true);
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_20242_(true);
+   public void aiStep() {
+      super.aiStep();
+      this.setNoGravity(true);
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 80.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22280_, 0.3);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 80.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.FLYING_SPEED, 0.3);
       return builder;
    }
 }

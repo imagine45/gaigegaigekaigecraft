@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class Modeluniform_q<T extends Entity> extends EntityModel<T> {
-   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("jujutsucraft", "modeluniform_q"), "main");
+   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("gaigegaigekaigecraft", "modeluniform_q"), "main");
    public final ModelPart Head;
    public final ModelPart Body;
    public final ModelPart RightArm;
@@ -26,42 +26,42 @@ public class Modeluniform_q<T extends Entity> extends EntityModel<T> {
    public final ModelPart LeftLeg2;
 
    public Modeluniform_q(ModelPart root) {
-      this.Head = root.m_171324_("Head");
-      this.Body = root.m_171324_("Body");
-      this.RightArm = root.m_171324_("RightArm");
-      this.LeftArm = root.m_171324_("LeftArm");
-      this.RightLeg = root.m_171324_("RightLeg");
-      this.LeftLeg = root.m_171324_("LeftLeg");
-      this.RightLeg2 = root.m_171324_("RightLeg2");
-      this.LeftLeg2 = root.m_171324_("LeftLeg2");
+      this.Head = root.getChild("Head");
+      this.Body = root.getChild("Body");
+      this.RightArm = root.getChild("RightArm");
+      this.LeftArm = root.getChild("LeftArm");
+      this.RightLeg = root.getChild("RightLeg");
+      this.LeftLeg = root.getChild("LeftLeg");
+      this.RightLeg2 = root.getChild("RightLeg2");
+      this.LeftLeg2 = root.getChild("LeftLeg2");
    }
 
    public static LayerDefinition createBodyLayer() {
       MeshDefinition meshdefinition = new MeshDefinition();
-      PartDefinition partdefinition = meshdefinition.m_171576_();
-      PartDefinition Head = partdefinition.m_171599_("Head", CubeListBuilder.m_171558_().m_171514_(32, 39).m_171488_(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).m_171514_(0, 0).m_171488_(-4.0F, -9.0F, -4.0F, 8.0F, 4.0F, 8.0F, new CubeDeformation(0.2F)).m_171514_(8, 48).m_171488_(-4.0F, -2.0F, -4.0F, 8.0F, 2.0F, 8.0F, new CubeDeformation(0.05F)).m_171514_(38, 0).m_171488_(-4.0F, -5.0F, -6.0F, 8.0F, 1.0F, 5.0F, new CubeDeformation(0.15F)), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
-      Head.m_171599_("Head_r1", CubeListBuilder.m_171558_().m_171514_(0, 0).m_171488_(-2.0F, -2.35F, 0.0F, 4.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.m_171423_(0.0638F, -6.7F, -4.25F, 0.0F, 0.0F, -0.1833F));
-      partdefinition.m_171599_("Body", CubeListBuilder.m_171558_().m_171514_(24, 16).m_171488_(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)).m_171514_(0, 16).m_171488_(-4.0F, 0.0F, -2.0F, 8.0F, 9.0F, 4.0F, new CubeDeformation(0.21F)).m_171514_(24, 32).m_171488_(-4.0F, 10.0F, -2.0F, 8.0F, 3.0F, 4.0F, new CubeDeformation(0.21F)).m_171514_(40, 6).m_171488_(-4.0F, 9.0F, -2.0F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.205F)), PartPose.m_171419_(0.0F, 0.0F, 0.0F));
-      partdefinition.m_171599_("RightArm", CubeListBuilder.m_171558_().m_171514_(48, 16).m_171488_(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.m_171419_(-5.0F, 2.0F, 0.0F));
-      partdefinition.m_171599_("LeftArm", CubeListBuilder.m_171558_().m_171514_(48, 16).m_171480_().m_171488_(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)).m_171555_(false), PartPose.m_171419_(5.0F, 2.0F, 0.0F));
-      partdefinition.m_171599_("RightLeg", CubeListBuilder.m_171558_().m_171514_(48, 48).m_171488_(-2.1F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).m_171514_(0, 41).m_171488_(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.2F)).m_171514_(0, 41).m_171488_(-2.0F, 4.5F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.225F)), PartPose.m_171419_(-1.9F, 12.0F, 0.0F));
-      partdefinition.m_171599_("LeftLeg", CubeListBuilder.m_171558_().m_171514_(48, 48).m_171480_().m_171488_(-1.9F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).m_171555_(false).m_171514_(0, 41).m_171480_().m_171488_(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.2F)).m_171555_(false).m_171514_(0, 41).m_171480_().m_171488_(-2.0F, 4.5F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.225F)).m_171555_(false), PartPose.m_171419_(1.9F, 12.0F, 0.0F));
-      partdefinition.m_171599_("RightLeg2", CubeListBuilder.m_171558_().m_171514_(48, 48).m_171488_(-2.1F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).m_171514_(0, 58).m_171488_(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.3F)).m_171514_(0, 32).m_171488_(-2.0F, 5.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.15F)), PartPose.m_171419_(-1.9F, 12.0F, 0.0F));
-      partdefinition.m_171599_("LeftLeg2", CubeListBuilder.m_171558_().m_171514_(48, 48).m_171480_().m_171488_(-1.9F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).m_171555_(false).m_171514_(0, 58).m_171480_().m_171488_(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.3F)).m_171555_(false).m_171514_(0, 32).m_171480_().m_171488_(-2.0F, 5.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.15F)).m_171555_(false), PartPose.m_171419_(1.9F, 12.0F, 0.0F));
-      return LayerDefinition.m_171565_(meshdefinition, 64, 64);
+      PartDefinition partdefinition = meshdefinition.getRoot();
+      PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(32, 39).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(16, 54).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 2.0F, 8.0F, new CubeDeformation(0.05F)).texOffs(0, 0).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 4.0F, 8.0F, new CubeDeformation(0.6F)).texOffs(38, 0).addBox(-4.0F, -5.0F, -7.0F, 8.0F, 1.0F, 5.0F, new CubeDeformation(0.15F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+      Head.addOrReplaceChild("Head_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -2.35F, 0.0F, 4.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0638F, -6.7F, -4.65F, 0.0F, 0.0F, -0.1833F));
+      partdefinition.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 9.0F, 4.0F, new CubeDeformation(0.21F)).texOffs(24, 32).addBox(-4.0F, 10.0F, -2.0F, 8.0F, 3.0F, 4.0F, new CubeDeformation(0.21F)).texOffs(40, 6).addBox(-4.0F, 9.0F, -2.0F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.205F)).texOffs(24, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+      partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(48, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offset(-5.0F, 2.0F, 0.0F));
+      partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(48, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
+      partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create().texOffs(0, 41).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.2F)).texOffs(0, 41).addBox(-2.0F, 4.5F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.225F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
+      partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create().texOffs(0, 41).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.2F)).mirror(false).texOffs(0, 41).mirror().addBox(-2.0F, 4.5F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.225F)).mirror(false), PartPose.offset(1.9F, 12.0F, 0.0F));
+      partdefinition.addOrReplaceChild("RightLeg2", CubeListBuilder.create().texOffs(0, 58).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.3F)).texOffs(0, 32).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.15F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
+      partdefinition.addOrReplaceChild("LeftLeg2", CubeListBuilder.create().texOffs(0, 58).mirror().addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.3F)).mirror(false).texOffs(0, 32).mirror().addBox(-2.0F, 5.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.15F)).mirror(false), PartPose.offset(1.9F, 12.0F, 0.0F));
+      return LayerDefinition.create(meshdefinition, 64, 64);
    }
 
-   public void m_7695_(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      this.Head.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.Body.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.RightArm.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.LeftArm.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.RightLeg.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.LeftLeg.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.RightLeg2.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-      this.LeftLeg2.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+   public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      this.Head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.Body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.RightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.LeftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.RightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.LeftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.RightLeg2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+      this.LeftLeg2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
    }
 
-   public void m_6973_(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+   public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
    }
 }

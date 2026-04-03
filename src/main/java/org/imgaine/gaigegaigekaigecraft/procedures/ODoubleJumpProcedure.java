@@ -17,13 +17,13 @@ public class ODoubleJumpProcedure {
          String STR1 = "";
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get())) {
+            if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get())) {
                int var10000;
                label25: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get())) {
-                        var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get()).m_19564_();
+                     if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get())) {
+                        var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOUBLE_JUMP_EFFECT.get()).getAmplifier();
                         break label25;
                      }
                   }

@@ -1,12 +1,12 @@
 package org.imgaine.gaigegaigekaigecraft.block;
 
+import org.imgaine.gaigegaigekaigecraft.JujutsuBarrierBase;
 import org.imgaine.gaigegaigekaigecraft.block.entity.DomainBlueSkyBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,16 +16,16 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.IPlantable;
 
-public class DomainBlueSkyBlock extends Block implements EntityBlock {
+public class DomainBlueSkyBlock extends JujutsuBarrierBase implements EntityBlock {
    public DomainBlueSkyBlock() {
-      super(Properties.m_284310_().m_280658_(NoteBlockInstrument.HAT).m_60918_(SoundType.f_56744_).m_60913_(-1.0F, 9999.0F).m_60953_((s) -> 15).m_278166_(PushReaction.BLOCK).m_60982_((bs, br, bp) -> true).m_60991_((bs, br, bp) -> true));
+      super(Properties.of().instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(-1.0F, 9999.0F).lightLevel((s) -> 15).pushReaction(PushReaction.BLOCK).hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true).isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false));
    }
 
-   public boolean m_7420_(BlockState state, BlockGetter reader, BlockPos pos) {
+   public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
       return true;
    }
 
-   public int m_7753_(BlockState state, BlockGetter worldIn, BlockPos pos) {
+   public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
       return 0;
    }
 
@@ -33,8 +33,8 @@ public class DomainBlueSkyBlock extends Block implements EntityBlock {
       return true;
    }
 
-   public MenuProvider m_7246_(BlockState state, Level worldIn, BlockPos pos) {
-      BlockEntity tileEntity = worldIn.m_7702_(pos);
+   public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+      BlockEntity tileEntity = worldIn.getBlockEntity(pos);
       MenuProvider var10000;
       if (tileEntity instanceof MenuProvider menuProvider) {
          var10000 = menuProvider;
@@ -45,13 +45,13 @@ public class DomainBlueSkyBlock extends Block implements EntityBlock {
       return var10000;
    }
 
-   public BlockEntity m_142194_(BlockPos pos, BlockState state) {
+   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
       return new DomainBlueSkyBlockEntity(pos, state);
    }
 
-   public boolean m_8133_(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-      super.m_8133_(state, world, pos, eventID, eventParam);
-      BlockEntity blockEntity = world.m_7702_(pos);
-      return blockEntity == null ? false : blockEntity.m_7531_(eventID, eventParam);
+   public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+      super.triggerEvent(state, world, pos, eventID, eventParam);
+      BlockEntity blockEntity = world.getBlockEntity(pos);
+      return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
    }
 }

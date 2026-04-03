@@ -21,22 +21,22 @@ public class ParticleFlowerParticle extends TextureSheetParticle {
    protected ParticleFlowerParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(1.0F, 1.0F);
-      this.f_107225_ = Math.max(1, 60 + (this.f_107223_.m_188503_(40) - 20));
-      this.f_107226_ = 0.01F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 1.0;
-      this.f_107216_ = vy * 1.0;
-      this.f_107217_ = vz * 1.0;
-      this.m_108335_(spriteSet);
+      this.setSize(1.0F, 1.0F);
+      this.lifetime = Math.max(1, 60 + (this.random.nextInt(40) - 20));
+      this.gravity = 0.01F;
+      this.hasPhysics = false;
+      this.xd = vx * 1.0;
+      this.yd = vy * 1.0;
+      this.zd = vz * 1.0;
+      this.pickSprite(spriteSet);
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107430_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
+   public void tick() {
+      super.tick();
    }
 
    public static class ParticleFlowerParticleProvider implements ParticleProvider<SimpleParticleType> {

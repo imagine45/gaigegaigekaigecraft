@@ -10,7 +10,7 @@ public class DomainActiveProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          double skill_domain = 0.0;
-         skill_domain = entity.getPersistentData().m_128459_("skill_domain");
+         skill_domain = entity.getPersistentData().getDouble("skill_domain");
          if (skill_domain <= 10.0) {
             if (skill_domain == 1.0) {
                MalevolentShrineActiveProcedure.execute(world, entity);

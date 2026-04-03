@@ -12,18 +12,10 @@ public class ActiveTickConditionProcedure {
    public static boolean execute(Entity entity) {
       if (entity == null) {
          return false;
+      } else if (entity.getPersistentData().getDouble("skill") <= -999.0) {
+         return false;
       } else {
-         boolean Logic_a = false;
-         Logic_a = true;
-         if (entity instanceof Player && ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePower + ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerChange <= 0.0) {
-            Logic_a = false;
-         }
-
-         if (entity.getPersistentData().m_128459_("skill") <= -999.0) {
-            Logic_a = false;
-         }
-
-         return Logic_a;
+         return entity instanceof Player ? (Boolean)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).map((variables) -> variables.PlayerCursePower + variables.PlayerCursePowerChange > 0.0).orElse(false) : true;
       }
    }
 }

@@ -15,13 +15,13 @@ public class AnimUtils {
 
    public static void renderPartOverBone(ModelPart model, GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLightIn, int packedOverlayIn, float r, float g, float b, float a) {
       setupModelFromBone(model, bone);
-      model.m_104306_(stack, buffer, packedLightIn, packedOverlayIn, r, g, b, a);
+      model.render(stack, buffer, packedLightIn, packedOverlayIn, r, g, b, a);
    }
 
    public static void setupModelFromBone(ModelPart model, GeoBone bone) {
-      model.m_104227_(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ());
-      model.f_104203_ = 0.0F;
-      model.f_104204_ = 0.0F;
-      model.f_104205_ = 0.0F;
+      model.setPos(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ());
+      model.xRot = 0.0F;
+      model.yRot = 0.0F;
+      model.zRot = 0.0F;
    }
 }

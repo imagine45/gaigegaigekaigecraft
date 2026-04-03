@@ -27,29 +27,29 @@ public class OverlaySixEyesOverlay {
       priority = EventPriority.NORMAL
    )
    public static void eventHandler(RenderGuiEvent.Pre event) {
-      int w = event.getWindow().m_85445_();
-      int h = event.getWindow().m_85446_();
+      int w = event.getWindow().getGuiScaledWidth();
+      int h = event.getWindow().getGuiScaledHeight();
       Level world = null;
       double x = 0.0;
       double y = 0.0;
       double z = 0.0;
-      Player entity = Minecraft.m_91087_().f_91074_;
+      Player entity = Minecraft.getInstance().player;
       if (entity != null) {
-         world = entity.m_9236_();
-         x = entity.m_20185_();
-         y = entity.m_20186_();
-         z = entity.m_20189_();
+         world = entity.level();
+         x = entity.getX();
+         y = entity.getY();
+         z = entity.getZ();
       }
 
       if (DataSixEyesDisplayOverlayIngameProcedure.execute(entity)) {
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, DataSixEyes4Procedure.execute(entity), 6, 71, -205, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, DataSixEyes5Procedure.execute(entity), 6, 80, -205, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, DataSixEyes6Procedure.execute(entity), 6, 98, -205, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, DataSixEyes7Procedure.execute(entity), 6, 107, -205, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, DataSixEyes8Procedure.execute(entity), 6, 116, -205, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, DataSixEyes9Procedure.execute(entity), 6, 125, -205, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OSixEye1Procedure.execute(entity), w / 2 + -45, h / 2 + -121, -205, false);
-         event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OSixEye2Procedure.execute(entity), w / 2 + -45, h / 2 + -112, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, DataSixEyes4Procedure.execute(entity), 6, 71, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, DataSixEyes5Procedure.execute(entity), 6, 80, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, DataSixEyes6Procedure.execute(entity), 6, 98, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, DataSixEyes7Procedure.execute(entity), 6, 107, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, DataSixEyes8Procedure.execute(entity), 6, 116, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, DataSixEyes9Procedure.execute(entity), 6, 125, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, OSixEye1Procedure.execute(entity), w / 2 + -45, h / 2 + -121, -205, false);
+         event.getGuiGraphics().drawString(Minecraft.getInstance().font, OSixEye2Procedure.execute(entity), w / 2 + -45, h / 2 + -112, -205, false);
       }
 
    }

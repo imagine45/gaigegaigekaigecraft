@@ -22,19 +22,19 @@ public class EffectConfirm3Procedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          Entity entity_a = null;
-         entityiterator.getPersistentData().m_128347_("Damage", 0.0);
+         entityiterator.getPersistentData().putDouble("Damage", 0.0);
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
          }
 
          if (entityiterator instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entityiterator;
-            _entity.m_21195_(MobEffects.f_19606_);
+            _entity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
          }
 
-         if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-            entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "kill @s");
+         if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+            entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "kill @s");
          }
 
       }

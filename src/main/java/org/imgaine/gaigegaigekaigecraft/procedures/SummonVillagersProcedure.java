@@ -16,12 +16,12 @@ public class SummonVillagersProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z) {
       for(int index0 = 0; index0 < 10; ++index0) {
          if (world instanceof ServerLevel _level) {
-            Entity entityToSpawn = EntityType.f_20492_.m_262496_(_level, BlockPos.m_274561_(x, y, z), MobSpawnType.MOB_SUMMONED);
+            Entity entityToSpawn = EntityType.VILLAGER.spawn(_level, BlockPos.containing(x, y, z), MobSpawnType.MOB_SUMMONED);
             if (entityToSpawn != null) {
-               entityToSpawn.m_146922_((float)Mth.m_216263_(RandomSource.m_216327_(), 0.0, 360.0));
-               entityToSpawn.m_5618_((float)Mth.m_216263_(RandomSource.m_216327_(), 0.0, 360.0));
-               entityToSpawn.m_5616_((float)Mth.m_216263_(RandomSource.m_216327_(), 0.0, 360.0));
-               entityToSpawn.m_20334_(Mth.m_216263_(RandomSource.m_216327_(), -1.0, 1.0), Mth.m_216263_(RandomSource.m_216327_(), -0.25, 0.25), Mth.m_216263_(RandomSource.m_216327_(), -1.0, 1.0));
+               entityToSpawn.setYRot((float)Mth.nextDouble(RandomSource.create(), 0.0, 360.0));
+               entityToSpawn.setYBodyRot((float)Mth.nextDouble(RandomSource.create(), 0.0, 360.0));
+               entityToSpawn.setYHeadRot((float)Mth.nextDouble(RandomSource.create(), 0.0, 360.0));
+               entityToSpawn.setDeltaMovement(Mth.nextDouble(RandomSource.create(), -1.0, 1.0), Mth.nextDouble(RandomSource.create(), -0.25, 0.25), Mth.nextDouble(RandomSource.create(), -1.0, 1.0));
             }
          }
       }

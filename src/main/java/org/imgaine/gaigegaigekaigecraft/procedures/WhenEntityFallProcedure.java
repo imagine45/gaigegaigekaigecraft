@@ -15,6 +15,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -24,7 +26,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,7 +40,7 @@ public class WhenEntityFallProcedure {
    @SubscribeEvent
    public static void onEntityFall(LivingFallEvent event) {
       if (event != null && event.getEntity() != null) {
-         execute(event, event.getEntity().m_9236_(), event.getEntity(), (double)event.getDistance());
+         execute(event, event.getEntity().level(), event.getEntity(), (double)event.getDistance());
       }
 
    }
@@ -50,36 +51,41 @@ public class WhenEntityFallProcedure {
 
    private static void execute(@Nullable Event event, LevelAccessor world, Entity entity, double distance) {
       if (entity != null) {
+         boolean logic_fall = false;
          double distance_power = 0.0;
          double curse_energy_color = 0.0;
-         boolean logic_fall = false;
+         double particle_amount = 0.0;
+         double particle_speed = 0.0;
+         double x_pos = 0.0;
+         double y_pos = 0.0;
+         double z_pos = 0.0;
          distance_power = distance - 8.0;
          if (entity instanceof Player) {
-            logic_fall = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerMAX >= 6000.0 && entity.m_6144_();
+            logic_fall = entity.isShiftKeyDown() && ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerMAX >= 6000.0;
          } else {
             logic_fall = entity instanceof OkkotsuYutaEntity || entity instanceof OkkotsuYutaCullingGameEntity;
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt4 = (LivingEntity)entity;
-            if (_livEnt4.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
-               logic_fall = logic_fall || !(entity instanceof Player) || entity.m_6144_();
+            if (_livEnt4.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+               logic_fall = logic_fall || !(entity instanceof Player) || entity.isShiftKeyDown();
             }
          }
 
          boolean var10000;
-         label221: {
+         label195: {
             if (!logic_fall) {
-               label218: {
+               label192: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt7 = (LivingEntity)entity;
-                     if (_livEnt7.m_21023_((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
-                        break label218;
+                     if (_livEnt7.hasEffect((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
+                        break label192;
                      }
                   }
 
                   var10000 = false;
-                  break label221;
+                  break label195;
                }
             }
 
@@ -88,33 +94,36 @@ public class WhenEntityFallProcedure {
 
          logic_fall = var10000;
          if (distance_power > 0.0) {
+            x_pos = entity.getX();
+            y_pos = entity.getY();
+            z_pos = entity.getZ();
             distance_power = Math.sqrt(distance_power + 1.0);
             curse_energy_color = ReturnEnergyColorProcedure.execute(entity);
             if (distance_power > 4.0 || curse_energy_color > 0.0) {
-               entity.getPersistentData().m_128347_("BlockRange", Math.min(distance_power, 4.0) + (double)entity.m_20205_());
-               entity.getPersistentData().m_128347_("BlockDamage", (curse_energy_color > 0.0 ? 1.0 : 0.25) * distance_power);
-               BlockDestroyAllDirectionProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity);
+               entity.getPersistentData().putDouble("BlockRange", Math.min(distance_power, 4.0) + (double)entity.getBbWidth());
+               entity.getPersistentData().putDouble("BlockDamage", (curse_energy_color > 0.0 ? 1.0 : 0.25) * distance_power);
+               BlockDestroyAllDirectionProcedure.execute(world, x_pos, y_pos, z_pos, entity);
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 15, 6, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 15, 6, false, false));
                }
             }
 
-            label215: {
+            label189: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt15 = (LivingEntity)entity;
-                  if (_livEnt15.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
-                     break label215;
+                  if (_livEnt15.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+                     break label189;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity16 = (LivingEntity)entity;
-                  if (_livingEntity16.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                     _livingEntity16.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(-10.0);
+                  if (_livingEntity16.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                     _livingEntity16.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(-10.0);
                   }
                }
 
@@ -122,89 +131,57 @@ public class WhenEntityFallProcedure {
             }
 
             if (logic_fall) {
+               particle_amount = Math.min(distance_power * distance_power + 20.0, 100.0);
+               particle_speed = 0.5 + Math.min(distance_power * 0.25, 1.5);
                if (curse_energy_color == 1.0) {
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_BLUE.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), distance_power, 0.0, distance_power, Math.min(distance_power * 0.1, 1.5));
-                  }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_BLUE.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), (double)entity.m_20205_() * 0.25, 0.0, (double)entity.m_20205_() * 0.25, 0.5 + Math.min(distance_power * 0.25, 1.5));
+                     _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_BLUE.get(), x_pos, y_pos, z_pos, (int)particle_amount, (double)entity.getBbWidth() * 0.25, 0.0, (double)entity.getBbWidth() * 0.25, particle_speed);
                   }
                } else if (curse_energy_color == 2.0) {
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_ORANGE.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), distance_power, 0.0, distance_power, Math.min(distance_power * 0.1, 1.5));
-                  }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_ORANGE.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), (double)entity.m_20205_() * 0.25, 0.0, (double)entity.m_20205_() * 0.25, 0.5 + Math.min(distance_power * 0.25, 1.5));
+                     _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_ORANGE.get(), x_pos, y_pos, z_pos, (int)particle_amount, (double)entity.getBbWidth() * 0.25, 0.0, (double)entity.getBbWidth() * 0.25, particle_speed);
                   }
                } else if (curse_energy_color == 3.0) {
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_RED.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), distance_power, 0.0, distance_power, Math.min(distance_power * 0.1, 1.5));
-                  }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_RED.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), (double)entity.m_20205_() * 0.25, 0.0, (double)entity.m_20205_() * 0.25, 0.5 + Math.min(distance_power * 0.25, 1.5));
+                     _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_RED.get(), x_pos, y_pos, z_pos, (int)particle_amount, (double)entity.getBbWidth() * 0.25, 0.0, (double)entity.getBbWidth() * 0.25, particle_speed);
                   }
                } else if (curse_energy_color == 4.0) {
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_GREEN.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), distance_power, 0.0, distance_power, Math.min(distance_power * 0.1, 1.5));
+                     _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_GREEN.get(), x_pos, y_pos, z_pos, (int)particle_amount, (double)entity.getBbWidth() * 0.25, 0.0, (double)entity.getBbWidth() * 0.25, particle_speed);
                   }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_GREEN.get(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0), (double)entity.m_20205_() * 0.25, 0.0, (double)entity.m_20205_() * 0.25, 0.5 + Math.min(distance_power * 0.25, 1.5));
-                  }
-               } else {
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_(ParticleTypes.f_123796_, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)(Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0) * 0.25), distance_power, 0.0, distance_power, Math.min(distance_power * 0.1, 1.5));
-                  }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_(ParticleTypes.f_123813_, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)(Math.min(Math.pow(distance_power, 2.5) + 20.0, 100.0) * 0.25), (double)entity.m_20205_() * 0.25, 0.0, (double)entity.m_20205_() * 0.25, 0.5 + Math.min(distance_power * 0.25, 1.5));
-                  }
+               } else if (world instanceof ServerLevel) {
+                  ServerLevel _level = (ServerLevel)world;
+                  _level.sendParticles(ParticleTypes.CRIT, x_pos, y_pos, z_pos, (int)(particle_amount * 1.0), (double)entity.getBbWidth() * 0.25, 0.0, (double)entity.getBbWidth() * 0.25, particle_speed * 2.0);
                }
 
                if (curse_energy_color > 0.0 && world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(entity.m_20185_(), entity.m_20186_(), entity.m_20189_()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:electric_shock")), SoundSource.NEUTRAL, (float)(distance_power * 0.5), 1.0F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:electric_shock")), SoundSource.NEUTRAL, (float)(distance_power * 0.5), (float)Mth.nextDouble(RandomSource.create(), 0.9, 1.1));
                   } else {
-                     _level.m_7785_(entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:electric_shock")), SoundSource.NEUTRAL, (float)(distance_power * 0.5), 1.0F, false);
+                     _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:electric_shock")), SoundSource.NEUTRAL, (float)(distance_power * 0.5), (float)Mth.nextDouble(RandomSource.create(), 0.9, 1.1), false);
                   }
                }
 
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(entity.m_20185_(), entity.m_20186_(), entity.m_20189_()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, (float)distance_power, 0.5F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, (float)distance_power, (float)Mth.nextDouble(RandomSource.create(), 0.5, 0.6));
                   } else {
-                     _level.m_7785_(entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, (float)distance_power, 0.5F, false);
+                     _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, (float)distance_power, (float)Mth.nextDouble(RandomSource.create(), 0.5, 0.6), false);
                   }
                }
 
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(entity.m_20185_(), entity.m_20186_(), entity.m_20189_()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, (float)distance_power, 0.5F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, (float)distance_power, (float)Mth.nextDouble(RandomSource.create(), 0.5, 0.6));
                   } else {
-                     _level.m_7785_(entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, (float)distance_power, 0.5F, false);
-                  }
-               }
-
-               if (world instanceof Level) {
-                  Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_254849_((Entity)null, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), 0.0F, ExplosionInteraction.NONE);
+                     _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.zombie.break_wooden_door")), SoundSource.NEUTRAL, (float)distance_power, (float)Mth.nextDouble(RandomSource.create(), 0.5, 0.6), false);
                   }
                }
             }
@@ -215,16 +192,16 @@ public class WhenEntityFallProcedure {
          }
 
          int var10001;
-         label164: {
+         label138: {
             if (entity instanceof LivingEntity) {
-               LivingEntity _livEnt83 = (LivingEntity)entity;
-               if (_livEnt83.m_21023_(MobEffects.f_19600_)) {
-                  label159: {
+               LivingEntity _livEnt38 = (LivingEntity)entity;
+               if (_livEnt38.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                  label133: {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                           var10001 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                           break label159;
+                        if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                           var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                           break label133;
                         }
                      }
 
@@ -232,7 +209,7 @@ public class WhenEntityFallProcedure {
                   }
 
                   var10001 += 5;
-                  break label164;
+                  break label138;
                }
             }
 

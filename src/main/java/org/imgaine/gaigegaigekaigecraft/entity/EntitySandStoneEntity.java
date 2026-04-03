@@ -30,50 +30,50 @@ public class EntitySandStoneEntity extends PathfinderMob {
 
    public EntitySandStoneEntity(EntityType<EntitySandStoneEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(true);
-      this.m_21530_();
-      this.m_6210_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(true);
+      this.setPersistenceRequired();
+      this.refreshDimensions();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      if (damagesource.m_276093_(DamageTypes.f_268631_)) {
+   public boolean hurt(DamageSource damagesource, float amount) {
+      if (damagesource.is(DamageTypes.IN_FIRE)) {
          return false;
-      } else if (damagesource.m_7640_() instanceof AbstractArrow) {
+      } else if (damagesource.getDirectEntity() instanceof AbstractArrow) {
          return false;
-      } else if (damagesource.m_7640_() instanceof Player) {
+      } else if (damagesource.getDirectEntity() instanceof Player) {
          return false;
-      } else if (!(damagesource.m_7640_() instanceof ThrownPotion) && !(damagesource.m_7640_() instanceof AreaEffectCloud)) {
-         if (damagesource.m_276093_(DamageTypes.f_268671_)) {
+      } else if (!(damagesource.getDirectEntity() instanceof ThrownPotion) && !(damagesource.getDirectEntity() instanceof AreaEffectCloud)) {
+         if (damagesource.is(DamageTypes.FALL)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268585_)) {
+         } else if (damagesource.is(DamageTypes.CACTUS)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268722_)) {
+         } else if (damagesource.is(DamageTypes.DROWN)) {
             return false;
-         } else if (damagesource.m_276093_(DamageTypes.f_268450_)) {
+         } else if (damagesource.is(DamageTypes.LIGHTNING_BOLT)) {
             return false;
-         } else if (!damagesource.m_276093_(DamageTypes.f_268565_) && !damagesource.m_276093_(DamageTypes.f_268448_)) {
-            if (damagesource.m_276093_(DamageTypes.f_268714_)) {
+         } else if (!damagesource.is(DamageTypes.EXPLOSION) && !damagesource.is(DamageTypes.PLAYER_EXPLOSION)) {
+            if (damagesource.is(DamageTypes.TRIDENT)) {
                return false;
-            } else if (damagesource.m_276093_(DamageTypes.f_268526_)) {
+            } else if (damagesource.is(DamageTypes.FALLING_ANVIL)) {
                return false;
-            } else if (damagesource.m_276093_(DamageTypes.f_268482_)) {
+            } else if (damagesource.is(DamageTypes.DRAGON_BREATH)) {
                return false;
             } else {
-               return !damagesource.m_276093_(DamageTypes.f_268493_) && !damagesource.m_276093_(DamageTypes.f_268641_) ? super.m_6469_(damagesource, amount) : false;
+               return !damagesource.is(DamageTypes.WITHER) && !damagesource.is(DamageTypes.WITHER_SKULL) ? super.hurt(damagesource, amount) : false;
             }
          } else {
             return false;
@@ -83,42 +83,42 @@ public class EntitySandStoneEntity extends PathfinderMob {
       }
    }
 
-   public boolean m_6128_() {
+   public boolean ignoreExplosion() {
       return true;
    }
 
-   public boolean m_5825_() {
+   public boolean fireImmune() {
       return true;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIGravestoneProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AIGravestoneProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
    }
 
-   public boolean m_7337_(Entity entity) {
+   public boolean canCollideWith(Entity entity) {
       return true;
    }
 
-   public boolean m_5829_() {
+   public boolean canBeCollidedWith() {
       return true;
    }
 
-   public EntityDimensions m_6972_(Pose pose) {
-      return super.m_6972_(pose).m_20388_(1.5F);
+   public EntityDimensions getDimensions(Pose pose) {
+      return super.getDimensions(pose).scale(1.5F);
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 200.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 5.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 200.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 5.0);
       return builder;
    }
 }

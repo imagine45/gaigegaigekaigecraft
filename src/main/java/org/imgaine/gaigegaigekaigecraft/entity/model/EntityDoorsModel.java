@@ -13,15 +13,15 @@ public class EntityDoorsModel extends GeoModel<EntityDoorsEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityDoorsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/doors.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/doors.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityDoorsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/doors.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/doors.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityDoorsEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityDoorsEntity animatable, long instanceId, AnimationState animationState) {

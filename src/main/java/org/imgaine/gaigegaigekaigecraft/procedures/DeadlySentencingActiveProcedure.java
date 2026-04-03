@@ -1,24 +1,26 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
+
+import net.minecraftforge.common.util.NonNullConsumer;
+import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade22Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.EntityWitnessStandEntity;
-import org.imgaine.gaigegaigekaigecraft.entity.HigurumaHiromiEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.ItadoriYujiEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.ItadoriYujiShibuyaEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.ItadoriYujiShinjukuEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.JudgemanEntity;
-import org.imgaine.gaigegaigekaigecraft.entity.MahitoEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.RozetsuEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModEntities;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
-import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,19 +35,28 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -54,8 +65,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class DeadlySentencingActiveProcedure {
    public DeadlySentencingActiveProcedure() {
@@ -63,640 +75,695 @@ public class DeadlySentencingActiveProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
+         boolean startJudgeman;
+         boolean update;
+         boolean logic_judgeTarget;
+         String guilt_str;
+         double guilt_karma;
+         Entity entity_target;
+         Entity entity_targetJudge;
          double range;
          double var10000;
-         label782: {
-            Entity entity_a = null;
+         label1015: {
+            ItemStack itemMainhand = ItemStack.EMPTY;
+            ItemStack itemOffhand = ItemStack.EMPTY;
+            ItemStack replace_item = ItemStack.EMPTY;
+            ItemStack executioners_sword = ItemStack.EMPTY;
             boolean logic_a = false;
-            ItemStack item_a = ItemStack.f_41583_;
-            double num1 = 0.0;
+            startJudgeman = false;
+            update = false;
+            boolean logic_hitDomain = false;
+            boolean logic_noFriend = false;
+            logic_judgeTarget = false;
+            guilt_str = "";
+            String dd = "";
+            String MM = "";
+            String pattern = "";
+            String yyyy = "";
+            String tellrawCommand = "";
+            double x_dis = 0.0;
+            double distance = 0.0;
             range = 0.0;
             double x_pos = 0.0;
+            double z_dis = 0.0;
             double tick = 0.0;
-            double y_pos = 0.0;
             double z_pos = 0.0;
+            double num1 = 0.0;
+            double y_pos = 0.0;
+            double y_dis = 0.0;
             double num3 = 0.0;
             double num2 = 0.0;
+            double yaw = 0.0;
+            double pitch = 0.0;
+            double num4 = 0.0;
+            guilt_karma = 0.0;
+            double num_guilt = 0.0;
+            double radius = 0.0;
+            double skill = 0.0;
+            double strength_max = 0.0;
+            Entity entity_first = null;
+            Entity entity_setStand = null;
+            Entity entity_judgeman = null;
+            entity_target = null;
+            entity_targetJudge = null;
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
-                  break label782;
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
+                  break label1015;
                }
             }
 
             var10000 = 0.0;
          }
 
-         double var52 = var10000;
-         Entity _ent = (new BiFunction<LevelAccessor, String, Entity>() {
-            public Entity apply(LevelAccessor levelAccessor, String uuid) {
-               if (levelAccessor instanceof ServerLevel serverLevel) {
-                  try {
-                     return serverLevel.m_8791_(UUID.fromString(uuid));
-                  } catch (Exception var5) {
-                  }
-               }
-
-               return null;
+         double var106 = var10000;
+         double var131 = entity.getPersistentData().getDouble("skill");
+         if (entity.getPersistentData().getDouble("cnt_target") > 6.0) {
+            LivingEntity var206;
+            if (entity instanceof Mob) {
+               Mob _mobEnt = (Mob)entity;
+               var206 = _mobEnt.getTarget();
+            } else {
+               var206 = null;
             }
-         }).apply(world, entity.getPersistentData().m_128461_("takada_UUID"));
-         if (!(_ent instanceof JudgemanEntity) && var52 % 20.0 == 10.0) {
-            double var62 = (double)entity.m_146908_();
-            double var59 = (double)entity.m_146909_();
-            RotateEntityProcedure.execute(entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma"), entity);
-            double var43 = Math.toRadians((double)(entity.m_146908_() + 90.0F + 180.0F));
-            double var49 = entity.m_20185_() + Math.cos(var43) * (double)(5.0F + entity.m_20205_());
-            double var53 = entity.m_20186_();
-            double var56 = entity.m_20189_() + Math.sin(var43) * (double)(5.0F + entity.m_20205_());
+
+            entity_target = var206;
+         }
+
+         Entity _ent = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("takada_UUID"));
+         if (!(_ent instanceof JudgemanEntity) && var106 % 20.0 == 10.0) {
+            double var122 = (double)entity.getYRot();
+            double var120 = (double)entity.getXRot();
+            RotateEntityProcedure.execute(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"), entity);
+            double var110 = Math.toRadians((double)(entity.getYRot() + 90.0F + 180.0F));
+            double var100 = entity.getX() + Math.cos(var110) * (double)(5.0F + entity.getBbWidth());
+            double var114 = entity.getY();
+            double var107 = entity.getZ() + Math.sin(var110) * (double)(5.0F + entity.getBbWidth());
             if (world instanceof ServerLevel) {
                ServerLevel _serverLevel = (ServerLevel)world;
-               Entity entityinstance = ((EntityType)JujutsucraftModEntities.JUDGEMAN.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(var49, var53, var56), MobSpawnType.MOB_SUMMONED, false, false);
+               Entity entityinstance = ((EntityType)JujutsucraftModEntities.JUDGEMAN.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(var100, var114, var107), MobSpawnType.MOB_SUMMONED, false, false);
                if (entityinstance != null) {
-                  entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                  entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                   SetRangedAmmoProcedure.execute(entity, entityinstance);
-                  entityinstance.m_146922_(entity.m_146908_());
-                  entityinstance.m_146926_(0.0F);
-                  entityinstance.m_5618_(entityinstance.m_146908_());
-                  entityinstance.m_5616_(entityinstance.m_146908_());
-                  entityinstance.f_19859_ = entityinstance.m_146908_();
-                  entityinstance.f_19860_ = entityinstance.m_146909_();
+                  entityinstance.setYRot(entity.getYRot());
+                  entityinstance.setXRot(0.0F);
+                  entityinstance.setYBodyRot(entityinstance.getYRot());
+                  entityinstance.setYHeadRot(entityinstance.getYRot());
+                  entityinstance.yRotO = entityinstance.getYRot();
+                  entityinstance.xRotO = entityinstance.getXRot();
                   if (entityinstance instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entityinstance;
-                     _entity.f_20884_ = _entity.m_146908_();
-                     _entity.f_20886_ = _entity.m_146908_();
+                     _entity.yBodyRotO = _entity.getYRot();
+                     _entity.yHeadRotO = _entity.getYRot();
                   }
 
-                  entity.getPersistentData().m_128359_("takada_UUID", entityinstance.m_20149_());
-                  entityinstance.getPersistentData().m_128379_("domain_entity", true);
-                  if (!entityinstance.m_9236_().m_5776_() && entityinstance.m_20194_() != null) {
-                     entityinstance.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityinstance.m_20182_(), entityinstance.m_20155_(), entityinstance.m_9236_() instanceof ServerLevel ? (ServerLevel)entityinstance.m_9236_() : null, 4, entityinstance.m_7755_().getString(), entityinstance.m_5446_(), entityinstance.m_9236_().m_7654_(), entityinstance), "data merge entity @s {Invulnerable:1b}");
+                  entity.getPersistentData().putString("takada_UUID", entityinstance.getStringUUID());
+                  entityinstance.getPersistentData().putBoolean("domain_entity", true);
+                  if (!entityinstance.level().isClientSide() && entityinstance.getServer() != null) {
+                     entityinstance.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityinstance.position(), entityinstance.getRotationVector(), entityinstance.level() instanceof ServerLevel ? (ServerLevel)entityinstance.level() : null, 4, entityinstance.getName().getString(), entityinstance.getDisplayName(), entityinstance.level().getServer(), entityinstance), "data merge entity @s {Invulnerable:1b}");
                   }
 
                   _ent = entityinstance;
-                  _serverLevel.m_7967_(entityinstance);
+                  _serverLevel.addFreshEntity(entityinstance);
                }
             }
 
-            entity.m_146922_((float)var62);
-            entity.m_146926_((float)var59);
-            entity.m_5618_(entity.m_146908_());
-            entity.m_5616_(entity.m_146908_());
-            entity.f_19859_ = entity.m_146908_();
-            entity.f_19860_ = entity.m_146909_();
+            entity.setYRot((float)var122);
+            entity.setXRot((float)var120);
+            entity.setYBodyRot(entity.getYRot());
+            entity.setYHeadRot(entity.getYRot());
+            entity.yRotO = entity.getYRot();
+            entity.xRotO = entity.getXRot();
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.f_20884_ = _entity.m_146908_();
-               _entity.f_20886_ = _entity.m_146908_();
+               _entity.yBodyRotO = _entity.getYRot();
+               _entity.yHeadRotO = _entity.getYRot();
             }
          }
 
          if (_ent instanceof JudgemanEntity) {
-            if (entity.getPersistentData().m_128459_("skill") != 2719.0) {
-               label772: {
+            if (var131 != 2719.0) {
+               int var207;
+               label1003: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                        var141 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                        break label772;
+                     if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                        var207 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).getAmplifier();
+                        break label1003;
                      }
                   }
 
-                  var141 = 0;
+                  var207 = 0;
                }
 
-               if (var141 > 0) {
-                  _ent.m_7618_(Anchor.EYES, new Vec3(entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma")));
+               if (var207 > 0) {
+                  _ent.lookAt(Anchor.EYES, new Vec3(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma")));
                } else {
-                  double var44 = (double)(_ent.m_146908_() % 360.0F);
-                  _ent.m_146922_(entity.m_146908_() % 360.0F);
-                  _ent.m_146926_(entity.m_146909_());
-                  _ent.m_5618_(_ent.m_146908_());
-                  _ent.m_5616_(_ent.m_146908_());
-                  _ent.f_19859_ = _ent.m_146908_();
-                  _ent.f_19860_ = _ent.m_146909_();
+                  double var111 = (double)(_ent.getYRot() % 360.0F);
+                  _ent.setYRot(entity.getYRot() % 360.0F);
+                  _ent.setXRot(entity.getXRot());
+                  _ent.setYBodyRot(_ent.getYRot());
+                  _ent.setYHeadRot(_ent.getYRot());
+                  _ent.yRotO = _ent.getYRot();
+                  _ent.xRotO = _ent.getXRot();
                   if (_ent instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)_ent;
-                     _entity.f_20884_ = _entity.m_146908_();
-                     _entity.f_20886_ = _entity.m_146908_();
+                     _entity.yBodyRotO = _entity.getYRot();
+                     _entity.yHeadRotO = _entity.getYRot();
                   }
 
-                  double var63 = var44 - (double)entity.m_146908_();
-                  if (Math.abs(var63) > 180.0) {
-                     _ent.m_146922_((float)(var44 + Math.min(4.0, Math.abs(var63)) * (double)(var63 < 0.0 ? -1 : 1)));
-                     _ent.m_146926_(entity.m_146909_());
-                     _ent.m_5618_(_ent.m_146908_());
-                     _ent.m_5616_(_ent.m_146908_());
-                     _ent.f_19859_ = _ent.m_146908_();
-                     _ent.f_19860_ = _ent.m_146909_();
+                  double var123 = var111 - (double)entity.getYRot();
+                  if (Math.abs(var123) > 180.0) {
+                     _ent.setYRot((float)(var111 + Math.min(8.0, Math.abs(var123)) * (double)(var123 < 0.0 ? -1 : 1)));
+                     _ent.setXRot(entity.getXRot());
+                     _ent.setYBodyRot(_ent.getYRot());
+                     _ent.setYHeadRot(_ent.getYRot());
+                     _ent.yRotO = _ent.getYRot();
+                     _ent.xRotO = _ent.getXRot();
                      if (_ent instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)_ent;
-                        _entity.f_20884_ = _entity.m_146908_();
-                        _entity.f_20886_ = _entity.m_146908_();
+                        _entity.yBodyRotO = _entity.getYRot();
+                        _entity.yHeadRotO = _entity.getYRot();
                      }
                   } else {
-                     _ent.m_146922_((float)(var44 + Math.min(4.0, Math.abs(var63)) * (double)(var63 > 0.0 ? -1 : 1)));
-                     _ent.m_146926_(entity.m_146909_());
-                     _ent.m_5618_(_ent.m_146908_());
-                     _ent.m_5616_(_ent.m_146908_());
-                     _ent.f_19859_ = _ent.m_146908_();
-                     _ent.f_19860_ = _ent.m_146909_();
+                     _ent.setYRot((float)(var111 + Math.min(8.0, Math.abs(var123)) * (double)(var123 > 0.0 ? -1 : 1)));
+                     _ent.setXRot(entity.getXRot());
+                     _ent.setYBodyRot(_ent.getYRot());
+                     _ent.setYHeadRot(_ent.getYRot());
+                     _ent.yRotO = _ent.getYRot();
+                     _ent.xRotO = _ent.getXRot();
                      if (_ent instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)_ent;
-                        _entity.f_20884_ = _entity.m_146908_();
-                        _entity.f_20886_ = _entity.m_146908_();
+                        _entity.yBodyRotO = _entity.getYRot();
+                        _entity.yHeadRotO = _entity.getYRot();
                      }
                   }
                }
 
-               double var45 = Math.toRadians((double)(_ent.m_146908_() + 90.0F + 180.0F));
-               double var50 = entity.m_20185_() + Math.cos(var45) * (double)(5.0F + entity.m_20205_());
-               double var54 = entity.m_20186_();
-               double var57 = entity.m_20189_() + Math.sin(var45) * (double)(5.0F + entity.m_20205_());
-               _ent.m_6021_(_ent.m_20185_() + Math.min(0.25, Math.abs(var50 - _ent.m_20185_())) * (double)(var50 > _ent.m_20185_() ? 1 : -1), _ent.m_20186_() + Math.min(0.25, Math.abs(var54 - _ent.m_20186_())) * (double)(var54 > _ent.m_20186_() ? 1 : -1), _ent.m_20189_() + Math.min(0.25, Math.abs(var57 - _ent.m_20189_())) * (double)(var57 > _ent.m_20189_() ? 1 : -1));
+               double var112 = Math.toRadians((double)(_ent.getYRot() + 90.0F + 180.0F));
+               double var101 = entity.getX() + Math.cos(var112) * (double)(5.0F + entity.getBbWidth());
+               double var115 = entity.getY();
+               double var108 = entity.getZ() + Math.sin(var112) * (double)(5.0F + entity.getBbWidth());
+               _ent.teleportTo(_ent.getX() + Math.min(0.5, Math.abs(var101 - _ent.getX())) * (double)(var101 > _ent.getX() ? 1 : -1), _ent.getY() + Math.min(0.5, Math.abs(var115 - _ent.getY())) * (double)(var115 > _ent.getY() ? 1 : -1), _ent.getZ() + Math.min(0.5, Math.abs(var108 - _ent.getZ())) * (double)(var108 > _ent.getZ() ? 1 : -1));
                if (_ent instanceof ServerPlayer) {
                   ServerPlayer _serverPlayer = (ServerPlayer)_ent;
-                  _serverPlayer.f_8906_.m_9774_(_ent.m_20185_() + Math.min(0.25, Math.abs(var50 - _ent.m_20185_())) * (double)(var50 > _ent.m_20185_() ? 1 : -1), _ent.m_20186_() + Math.min(0.25, Math.abs(var54 - _ent.m_20186_())) * (double)(var54 > _ent.m_20186_() ? 1 : -1), _ent.m_20189_() + Math.min(0.25, Math.abs(var57 - _ent.m_20189_())) * (double)(var57 > _ent.m_20189_() ? 1 : -1), _ent.m_146908_(), _ent.m_146909_());
+                  _serverPlayer.connection.teleport(_ent.getX() + Math.min(0.5, Math.abs(var101 - _ent.getX())) * (double)(var101 > _ent.getX() ? 1 : -1), _ent.getY() + Math.min(0.5, Math.abs(var115 - _ent.getY())) * (double)(var115 > _ent.getY() ? 1 : -1), _ent.getZ() + Math.min(0.5, Math.abs(var108 - _ent.getZ())) * (double)(var108 > _ent.getZ() ? 1 : -1), _ent.getYRot(), _ent.getXRot());
+               }
+
+               if (var131 == 0.0 && !entity.getPersistentData().getBoolean("Failed")) {
+                  int var208;
+                  label997: {
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _livEnt = (LivingEntity)entity;
+                        if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                           var208 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
+                           break label997;
+                        }
+                     }
+
+                     var208 = 0;
+                  }
+
+                  if (var208 < 200) {
+                     ResetCounterProcedure.execute(entity);
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entity;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                        }
+                     }
+
+                     entity.getPersistentData().putDouble("skill", 2719.0);
+                     entity.getPersistentData().putDouble("cnt3", 20.0);
+                  }
                }
             }
 
-            _ent.m_20256_(new Vec3(0.0, 0.0, 0.0));
-            if (!entity.m_6084_() && !_ent.m_9236_().m_5776_() && _ent.m_20194_() != null) {
-               _ent.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, _ent.m_20182_(), _ent.m_20155_(), _ent.m_9236_() instanceof ServerLevel ? (ServerLevel)_ent.m_9236_() : null, 4, _ent.m_7755_().getString(), _ent.m_5446_(), _ent.m_9236_().m_7654_(), _ent), "kill @s");
+            _ent.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
+            if (!entity.isAlive() && !_ent.level().isClientSide() && _ent.getServer() != null) {
+               _ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, _ent.position(), _ent.getRotationVector(), _ent.level() instanceof ServerLevel ? (ServerLevel)_ent.level() : null, 4, _ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent), "kill @s");
             }
          }
 
-         if (!entity.getPersistentData().m_128471_("Failed") || entity.getPersistentData().m_128459_("skill") == 2719.0) {
-            entity.getPersistentData().m_128379_("DomainAttack", false);
-            if (var52 % 20.0 == 10.0) {
-               if (entity.getPersistentData().m_128459_("skill") == 2719.0 && entity.getPersistentData().m_128459_("cnt3") >= 20.0) {
-                  entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-                  if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
-                     double var10001;
-                     int var10002;
-                     label754: {
-                        var10000 = Math.random() * 100.0;
-                        var10001 = entity.getPersistentData().m_128459_("cnt4");
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                              var10002 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                              break label754;
-                           }
+         var131 = entity.getPersistentData().getDouble("skill");
+         if (!entity.getPersistentData().getBoolean("Failed") || var131 == 2719.0) {
+            entity.getPersistentData().putBoolean("DomainAttack", false);
+            if (var106 % 20.0 == 10.0) {
+               if (var131 == 2719.0 && entity.getPersistentData().getDouble("cnt3") >= 20.0) {
+                  update = true;
+                  entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+                  if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
+                     if (entity.getPersistentData().getDouble("x_power") > 100.0) {
+                        if (entity.getPersistentData().getDouble("x_power") - 100.0 > Mth.nextDouble(RandomSource.create(), 0.0, 100.0)) {
+                           entity.getPersistentData().putDouble("cnt2", 2.0);
+                        } else {
+                           entity.getPersistentData().putDouble("cnt2", 0.0);
                         }
-
-                        var10002 = 0;
-                     }
-
-                     if (var10000 <= var10001 * Math.min((double)(var10002 + 1) * 0.1, 1.0)) {
-                        entity.getPersistentData().m_128347_("cnt2", 0.0);
+                     } else if (entity.getPersistentData().getDouble("x_power") <= 0.0) {
+                        entity.getPersistentData().putDouble("cnt2", -1.0);
+                     } else if (entity.getPersistentData().getDouble("x_power") > Mth.nextDouble(RandomSource.create(), 0.0, 100.0)) {
+                        entity.getPersistentData().putDouble("cnt2", 0.0);
                      } else {
-                        entity.getPersistentData().m_128347_("cnt2", 1.0);
+                        entity.getPersistentData().putDouble("cnt2", -1.0);
                      }
                   }
                }
 
-               double var46;
-               double var60;
-               double var64;
-               label749: {
-                  var46 = 0.0;
-                  var64 = 0.0;
-                  var60 = 1.0;
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                        var143 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                        break label749;
+               double var113 = 0.0;
+               double var124 = 0.0;
+               double var121 = 0.0;
+               double var133 = -1.0;
+               ItemStack var81 = (new ItemStack((ItemLike)JujutsucraftModItems.EXECUTIONERS_SWORD.get())).copy();
+               Vec3 _center = new Vec3(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"));
+
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
+                  if (entityiterator instanceof EntityWitnessStandEntity || entityiterator instanceof LivingEntity && entityiterator.isAlive() && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living")))) {
+                     double var93 = entity.getPersistentData().getDouble("x_pos_doma") - entityiterator.getX();
+                     double var117 = entity.getPersistentData().getDouble("y_pos_doma") - (entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5);
+                     double var103 = entity.getPersistentData().getDouble("z_pos_doma") - entityiterator.getZ();
+                     double var96 = var93 * var93 + var117 * var117 + var103 * var103;
+                     if (var96 < range * 0.5 * range * 0.5) {
+                        if (entityiterator instanceof EntityWitnessStandEntity) {
+                           ++var124;
+                        } else if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo")))) {
+                           if (!entityiterator.level().isClientSide()) {
+                              entityiterator.discard();
+                           }
+                        } else {
+                           boolean var83 = LogicAttackDomainProcedure.execute(world, entity, entityiterator);
+                           boolean var84 = LogicAttackProcedure.execute(world, entity, entityiterator);
+                           if (update) {
+                              if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
+                                 if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                    Commands var209 = entityiterator.getServer().getCommands();
+                                    CommandSourceStack var10001 = new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator);
+                                    double var10002 = entity.getPersistentData().getDouble("cnt2");
+                                    var209.performPrefixedCommand(var10001, "title @s title {\"text\":\"" + Component.translatable(var10002 == -1.0 ? "jujutsu.message.higuruma0" : "jujutsu.message.higuruma1").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
+                                 }
+                              } else if (entity.getPersistentData().getDouble("cnt1") == 2.0) {
+                                 if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                    entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "title @s title {\"text\":\"" + Component.translatable("jujutsu.message.higuruma2").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
+                                 }
+                              } else if (entity.getPersistentData().getDouble("cnt1") == 3.0) {
+                                 if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                    entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "title @s title {\"text\":\"" + Component.translatable("jujutsu.message.higuruma3").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
+                                 }
+                              } else if (entity.getPersistentData().getDouble("cnt1") >= 5.0 && entity.getPersistentData().getDouble("cnt2") >= 0.0 && var83 && var84 && entity != entityiterator) {
+                                 if (entity.getPersistentData().getDouble("cnt2") == 0.0 || entity.getPersistentData().getDouble("cnt2") == 2.0) {
+                                    boolean var82 = false;
+                                    if (!var82) {
+                                       AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
+                                       LazyOptional var210 = entityiterator.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
+                                       Objects.requireNonNull(_iitemhandlerref);
+                                       var210.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
                      }
-                  }
+                  });
+                                       if (_iitemhandlerref.get() != null) {
+                                          for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
+                                             int final_idx = _idx;
+                                             ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                                             if ((itemstackiterator.is(ItemTags.create(new ResourceLocation("forge:cursed_tool"))) || itemstackiterator.getOrCreateTag().getDouble("CursePower") != 0.0) && (itemstackiterator.is(ItemTags.create(new ResourceLocation("forge:whip"))) || itemstackiterator.is(ItemTags.create(new ResourceLocation("forge:sword"))) || itemstackiterator.is(ItemTags.create(new ResourceLocation("forge:spear"))) || itemstackiterator.is(ItemTags.create(new ResourceLocation("forge:rifle"))) || itemstackiterator.getItem() instanceof SwordItem || itemstackiterator.getItem() instanceof AxeItem || itemstackiterator.getItem() instanceof PickaxeItem || itemstackiterator.getItem() instanceof ShovelItem || itemstackiterator.getItem() instanceof TridentItem || itemstackiterator.getItem() instanceof HoeItem || itemstackiterator.getItem() instanceof BowItem || itemstackiterator.getItem() instanceof CrossbowItem)) {
+                                                var82 = true;
+                                                ItemStack var80;
+                                                if (entityiterator instanceof Player) {
+                                                   var80 = (new ItemStack((ItemLike)JujutsucraftModItems.CONFISCATION.get())).copy();
+                                                   CompoundTag _nbtTag = itemstackiterator.getTag();
+                                                   if (_nbtTag != null) {
+                                                      var80.setTag(_nbtTag.copy());
+                                                   }
 
-                  var143 = 0;
-               }
+                                                   var80.getOrCreateTag().putString("confiscation_item", ForgeRegistries.ITEMS.getKey(itemstackiterator.getItem()).toString());
+                                                   var80.getOrCreateTag().putDouble("CursePower_", itemstackiterator.getOrCreateTag().getDouble("CursePower"));
+                                                   var80.getOrCreateTag().putDouble("Power_", itemstackiterator.getOrCreateTag().getDouble("Power"));
+                                                   var80.getOrCreateTag().putDouble("Reach_", itemstackiterator.getOrCreateTag().getDouble("Reach"));
+                                                   var80.getOrCreateTag().putDouble("Range_", itemstackiterator.getOrCreateTag().getDouble("Range"));
+                                                   var80.getOrCreateTag().putDouble("Knockback_", itemstackiterator.getOrCreateTag().getDouble("Knockback"));
+                                                   var80.getOrCreateTag().putDouble("CursePower", 0.0);
+                                                   var80.getOrCreateTag().putDouble("Power", 0.0);
+                                                   var80.getOrCreateTag().putDouble("Reach", 0.0);
+                                                   var80.getOrCreateTag().putDouble("Range", 0.0);
+                                                   var80.getOrCreateTag().putDouble("Knockback", 0.0);
+                                                } else {
+                                                   var80 = ItemStack.EMPTY.copy();
+                                                }
 
-               if (var143 < 1) {
-                  ++var46;
-               }
+                                                ItemStack _setstack = var80.copy();
+                                                _setstack.setCount(itemstackiterator.getCount());
+                                                entityiterator.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null).ifPresent((capability) -> {
+                                                   if (capability instanceof IItemHandlerModifiable _modHandlerEntSetSlot) {
+                                                      _modHandlerEntSetSlot.setStackInSlot(final_idx, _setstack);
+                                                   }
 
-               ItemStack var42 = (new ItemStack((ItemLike)JujutsucraftModItems.EXECUTIONERS_SWORD.get())).m_41777_();
-               Vec3 _center = new Vec3(entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma"));
-
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                  if (entity != entityiterator) {
-                     if (entityiterator instanceof LivingEntity && entityiterator.m_6084_() && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living")))) {
-                        if (entity.getPersistentData().m_128459_("skill") == 2719.0) {
-                           if (entity.getPersistentData().m_128459_("cnt3") >= 20.0) {
-                              if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
-                                 if (!entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-                                    entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "title @s title {\"text\":\"" + Component.m_237115_("jujutsu.message.higuruma1").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
-                                 }
-
-                                 if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                    entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "title @s title {\"text\":\"" + Component.m_237115_("jujutsu.message.higuruma1").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
-                                 }
-                              } else if (entity.getPersistentData().m_128459_("cnt1") == 2.0) {
-                                 if (!entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-                                    entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "title @s title {\"text\":\"" + Component.m_237115_("jujutsu.message.higuruma2").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
-                                 }
-
-                                 if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                    entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "title @s title {\"text\":\"" + Component.m_237115_("jujutsu.message.higuruma2").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
-                                 }
-                              } else if (entity.getPersistentData().m_128459_("cnt1") == 3.0) {
-                                 if (entity.getPersistentData().m_128459_("cnt2") == 0.0) {
-                                    if (!entityiterator.m_9236_().m_5776_() && entityiterator.m_20194_() != null) {
-                                       entityiterator.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityiterator.m_20182_(), entityiterator.m_20155_(), entityiterator.m_9236_() instanceof ServerLevel ? (ServerLevel)entityiterator.m_9236_() : null, 4, entityiterator.m_7755_().getString(), entityiterator.m_5446_(), entityiterator.m_9236_().m_7654_(), entityiterator), "title @s title {\"text\":\"" + Component.m_237115_("jujutsu.message.higuruma3").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
-                                    }
-
-                                    if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                       entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "title @s title {\"text\":\"" + Component.m_237115_("jujutsu.message.higuruma3").getString() + "\",\"color\":\"dark_red\",\"bold\":true}");
-                                    }
-                                 } else {
-                                    entity.getPersistentData().m_128347_("cnt1", 4.0);
-                                 }
-                              } else if (entity.getPersistentData().m_128459_("cnt1") >= 5.0 && LogicAttackDomainProcedure.execute(world, entity, entityiterator) && LogicAttackProcedure.execute(world, entity, entityiterator)) {
-                                 boolean var41 = false;
-                                 AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
-                                 LazyOptional var144 = entityiterator.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
-                                 Objects.requireNonNull(_iitemhandlerref);
-                                 var144.ifPresent(_iitemhandlerref::set);
-                                 if (_iitemhandlerref.get() != null) {
-                                    for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                                       ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                                       if (itemstackiterator.m_204117_(ItemTags.create(new ResourceLocation("jujutsucraft:has_technique_tools")))) {
-                                          var41 = true;
-                                          if (entityiterator instanceof Player) {
-                                             Player _player = (Player)entityiterator;
-                                             _player.m_36335_().m_41524_(itemstackiterator.m_41720_(), 1800);
+                                                });
+                                             }
                                           }
                                        }
                                     }
-                                 }
 
-                                 if (!(entityiterator instanceof Player)) {
-                                    ItemStack var145;
-                                    if (entityiterator instanceof LivingEntity) {
-                                       LivingEntity _entGetArmor = (LivingEntity)entityiterator;
-                                       var145 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                                    } else {
-                                       var145 = ItemStack.f_41583_;
+                                    if (entityiterator instanceof Player) {
+                                       Player _player = (Player)entityiterator;
+                                       _player.getCooldowns().addCooldown((Item)JujutsucraftModItems.CONFISCATION.get(), 900);
                                     }
 
-                                    if (var145.m_204117_(ItemTags.create(new ResourceLocation("jujutsucraft:has_technique_tools")))) {
-                                       var41 = true;
-                                       if (entityiterator instanceof Player) {
-                                          Player _player = (Player)entityiterator;
-                                          ItemCooldowns var146 = _player.m_36335_();
-                                          ItemStack var164;
-                                          if (entityiterator instanceof LivingEntity) {
-                                             LivingEntity _entGetArmor = (LivingEntity)entityiterator;
-                                             var164 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                                          } else {
-                                             var164 = ItemStack.f_41583_;
-                                          }
-
-                                          var146.m_41524_(var164.m_41720_(), 3600);
-                                       }
-                                    }
-
-                                    if (entityiterator instanceof LivingEntity) {
-                                       LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                       var145 = _livEnt.m_21205_();
-                                    } else {
-                                       var145 = ItemStack.f_41583_;
-                                    }
-
-                                    if (var145.m_204117_(ItemTags.create(new ResourceLocation("jujutsucraft:has_technique_tools")))) {
-                                       var41 = true;
+                                    if (!var82) {
                                        if (entityiterator instanceof LivingEntity) {
                                           LivingEntity _entity = (LivingEntity)entityiterator;
-                                          ItemStack _setstack = ItemStack.f_41583_.m_41777_();
-                                          _setstack.m_41764_(1);
-                                          _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
-                                          if (_entity instanceof Player) {
-                                             Player _player = (Player)_entity;
-                                             _player.m_150109_().m_6596_();
+                                          if (!_entity.level().isClientSide()) {
+                                             _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 900, 0, false, false));
                                           }
                                        }
-                                    }
 
-                                    if (entityiterator instanceof LivingEntity) {
-                                       LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                       var145 = _livEnt.m_21206_();
-                                    } else {
-                                       var145 = ItemStack.f_41583_;
-                                    }
-
-                                    if (var145.m_204117_(ItemTags.create(new ResourceLocation("jujutsucraft:has_technique_tools")))) {
-                                       var41 = true;
                                        if (entityiterator instanceof LivingEntity) {
                                           LivingEntity _entity = (LivingEntity)entityiterator;
-                                          ItemStack _setstack = ItemStack.f_41583_.m_41777_();
-                                          _setstack.m_41764_(1);
-                                          _entity.m_21008_(InteractionHand.OFF_HAND, _setstack);
-                                          if (_entity instanceof Player) {
-                                             Player _player = (Player)_entity;
-                                             _player.m_150109_().m_6596_();
+                                          if (!_entity.level().isClientSide()) {
+                                             _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), 900, 0, false, false));
+                                          }
+                                       }
+
+                                       if (entityiterator instanceof LivingEntity) {
+                                          LivingEntity _entity = (LivingEntity)entityiterator;
+                                          if (!_entity.level().isClientSide()) {
+                                             MobEffectInstance var221;
+                                             MobEffect var10003;
+                                             int var10006;
+                                             label931: {
+                                                var10003 = MobEffects.WEAKNESS;
+                                                if (entityiterator instanceof LivingEntity) {
+                                                   LivingEntity _livEnt = (LivingEntity)entityiterator;
+                                                   if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                                      var10006 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                                      break label931;
+                                                   }
+                                                }
+
+                                                var10006 = 0;
+                                             }
+
+                                             var221 = new MobEffectInstance(var10003, 900, (int)(2.0 + (double)var10006 * 0.2), false, false);
+                                             _entity.addEffect(var221);
                                           }
                                        }
                                     }
                                  }
 
-                                 if (!var41) {
-                                    if (entityiterator instanceof LivingEntity) {
-                                       LivingEntity _entity = (LivingEntity)entityiterator;
-                                       if (!_entity.m_9236_().m_5776_()) {
-                                          _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 1800, 0, false, false));
-                                       }
-                                    }
-
-                                    if (entityiterator instanceof LivingEntity) {
-                                       LivingEntity _entity = (LivingEntity)entityiterator;
-                                       if (!_entity.m_9236_().m_5776_()) {
-                                          _entity.m_7292_(new MobEffectInstance(MobEffects.f_19613_, 1800, 2, false, false));
-                                       }
-                                    }
-                                 }
-
-                                 if (entity.getPersistentData().m_128459_("cnt2") == 0.0) {
-                                    var46 = 0.0;
+                                 if (entity.getPersistentData().getDouble("cnt2") == 1.0 || entity.getPersistentData().getDouble("cnt2") == 2.0) {
+                                    var113 = 0.0;
 
                                     for(int index0 = 0; index0 < 200; ++index0) {
-                                       ++var46;
-                                       if (var42.m_41784_().m_128461_("TARGET" + Math.round(var46)).isEmpty()) {
-                                          var42.m_41784_().m_128359_("TARGET" + Math.round(var46), entityiterator.m_20149_());
+                                       ++var113;
+                                       if (var81.getOrCreateTag().getString("TARGET" + Math.round(var113)).isEmpty()) {
+                                          var81.getOrCreateTag().putString("TARGET" + Math.round(var113), entityiterator.getStringUUID());
                                           break;
                                        }
                                     }
                                  }
                               }
-                           } else if (LogicAttackDomainProcedure.execute(world, entity, entityiterator) && LogicAttackProcedure.execute(world, entity, entityiterator)) {
-                              if (entityiterator instanceof HigurumaHiromiEntity) {
-                                 entity.getPersistentData().m_128347_("cnt4", Math.max(entity.getPersistentData().m_128459_("cnt4"), 1.0));
-                              } else {
-                                 label706: {
-                                    label705: {
-                                       if (entityiterator instanceof LivingEntity) {
-                                          LivingEntity _livEnt132 = (LivingEntity)entityiterator;
-                                          if (_livEnt132.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
-                                             break label705;
-                                          }
-                                       }
-
-                                       if (!(entityiterator instanceof MahitoEntity)) {
-                                          if (!entityiterator.getPersistentData().m_128471_("CurseUser") && !entityiterator.getPersistentData().m_128471_("CursedSpirit") && !(entityiterator instanceof ItadoriYujiEntity) && !(entityiterator instanceof ItadoriYujiShibuyaEntity)) {
-                                             if (entityiterator.getPersistentData().m_128471_("JujutsuSorcerer")) {
-                                                entity.getPersistentData().m_128347_("cnt4", Math.max(entity.getPersistentData().m_128459_("cnt4"), 10.0));
-                                             } else {
-                                                entity.getPersistentData().m_128347_("cnt4", Math.max(entity.getPersistentData().m_128459_("cnt4"), 25.0));
-                                             }
-                                          } else {
-                                             entity.getPersistentData().m_128347_("cnt4", Math.max(entity.getPersistentData().m_128459_("cnt4"), 50.0));
-                                          }
-                                          break label706;
-                                       }
-                                    }
-
-                                    entity.getPersistentData().m_128347_("cnt4", Math.max(entity.getPersistentData().m_128459_("cnt4"), 100.0));
-                                 }
-                              }
                            }
-                        } else if (LogicAttackDomainProcedure.execute(world, entity, entityiterator)) {
-                           label809: {
-                              if (!LogicAttackProcedure.execute(world, entity, entityiterator)) {
-                                 label689: {
+
+                           if (entity != entityiterator) {
+                              if (!var83) {
+                                 continue;
+                              }
+
+                              if (!var84) {
+                                 int var211;
+                                 label902: {
                                     if (entity instanceof LivingEntity) {
                                        LivingEntity _livEnt = (LivingEntity)entity;
-                                       if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                                          var149 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                                          break label689;
+                                       if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                                          var211 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).getAmplifier();
+                                          break label902;
                                        }
                                     }
 
-                                    var149 = 0;
+                                    var211 = 0;
                                  }
 
-                                 if (var149 < 1) {
-                                    break label809;
+                                 if (var211 < 1) {
+                                    continue;
+                                 }
+                              }
+                           }
+
+                           if (entity != entityiterator) {
+                              if (entity_target instanceof LivingEntity) {
+                                 if (entity_target == entityiterator) {
+                                    logic_judgeTarget = true;
+                                 }
+                              } else if (!(GetEntityFromUUIDProcedure.execute(world, entityiterator.getPersistentData().getString("OWNER_UUID")) instanceof LivingEntity)) {
+                                 int var222;
+                                 label893: {
+                                    if (entityiterator instanceof LivingEntity) {
+                                       LivingEntity _livEnt = (LivingEntity)entityiterator;
+                                       if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                          var222 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                          break label893;
+                                       }
+                                    }
+
+                                    var222 = 0;
+                                 }
+
+                                 if (var133 < (double)var222) {
+                                    label887: {
+                                       if (entityiterator instanceof LivingEntity) {
+                                          LivingEntity _livEnt = (LivingEntity)entityiterator;
+                                          if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                             var10000 = (double)_livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                             break label887;
+                                          }
+                                       }
+
+                                       var10000 = 0.0;
+                                    }
+
+                                    var133 = var10000;
+                                    entity_target = entityiterator;
+                                    logic_judgeTarget = true;
+                                 }
+                              }
+                           }
+                           int var213;
+                           label882: {
+                              ++var121;
+                              if (entityiterator instanceof LivingEntity) {
+                                 LivingEntity _livEnt = (LivingEntity)entityiterator;
+                                 if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                                    var213 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).getAmplifier();
+                                    break label882;
                                  }
                               }
 
-                              label682: {
-                                 ++var60;
-                                 if (entityiterator instanceof LivingEntity) {
-                                    LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                                       var150 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                                       break label682;
+                              var213 = 0;
+                           }
+
+                           if (var213 < 1) {
+                              ++var113;
+                           }
+
+                           if (var131 != 2719.0 && var106 % 60.0 == 50.0) {
+                              if (entityiterator instanceof Player) {
+                                 if (!(entityiterator instanceof LivingEntity)) {
+                                    continue;
+                                 }
+
+                                 LivingEntity _livEnt203 = (LivingEntity)entityiterator;
+                                 if (!_livEnt203.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                                    continue;
+                                 }
+                              }
+
+
+                              int var214;
+                              if (entityiterator.getPersistentData().getBoolean("CursedSpirit") && !(entityiterator instanceof CursedSpiritGrade22Entity) && !(entityiterator instanceof RozetsuEntity)) {
+                                 label872: {
+                                    if (entityiterator instanceof LivingEntity) {
+                                       LivingEntity _livEnt = (LivingEntity)entityiterator;
+                                       if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                          var214 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                          break label872;
+                                       }
+                                    }
+
+                                    var214 = 0;
+                                 }
+
+                                 if (var214 < 13) {
+                                    continue;
+                                 }
+                              }
+
+                              if (!entityiterator.getPersistentData().getString("JUDGE_ENTITY").isEmpty() && GetEntityFromUUIDProcedure.execute(world, entityiterator.getPersistentData().getString("JUDGE_ENTITY")) == entity) {
+                                 label1048: {
+                                    if (entityiterator instanceof LivingEntity) {
+                                       LivingEntity _livEnt212 = (LivingEntity)entityiterator;
+                                       if (_livEnt212.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                                          break label1048;
+                                       }
+                                    }
+
+                                    if (!(entity.getPersistentData().getDouble("x_power") > 100.0) || !(entityiterator instanceof ItadoriYujiEntity) && !(entityiterator instanceof ItadoriYujiShibuyaEntity) && !(entityiterator instanceof ItadoriYujiShinjukuEntity)) {
+                                       if (Math.random() < 0.75) {
+                                          if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                             entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "judgeman_answer plea_deny");
+                                          }
+                                       } else if (Math.random() < 0.5) {
+                                          if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                             entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "judgeman_answer plea_silent");
+                                          }
+                                       } else if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                          entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "judgeman_answer plea_confess");
+                                       }
+                                       continue;
                                     }
                                  }
 
-                                 var150 = 0;
-                              }
-
-                              if (var150 < 1) {
-                                 ++var46;
+                                 if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                    entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "judgeman_answer plea_confess");
+                                 }
                               }
                            }
                         }
                      }
-
-                     if (entityiterator.getPersistentData().m_128459_("Damage") > 0.0 || entityiterator.getPersistentData().m_128459_("cnt6") != 0.0) {
-                        if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.m_9236_().m_5776_()) {
-                           entityiterator.m_146870_();
-                        }
-
-                        if (entityiterator.getPersistentData().m_128459_("skill") > 0.0) {
-                           entityiterator.getPersistentData().m_128347_("skill", 0.0);
-                        }
-                     }
-                  }
-
-                  if (entityiterator instanceof EntityWitnessStandEntity) {
-                     ++var64;
                   }
                }
 
-               if (entity.getPersistentData().m_128459_("skill") == 2719.0) {
-                  if (entity.getPersistentData().m_128459_("cnt1") >= 5.0) {
-                     if (entity.getPersistentData().m_128459_("cnt2") == 0.0) {
-                        var42.m_41784_().m_128359_("OWNER_UUID", entity.m_20149_());
+               if (update) {
+                  if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
+                     if (entity.getPersistentData().getDouble("cnt2") == -1.0 || entity.getPersistentData().getDouble("cnt2") == 1.0) {
+                        entity.getPersistentData().putDouble("cnt1", 3.0);
+                     }
+                  } else if (entity.getPersistentData().getDouble("cnt1") == 2.0) {
+                     if (entity.getPersistentData().getDouble("cnt2") == 0.0) {
+                        entity.getPersistentData().putDouble("cnt1", 3.0);
+                     }
+                  } else if (entity.getPersistentData().getDouble("cnt1") == 3.0) {
+                     entity.getPersistentData().putDouble("cnt1", 3.0);
+                  } else if (entity.getPersistentData().getDouble("cnt1") >= 5.0) {
+                     if (entity.getPersistentData().getDouble("cnt2") == 1.0 || entity.getPersistentData().getDouble("cnt2") == 2.0) {
+                        var81.getOrCreateTag().putString("OWNER_UUID", entity.getStringUUID());
                         if (!(entity instanceof Player)) {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entity;
-                              ItemStack _setstack = var42.m_41777_();
-                              _setstack.m_41764_(1);
-                              _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                              ItemStack _setstack = var81.copy();
+                              _setstack.setCount(1);
+                              _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                               if (_entity instanceof Player) {
                                  Player _player = (Player)_entity;
-                                 _player.m_150109_().m_6596_();
+                                 _player.getInventory().setChanged();
                               }
                            }
                         } else {
-                           ItemStack var155;
+                           ItemStack var218;
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              var155 = _livEnt.m_21205_();
+                              var218 = _livEnt.getMainHandItem();
                            } else {
-                              var155 = ItemStack.f_41583_;
+                              var218 = ItemStack.EMPTY;
                            }
 
-                           label604: {
-                              if (var155.m_41720_() != JujutsucraftModItems.GAVEL.get()) {
-                                 if (entity instanceof LivingEntity) {
-                                    LivingEntity _livEnt = (LivingEntity)entity;
-                                    var155 = _livEnt.m_21205_();
-                                 } else {
-                                    var155 = ItemStack.f_41583_;
-                                 }
+                           ItemStack var78 = var218.copy();
+                           if (entity instanceof LivingEntity) {
+                              LivingEntity _livEnt = (LivingEntity)entity;
+                              var218 = _livEnt.getOffhandItem();
+                           } else {
+                              var218 = ItemStack.EMPTY;
+                           }
 
-                                 if (var155.m_41720_() != JujutsucraftModItems.GAVEL_LONG.get()) {
-                                    if (entity instanceof LivingEntity) {
-                                       LivingEntity _livEnt = (LivingEntity)entity;
-                                       var155 = _livEnt.m_21205_();
-                                    } else {
-                                       var155 = ItemStack.f_41583_;
+                           ItemStack var79 = var218.copy();
+                           if (var78.getItem() != JujutsucraftModItems.GAVEL.get() && var78.getItem() != JujutsucraftModItems.GAVEL_LONG.get() && var78.getItem() != JujutsucraftModItems.GAVEL_BIG.get() && var78.getItem() != JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
+                              if (var79.getItem() != JujutsucraftModItems.GAVEL.get() && var79.getItem() != JujutsucraftModItems.GAVEL_LONG.get() && var79.getItem() != JujutsucraftModItems.GAVEL_BIG.get() && var79.getItem() != JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
+                                 AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
+                                 LazyOptional var220 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
+                                 Objects.requireNonNull(_iitemhandlerref);
+                                 var220.ifPresent(new NonNullConsumer<IItemHandler>() {
+                                    @Override
+                                    public void accept(@NotNull IItemHandler o) {
+                                       _iitemhandlerref.set(o);
                                     }
-
-                                    if (var155.m_41720_() != JujutsucraftModItems.GAVEL_BIG.get()) {
-                                       if (entity instanceof LivingEntity) {
-                                          LivingEntity _livEnt = (LivingEntity)entity;
-                                          var155 = _livEnt.m_21205_();
-                                       } else {
-                                          var155 = ItemStack.f_41583_;
-                                       }
-
-                                       if (var155.m_41720_() != JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
-                                          if (entity instanceof LivingEntity) {
-                                             LivingEntity _livEnt = (LivingEntity)entity;
-                                             var155 = _livEnt.m_21206_();
-                                          } else {
-                                             var155 = ItemStack.f_41583_;
-                                          }
-
-                                          if (var155.m_41720_() != JujutsucraftModItems.GAVEL.get()) {
-                                             if (entity instanceof LivingEntity) {
-                                                LivingEntity _livEnt = (LivingEntity)entity;
-                                                var155 = _livEnt.m_21206_();
-                                             } else {
-                                                var155 = ItemStack.f_41583_;
+                                 });
+                                 if (_iitemhandlerref.get() != null) {
+                                    for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
+                                       int final_idx = _idx;
+                                       ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                                       if (itemstackiterator.getItem() == JujutsucraftModItems.GAVEL.get() || itemstackiterator.getItem() == JujutsucraftModItems.GAVEL_LONG.get() || itemstackiterator.getItem() == JujutsucraftModItems.GAVEL_BIG.get() || itemstackiterator.getItem() == JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
+                                          ItemStack _setstack = var81.copy();
+                                          _setstack.setCount(1);
+                                          entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null).ifPresent((capability) -> {
+                                             if (capability instanceof IItemHandlerModifiable _modHandlerEntSetSlot) {
+                                                _modHandlerEntSetSlot.setStackInSlot(final_idx, _setstack);
                                              }
 
-                                             if (var155.m_41720_() != JujutsucraftModItems.GAVEL_LONG.get()) {
-                                                if (entity instanceof LivingEntity) {
-                                                   LivingEntity _livEnt = (LivingEntity)entity;
-                                                   var155 = _livEnt.m_21206_();
-                                                } else {
-                                                   var155 = ItemStack.f_41583_;
-                                                }
-
-                                                if (var155.m_41720_() != JujutsucraftModItems.GAVEL_BIG.get()) {
-                                                   if (entity instanceof LivingEntity) {
-                                                      LivingEntity _livEnt = (LivingEntity)entity;
-                                                      var155 = _livEnt.m_21206_();
-                                                   } else {
-                                                      var155 = ItemStack.f_41583_;
-                                                   }
-
-                                                   if (var155.m_41720_() != JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
-                                                      var46 = 0.0;
-                                                      AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
-                                                      LazyOptional var163 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
-                                                      Objects.requireNonNull(_iitemhandlerref);
-                                                      var163.ifPresent(_iitemhandlerref::set);
-                                                      if (_iitemhandlerref.get() != null) {
-                                                         for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                                                            ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                                                            if (itemstackiterator.m_41720_() == JujutsucraftModItems.GAVEL.get() || itemstackiterator.m_41720_() == JujutsucraftModItems.GAVEL_LONG.get() || itemstackiterator.m_41720_() == JujutsucraftModItems.GAVEL_BIG.get() || itemstackiterator.m_41720_() == JujutsucraftModItems.EXECUTIONERS_SWORD.get()) {
-                                                               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                                                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s container." + Math.round(var46) + " with air");
-                                                               }
-                                                               break;
-                                                            }
-
-                                                            ++var46;
-                                                         }
-                                                      }
-
-                                                      if (entity instanceof Player) {
-                                                         Player _player = (Player)entity;
-                                                         ItemStack _setstack = var42.m_41777_();
-                                                         _setstack.m_41764_(1);
-                                                         ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
-                                                      }
-                                                      break label604;
-                                                   }
-                                                }
-                                             }
-                                          }
-
-                                          if (entity instanceof LivingEntity) {
-                                             LivingEntity _entity = (LivingEntity)entity;
-                                             ItemStack _setstack = var42.m_41777_();
-                                             _setstack.m_41764_(1);
-                                             _entity.m_21008_(InteractionHand.OFF_HAND, _setstack);
-                                             if (_entity instanceof Player) {
-                                                Player _player = (Player)_entity;
-                                                _player.m_150109_().m_6596_();
-                                             }
-                                          }
-                                          break label604;
+                                          });
+                                          break;
                                        }
                                     }
                                  }
-                              }
-
-                              if (entity instanceof LivingEntity) {
+                              } else if (entity instanceof LivingEntity) {
                                  LivingEntity _entity = (LivingEntity)entity;
-                                 ItemStack _setstack = var42.m_41777_();
-                                 _setstack.m_41764_(1);
-                                 _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                                 ItemStack _setstack = var81.copy();
+                                 _setstack.setCount(1);
+                                 _entity.setItemInHand(InteractionHand.OFF_HAND, _setstack);
                                  if (_entity instanceof Player) {
                                     Player _player = (Player)_entity;
-                                    _player.m_150109_().m_6596_();
+                                    _player.getInventory().setChanged();
                                  }
                               }
-                           }
-
-                           if (world.m_5776_()) {
-                              Minecraft.m_91087_().f_91063_.m_109113_(new ItemStack((ItemLike)JujutsucraftModItems.EXECUTIONERS_SWORD.get()));
-                           }
-                        }
-
-                        if (world instanceof Level) {
-                           Level _level = (Level)world;
-                           if (!_level.m_5776_()) {
-                              _level.m_5594_((Player)null, BlockPos.m_274561_(x, y + (double)entity.m_20206_() * 0.5, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.totem.use")), SoundSource.NEUTRAL, 2.0F, 1.5F);
-                           } else {
-                              _level.m_7785_(x, y + (double)entity.m_20206_() * 0.5, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.totem.use")), SoundSource.NEUTRAL, 2.0F, 1.5F, false);
+                           } else if (entity instanceof LivingEntity) {
+                              LivingEntity _entity = (LivingEntity)entity;
+                              ItemStack _setstack = var81.copy();
+                              _setstack.setCount(1);
+                              _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
+                              if (_entity instanceof Player) {
+                                 Player _player = (Player)_entity;
+                                 _player.getInventory().setChanged();
+                              }
                            }
                         }
 
                         if (world instanceof Level) {
                            Level _level = (Level)world;
-                           if (!_level.m_5776_()) {
-                              _level.m_5594_((Player)null, BlockPos.m_274561_(x, y + (double)entity.m_20206_() * 0.5, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:frame_set")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+                           if (!_level.isClientSide()) {
+                              _level.playSound((Player)null, BlockPos.containing(x, y + (double)entity.getBbHeight() * 0.5, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.totem.use")), SoundSource.NEUTRAL, 2.0F, 1.5F);
                            } else {
-                              _level.m_7785_(x, y + (double)entity.m_20206_() * 0.5, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:frame_set")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+                              _level.playLocalSound(x, y + (double)entity.getBbHeight() * 0.5, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.totem.use")), SoundSource.NEUTRAL, 2.0F, 1.5F, false);
+                           }
+                        }
+
+                        if (world instanceof Level) {
+                           Level _level = (Level)world;
+                           if (!_level.isClientSide()) {
+                              _level.playSound((Player)null, BlockPos.containing(x, y + (double)entity.getBbHeight() * 0.5, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:frame_set")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+                           } else {
+                              _level.playLocalSound(x, y + (double)entity.getBbHeight() * 0.5, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:frame_set")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
                            }
                         }
 
                         if (world instanceof ServerLevel) {
                            ServerLevel _level = (ServerLevel)world;
-                           _level.m_8767_(ParticleTypes.f_123810_, x, y + (double)entity.m_20206_() * 0.5, z, 25, 0.25, 0.25, 0.25, 0.25);
+                           _level.sendParticles(ParticleTypes.FLASH, x, y + (double)entity.getBbHeight() * 0.5, z, 0, 0.0, 0.0, 0.0, 0.0);
+                        }
+
+                        if (world instanceof ServerLevel) {
+                           ServerLevel _level = (ServerLevel)world;
+                           _level.sendParticles(ParticleTypes.END_ROD, x, y + (double)entity.getBbHeight() * 0.5, z, 5, 0.0, 0.0, 0.0, 0.25);
                         }
 
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_36335_().m_41524_((Item)JujutsucraftModItems.EXECUTIONERS_SWORD.get(), 0);
+                           _player.getCooldowns().addCooldown((Item)JujutsucraftModItems.EXECUTIONERS_SWORD.get(), 0);
                         }
                      }
 
-                     entity.getPersistentData().m_128347_("skill", 0.0);
+                     entity.getPersistentData().putDouble("skill", 0.0);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
+                        _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
                      }
 
                      KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
@@ -705,172 +772,285 @@ public class DeadlySentencingActiveProcedure {
                         capability.noChangeTechnique = _setval;
                         capability.syncPlayerVariables(entity);
                      });
+                     return;
                   }
-               } else if (var46 > 1.0 || var46 > 0.0 && var60 > 1.0) {
-                  if (var64 < var60) {
-                     label665: {
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                              var151 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                              break label665;
+               }
+
+               if (var131 != 2719.0) {
+                  if ((var113 >= 2.0 || var113 >= 1.0 && var121 >= 2.0) && var124 < var121) {
+                     startJudgeman = true;
+                     double var125 = (double)entity.getYRot();
+                     double var126 = (double)entity.getXRot();
+                     RotateEntityProcedure.execute(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"), entity);
+                     double var127 = (double)entity.getYRot();
+                     double var130 = Math.min(4.0 + var121 * 0.3, range * 0.5 * 0.5);
+                     double var116 = entity.getPersistentData().getDouble("y_pos_doma");
+                     Entity var134 = null;
+                     _center = new Vec3(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"));
+
+                     for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
+                        if (entityiterator instanceof EntityWitnessStandEntity || entityiterator instanceof LivingEntity && entityiterator.isAlive() && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living")))) {
+                           double var94 = entity.getPersistentData().getDouble("x_pos_doma") - entityiterator.getX();
+                           double var118 = entity.getPersistentData().getDouble("y_pos_doma") - (entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5);
+                           double var104 = entity.getPersistentData().getDouble("z_pos_doma") - entityiterator.getZ();
+                           double var97 = var94 * var94 + var118 * var118 + var104 * var104;
+                           if (var97 < range * 0.5 * range * 0.5) {
+                              if (entityiterator instanceof EntityWitnessStandEntity) {
+                                 if (!entityiterator.level().isClientSide()) {
+                                    entityiterator.discard();
+                                 }
+                              } else {
+                                 if (entity != entityiterator) {
+                                    if (!LogicAttackDomainProcedure.execute(world, entity, entityiterator)) {
+                                       continue;
+                                    }
+
+                                    if (!LogicAttackProcedure.execute(world, entity, entityiterator)) {
+                                       int var215;
+                                       label790: {
+                                          if (entity instanceof LivingEntity) {
+                                             LivingEntity _livEnt = (LivingEntity)entity;
+                                             if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                                                var215 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).getAmplifier();
+                                                break label790;
+                                             }
+                                          }
+
+                                          var215 = 0;
+                                       }
+
+                                       if (var215 < 1) {
+                                          continue;
+                                       }
+                                    }
+                                 }
+
+                                 double var102 = entity.getPersistentData().getDouble("x_pos_doma") + Math.cos(Math.toRadians(var127 + 90.0)) * var130 * -1.0;
+                                 double var109 = entity.getPersistentData().getDouble("z_pos_doma") + Math.sin(Math.toRadians(var127 + 90.0)) * var130 * -1.0;
+                                 if (var134 == null) {
+                                    _ent = entity;
+                                    var134 = entityiterator;
+                                 } else {
+                                    if (entity == entityiterator) {
+                                       _ent = var134;
+                                    } else {
+                                       _ent = entityiterator;
+                                    }
+
+                                    if (guilt_str.isEmpty() && (!logic_judgeTarget || entity_target == _ent)) {
+                                       entity_targetJudge = _ent;
+                                       String var91 = (new SimpleDateFormat("yyyy")).format(Calendar.getInstance().getTime());
+                                       String var88 = (new SimpleDateFormat("MM")).format(Calendar.getInstance().getTime());
+                                       String var87 = (new SimpleDateFormat("dd")).format(Calendar.getInstance().getTime());
+                                       String var89 = Component.translatable("jujutsu.message.higuruma_date").getString();
+                                       var89 = var89.replace("yyyy", "■■■■").replace("MM", "■■").replace("dd", "■■");
+
+                                       while(true) {
+                                          double var128 = (double)Mth.nextInt(RandomSource.create(), 24, 29);
+                                          if (var128 != 24.0) {
+                                             guilt_str = Component.translatable("jujutsu.message.higuruma10").getString().replace("[guilt]", Component.translatable("jujutsu.message.higuruma" + Math.round(var128)).getString()).replace("[date]", var89);
+                                             guilt_karma = 90.0;
+                                             break;
+                                          }
+
+                                          if (!_ent.getPersistentData().getString("crime3").isEmpty()) {
+                                             guilt_str = _ent.getPersistentData().getString("crime3");
+                                             guilt_karma = 90.0;
+                                             break;
+                                          }
+                                       }
+
+                                       if (_ent instanceof Player && Math.random() < 0.8 || guilt_str.isEmpty()) {
+                                          double var129 = (double)Mth.nextInt(RandomSource.create(), 16, 24);
+                                          guilt_str = Component.translatable("jujutsu.message.higuruma10").getString().replace("[guilt]", Component.translatable("jujutsu.message.higuruma" + Math.round(var129)).getString()).replace("[date]", var89);
+                                          if (var129 != 24.0 && var129 != 16.0) {
+                                             guilt_karma = 90.0;
+                                          } else {
+                                             guilt_karma = 200.0;
+                                          }
+                                       }
+
+                                       if (_ent.getPersistentData().getString("crime4").isEmpty()) {
+                                          ItemStack var223;
+                                          if (_ent instanceof LivingEntity) {
+                                             LivingEntity _livEnt = (LivingEntity)_ent;
+                                             var223 = _livEnt.getMainHandItem();
+                                          } else {
+                                             var223 = ItemStack.EMPTY;
+                                          }
+
+                                          WhenItemPicksUpProcedure.execute(_ent, var223);
+                                       }
+
+                                       if (_ent.getPersistentData().getString("crime4").isEmpty()) {
+                                          ItemStack var224;
+                                          if (_ent instanceof LivingEntity) {
+                                             LivingEntity _livEnt = (LivingEntity)_ent;
+                                             var224 = _livEnt.getOffhandItem();
+                                          } else {
+                                             var224 = ItemStack.EMPTY;
+                                          }
+
+                                          WhenItemPicksUpProcedure.execute(_ent, var224);
+                                       }
+
+                                       if (_ent.getPersistentData().getString("crime4").isEmpty()) {
+                                          AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
+                                          LazyOptional var216 = _ent.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
+                                          Objects.requireNonNull(_iitemhandlerref);
+                                          var216.ifPresent(new NonNullConsumer<IItemHandler>() {
+                                             @Override
+                                             public void accept(@NotNull IItemHandler o) {
+                                                _iitemhandlerref.set(o);
+                                             }
+                                          });
+                                          if (_iitemhandlerref.get() != null) {
+                                             for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
+                                                ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                                                if (itemstackiterator.getItem() != ItemStack.EMPTY.getItem()) {
+                                                   WhenItemPicksUpProcedure.execute(_ent, itemstackiterator);
+                                                   if (!_ent.getPersistentData().getString("crime4").isEmpty()) {
+                                                      break;
+                                                   }
+                                                }
+                                             }
+                                          }
+                                       }
+
+                                       do {
+                                          if (Math.random() < (_ent instanceof Player ? 0.33 : 0.33) && !_ent.getPersistentData().getString("crime1").isEmpty()) {
+                                             guilt_str = _ent.getPersistentData().getString("crime1");
+                                             guilt_karma = 100.0 + _ent.getPersistentData().getDouble("kill_count") * 35.0;
+                                             break;
+                                          }
+
+                                          if (Math.random() < (_ent instanceof Player ? 0.15 : 0.25) && !_ent.getPersistentData().getString("crime4").isEmpty()) {
+                                             guilt_str = _ent.getPersistentData().getString("crime4");
+                                             if (guilt_str.contains("§4")) {
+                                                guilt_karma = 125.0;
+                                             } else {
+                                                guilt_karma = 90.0;
+                                             }
+                                             break;
+                                          }
+
+                                          if (Math.random() < (_ent instanceof Player ? 0.15 : 0.25) && !_ent.getPersistentData().getString("crime2").isEmpty()) {
+                                             guilt_str = _ent.getPersistentData().getString("crime2");
+                                             guilt_karma = 90.0;
+                                             break;
+                                          }
+                                       } while(!(Math.random() < 0.5));
+
+                                       guilt_str = guilt_str.replace("[name]", _ent.getDisplayName().getString());
+                                       guilt_str = guilt_str.replace("[place]", Component.translatable("text.minecraft").getString());
+                                    }
+                                 }
+
+                                 if (world instanceof ServerLevel) {
+                                    ServerLevel _serverLevel = (ServerLevel)world;
+                                    Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_WITNESS_STAND.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(var102, var116, var109), MobSpawnType.MOB_SUMMONED, false, false);
+                                    if (entityinstance != null) {
+                                       entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
+                                       SetRangedAmmoProcedure.execute(entity, entityinstance);
+                                       if (!entityinstance.level().isClientSide() && entityinstance.getServer() != null) {
+                                          entityinstance.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityinstance.position(), entityinstance.getRotationVector(), entityinstance.level() instanceof ServerLevel ? (ServerLevel)entityinstance.level() : null, 4, entityinstance.getName().getString(), entityinstance.getDisplayName(), entityinstance.level().getServer(), entityinstance), "data merge entity @s {Invulnerable:1b,NoAI:1b}");
+                                       }
+
+                                       entityinstance.setYRot((float)var127);
+                                       entityinstance.setXRot(0.0F);
+                                       entityinstance.setYBodyRot(entityinstance.getYRot());
+                                       entityinstance.setYHeadRot(entityinstance.getYRot());
+                                       entityinstance.yRotO = entityinstance.getYRot();
+                                       entityinstance.xRotO = entityinstance.getXRot();
+                                       if (entityinstance instanceof LivingEntity) {
+                                          LivingEntity _entity = (LivingEntity)entityinstance;
+                                          _entity.yBodyRotO = _entity.getYRot();
+                                          _entity.yHeadRotO = _entity.getYRot();
+                                       }
+
+                                       entityinstance.teleportTo(var102, var116, var109);
+                                       if (entityinstance instanceof ServerPlayer) {
+                                          ServerPlayer _serverPlayer = (ServerPlayer)entityinstance;
+                                          _serverPlayer.connection.teleport(var102, var116, var109, entityinstance.getYRot(), entityinstance.getXRot());
+                                       }
+
+                                       entityinstance.getPersistentData().putString("TARGET", _ent.getStringUUID());
+                                       _ent.setYRot(entityinstance.getYRot());
+                                       _ent.setXRot(0.0F);
+                                       _ent.setYBodyRot(_ent.getYRot());
+                                       _ent.setYHeadRot(_ent.getYRot());
+                                       _ent.yRotO = _ent.getYRot();
+                                       _ent.xRotO = _ent.getXRot();
+                                       if (_ent instanceof LivingEntity) {
+                                          LivingEntity _entity = (LivingEntity)_ent;
+                                          _entity.yBodyRotO = _entity.getYRot();
+                                          _entity.yHeadRotO = _entity.getYRot();
+                                       }
+
+                                       _serverLevel.addFreshEntity(entityinstance);
+                                    }
+                                 }
+
+                                 var127 += 360.0 / Math.max(var121, 1.0);
+                              }
                            }
                         }
-
-                        var151 = 0;
                      }
 
-                     if (var151 >= 1 && entity instanceof LivingEntity) {
+                     entity.setYRot((float)var125);
+                     entity.setXRot((float)var126);
+                     entity.setYBodyRot(entity.getYRot());
+                     entity.setYHeadRot(entity.getYRot());
+                     entity.yRotO = entity.getYRot();
+                     entity.xRotO = entity.getXRot();
+                     if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get());
+                        _entity.yBodyRotO = _entity.getYRot();
+                        _entity.yHeadRotO = _entity.getYRot();
                      }
-
-                     _center = new Vec3(entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma"));
-
-                     for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                        if (entity != entityiterator && entityiterator instanceof LivingEntity && entityiterator.m_6084_() && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living"))) && LogicAttackDomainProcedure.execute(world, entity, entityiterator)) {
-                           label649: {
-                              if (entityiterator instanceof LivingEntity) {
-                                 LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                 if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                                    var152 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                                    break label649;
-                                 }
-                              }
-
-                              var152 = 0;
-                           }
-
-                           if (var152 >= 1 && entityiterator instanceof LivingEntity) {
-                              LivingEntity _entity = (LivingEntity)entityiterator;
-                              _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get());
-                           }
-                        }
-
-                        if (entityiterator instanceof EntityWitnessStandEntity && !entityiterator.m_9236_().m_5776_()) {
-                           entityiterator.m_146870_();
-                        }
-                     }
-
-                     var46 = var60;
                   }
 
-                  var64 = 0.0;
-                  var60 = (double)entity.m_146908_();
+                  if (startJudgeman && !guilt_str.isEmpty()) {
+                     entity.getPersistentData().putDouble("x_power", guilt_karma);
+                     String var217 = Component.translatable("jujutsu.message.higuruma_answer1").getString();
+                     String var92 = "tellraw @s [{\"text\":\"[" + var217 + "] \",\"color\":\"gray\",\"bold\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":[{\"text\":\"" + Component.translatable("jujutsu.message.higuruma_answer1_").getString() + "\"}]},\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/judgeman_answer plea_silent\"}},{\"text\":\"[" + Component.translatable("jujutsu.message.higuruma_answer2").getString() + "] \",\"color\":\"white\",\"bold\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":[{\"text\":\"" + Component.translatable("jujutsu.message.higuruma_answer2_").getString() + "\"}]},\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/judgeman_answer plea_confess\"}},{\"text\":\"[" + Component.translatable("jujutsu.message.higuruma_answer3").getString() + "] \",\"color\":\"red\",\"bold\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":[{\"text\":\"" + Component.translatable("jujutsu.message.higuruma_answer3_").getString() + "\"}]},\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/judgeman_answer plea_deny\"}}]";
+                     _center = new Vec3(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"));
 
-                  for(int index1 = 0; index1 < (int)Math.round(var46); ++index1) {
-                     label802: {
-                        ++var64;
-                        _ent = null;
-                        if (var64 <= 1.0) {
-                           label635: {
-                              if (entity instanceof LivingEntity) {
-                                 LivingEntity _livEnt = (LivingEntity)entity;
-                                 if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                                    var153 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                                    break label635;
+                     for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
+                        double var95 = entity.getPersistentData().getDouble("x_pos_doma") - entityiterator.getX();
+                        double var119 = entity.getPersistentData().getDouble("y_pos_doma") - (entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5);
+                        double var105 = entity.getPersistentData().getDouble("z_pos_doma") - entityiterator.getZ();
+                        double var98 = var95 * var95 + var119 * var119 + var105 * var105;
+                        if (var98 < range * 0.5 * range * 0.5) {
+                           if (entityiterator instanceof Player) {
+                              if (entityiterator instanceof Player) {
+                                 Player _player = (Player)entityiterator;
+                                 if (!_player.level().isClientSide()) {
+                                    _player.displayClientMessage(Component.literal(guilt_str), false);
                                  }
                               }
 
-                              var153 = 0;
+                              if (!entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                 entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), "playsound entity.wither.spawn master @s");
+                              }
+
+                              if (entityiterator == entity_targetJudge && !entityiterator.level().isClientSide() && entityiterator.getServer() != null) {
+                                 entityiterator.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityiterator.position(), entityiterator.getRotationVector(), entityiterator.level() instanceof ServerLevel ? (ServerLevel)entityiterator.level() : null, 4, entityiterator.getName().getString(), entityiterator.getDisplayName(), entityiterator.level().getServer(), entityiterator), var92);
+                              }
                            }
 
-                           if (var153 < 1) {
-                              if (entity instanceof LivingEntity) {
-                                 LivingEntity _entity = (LivingEntity)entity;
-                                 if (!_entity.m_9236_().m_5776_()) {
-                                    _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 5, 1, false, false));
-                                 }
-                              }
-
-                              _ent = entity;
-                              break label802;
-                           }
-                        }
-
-                        Vec3 _center = new Vec3(entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma"));
-
-                        for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                           if (entity != entityiterator && entityiterator instanceof LivingEntity && entityiterator.m_6084_() && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living"))) && LogicAttackDomainProcedure.execute(world, entity, entityiterator)) {
-                              label621: {
-                                 if (entityiterator instanceof LivingEntity) {
-                                    LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
-                                       var154 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get()).m_19564_();
-                                       break label621;
-                                    }
-                                 }
-
-                                 var154 = 0;
-                              }
-
-                              if (var154 < 1) {
-                                 if (entityiterator instanceof LivingEntity) {
-                                    LivingEntity _entity = (LivingEntity)entityiterator;
-                                    if (!_entity.m_9236_().m_5776_()) {
-                                       _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 5, 1, false, false));
-                                    }
-                                 }
-
-                                 _ent = entityiterator;
-                                 break;
-                              }
+                           if (entityiterator == entity_targetJudge) {
+                              entityiterator.getPersistentData().putString("JUDGE_ENTITY", entity.getStringUUID());
+                           } else {
+                              entityiterator.getPersistentData().remove("JUDGE_ENTITY");
                            }
                         }
                      }
-
-                     if (!(_ent instanceof LivingEntity)) {
-                        break;
-                     }
-
-                     double var51 = entity.getPersistentData().m_128459_("x_pos_doma") + Math.cos(Math.toRadians(var60)) * Math.min(4.0 + var46 * 0.3, range * 0.5 * 0.5);
-                     double var55 = entity.getPersistentData().m_128459_("y_pos_doma");
-                     double var58 = entity.getPersistentData().m_128459_("z_pos_doma") + Math.sin(Math.toRadians(var60)) * Math.min(4.0 + var46 * 0.3, range * 0.5 * 0.5);
-                     if (world instanceof ServerLevel) {
-                        ServerLevel _serverLevel = (ServerLevel)world;
-                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_WITNESS_STAND.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(var51, var55, var58), MobSpawnType.MOB_SUMMONED, false, false);
-                        if (entityinstance != null) {
-                           entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
-                           SetRangedAmmoProcedure.execute(entity, entityinstance);
-                           if (!entityinstance.m_9236_().m_5776_() && entityinstance.m_20194_() != null) {
-                              entityinstance.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityinstance.m_20182_(), entityinstance.m_20155_(), entityinstance.m_9236_() instanceof ServerLevel ? (ServerLevel)entityinstance.m_9236_() : null, 4, entityinstance.m_7755_().getString(), entityinstance.m_5446_(), entityinstance.m_9236_().m_7654_(), entityinstance), "data merge entity @s {Invulnerable:1b,NoAI:1b}");
-                           }
-
-                           entityinstance.m_146922_((float)(var60 + 90.0));
-                           entityinstance.m_146926_(0.0F);
-                           entityinstance.m_5618_(entityinstance.m_146908_());
-                           entityinstance.m_5616_(entityinstance.m_146908_());
-                           entityinstance.f_19859_ = entityinstance.m_146908_();
-                           entityinstance.f_19860_ = entityinstance.m_146909_();
-                           if (entityinstance instanceof LivingEntity) {
-                              LivingEntity _entity = (LivingEntity)entityinstance;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
-                           }
-
-                           entityinstance.getPersistentData().m_128359_("TARGET", _ent.m_20149_());
-                           _ent.m_146922_(entityinstance.m_146908_());
-                           _ent.m_146926_(0.0F);
-                           _ent.m_5618_(_ent.m_146908_());
-                           _ent.m_5616_(_ent.m_146908_());
-                           _ent.f_19859_ = _ent.m_146908_();
-                           _ent.f_19860_ = _ent.m_146909_();
-                           if (_ent instanceof LivingEntity) {
-                              LivingEntity _entity = (LivingEntity)_ent;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
-                           }
-
-                           _serverLevel.m_7967_(entityinstance);
-                        }
-                     }
-
-                     var60 += 360.0 / var46;
                   }
                }
             }
 
-            entity.getPersistentData().m_128379_("DomainAttack", false);
+            entity.getPersistentData().putBoolean("DomainAttack", false);
          }
 
       }

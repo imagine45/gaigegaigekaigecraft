@@ -33,7 +33,7 @@ public class WhenBeforeEntityisHurtNoSourceProcedure {
    @SubscribeEvent
    public static void onEntityAttacked(LivingHurtEvent event) {
       if (event != null && event.getEntity() != null) {
-         execute(event, event.getEntity().m_9236_(), event.getSource(), event.getEntity());
+         execute(event, event.getEntity().level(), event.getSource(), event.getEntity());
       }
 
    }
@@ -47,42 +47,44 @@ public class WhenBeforeEntityisHurtNoSourceProcedure {
          double damageAmount = 0.0;
          double T1 = 0.0;
          double T2 = 0.0;
-         if (!damagesource.m_269533_(TagKey.m_203882_(Registries.f_268580_, new ResourceLocation("forge:animation"))) && !damagesource.m_276093_(DamageTypes.f_286979_)) {
+         if (!damagesource.is(TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("forge:animation"))) && !damagesource.is(DamageTypes.GENERIC_KILL)) {
             label124: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt2 = (LivingEntity)entity;
-                  if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
+                  if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
                      break label124;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_(MobEffects.f_19596_);
+                  _entity.removeEffect(MobEffects.MOVEMENT_SPEED);
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_(MobEffects.f_19603_);
+                  _entity.removeEffect(MobEffects.JUMP);
                }
             }
 
-            if (entity instanceof Player && world.m_6106_().m_5470_().m_46207_(JujutsucraftModGameRules.JUJUTSU_GAIN_FAME)) {
-               T1 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
-               T2 = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2;
+            if (entity instanceof Player && world.getLevelData().getGameRules().getBoolean(JujutsucraftModGameRules.JUJUTSU_GAIN_FAME)) {
+               JujutsucraftModVariables.PlayerVariables pVars = null;
+               pVars = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse((JujutsucraftModVariables.PlayerVariables) null);
+               T1 = pVars.PlayerCurseTechnique;
+               T2 = pVars.PlayerCurseTechnique2;
                if (T1 > 0.0 || T2 > 0.0) {
                   if (Math.random() < (T1 != 27.0 && T2 != 27.0 ? 0.005 : 0.05)) {
                      label102: {
                         if (entity instanceof ServerPlayer) {
                            ServerPlayer _plr7 = (ServerPlayer)entity;
-                           if (_plr7.m_9236_() instanceof ServerLevel && _plr7.m_8960_().m_135996_(_plr7.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_1"))).m_8193_()) {
+                           if (_plr7.level() instanceof ServerLevel && _plr7.getAdvancements().getOrStartProgress(_plr7.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_1"))).isDone()) {
                               if (entity instanceof ServerPlayer) {
                                  ServerPlayer _player = (ServerPlayer)entity;
-                                 Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_2"));
-                                 AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                                 if (!_ap.m_8193_()) {
-                                    for(String criteria : _ap.m_8219_()) {
-                                       _player.m_8960_().m_135988_(_adv, criteria);
+                                 Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_2"));
+                                 AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                                 if (!_ap.isDone()) {
+                                    for(String criteria : _ap.getRemainingCriteria()) {
+                                       _player.getAdvancements().award(_adv, criteria);
                                     }
                                  }
                               }
@@ -92,11 +94,11 @@ public class WhenBeforeEntityisHurtNoSourceProcedure {
 
                         if (entity instanceof ServerPlayer) {
                            ServerPlayer _player = (ServerPlayer)entity;
-                           Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:reverse_cursed_technique_1"));
-                           AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                           if (!_ap.m_8193_()) {
-                              for(String criteria : _ap.m_8219_()) {
-                                 _player.m_8960_().m_135988_(_adv, criteria);
+                           Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:reverse_cursed_technique_1"));
+                           AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                           if (!_ap.isDone()) {
+                              for(String criteria : _ap.getRemainingCriteria()) {
+                                 _player.getAdvancements().award(_adv, criteria);
                               }
                            }
                         }
@@ -105,13 +107,13 @@ public class WhenBeforeEntityisHurtNoSourceProcedure {
 
                   if (entity instanceof ServerPlayer) {
                      ServerPlayer _plr10 = (ServerPlayer)entity;
-                     if (_plr10.m_9236_() instanceof ServerLevel && _plr10.m_8960_().m_135996_(_plr10.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_domain_expansion"))).m_8193_() && Math.random() < (T1 != 27.0 && T2 != 27.0 ? 0.005 : 0.05) && entity instanceof ServerPlayer) {
+                     if (_plr10.level() instanceof ServerLevel && _plr10.getAdvancements().getOrStartProgress(_plr10.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_domain_expansion"))).isDone() && Math.random() < (T1 != 27.0 && T2 != 27.0 ? 0.005 : 0.05) && entity instanceof ServerPlayer) {
                         ServerPlayer _player = (ServerPlayer)entity;
-                        Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_domain_amplification"));
-                        AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-                        if (!_ap.m_8193_()) {
-                           for(String criteria : _ap.m_8219_()) {
-                              _player.m_8960_().m_135988_(_adv, criteria);
+                        Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_domain_amplification"));
+                        AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+                        if (!_ap.isDone()) {
+                           for(String criteria : _ap.getRemainingCriteria()) {
+                              _player.getAdvancements().award(_adv, criteria);
                            }
                         }
                      }

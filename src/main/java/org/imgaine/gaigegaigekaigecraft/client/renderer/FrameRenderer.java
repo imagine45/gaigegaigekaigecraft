@@ -17,27 +17,27 @@ import net.minecraft.world.level.Level;
 
 public class FrameRenderer extends MobRenderer<FrameEntity, Modelframe<FrameEntity>> {
    public FrameRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelframe(context.m_174023_(Modelframe.LAYER_LOCATION)), 0.0F);
-      this.m_115326_(new RenderLayer<FrameEntity, Modelframe<FrameEntity>>(this) {
-         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("jujutsucraft:textures/entities/frame.png");
+      super(context, new Modelframe(context.bakeLayer(Modelframe.LAYER_LOCATION)), 0.0F);
+      this.addLayer(new RenderLayer<FrameEntity, Modelframe<FrameEntity>>(this) {
+         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("gaigegaigekaigecraft:textures/entities/frame.png");
 
          public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, FrameEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            VertexConsumer vertexConsumer = bufferSource.m_6299_(RenderType.m_110488_(this.LAYER_TEXTURE));
-            ((Modelframe)this.m_117386_()).m_7695_(poseStack, vertexConsumer, light, LivingEntityRenderer.m_115338_(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.eyes(this.LAYER_TEXTURE));
+            ((Modelframe)this.getParentModel()).renderToBuffer(poseStack, vertexConsumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
          }
       });
    }
 
    protected void scale(FrameEntity entity, PoseStack poseStack, float f) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.scale(scale, scale, scale);
    }
 
    public ResourceLocation getTextureLocation(FrameEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/clear.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/clear.png");
    }
 }

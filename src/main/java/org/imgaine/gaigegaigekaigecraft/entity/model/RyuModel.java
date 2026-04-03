@@ -13,15 +13,15 @@ public class RyuModel extends GeoModel<RyuEntity> {
    }
 
    public ResourceLocation getAnimationResource(RyuEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/ryu.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/ryu.animation.json");
    }
 
    public ResourceLocation getModelResource(RyuEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/ryu.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/ryu.geo.json");
    }
 
    public ResourceLocation getTextureResource(RyuEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(RyuEntity animatable, long instanceId, AnimationState animationState) {

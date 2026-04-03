@@ -17,7 +17,7 @@ public class EntityUseProjectionSorceryProcedure {
          LivingEntity var10000;
          if (entity instanceof Mob) {
             Mob _mobEnt = (Mob)entity;
-            var10000 = _mobEnt.m_5448_();
+            var10000 = _mobEnt.getTarget();
          } else {
             var10000 = null;
          }
@@ -25,7 +25,7 @@ public class EntityUseProjectionSorceryProcedure {
          if (var10000 instanceof LivingEntity && LogicStartPassiveProcedure.execute(entity)) {
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
@@ -33,14 +33,14 @@ public class EntityUseProjectionSorceryProcedure {
             LivingEntity _entity = var10000;
             if (_entity instanceof LivingEntity) {
                LivingEntity _livEnt3 = _entity;
-               if (_livEnt3.m_21023_((MobEffect)JujutsucraftModMobEffects.PROJECTION_SORCERY.get())) {
+               if (_livEnt3.hasEffect((MobEffect)JujutsucraftModMobEffects.PROJECTION_SORCERY.get())) {
                   return;
                }
             }
 
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
@@ -48,36 +48,36 @@ public class EntityUseProjectionSorceryProcedure {
             _entity = var10000;
             if (_entity instanceof LivingEntity) {
                LivingEntity _livEnt5 = _entity;
-               if (_livEnt5.m_21023_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
+               if (_livEnt5.hasEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
                   return;
                }
             }
 
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
-            if (((Entity)var10000).getPersistentData().m_128459_("select") == 0.0 && GetDistanceProcedure.execute(entity) < 4.0) {
+            if (((Entity)var10000).getPersistentData().getDouble("select") == 0.0 && GetDistanceProcedure.execute(entity) < 4.0) {
                if (entity instanceof LivingEntity) {
                   _entity = (LivingEntity)entity;
-                  _entity.m_21011_(InteractionHand.MAIN_HAND, true);
+                  _entity.swing(InteractionHand.MAIN_HAND, true);
                }
 
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var10000 = _mobEnt.m_5448_();
+                  var10000 = _mobEnt.getTarget();
                } else {
                   var10000 = null;
                }
 
                LivingEntity var9 = var10000;
                if (var9 instanceof LivingEntity) {
-                  LivingEntity _entity = var9;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.PROJECTION_SORCERY.get(), 50, 0, true, true));
+                  _entity = var9;
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.PROJECTION_SORCERY.get(), 50, 0, true, true));
                   }
                }
             }

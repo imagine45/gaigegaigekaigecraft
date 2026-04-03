@@ -27,61 +27,61 @@ public class NyoiStaffRightclickedOnBlockProcedure {
          double HP = 0.0;
          if (entity instanceof Player) {
             Player _plrCldCheck1 = (Player)entity;
-            if (_plrCldCheck1.m_36335_().m_41519_(itemstack.m_41720_())) {
+            if (_plrCldCheck1.getCooldowns().isOnCooldown(itemstack.getItem())) {
                return;
             }
          }
 
-         x_pos = x + (double)direction.m_122429_();
-         y_pos = y + (double)direction.m_122430_();
-         z_pos = z + (double)direction.m_122431_();
+         x_pos = x + (double)direction.getStepX();
+         y_pos = y + (double)direction.getStepY();
+         z_pos = z + (double)direction.getStepZ();
          if (world instanceof ServerLevel) {
             ServerLevel _serverLevel = (ServerLevel)world;
-            Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_ITEM.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+            Entity entityinstance = ((EntityType)JujutsucraftModEntities.ENTITY_ITEM.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
             if (entityinstance != null) {
-               entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
-               entityinstance.m_146922_(entity.m_146908_());
-               entityinstance.m_146926_(0.0F);
-               entityinstance.m_5618_(entityinstance.m_146908_());
-               entityinstance.m_5616_(entityinstance.m_146908_());
-               entityinstance.f_19859_ = entityinstance.m_146908_();
-               entityinstance.f_19860_ = entityinstance.m_146909_();
+               entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
+               entityinstance.setYRot(entity.getYRot());
+               entityinstance.setXRot(0.0F);
+               entityinstance.setYBodyRot(entityinstance.getYRot());
+               entityinstance.setYHeadRot(entityinstance.getYRot());
+               entityinstance.yRotO = entityinstance.getYRot();
+               entityinstance.xRotO = entityinstance.getXRot();
                if (entityinstance instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entityinstance;
-                  _entity.f_20884_ = _entity.m_146908_();
-                  _entity.f_20886_ = _entity.m_146908_();
+                  _entity.yBodyRotO = _entity.getYRot();
+                  _entity.yHeadRotO = _entity.getYRot();
                }
 
-               entityinstance.getPersistentData().m_128359_("OWNER_UUID", entity.m_20149_());
-               entityinstance.getPersistentData().m_128347_("Thunder", 6.0);
+               entityinstance.getPersistentData().putString("OWNER_UUID", entity.getStringUUID());
+               entityinstance.getPersistentData().putDouble("Thunder", 6.0);
                if (entityinstance instanceof Player) {
                   Player _player = (Player)entityinstance;
-                  _player.m_150109_().f_35975_.set(3, itemstack.m_41777_());
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, itemstack.copy());
+                  _player.getInventory().setChanged();
                } else if (entityinstance instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entityinstance;
-                  _living.m_8061_(EquipmentSlot.HEAD, itemstack.m_41777_());
+                  _living.setItemSlot(EquipmentSlot.HEAD, itemstack.copy());
                }
 
-               _serverLevel.m_7967_(entityinstance);
+               _serverLevel.addFreshEntity(entityinstance);
             }
          }
 
          label36: {
             if (entity instanceof Player) {
                Player _plr = (Player)entity;
-               if (_plr.m_150110_().f_35937_) {
+               if (_plr.getAbilities().instabuild) {
                   break label36;
                }
             }
 
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               _player.m_36335_().m_41524_(itemstack.m_41720_(), 100);
+               _player.getCooldowns().addCooldown(itemstack.getItem(), 100);
             }
          }
 
-         itemstack.m_41774_(1);
+         itemstack.shrink(1);
       }
    }
 }

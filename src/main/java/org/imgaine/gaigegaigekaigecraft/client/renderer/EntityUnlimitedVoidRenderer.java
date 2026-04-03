@@ -16,13 +16,13 @@ import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 public class EntityUnlimitedVoidRenderer extends DynamicGeoEntityRenderer<EntityUnlimitedVoidEntity> {
    public EntityUnlimitedVoidRenderer(EntityRendererProvider.Context renderManager) {
       super(renderManager, new EntityUnlimitedVoidModel());
-      this.f_114477_ = 0.0F;
+      this.shadowRadius = 0.0F;
       this.addRenderLayer(new GenericArmorLayer(this));
       this.addRenderLayer(new GenericItemLayer(this));
    }
 
    public RenderType getRenderType(EntityUnlimitedVoidEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.m_5478_(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 
    public void preRender(PoseStack poseStack, EntityUnlimitedVoidEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

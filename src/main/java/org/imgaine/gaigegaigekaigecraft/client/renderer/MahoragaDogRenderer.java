@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MahoragaDogRenderer extends MobRenderer<MahoragaDogEntity, ModelMahoraga_dog6<MahoragaDogEntity>> {
    public MahoragaDogRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelMahoraga_dog6(context.m_174023_(ModelMahoraga_dog6.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelMahoraga_dog6(context.bakeLayer(ModelMahoraga_dog6.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(MahoragaDogEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/mahoraga_dog6.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/mahoraga_dog6.png");
    }
 }

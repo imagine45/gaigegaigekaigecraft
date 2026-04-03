@@ -18,33 +18,33 @@ import net.minecraft.world.level.Level;
 
 public class RockFragmentRenderer extends MobRenderer<RockFragmentEntity, Modelrock_fragment<RockFragmentEntity>> {
    public RockFragmentRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelrock_fragment(context.m_174023_(Modelrock_fragment.LAYER_LOCATION)), 0.0F);
-      this.m_115326_(new RenderLayer<RockFragmentEntity, Modelrock_fragment<RockFragmentEntity>>(this) {
-         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("jujutsucraft:textures/entities/ball_maximum.png");
+      super(context, new Modelrock_fragment(context.bakeLayer(Modelrock_fragment.LAYER_LOCATION)), 0.0F);
+      this.addLayer(new RenderLayer<RockFragmentEntity, Modelrock_fragment<RockFragmentEntity>>(this) {
+         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("gaigegaigekaigecraft:textures/entities/ball_maximum.png");
 
          public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, RockFragmentEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            Level world = entity.m_9236_();
-            double x = entity.m_20185_();
-            double y = entity.m_20186_();
-            double z = entity.m_20189_();
+            Level world = entity.level();
+            double x = entity.getX();
+            double y = entity.getY();
+            double z = entity.getZ();
             if (WoodenSpear1DisplayConditionProcedure.execute(entity)) {
-               VertexConsumer vertexConsumer = bufferSource.m_6299_(RenderType.m_110458_(this.LAYER_TEXTURE));
-               ((Modelrock_fragment)this.m_117386_()).m_7695_(poseStack, vertexConsumer, light, LivingEntityRenderer.m_115338_(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+               VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(this.LAYER_TEXTURE));
+               ((Modelrock_fragment)this.getParentModel()).renderToBuffer(poseStack, vertexConsumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             }
 
          }
       });
-      this.m_115326_(new RenderLayer<RockFragmentEntity, Modelrock_fragment<RockFragmentEntity>>(this) {
-         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("jujutsucraft:textures/entities/ball_maximum.png");
+      this.addLayer(new RenderLayer<RockFragmentEntity, Modelrock_fragment<RockFragmentEntity>>(this) {
+         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("gaigegaigekaigecraft:textures/entities/ball_maximum.png");
 
          public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, RockFragmentEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            Level world = entity.m_9236_();
-            double x = entity.m_20185_();
-            double y = entity.m_20186_();
-            double z = entity.m_20189_();
+            Level world = entity.level();
+            double x = entity.getX();
+            double y = entity.getY();
+            double z = entity.getZ();
             if (WoodenSpear1DisplayConditionProcedure.execute(entity)) {
-               VertexConsumer vertexConsumer = bufferSource.m_6299_(RenderType.m_110488_(this.LAYER_TEXTURE));
-               ((Modelrock_fragment)this.m_117386_()).m_7695_(poseStack, vertexConsumer, light, LivingEntityRenderer.m_115338_(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+               VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.eyes(this.LAYER_TEXTURE));
+               ((Modelrock_fragment)this.getParentModel()).renderToBuffer(poseStack, vertexConsumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             }
 
          }
@@ -52,15 +52,15 @@ public class RockFragmentRenderer extends MobRenderer<RockFragmentEntity, Modelr
    }
 
    protected void scale(RockFragmentEntity entity, PoseStack poseStack, float f) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.scale(scale, scale, scale);
    }
 
    public ResourceLocation getTextureLocation(RockFragmentEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/rock_fragment.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/rock_fragment.png");
    }
 }

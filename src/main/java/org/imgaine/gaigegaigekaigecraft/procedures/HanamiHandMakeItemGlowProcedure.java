@@ -7,6 +7,6 @@ public class HanamiHandMakeItemGlowProcedure {
    }
 
    public static boolean execute(ItemStack itemstack) {
-      return itemstack.m_41784_().m_128459_("Power") > 0.0;
+      return itemstack.getOrCreateTag().getDouble("Power") > 0.0;
    }
 }

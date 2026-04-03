@@ -28,54 +28,54 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CursedBlockBlock extends Block implements EntityBlock {
    public CursedBlockBlock() {
-      super(Properties.m_284310_().m_280658_(NoteBlockInstrument.BASEDRUM).m_60918_(SoundType.f_279557_).m_60978_(5.0F).m_60953_((s) -> 1).m_60955_().m_60977_().m_60924_((bs, br, bp) -> false));
+      super(Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.EMPTY).strength(5.0F).lightLevel((s) -> 1).noOcclusion().randomTicks().isRedstoneConductor((bs, br, bp) -> false));
    }
 
-   public boolean m_7420_(BlockState state, BlockGetter reader, BlockPos pos) {
+   public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
       return true;
    }
 
-   public int m_7753_(BlockState state, BlockGetter worldIn, BlockPos pos) {
+   public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
       return 0;
    }
 
-   public VoxelShape m_5909_(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-      return Shapes.m_83040_();
+   public VoxelShape getVisualShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+      return Shapes.empty();
    }
 
-   public void m_213897_(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-      super.m_213897_(blockstate, world, pos, random);
-      int x = pos.m_123341_();
-      int y = pos.m_123342_();
-      int z = pos.m_123343_();
+   public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+      super.tick(blockstate, world, pos, random);
+      int x = pos.getX();
+      int y = pos.getY();
+      int z = pos.getZ();
       CursedBlockUpdateTickProcedure.execute(world, (double)x, (double)y, (double)z);
    }
 
-   public void m_7892_(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-      super.m_7892_(blockstate, world, pos, entity);
-      CursedBlockUpdateTickProcedure.execute(world, (double)pos.m_123341_(), (double)pos.m_123342_(), (double)pos.m_123343_());
+   public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
+      super.entityInside(blockstate, world, pos, entity);
+      CursedBlockUpdateTickProcedure.execute(world, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
    }
 
-   public void m_141947_(Level world, BlockPos pos, BlockState blockstate, Entity entity) {
-      super.m_141947_(world, pos, blockstate, entity);
-      CursedBlockUpdateTickProcedure.execute(world, (double)pos.m_123341_(), (double)pos.m_123342_(), (double)pos.m_123343_());
+   public void stepOn(Level world, BlockPos pos, BlockState blockstate, Entity entity) {
+      super.stepOn(world, pos, blockstate, entity);
+      CursedBlockUpdateTickProcedure.execute(world, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
    }
 
-   public InteractionResult m_6227_(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
-      super.m_6227_(blockstate, world, pos, entity, hand, hit);
-      int x = pos.m_123341_();
-      int y = pos.m_123342_();
-      int z = pos.m_123343_();
-      double hitX = hit.m_82450_().f_82479_;
-      double hitY = hit.m_82450_().f_82480_;
-      double hitZ = hit.m_82450_().f_82481_;
-      Direction direction = hit.m_82434_();
+   public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
+      super.use(blockstate, world, pos, entity, hand, hit);
+      int x = pos.getX();
+      int y = pos.getY();
+      int z = pos.getZ();
+      double hitX = hit.getLocation().x;
+      double hitY = hit.getLocation().y;
+      double hitZ = hit.getLocation().z;
+      Direction direction = hit.getDirection();
       CursedBlockOnBlockRightClickedProcedure.execute(world, (double)x, (double)y, (double)z, entity);
       return InteractionResult.SUCCESS;
    }
 
-   public MenuProvider m_7246_(BlockState state, Level worldIn, BlockPos pos) {
-      BlockEntity tileEntity = worldIn.m_7702_(pos);
+   public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+      BlockEntity tileEntity = worldIn.getBlockEntity(pos);
       MenuProvider var10000;
       if (tileEntity instanceof MenuProvider menuProvider) {
          var10000 = menuProvider;
@@ -86,13 +86,13 @@ public class CursedBlockBlock extends Block implements EntityBlock {
       return var10000;
    }
 
-   public BlockEntity m_142194_(BlockPos pos, BlockState state) {
+   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
       return new CursedBlockBlockEntity(pos, state);
    }
 
-   public boolean m_8133_(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
-      super.m_8133_(state, world, pos, eventID, eventParam);
-      BlockEntity blockEntity = world.m_7702_(pos);
-      return blockEntity == null ? false : blockEntity.m_7531_(eventID, eventParam);
+   public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+      super.triggerEvent(state, world, pos, eventID, eventParam);
+      BlockEntity blockEntity = world.getBlockEntity(pos);
+      return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
    }
 }

@@ -3,6 +3,7 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade010Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade011Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade012Entity;
+import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade013Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade02Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade03Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade04Entity;
@@ -26,98 +27,109 @@ public class BeatSpecialGradeProcedure {
          if (entity instanceof CursedSpiritGrade010Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_2"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_2"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if (entity instanceof CursedSpiritGrade04Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_3"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_3"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if (entity instanceof CursedSpiritGrade011Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_6"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_6"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if (entity instanceof CursedSpiritGrade02Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_7"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_7"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if (entity instanceof CursedSpiritGrade012Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_9"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_9"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if (entity instanceof CursedSpiritGrade05Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_10"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_10"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
+                  }
+               }
+            }
+         } else if (entity instanceof CursedSpiritGrade013Entity) {
+            if (entityiterator instanceof ServerPlayer) {
+               ServerPlayer _player = (ServerPlayer)entityiterator;
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_11"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if (entity instanceof CursedSpiritGrade06Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_13"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_13"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if (entity instanceof CursedSpiritGrade03Entity) {
             if (entityiterator instanceof ServerPlayer) {
                ServerPlayer _player = (ServerPlayer)entityiterator;
-               Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_15"));
-               AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-               if (!_ap.m_8193_()) {
-                  for(String criteria : _ap.m_8219_()) {
-                     _player.m_8960_().m_135988_(_adv, criteria);
+               Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_15"));
+               AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+               if (!_ap.isDone()) {
+                  for(String criteria : _ap.getRemainingCriteria()) {
+                     _player.getAdvancements().award(_adv, criteria);
                   }
                }
             }
          } else if ((entity instanceof RikaEntity || entity instanceof Rika2Entity) && entityiterator instanceof ServerPlayer) {
             ServerPlayer _player = (ServerPlayer)entityiterator;
-            Advancement _adv = _player.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:battle_cursed_spirit_grade_special_16"));
-            AdvancementProgress _ap = _player.m_8960_().m_135996_(_adv);
-            if (!_ap.m_8193_()) {
-               for(String criteria : _ap.m_8219_()) {
-                  _player.m_8960_().m_135988_(_adv, criteria);
+            Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:battle_cursed_spirit_grade_special_16"));
+            AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
+            if (!_ap.isDone()) {
+               for(String criteria : _ap.getRemainingCriteria()) {
+                  _player.getAdvancements().award(_adv, criteria);
                }
             }
          }

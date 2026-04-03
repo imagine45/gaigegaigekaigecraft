@@ -5,7 +5,6 @@ import org.imgaine.gaigegaigekaigecraft.procedures.AIBodyRepelProcedure;
 import org.imgaine.gaigegaigekaigecraft.procedures.SizeByNBTProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -25,61 +24,53 @@ public class BodyRepelEntity extends PathfinderMob {
 
    public BodyRepelEntity(EntityType<BodyRepelEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_21530_();
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setPersistenceRequired();
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
+   protected void registerGoals() {
+      super.registerGoals();
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIBodyRepelProcedure.execute(this.m_9236_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIBodyRepelProcedure.execute(this.level(), this);
+      this.refreshDimensions();
    }
 
-   public boolean m_7337_(Entity entity) {
-      return true;
-   }
-
-   public boolean m_5829_() {
-      return true;
-   }
-
-   public EntityDimensions m_6972_(Pose pose) {
-      Level world = this.m_9236_();
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      return super.m_6972_(pose).m_20388_((float)SizeByNBTProcedure.execute(this));
+   public EntityDimensions getDimensions(Pose pose) {
+      Level world = this.level();
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      return super.getDimensions(pose).scale((float)SizeByNBTProcedure.execute(this));
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 80.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 2.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 80.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 2.0);
       return builder;
    }
 }

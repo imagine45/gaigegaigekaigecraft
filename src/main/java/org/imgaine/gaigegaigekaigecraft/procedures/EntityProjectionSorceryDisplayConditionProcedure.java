@@ -14,7 +14,7 @@ public class EntityProjectionSorceryDisplayConditionProcedure {
          int var10000;
          if (entity instanceof EntityProjectionSorceryEntity) {
             EntityProjectionSorceryEntity _datEntI = (EntityProjectionSorceryEntity)entity;
-            var10000 = (Integer)_datEntI.m_20088_().m_135370_(EntityProjectionSorceryEntity.DATA_cnt_skin);
+            var10000 = (Integer)_datEntI.getEntityData().get(EntityProjectionSorceryEntity.DATA_cnt_skin);
          } else {
             var10000 = 0;
          }

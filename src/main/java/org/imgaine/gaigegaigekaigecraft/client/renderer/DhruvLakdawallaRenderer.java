@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DhruvLakdawallaRenderer extends MobRenderer<DhruvLakdawallaEntity, Modeldhruv_lakdawalla<DhruvLakdawallaEntity>> {
    public DhruvLakdawallaRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modeldhruv_lakdawalla(context.m_174023_(Modeldhruv_lakdawalla.LAYER_LOCATION)), 0.5F);
+      super(context, new Modeldhruv_lakdawalla(context.bakeLayer(Modeldhruv_lakdawalla.LAYER_LOCATION)), 0.5F);
    }
 
    public ResourceLocation getTextureLocation(DhruvLakdawallaEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/dhruv_lakdawalla.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/dhruv_lakdawalla.png");
    }
 }

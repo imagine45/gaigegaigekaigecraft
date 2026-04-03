@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.core.Direction;
@@ -10,8 +9,11 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.SpectralArrow;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -20,130 +22,162 @@ public class InfinityActiveTickProcedure {
    public InfinityActiveTickProcedure() {
    }
 
-   public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
+   public static void execute(LevelAccessor world, Entity entity) {
       if (entity != null) {
-         label119: {
-            double dis = 0.0;
-            double x_power = 0.0;
-            double y_power = 0.0;
-            double z_power = 0.0;
-            double velocity = 0.0;
+         int var10000;
+         label149: {
+            boolean isRangedAmmo = false;
+            boolean isProjectile = false;
             boolean logic_infinity = false;
+            double dx = 0.0;
+            double myNameRangedRanged = 0.0;
+            double dy = 0.0;
+            double dz = 0.0;
+            double myNameRanged = 0.0;
+            double velocity = 0.0;
+            double T1 = 0.0;
+            double T2 = 0.0;
+            double infinity_radius = 0.0;
+            double distance = 0.0;
             if (entity instanceof LivingEntity) {
-               LivingEntity _livEnt0 = (LivingEntity)entity;
-               if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
-                  break label119;
+               LivingEntity _livEnt = (LivingEntity)entity;
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
+                  var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get()).getDuration();
+                  break label149;
                }
             }
 
-            int var10000;
-            label109: {
+            var10000 = 0;
+         }
+
+         label163: {
+            if (var10000 % 10 == 5) {
+               if (!ActiveTickConditionProcedure.execute(entity) || !LogicStartPassiveProcedure.execute(entity)) {
+                  break label163;
+               }
+
                if (entity instanceof LivingEntity) {
-                  LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
-                     var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).m_19564_();
-                     break label109;
+                  LivingEntity _livEnt1 = (LivingEntity)entity;
+                  if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
+                     break label163;
                   }
                }
 
-               var10000 = 0;
-            }
+               label140: {
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _livEnt = (LivingEntity)entity;
+                     if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get())) {
+                        var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.SIMPLE_DOMAIN.get()).getAmplifier();
+                        break label140;
+                     }
+                  }
 
-            if (var10000 <= 0 && ActiveTickConditionProcedure.execute(entity)) {
+                  var10000 = 0;
+               }
+
+               if (var10000 > 0) {
+                  break label163;
+               }
+
                if (entity instanceof Player) {
-                  label126: {
+                  label125: {
                      if (entity instanceof LivingEntity) {
-                        LivingEntity _livEnt4 = (LivingEntity)entity;
-                        if (_livEnt4.m_21023_((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
-                           break label126;
+                        LivingEntity _livEnt5 = (LivingEntity)entity;
+                        if (_livEnt5.hasEffect((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
+                           break label125;
                         }
                      }
 
-                     label99: {
+                     JujutsucraftModVariables.PlayerVariables pVars = null;
+                     pVars = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse((JujutsucraftModVariables.PlayerVariables) null);
+                     pVars.PlayerCursePowerChange -= 5.0;
+                     if (pVars.PlayerCursePower + pVars.PlayerCursePowerChange <= 0.0) {
                         if (entity instanceof LivingEntity) {
-                           LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
-                              var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get()).m_19557_();
-                              break label99;
-                           }
+                           LivingEntity _entity = (LivingEntity)entity;
+                           _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
                         }
 
-                        var10000 = 0;
-                     }
-
-                     if (var10000 % 10 == 5) {
-                        double _setval = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerChange - 2.0;
-                        entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                           capability.PlayerCursePowerChange = _setval;
-                           capability.syncPlayerVariables(entity);
-                        });
+                        return;
                      }
                   }
                }
-
-               Vec3 _center = new Vec3(x, y + (double)entity.m_20206_() * 0.5, z);
-
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_((double)(4.0F + entity.m_20205_()) / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                  if (entity != entityiterator) {
-                     velocity = 0.0;
-                     x_power = 0.0;
-                     y_power = 0.0;
-                     z_power = 0.0;
-                     logic_infinity = false;
-                     double var38;
-                     if (entityiterator instanceof Projectile) {
-                        Projectile _projEnt = (Projectile)entityiterator;
-                        var38 = _projEnt.m_20184_().m_82553_();
-                     } else {
-                        var38 = 0.0;
-                     }
-
-                     if (var38 > 0.0) {
-                        logic_infinity = false;
-                        velocity = Math.sqrt(entityiterator.m_20184_().m_7096_() * entityiterator.m_20184_().m_7096_() + entityiterator.m_20184_().m_7098_() * entityiterator.m_20184_().m_7098_() + entityiterator.m_20184_().m_7094_() * entityiterator.m_20184_().m_7094_());
-                        if (velocity > 0.0) {
-                           x_power = entityiterator.m_20184_().m_7096_() / velocity;
-                           y_power = entityiterator.m_20184_().m_7098_() / velocity;
-                           z_power = entityiterator.m_20184_().m_7094_() / velocity;
-                           dis = Math.sqrt((entityiterator.m_20185_() - entity.m_20185_()) * (entityiterator.m_20185_() - entity.m_20185_()) + (entityiterator.m_20186_() - entity.m_20186_()) * (entityiterator.m_20186_() - entity.m_20186_()) + (entityiterator.m_20189_() - entity.m_20189_()) * (entityiterator.m_20189_() - entity.m_20189_()));
-                           if (dis > Math.sqrt((entityiterator.m_20185_() + x_power * 0.001 - entity.m_20185_()) * (entityiterator.m_20185_() + x_power * 0.001 - entity.m_20185_()) + (entityiterator.m_20186_() + y_power * 0.001 - entity.m_20186_()) * (entityiterator.m_20186_() + y_power * 0.001 - entity.m_20186_()) + (entityiterator.m_20189_() + z_power * 0.001 - entity.m_20189_()) * (entityiterator.m_20189_() + z_power * 0.001 - entity.m_20189_()))) {
-                              logic_infinity = true;
-                           }
-                        }
-                     }
-
-                     if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) || entityiterator.getPersistentData().m_128459_("NameRanged_ranged") != 0.0) {
-                        logic_infinity = true;
-                        if (entity.getPersistentData().m_128459_("NameRanged_ranged") != 0.0 && (entity.getPersistentData().m_128459_("NameRanged_ranged") == entityiterator.getPersistentData().m_128459_("NameRanged") || entity.getPersistentData().m_128459_("NameRanged_ranged") == entityiterator.getPersistentData().m_128459_("NameRanged_ranged"))) {
-                           logic_infinity = false;
-                        }
-
-                        if (entity.getPersistentData().m_128459_("NameRanged") != 0.0 && (entity.getPersistentData().m_128459_("NameRanged") == entityiterator.getPersistentData().m_128459_("NameRanged_ranged") || entity.getPersistentData().m_128459_("NameRanged") == entityiterator.getPersistentData().m_128459_("NameRanged"))) {
-                           logic_infinity = false;
-                        }
-                     }
-
-                     if (logic_infinity) {
-                        if (!entity.getPersistentData().m_128471_("Stop")) {
-                           entityiterator.getPersistentData().m_128379_("Stop", true);
-                        }
-
-                        if (velocity > 0.0) {
-                           entityiterator.m_20256_(new Vec3(x_power * 0.01, 0.0, z_power * 0.01));
-                        } else {
-                           entityiterator.m_20256_(new Vec3(0.0, 0.0, 0.0));
-                        }
-                     }
-                  }
-               }
-
-               return;
             }
+
+            double var38 = entity.getPersistentData().getDouble("NameRanged");
+            double var35 = entity.getPersistentData().getDouble("NameRanged_ranged");
+            double var40 = (double)(8.0F + Math.max(entity.getBbWidth() * 2.0F, entity.getBbHeight() * 2.0F) * 2.0F);
+            Vec3 _center = new Vec3(entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ());
+
+            for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(var40 / 2.0), (e) -> true)) {
+               if (entity != entityiterator) {
+                  boolean var33 = false;
+                  boolean var32 = entityiterator instanceof Projectile;
+                  boolean var31 = entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) || entityiterator.getPersistentData().getDouble("NameRanged_ranged") != 0.0;
+                  Vec3 vel = entityiterator.getDeltaMovement();
+                  if (var32) {
+                     Entity var52;
+                     if (entityiterator instanceof TraceableEntity) {
+                        TraceableEntity _traceableEntity = (TraceableEntity)entityiterator;
+                        var52 = _traceableEntity.getOwner();
+                     } else {
+                        var52 = null;
+                     }
+
+                     if (var52 != entity) {
+                        double var34 = entity.getX() - entityiterator.getX();
+                        double var36 = _center.y - (entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5);
+                        double var37 = entity.getZ() - entityiterator.getZ();
+                        double var39 = vel.lengthSqr();
+                        if (var34 * vel.x + var36 * vel.y + var37 * vel.z > 0.0 || entityiterator.getPersistentData().getBoolean("Stop")) {
+                           double var41 = GetDistanceIteratorProcedure.execute(entity, entityiterator);
+                           if (var41 < var40 * 0.25) {
+                              var33 = true;
+                           } else if (var41 > 0.0 && var39 > var41 * var41) {
+                              entityiterator.setDeltaMovement(new Vec3(vel.x / var41 * var40 * 0.25, vel.y / var41 * var40 * 0.25, vel.z / var41 * var40 * 0.25));
+                           }
+                        }
+                     }
+                  }
+
+                  if (var31) {
+                     var33 = true;
+                     if (var35 != 0.0 && (var35 == entityiterator.getPersistentData().getDouble("NameRanged") || var35 == entityiterator.getPersistentData().getDouble("NameRanged_ranged")) || var38 != 0.0 && (var38 == entityiterator.getPersistentData().getDouble("NameRanged_ranged") || var38 == entityiterator.getPersistentData().getDouble("NameRanged"))) {
+                        continue;
+                     }
+
+                     double var42 = GetDistanceIteratorProcedure.execute(entity, entityiterator);
+                     if (var42 > var40 * 0.25) {
+                        continue;
+                     }
+                  }
+
+                  if (var33) {
+                     if (!entityiterator.getPersistentData().getBoolean("Stop")) {
+                        entityiterator.getPersistentData().putBoolean("Stop", true);
+                     }
+
+                     if (var32) {
+                        entityiterator.setXRot(entityiterator.getXRot());
+                        entityiterator.setYRot(entityiterator.getYRot());
+                        entityiterator.setDeltaMovement(new Vec3(entityiterator.getLookAngle().x * 1.0E-5, entityiterator.getLookAngle().y * 1.0E-5, entityiterator.getLookAngle().z * 1.0E-5));
+                        entityiterator.fallDistance = 0.0F;
+                        if (entityiterator instanceof Arrow || entityiterator instanceof SpectralArrow) {
+                           entityiterator.hasImpulse = true;
+                           entityiterator.hurtMarked = true;
+                        }
+                     } else {
+                        entityiterator.setDeltaMovement(Vec3.ZERO);
+                     }
+                  }
+               }
+            }
+
+            return;
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
          }
 
       }

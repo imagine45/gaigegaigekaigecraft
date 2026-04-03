@@ -17,10 +17,10 @@ public class OnGroundProcedure {
          double dis = 0.0;
          double dis_change = 0.0;
          boolean logic_onGround = false;
-         logic_onGround = entity.m_20096_() || entity.m_20072_();
+         logic_onGround = entity.onGround() || entity.isInWaterOrBubble();
          if (!logic_onGround) {
-            logic_onGround = entity.getPersistentData().m_128471_("canFly");
-            if (!logic_onGround && InsideSolidCalculateProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (double)entity.m_20206_(), (double)(entity.m_20205_() * 2.0F))) {
+            logic_onGround = entity.getPersistentData().getBoolean("canFly");
+            if (!logic_onGround && InsideSolidCalculateProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), (double)entity.getBbHeight(), (double)(entity.getBbWidth() * 2.0F))) {
                logic_onGround = true;
             }
          }

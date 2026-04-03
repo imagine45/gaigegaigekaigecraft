@@ -43,8 +43,8 @@ public class CoffinoftheIronMountainActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label100;
                }
             }
@@ -53,18 +53,18 @@ public class CoffinoftheIronMountainActiveProcedure {
          }
 
          double var38 = var10000;
-         double var43 = entity.getPersistentData().m_128459_("x_pos_doma");
-         double var39 = entity.getPersistentData().m_128459_("y_pos_doma");
-         double var32 = entity.getPersistentData().m_128459_("z_pos_doma");
-         if (var38 % 10.0 == 0.0 || entity.getPersistentData().m_128471_("StartDomainAttack")) {
+         double var43 = entity.getPersistentData().getDouble("x_pos_doma");
+         double var39 = entity.getPersistentData().getDouble("y_pos_doma");
+         double var32 = entity.getPersistentData().getDouble("z_pos_doma");
+         if (var38 % 10.0 == 0.0 || entity.getPersistentData().getBoolean("StartDomainAttack")) {
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123744_, var43, var39, var32, 15, range * 0.25, range * 0.25, range * 0.25, 0.1);
+               _level.sendParticles(ParticleTypes.FLAME, var43, var39, var32, 15, range * 0.25, range * 0.25, range * 0.25, 0.1);
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123784_, var43, var39, var32, 40, range * 0.25, range * 0.25, range * 0.25, 0.1);
+               _level.sendParticles(ParticleTypes.CRIMSON_SPORE, var43, var39, var32, 40, range * 0.25, range * 0.25, range * 0.25, 0.1);
             }
 
             if (Math.random() < 0.5) {
@@ -74,34 +74,35 @@ public class CoffinoftheIronMountainActiveProcedure {
                double var40 = var32 + Math.cos(var44) * var49;
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(var35, var39, var40), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:flame_explode")), SoundSource.NEUTRAL, 0.25F, 1.0F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(var35, var39, var40), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:flame_explode")), SoundSource.NEUTRAL, 0.25F, 1.0F);
                   } else {
-                     _level.m_7785_(var35, var39, var40, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:flame_explode")), SoundSource.NEUTRAL, 0.25F, 1.0F, false);
+                     _level.playLocalSound(var35, var39, var40, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:flame_explode")), SoundSource.NEUTRAL, 0.25F, 1.0F, false);
                   }
                }
 
                if (Math.random() < 0.3 && world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123756_, var35, var39, var40, 30, 0.25, 4.0, 0.25, 0.0);
+                  _level.sendParticles(ParticleTypes.LAVA, var35, var39, var40, 30, 0.25, 4.0, 0.25, 0.0);
                }
             }
 
-            if (var38 % 20.0 == 0.0 || entity.getPersistentData().m_128471_("StartDomainAttack")) {
-               entity.getPersistentData().m_128379_("StartDomainAttack", false);
-               double var31 = entity.getPersistentData().m_128459_("skill");
-               double var34 = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", 60.0);
-               entity.getPersistentData().m_128347_("skill", 406.0);
-               entity.getPersistentData().m_128347_("Damage", 9.0);
-               entity.getPersistentData().m_128347_("Range", range);
-               entity.getPersistentData().m_128347_("effect", 6.0);
-               entity.getPersistentData().m_128379_("swing", false);
-               entity.getPersistentData().m_128379_("attack", false);
-               entity.getPersistentData().m_128379_("DomainAttack", true);
+            if (var38 % 20.0 == 0.0 || entity.getPersistentData().getBoolean("StartDomainAttack")) {
+               entity.getPersistentData().putBoolean("StartDomainAttack", false);
+               double var31 = entity.getPersistentData().getDouble("skill");
+               double var34 = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", 60.0);
+               entity.getPersistentData().putDouble("skill", 406.0);
+               entity.getPersistentData().putDouble("Damage", 9.0);
+               entity.getPersistentData().putDouble("Range", range);
+               entity.getPersistentData().putDouble("effect", 6.0);
+               entity.getPersistentData().putDouble("knockback", 0.0);
+               entity.getPersistentData().putBoolean("swing", false);
+               entity.getPersistentData().putBoolean("attack", false);
+               entity.getPersistentData().putBoolean("DomainAttack", true);
                RangeAttackProcedure.execute(world, var43, var39, var32, entity);
-               entity.getPersistentData().m_128347_("skill", var31);
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", var34);
+               entity.getPersistentData().putDouble("skill", var31);
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", var34);
             }
          }
 
@@ -111,21 +112,21 @@ public class CoffinoftheIronMountainActiveProcedure {
             double var41 = var32 + Math.cos(var45) * (range / 2.0 - 5.0);
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123756_, var36, var39, var41, 20, 0.1, 4.0, 0.1, 0.1);
+               _level.sendParticles(ParticleTypes.LAVA, var36, var39, var41, 20, 0.1, 4.0, 0.1, 0.1);
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_MAGMA.get(), var36, var39, var41, 40, 0.1, 4.0, 0.1, 1.0);
+               _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_MAGMA.get(), var36, var39, var41, 40, 0.1, 4.0, 0.1, 1.0);
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt2_forDomain") > 20.0) {
-            entity.getPersistentData().m_128347_("cnt2_forDomain", 0.0);
+         if (entity.getPersistentData().getDouble("cnt2_forDomain") > 20.0) {
+            entity.getPersistentData().putDouble("cnt2_forDomain", 0.0);
          }
 
-         double var46 = entity.getPersistentData().m_128459_("cnt1_forDomain");
-         double var50 = entity.getPersistentData().m_128459_("cnt2_forDomain");
+         double var46 = entity.getPersistentData().getDouble("cnt1_forDomain");
+         double var50 = entity.getPersistentData().getDouble("cnt2_forDomain");
 
          for(int index0 = 0; index0 < 40; ++index0) {
             double var48 = var46;
@@ -136,12 +137,12 @@ public class CoffinoftheIronMountainActiveProcedure {
                double var42 = var32 + Math.cos(var46) * var50;
                if (Math.random() < 0.25 + var50 / (range * 0.5) && world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123744_, var37, var47, var42, 1, 0.0, 0.05, 0.0, 0.0);
+                  _level.sendParticles(ParticleTypes.FLAME, var37, var47, var42, 1, 0.0, 0.05, 0.0, 0.0);
                }
 
                if (var50 + 0.1 > range * 0.5 && world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123744_, var37, var47, var42, 20, 0.1, 4.0, 0.1, 0.1);
+                  _level.sendParticles(ParticleTypes.FLAME, var37, var47, var42, 20, 0.1, 4.0, 0.1, 0.1);
                }
 
                var46 += Math.toRadians(90.0);
@@ -155,8 +156,8 @@ public class CoffinoftheIronMountainActiveProcedure {
             }
          }
 
-         entity.getPersistentData().m_128347_("cnt1_forDomain", var46);
-         entity.getPersistentData().m_128347_("cnt2_forDomain", var50);
+         entity.getPersistentData().putDouble("cnt1_forDomain", var46);
+         entity.getPersistentData().putDouble("cnt2_forDomain", var50);
       }
    }
 }

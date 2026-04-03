@@ -76,183 +76,183 @@ public class ToadEntity extends Monster implements GeoEntity {
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_274367_(0.6F);
-      this.m_21530_();
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setMaxUpStep(0.6F);
+      this.setPersistenceRequired();
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "toad");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "toad");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new MeleeAttackGoal(this, 1.2, true) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = ToadEntity.this.m_20185_();
-            double y = ToadEntity.this.m_20186_();
-            double z = ToadEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = ToadEntity.this.getX();
+            double y = ToadEntity.this.getY();
+            double z = ToadEntity.this.getZ();
             Entity entity = ToadEntity.this;
-            Level world = ToadEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = ToadEntity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(2, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = ToadEntity.this.m_20185_();
-            double y = ToadEntity.this.m_20186_();
-            double z = ToadEntity.this.m_20189_();
+      this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = ToadEntity.this.getX();
+            double y = ToadEntity.this.getY();
+            double z = ToadEntity.this.getZ();
             Entity entity = ToadEntity.this;
-            Level world = ToadEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ToadEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = ToadEntity.this.m_20185_();
-            double y = ToadEntity.this.m_20186_();
-            double z = ToadEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = ToadEntity.this.getX();
+            double y = ToadEntity.this.getY();
+            double z = ToadEntity.this.getZ();
             Entity entity = ToadEntity.this;
-            Level world = ToadEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ToadEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = ToadEntity.this.m_20185_();
-            double y = ToadEntity.this.m_20186_();
-            double z = ToadEntity.this.m_20189_();
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = ToadEntity.this.getX();
+            double y = ToadEntity.this.getY();
+            double z = ToadEntity.this.getZ();
             Entity entity = ToadEntity.this;
-            Level world = ToadEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ToadEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = ToadEntity.this.m_20185_();
-            double y = ToadEntity.this.m_20186_();
-            double z = ToadEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = ToadEntity.this.getX();
+            double y = ToadEntity.this.getY();
+            double z = ToadEntity.this.getZ();
             Entity entity = ToadEntity.this;
-            Level world = ToadEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = ToadEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(5, new RandomStrollGoal(this, 0.8));
-      this.f_21345_.m_25352_(6, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(7, new FloatGoal(this));
+      this.goalSelector.addGoal(5, new RandomStrollGoal(this, 0.8));
+      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(7, new FloatGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public void m_6667_(DamageSource source) {
-      super.m_6667_(source);
-      DieTenShadowsTechniqueProcedure.execute(this.m_9236_(), this);
+   public void die(DamageSource source) {
+      super.die(source);
+      DieTenShadowsTechniqueProcedure.execute(this.level(), this);
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      super.m_6071_(sourceentity, hand);
-      sourceentity.m_20329_(this);
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      super.mobInteract(sourceentity, hand);
+      sourceentity.startRiding(this);
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       TenShadowsTechniqueProcedure.execute(world, x, y, z, this, sourceentity);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIToadProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AIToadProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      return super.m_6972_(p_33597_).m_20388_(1.0F);
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      return super.getDimensions(p_33597_).scale(1.0F);
    }
 
-   public void m_7023_(Vec3 dir) {
-      Entity entity = this.m_20197_().isEmpty() ? null : (Entity)this.m_20197_().get(0);
-      if (this.m_20160_()) {
-         this.m_146922_(entity.m_146908_());
-         this.f_19859_ = this.m_146908_();
-         this.m_146926_(entity.m_146909_() * 0.5F);
-         this.m_19915_(this.m_146908_(), this.m_146909_());
-         this.f_20883_ = entity.m_146908_();
-         this.f_20885_ = entity.m_146908_();
+   public void travel(Vec3 dir) {
+      Entity entity = this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+      if (this.isVehicle()) {
+         this.setYRot(entity.getYRot());
+         this.yRotO = this.getYRot();
+         this.setXRot(entity.getXRot() * 0.5F);
+         this.setRot(this.getYRot(), this.getXRot());
+         this.yBodyRot = entity.getYRot();
+         this.yHeadRot = entity.getYRot();
          if (entity instanceof LivingEntity) {
             LivingEntity passenger = (LivingEntity)entity;
-            this.m_7910_((float)this.m_21133_(Attributes.f_22279_));
-            float forward = passenger.f_20902_;
+            this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            float forward = passenger.zza;
             float strafe = 0.0F;
-            super.m_7023_(new Vec3((double)strafe, 0.0, (double)forward));
+            super.travel(new Vec3((double)strafe, 0.0, (double)forward));
          }
 
-         double d1 = this.m_20185_() - this.f_19854_;
-         double d0 = this.m_20189_() - this.f_19856_;
+         double d1 = this.getX() - this.xo;
+         double d0 = this.getZ() - this.zo;
          float f1 = (float)Math.sqrt(d1 * d1 + d0 * d0) * 4.0F;
          if (f1 > 1.0F) {
             f1 = 1.0F;
          }
 
-         this.f_267362_.m_267771_(this.f_267362_.m_267731_() + (f1 - this.f_267362_.m_267731_()) * 0.4F);
-         this.f_267362_.m_267590_(this.f_267362_.m_267756_() + this.f_267362_.m_267731_());
-         this.m_267651_(true);
+         this.walkAnimation.setSpeed(this.walkAnimation.speed() + (f1 - this.walkAnimation.speed()) * 0.4F);
+         this.walkAnimation.position(this.walkAnimation.position() + this.walkAnimation.speed());
+         this.calculateEntityAnimation(true);
       } else {
-         super.m_7023_(dir);
+         super.travel(dir);
       }
    }
 
@@ -260,35 +260,35 @@ public class ToadEntity extends Monster implements GeoEntity {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 65.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 4.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 0.5);
-      builder = builder.m_22268_(Attributes.f_22282_, 0.5);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 65.0);
+      builder = builder.add(Attributes.ARMOR, 4.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 0.5);
       return builder;
    }
 
    private PlayState movementPredicate(AnimationState event) {
       if (this.animationprocedure.equals("empty")) {
-         return this.m_21224_() ? event.setAndContinue(RawAnimation.begin().thenPlay("death")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+         return this.isDeadOrDying() ? event.setAndContinue(RawAnimation.begin().thenPlay("death")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
       } else {
          return PlayState.STOP;
       }
    }
 
    private PlayState attackingPredicate(AnimationState event) {
-      double d1 = this.m_20185_() - this.f_19790_;
-      double d0 = this.m_20189_() - this.f_19792_;
+      double d1 = this.getX() - this.xOld;
+      double d0 = this.getZ() - this.zOld;
       float velocity = (float)Math.sqrt(d1 * d1 + d0 * d0);
-      if (this.m_21324_(event.getPartialTick()) > 0.0F && !this.swinging) {
+      if (this.getAttackAnim(event.getPartialTick()) > 0.0F && !this.swinging) {
          this.swinging = true;
-         this.lastSwing = this.m_9236_().m_46467_();
+         this.lastSwing = this.level().getGameTime();
       }
 
-      if (this.swinging && this.lastSwing + 7L <= this.m_9236_().m_46467_()) {
+      if (this.swinging && this.lastSwing + 7L <= this.level().getGameTime()) {
          this.swinging = false;
       }
 
@@ -301,40 +301,47 @@ public class ToadEntity extends Monster implements GeoEntity {
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -348,8 +355,8 @@ public class ToadEntity extends Monster implements GeoEntity {
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(ToadEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(ToadEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(ToadEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(ToadEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(ToadEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(ToadEntity.class, EntityDataSerializers.STRING);
    }
 }

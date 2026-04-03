@@ -22,6 +22,6 @@ public class HeadPropellerArmorRenderer extends GeoArmorRenderer<HeadPropellerIt
    }
 
    public RenderType getRenderType(HeadPropellerItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.getTextureLocation(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 }

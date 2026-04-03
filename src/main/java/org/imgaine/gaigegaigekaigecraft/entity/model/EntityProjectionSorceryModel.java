@@ -13,15 +13,15 @@ public class EntityProjectionSorceryModel extends GeoModel<EntityProjectionSorce
    }
 
    public ResourceLocation getAnimationResource(EntityProjectionSorceryEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/human.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/human.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityProjectionSorceryEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/human.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/human.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityProjectionSorceryEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityProjectionSorceryEntity animatable, long instanceId, AnimationState animationState) {

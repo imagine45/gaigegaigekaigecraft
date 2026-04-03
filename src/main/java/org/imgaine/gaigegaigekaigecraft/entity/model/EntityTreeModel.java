@@ -9,14 +9,14 @@ public class EntityTreeModel extends GeoModel<EntityTreeEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityTreeEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/tree.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/tree.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityTreeEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/tree.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/tree.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityTreeEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

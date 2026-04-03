@@ -24,39 +24,39 @@ public class MaxElephantFallProcedure {
          double level_jump = 0.0;
          double level = 0.0;
          double level_speed = 0.0;
-         if (entity.m_20096_() && entity.getPersistentData().m_128471_("flag_fall")) {
-            HP = entity.getPersistentData().m_128459_("skill");
-            entity.getPersistentData().m_128347_("skill", 1.0);
-            entity.getPersistentData().m_128379_("flag_fall", false);
-            entity.getPersistentData().m_128347_("Damage", 14.0);
-            entity.getPersistentData().m_128347_("Range", (double)(3.0F + entity.m_20205_()));
-            entity.getPersistentData().m_128347_("knockback", 2.0);
-            entity.getPersistentData().m_128379_("swing", true);
-            entity.getPersistentData().m_128379_("attack", true);
+         if (entity.onGround() && entity.getPersistentData().getBoolean("flag_fall")) {
+            HP = entity.getPersistentData().getDouble("skill");
+            entity.getPersistentData().putDouble("skill", 1.0);
+            entity.getPersistentData().putBoolean("flag_fall", false);
+            entity.getPersistentData().putDouble("Damage", 14.0);
+            entity.getPersistentData().putDouble("Range", (double)(3.0F + entity.getBbWidth()));
+            entity.getPersistentData().putDouble("knockback", 2.0);
+            entity.getPersistentData().putBoolean("swing", true);
+            entity.getPersistentData().putBoolean("attack", true);
             RangeAttackProcedure.execute(world, x, y, z, entity);
-            entity.getPersistentData().m_128347_("skill", HP);
+            entity.getPersistentData().putDouble("skill", HP);
             if (world instanceof Level) {
                Level _level = (Level)world;
-               if (!_level.m_5776_()) {
-                  _level.m_254849_((Entity)null, x, y, z, 0.0F, ExplosionInteraction.NONE);
+               if (!_level.isClientSide()) {
+                  _level.explode((Entity)null, x, y, z, 0.0F, ExplosionInteraction.NONE);
                }
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123813_, x, y, z, (int)(25.0 * ReturnEntitySizeProcedure.execute(entity)), 0.5 * (double)entity.m_20205_(), 0.0, 0.5 * (double)entity.m_20205_(), 0.0);
+               _level.sendParticles(ParticleTypes.EXPLOSION, x, y, z, (int)(25.0 * ReturnEntitySizeProcedure.execute(entity)), 0.5 * (double)entity.getBbWidth(), 0.0, 0.5 * (double)entity.getBbWidth(), 0.0);
             }
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123796_, x, y, z, (int)(25.0 * ReturnEntitySizeProcedure.execute(entity)), 0.5 * (double)entity.m_20205_(), 0.0, 0.5 * (double)entity.m_20205_(), 0.25);
+               _level.sendParticles(ParticleTypes.CLOUD, x, y, z, (int)(25.0 * ReturnEntitySizeProcedure.execute(entity)), 0.5 * (double)entity.getBbWidth(), 0.0, 0.5 * (double)entity.getBbWidth(), 0.25);
             }
          }
 
-         if (entity.m_20184_().m_7098_() < -0.25) {
-            entity.getPersistentData().m_128379_("flag_fall", true);
+         if (entity.getDeltaMovement().y() < -0.25) {
+            entity.getPersistentData().putBoolean("flag_fall", true);
          } else {
-            entity.getPersistentData().m_128379_("flag_fall", false);
+            entity.getPersistentData().putBoolean("flag_fall", false);
          }
 
       }

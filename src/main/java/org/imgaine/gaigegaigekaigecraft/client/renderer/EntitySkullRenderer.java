@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EntitySkullRenderer extends MobRenderer<EntitySkullEntity, Modelskull1<EntitySkullEntity>> {
    public EntitySkullRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelskull1(context.m_174023_(Modelskull1.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelskull1(context.bakeLayer(Modelskull1.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(EntitySkullEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/skull1.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/skull1.png");
    }
 }

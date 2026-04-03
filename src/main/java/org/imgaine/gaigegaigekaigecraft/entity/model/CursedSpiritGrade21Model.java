@@ -13,15 +13,15 @@ public class CursedSpiritGrade21Model extends GeoModel<CursedSpiritGrade21Entity
    }
 
    public ResourceLocation getAnimationResource(CursedSpiritGrade21Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/cursedspirit2_1.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/cursedspirit2_1.animation.json");
    }
 
    public ResourceLocation getModelResource(CursedSpiritGrade21Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/cursedspirit2_1.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/cursedspirit2_1.geo.json");
    }
 
    public ResourceLocation getTextureResource(CursedSpiritGrade21Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(CursedSpiritGrade21Entity animatable, long instanceId, AnimationState animationState) {

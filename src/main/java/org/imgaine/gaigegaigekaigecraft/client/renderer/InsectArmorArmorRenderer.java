@@ -22,6 +22,6 @@ public class InsectArmorArmorRenderer extends GeoArmorRenderer<InsectArmorItem> 
    }
 
    public RenderType getRenderType(InsectArmorItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.getTextureLocation(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 }

@@ -10,7 +10,7 @@ public class CursedTechniqueOkkotsuProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          double skill = 0.0;
-         skill = entity.getPersistentData().m_128459_("skill");
+         skill = entity.getPersistentData().getDouble("skill");
          if (skill == 503.0) {
             AttackSpeedProcedure.execute(world, x, y, z, entity);
          } else if (skill == 505.0) {

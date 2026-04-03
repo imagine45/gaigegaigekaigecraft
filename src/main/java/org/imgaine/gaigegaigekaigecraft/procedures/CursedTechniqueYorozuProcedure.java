@@ -17,7 +17,7 @@ public class CursedTechniqueYorozuProcedure {
       if (entity != null) {
          double level = 0.0;
          double skill = 0.0;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 3900.0);
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 3900.0);
          if (skill == 5.0) {
             AttackOverheadProcedure.execute(world, x, y, z, entity);
          } else if (skill == 6.0) {
@@ -38,10 +38,10 @@ public class CursedTechniqueYorozuProcedure {
             ThreefoldAfflictionProcedure.execute(world, x, y, z, entity);
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
          }
 
-         if (entity.getPersistentData().m_128459_("skill") == 0.0 && entity instanceof Player) {
+         if (entity.getPersistentData().getDouble("skill") == 0.0 && entity instanceof Player) {
             boolean _setval = true;
             entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                capability.noChangeTechnique = _setval;

@@ -36,10 +36,10 @@ public class PlayerVelocityPacket {
 
    public static void handle(PlayerVelocityPacket message, Supplier<NetworkEvent.Context> ctx) {
       ((NetworkEvent.Context)ctx.get()).enqueueWork(() -> {
-         Minecraft mc = Minecraft.m_91087_();
-         LocalPlayer player = mc.f_91074_;
+         Minecraft mc = Minecraft.getInstance();
+         LocalPlayer player = mc.player;
          if (player != null) {
-            player.m_20256_(new Vec3(message.vx, message.vy, message.vz));
+            player.setDeltaMovement(new Vec3(message.vx, message.vy, message.vz));
          }
 
       });

@@ -20,80 +20,76 @@ public class FallingBlossomEmotionOnEffectActiveTickProcedure {
 
    public static void execute(LevelAccessor world, Entity entity) {
       if (entity != null) {
-         if (entity instanceof Player) {
-            label62: {
+         if (entity instanceof Player && entity.tickCount % 10 == 0) {
+            label63: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt1 = (LivingEntity)entity;
-                  if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
-                     break label62;
+                  if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.SIX_EYES.get())) {
+                     break label63;
                   }
                }
 
-               double _setval = ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerChange - 1.0;
-               entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-                  capability.PlayerCursePowerChange = _setval;
-                  capability.syncPlayerVariables(entity);
-               });
+               entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> capability.PlayerCursePowerChange -= 10.0);
             }
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 3, 3, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 3, false, false));
             }
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), 3, 0, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), 3, 0, false, false));
             }
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), 3, 0, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), 3, 0, false, false));
             }
          }
 
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_BLUE.get(), entity.m_20185_(), entity.m_20186_() + (double)entity.m_20206_() * 0.5, entity.m_20189_(), (int)(4.0 * ReturnEntitySizeProcedure.execute(entity)), (double)entity.m_20205_() * 0.35, (double)entity.m_20206_() * 0.5, (double)entity.m_20205_() * 0.35, 0.0);
+            _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_BLUE.get(), entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ(), (int)(4.0 * ReturnEntitySizeProcedure.execute(entity)), (double)entity.getBbWidth() * 0.35, (double)entity.getBbHeight() * 0.5, (double)entity.getBbWidth() * 0.35, 0.0);
          }
 
-         label51: {
+         label52: {
             if (ActiveTickConditionProcedure.execute(entity)) {
                if (!(entity instanceof LivingEntity)) {
-                  break label51;
+                  break label52;
                }
 
                LivingEntity _livEnt13 = (LivingEntity)entity;
-               if (!_livEnt13.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
-                  break label51;
+               if (!_livEnt13.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+                  break label52;
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.FALLING_BLOSSOM_EMOTION.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.FALLING_BLOSSOM_EMOTION.get());
             }
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.PROJECTION_SORCERY.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.PROJECTION_SORCERY.get());
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.STAR_RAGE.get());
          }
 
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
          }
 
       }

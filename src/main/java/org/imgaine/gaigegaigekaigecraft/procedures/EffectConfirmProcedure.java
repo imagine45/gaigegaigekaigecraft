@@ -10,10 +10,10 @@ public class EffectConfirmProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entityiterator) {
       if (entity != null && entityiterator != null) {
          double effect = 0.0;
-         effect = entity.getPersistentData().m_128459_("effectConfirm");
+         effect = entity.getPersistentData().getDouble("effectConfirm");
          if (effect != 0.0) {
             if (effect == 1.0) {
-               EffectConfirm1Procedure.execute(world, entityiterator);
+               EffectConfirm1Procedure.execute(world, entity, entityiterator);
             } else if (effect == 2.0) {
                EffectConfirm2Procedure.execute(entityiterator);
             } else if (effect == 3.0) {

@@ -12,16 +12,16 @@ import net.minecraft.world.level.Level;
 
 public class CursedSpiritBallItem extends Item {
    public CursedSpiritBallItem() {
-      super((new Item.Properties()).m_41487_(64).m_41486_().m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).stacksTo(64).fireResistant().rarity(Rarity.COMMON));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.EAT;
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      CursedSpiritBallFoodEatenProcedure.execute(world, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity, (ItemStack)ar.m_19095_());
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      CursedSpiritBallFoodEatenProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), entity, (ItemStack)ar.getObject());
       return ar;
    }
 }

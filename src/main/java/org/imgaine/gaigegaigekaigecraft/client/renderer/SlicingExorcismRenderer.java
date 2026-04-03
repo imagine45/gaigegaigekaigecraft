@@ -11,19 +11,19 @@ import net.minecraft.world.level.Level;
 
 public class SlicingExorcismRenderer extends MobRenderer<SlicingExorcismEntity, Modelslicing_exorcism<SlicingExorcismEntity>> {
    public SlicingExorcismRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modelslicing_exorcism(context.m_174023_(Modelslicing_exorcism.LAYER_LOCATION)), 0.3F);
+      super(context, new Modelslicing_exorcism(context.bakeLayer(Modelslicing_exorcism.LAYER_LOCATION)), 0.3F);
    }
 
    protected void scale(SlicingExorcismEntity entity, PoseStack poseStack, float f) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.scale(scale, scale, scale);
    }
 
    public ResourceLocation getTextureLocation(SlicingExorcismEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/slicing_exorcism.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/slicing_exorcism.png");
    }
 }

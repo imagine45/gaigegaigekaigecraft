@@ -12,14 +12,14 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class EntityJacobsLadderCircleLayer extends GeoRenderLayer<EntityJacobsLadderCircleEntity> {
-   private static final ResourceLocation LAYER = new ResourceLocation("jujutsucraft", "textures/entities/jacobs_ladder.png");
+   private static final ResourceLocation LAYER = new ResourceLocation("gaigegaigekaigecraft", "textures/entities/jacobs_ladder.png");
 
    public EntityJacobsLadderCircleLayer(GeoRenderer<EntityJacobsLadderCircleEntity> entityRenderer) {
       super(entityRenderer);
    }
 
    public void render(PoseStack poseStack, EntityJacobsLadderCircleEntity animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-      RenderType glowRenderType = RenderType.m_110488_(LAYER);
-      this.getRenderer().reRender(this.getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, glowRenderType, bufferSource.m_6299_(glowRenderType), partialTick, packedLight, OverlayTexture.f_118083_, 1.0F, 1.0F, 1.0F, 1.0F);
+      RenderType glowRenderType = RenderType.eyes(LAYER);
+      this.getRenderer().reRender(this.getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, glowRenderType, bufferSource.getBuffer(glowRenderType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
    }
 }

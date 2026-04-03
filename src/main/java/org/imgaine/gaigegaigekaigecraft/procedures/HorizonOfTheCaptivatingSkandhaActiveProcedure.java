@@ -37,13 +37,13 @@ public class HorizonOfTheCaptivatingSkandhaActiveProcedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
-         if (!entity.getPersistentData().m_128471_("Failed")) {
+         if (!entity.getPersistentData().getBoolean("Failed")) {
             int var10000;
             label80: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt = (LivingEntity)entity;
-                  if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                     var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+                  if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                     var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                      break label80;
                   }
                }
@@ -56,8 +56,8 @@ public class HorizonOfTheCaptivatingSkandhaActiveProcedure {
                label74: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                        var10001 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                     if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                         break label74;
                      }
                   }
@@ -65,57 +65,57 @@ public class HorizonOfTheCaptivatingSkandhaActiveProcedure {
                   var10001 = 0;
                }
 
-               HP = (double)(30 + var10001 * 6);
-               old_skill = entity.getPersistentData().m_128459_("skill");
-               old_cooldown = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
-               entity.getPersistentData().m_128347_("skill", 809.0);
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", 125.0);
+               HP = (double)(20 + var10001 * 5);
+               old_skill = entity.getPersistentData().getDouble("skill");
+               old_cooldown = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
+               entity.getPersistentData().putDouble("skill", 809.0);
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", 125.0);
 
                for(int index0 = 0; index0 < 8; ++index0) {
                   if (Math.random() < 0.5) {
                      num1 = Math.toRadians(Math.random() * 360.0);
-                     x_pos = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0);
-                     y_pos = entity.getPersistentData().m_128459_("y_pos_doma");
-                     z_pos = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0);
+                     x_pos = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0);
+                     y_pos = entity.getPersistentData().getDouble("y_pos_doma");
+                     z_pos = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0);
                      size = 0.5 + Math.random();
                      if (world instanceof ServerLevel) {
                         ServerLevel _serverLevel = (ServerLevel)world;
-                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.SEA_SERPENT.get()).m_262451_(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
+                        Entity entityinstance = ((EntityType)JujutsucraftModEntities.SEA_SERPENT.get()).create(_serverLevel, (CompoundTag)null, (Consumer)null, BlockPos.containing(x_pos, y_pos, z_pos), MobSpawnType.MOB_SUMMONED, false, false);
                         if (entityinstance != null) {
-                           entityinstance.m_146922_(world.m_213780_().m_188501_() * 360.0F);
+                           entityinstance.setYRot(world.getRandom().nextFloat() * 360.0F);
                            SetRangedAmmoProcedure.execute(entity, entityinstance);
-                           if (!entityinstance.m_9236_().m_5776_() && entityinstance.m_20194_() != null) {
-                              entityinstance.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entityinstance.m_20182_(), entityinstance.m_20155_(), entityinstance.m_9236_() instanceof ServerLevel ? (ServerLevel)entityinstance.m_9236_() : null, 4, entityinstance.m_7755_().getString(), entityinstance.m_5446_(), entityinstance.m_9236_().m_7654_(), entityinstance), "data merge entity @s {NoAI:1b}");
+                           if (!entityinstance.level().isClientSide() && entityinstance.getServer() != null) {
+                              entityinstance.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entityinstance.position(), entityinstance.getRotationVector(), entityinstance.level() instanceof ServerLevel ? (ServerLevel)entityinstance.level() : null, 4, entityinstance.getName().getString(), entityinstance.getDisplayName(), entityinstance.level().getServer(), entityinstance), "data merge entity @s {NoAI:1b}");
                            }
 
-                           entityinstance.m_146922_((float)Math.toDegrees(num1));
-                           entityinstance.m_146926_(0.0F);
-                           entityinstance.m_5618_(entityinstance.m_146908_());
-                           entityinstance.m_5616_(entityinstance.m_146908_());
-                           entityinstance.f_19859_ = entityinstance.m_146908_();
-                           entityinstance.f_19860_ = entityinstance.m_146909_();
+                           entityinstance.setYRot((float)Math.toDegrees(num1));
+                           entityinstance.setXRot(0.0F);
+                           entityinstance.setYBodyRot(entityinstance.getYRot());
+                           entityinstance.setYHeadRot(entityinstance.getYRot());
+                           entityinstance.yRotO = entityinstance.getYRot();
+                           entityinstance.xRotO = entityinstance.getXRot();
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entityinstance;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
+                              _entity.yBodyRotO = _entity.getYRot();
+                              _entity.yHeadRotO = _entity.getYRot();
                            }
 
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _livingEntity16 = (LivingEntity)entityinstance;
-                              if (_livingEntity16.m_21204_().m_22171_(Attributes.f_22276_)) {
-                                 _livingEntity16.getAttribute_(Attributes.f_22276_).m_22100_(HP);
+                              if (_livingEntity16.getAttributes().hasAttribute(Attributes.MAX_HEALTH)) {
+                                 _livingEntity16.getAttribute(Attributes.MAX_HEALTH).setBaseValue(HP);
                               }
                            }
 
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entityinstance;
-                              _entity.m_21153_((float)HP);
+                              _entity.setHealth((float)HP);
                            }
 
                            if (entityinstance instanceof LivingEntity) {
                               LivingEntity _livingEntity20 = (LivingEntity)entityinstance;
-                              if (_livingEntity20.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.SIZE.get())) {
-                                 _livingEntity20.getAttribute_((Attribute)JujutsucraftModAttributes.SIZE.get()).m_22100_((9.0 + Math.random() * 6.0) * 0.1);
+                              if (_livingEntity20.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.SIZE.get())) {
+                                 _livingEntity20.getAttribute((Attribute)JujutsucraftModAttributes.SIZE.get()).setBaseValue((5.0 + Math.random() * 7.5) * 0.1);
                               }
                            }
 
@@ -125,14 +125,14 @@ public class HorizonOfTheCaptivatingSkandhaActiveProcedure {
                               animatable.setTexture("dagon_fish" + Math.round(Math.ceil(var39 * 3.0)));
                            }
 
-                           _serverLevel.m_7967_(entityinstance);
+                           _serverLevel.addFreshEntity(entityinstance);
                         }
                      }
                   }
                }
 
-               entity.getPersistentData().m_128347_("skill", old_skill);
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", old_cooldown);
+               entity.getPersistentData().putDouble("skill", old_skill);
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", old_cooldown);
             }
          }
 

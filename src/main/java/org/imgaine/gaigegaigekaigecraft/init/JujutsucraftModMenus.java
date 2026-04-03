@@ -2,7 +2,9 @@ package org.imgaine.gaigegaigekaigecraft.init;
 
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import org.imgaine.gaigegaigekaigecraft.JujutsucraftMod;
+import org.imgaine.gaigegaigekaigecraft.Gaigegaigekaigecraft;
+import org.imgaine.gaigegaigekaigecraft.world.inventory.SelectProfessionMenu;
+import org.imgaine.gaigegaigekaigecraft.world.inventory.SelectTechnique2Menu;
 import org.imgaine.gaigegaigekaigecraft.world.inventory.SelectTechniqueMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -25,27 +27,31 @@ import net.minecraftforge.registries.RegistryObject;
 public class JujutsucraftModMenus {
    public static final DeferredRegister<MenuType<?>> REGISTRY;
    public static final RegistryObject<MenuType<SelectTechniqueMenu>> SELECT_TECHNIQUE;
+   public static final RegistryObject<MenuType<SelectProfessionMenu>> SELECT_PROFESSION;
+   public static final RegistryObject<MenuType<SelectTechnique2Menu>> SELECT_TECHNIQUE_2;
 
    public JujutsucraftModMenus() {
    }
 
    public static void setText(String boxname, String value, @Nullable ServerPlayer player) {
       if (player != null) {
-         JujutsucraftMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new GuiSyncMessage(boxname, value));
+         Gaigegaigekaigecraft.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new GuiSyncMessage(boxname, value));
       } else {
-         JujutsucraftMod.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new GuiSyncMessage(boxname, value));
+         Gaigegaigekaigecraft.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new GuiSyncMessage(boxname, value));
       }
 
    }
 
    @SubscribeEvent
    public static void init(FMLCommonSetupEvent event) {
-      JujutsucraftMod.addNetworkMessage(GuiSyncMessage.class, GuiSyncMessage::buffer, GuiSyncMessage::new, GuiSyncMessage::handleData);
+      Gaigegaigekaigecraft.addNetworkMessage(GuiSyncMessage.class, GuiSyncMessage::buffer, GuiSyncMessage::new, GuiSyncMessage::handleData);
    }
 
    static {
-      REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "jujutsucraft");
+      REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, "gaigegaigekaigecraft");
       SELECT_TECHNIQUE = REGISTRY.register("select_technique", () -> IForgeMenuType.create(SelectTechniqueMenu::new));
+      SELECT_PROFESSION = REGISTRY.register("select_profession", () -> IForgeMenuType.create(SelectProfessionMenu::new));
+      SELECT_TECHNIQUE_2 = REGISTRY.register("select_technique_2", () -> IForgeMenuType.create(SelectTechnique2Menu::new));
    }
 
    public static class GuiSyncMessage {
@@ -53,8 +59,8 @@ public class JujutsucraftModMenus {
       private final String data;
 
       public GuiSyncMessage(FriendlyByteBuf buffer) {
-         this.textboxid = buffer.m_130238_().getString();
-         this.data = buffer.m_130238_().getString();
+         this.textboxid = buffer.readComponent().getString();
+         this.data = buffer.readComponent().getString();
       }
 
       public GuiSyncMessage(String textboxid, String data) {
@@ -63,8 +69,8 @@ public class JujutsucraftModMenus {
       }
 
       public static void buffer(GuiSyncMessage message, FriendlyByteBuf buffer) {
-         buffer.m_130083_(Component.m_237113_(message.textboxid));
-         buffer.m_130083_(Component.m_237113_(message.data));
+         buffer.writeComponent(Component.literal(message.textboxid));
+         buffer.writeComponent(Component.literal(message.data));
       }
 
       public static void handleData(GuiSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {

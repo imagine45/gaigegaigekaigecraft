@@ -23,30 +23,30 @@ public class LogicSwordProcedure {
       if (entity == null) {
          return false;
       } else {
-         ItemStack mainHandItem = ItemStack.f_41583_;
+         ItemStack mainHandItem = ItemStack.EMPTY;
          ItemStack var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt = (LivingEntity)entity;
-            var10000 = _livEnt.m_21205_();
+            var10000 = _livEnt.getMainHandItem();
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         mainHandItem = var10000.m_41777_();
-         if (!(mainHandItem.m_41720_() instanceof SwordItem) && !(mainHandItem.m_41720_() instanceof AxeItem) && !(mainHandItem.m_41720_() instanceof PickaxeItem) && !(mainHandItem.m_41720_() instanceof ShovelItem) && !(mainHandItem.m_41720_() instanceof HoeItem) && !mainHandItem.m_204117_(ItemTags.create(new ResourceLocation("forge:sword"))) && !mainHandItem.m_204117_(ItemTags.create(new ResourceLocation("forge:whip"))) && (!mainHandItem.m_204117_(ItemTags.create(new ResourceLocation("forge:metallic"))) || !mainHandItem.m_204117_(ItemTags.create(new ResourceLocation("minecraft:pickaxes"))))) {
-            if (entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:have_claws")))) {
+         mainHandItem = var10000.copy();
+         if (!(mainHandItem.getItem() instanceof SwordItem) && !(mainHandItem.getItem() instanceof AxeItem) && !(mainHandItem.getItem() instanceof PickaxeItem) && !(mainHandItem.getItem() instanceof ShovelItem) && !(mainHandItem.getItem() instanceof HoeItem) && !mainHandItem.is(ItemTags.create(new ResourceLocation("forge:sword"))) && !mainHandItem.is(ItemTags.create(new ResourceLocation("forge:whip"))) && (!mainHandItem.is(ItemTags.create(new ResourceLocation("forge:metallic"))) || !mainHandItem.is(ItemTags.create(new ResourceLocation("minecraft:pickaxes"))))) {
+            if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:have_claws")))) {
                return true;
-            } else if (entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:iron_body")))) {
+            } else if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:iron_body")))) {
                return true;
             } else {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var10000 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                  var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                } else {
-                  var10000 = ItemStack.f_41583_;
+                  var10000 = ItemStack.EMPTY;
                }
 
-               return var10000.m_41720_() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get();
+               return var10000.getItem() == JujutsucraftModItems.ARMOR_INSTANT_SPIRIT_BODYOF_DISTORTED_KILLING_CHESTPLATE.get();
             }
          } else {
             return true;

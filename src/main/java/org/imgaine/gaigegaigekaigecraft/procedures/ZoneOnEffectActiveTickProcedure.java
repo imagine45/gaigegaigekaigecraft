@@ -11,9 +11,9 @@ public class ZoneOnEffectActiveTickProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         if (!entity.m_6084_() && entity instanceof LivingEntity) {
+         if (!entity.isAlive() && entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.ZONE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.ZONE.get());
          }
 
       }

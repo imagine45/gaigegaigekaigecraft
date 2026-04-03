@@ -9,14 +9,14 @@ public class TigerFuneralModel extends GeoModel<TigerFuneralEntity> {
    }
 
    public ResourceLocation getAnimationResource(TigerFuneralEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/tigerfuneral.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/tigerfuneral.animation.json");
    }
 
    public ResourceLocation getModelResource(TigerFuneralEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/tigerfuneral.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/tigerfuneral.geo.json");
    }
 
    public ResourceLocation getTextureResource(TigerFuneralEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

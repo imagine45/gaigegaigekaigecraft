@@ -9,14 +9,14 @@ public class EntityDomainInumakiModel extends GeoModel<EntityDomainInumakiEntity
    }
 
    public ResourceLocation getAnimationResource(EntityDomainInumakiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/inumaki_domain.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/inumaki_domain.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityDomainInumakiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/inumaki_domain.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/inumaki_domain.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityDomainInumakiEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

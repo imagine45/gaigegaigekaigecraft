@@ -22,22 +22,22 @@ public class InsectArmorAppliedProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, double amplifier) {
       if (entity != null) {
-         ItemStack item_a = ItemStack.f_41583_;
+         ItemStack item_a = ItemStack.EMPTY;
          double tick = 0.0;
          double num_level = 0.0;
          num_level = amplifier + 1.0;
          if (num_level > 0.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity1 = (LivingEntity)entity;
-               if (_livingEntity1.m_21204_().m_22171_(Attributes.f_22281_)) {
+               if (_livingEntity1.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
                   AttributeInstance var10000;
                   double var10001;
                   label157: {
-                     var10000 = _livingEntity1.getAttribute_(Attributes.f_22281_);
+                     var10000 = _livingEntity1.getAttribute(Attributes.ATTACK_DAMAGE);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livingEntity0 = (LivingEntity)entity;
-                        if (_livingEntity0.m_21204_().m_22171_(Attributes.f_22281_)) {
-                           var10001 = _livingEntity0.getAttribute_(Attributes.f_22281_).m_22115_();
+                        if (_livingEntity0.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                           var10001 = _livingEntity0.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                            break label157;
                         }
                      }
@@ -45,21 +45,21 @@ public class InsectArmorAppliedProcedure {
                      var10001 = 0.0;
                   }
 
-                  var10000.m_22100_(var10001 + num_level * 0.6);
+                  var10000.setBaseValue(var10001 + num_level * 0.6);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity3 = (LivingEntity)entity;
-               if (_livingEntity3.m_21204_().m_22171_(Attributes.f_22278_)) {
+               if (_livingEntity3.getAttributes().hasAttribute(Attributes.KNOCKBACK_RESISTANCE)) {
                   AttributeInstance var33;
                   double var40;
                   label146: {
-                     var33 = _livingEntity3.getAttribute_(Attributes.f_22278_);
+                     var33 = _livingEntity3.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livingEntity2 = (LivingEntity)entity;
-                        if (_livingEntity2.m_21204_().m_22171_(Attributes.f_22278_)) {
-                           var40 = _livingEntity2.getAttribute_(Attributes.f_22278_).m_22115_();
+                        if (_livingEntity2.getAttributes().hasAttribute(Attributes.KNOCKBACK_RESISTANCE)) {
+                           var40 = _livingEntity2.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getBaseValue();
                            break label146;
                         }
                      }
@@ -67,7 +67,7 @@ public class InsectArmorAppliedProcedure {
                      var40 = 0.0;
                   }
 
-                  var33.m_22100_(var40 + 2.0);
+                  var33.setBaseValue(var40 + 2.0);
                }
             }
          }
@@ -85,95 +85,95 @@ public class InsectArmorAppliedProcedure {
             ItemStack var34;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var34 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var34 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var34 = ItemStack.f_41583_;
+               var34 = ItemStack.EMPTY;
             }
 
-            if (var34.m_41720_() != JujutsucraftModItems.INSECT_ARMOR_HELMET.get()) {
+            if (var34.getItem() != JujutsucraftModItems.INSECT_ARMOR_HELMET.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var34 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                     var34 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                   } else {
-                     var34 = ItemStack.f_41583_;
+                     var34 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var34.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var34.copy().copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.head with jujutsucraft:insect_armor_helmet");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.head with gaigegaigekaigecraft:insect_armor_helmet");
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var34 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+               var34 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
             } else {
-               var34 = ItemStack.f_41583_;
+               var34 = ItemStack.EMPTY;
             }
 
-            if (var34.m_41720_() != JujutsucraftModItems.INSECT_ARMOR_CHESTPLATE.get()) {
+            if (var34.getItem() != JujutsucraftModItems.INSECT_ARMOR_CHESTPLATE.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var34 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                     var34 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                   } else {
-                     var34 = ItemStack.f_41583_;
+                     var34 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var34.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var34.copy().copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.chest with jujutsucraft:insect_armor_chestplate");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.chest with gaigegaigekaigecraft:insect_armor_chestplate");
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var34 = _entGetArmor.m_6844_(EquipmentSlot.LEGS);
+               var34 = _entGetArmor.getItemBySlot(EquipmentSlot.LEGS);
             } else {
-               var34 = ItemStack.f_41583_;
+               var34 = ItemStack.EMPTY;
             }
 
-            if (var34.m_41720_() != JujutsucraftModItems.INSECT_ARMOR_LEGGINGS.get()) {
+            if (var34.getItem() != JujutsucraftModItems.INSECT_ARMOR_LEGGINGS.get()) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var34 = _entGetArmor.m_6844_(EquipmentSlot.LEGS);
+                     var34 = _entGetArmor.getItemBySlot(EquipmentSlot.LEGS);
                   } else {
-                     var34 = ItemStack.f_41583_;
+                     var34 = ItemStack.EMPTY;
                   }
 
-                  ItemStack _setstack = var34.m_41777_().m_41777_();
-                  _setstack.m_41764_(1);
+                  ItemStack _setstack = var34.copy().copy();
+                  _setstack.setCount(1);
                   ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                }
 
-               if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                  entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.legs with jujutsucraft:insect_armor_leggings");
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.legs with gaigegaigekaigecraft:insect_armor_leggings");
                }
             }
          } else {
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.head with jujutsucraft:insect_armor_helmet");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.head with gaigegaigekaigecraft:insect_armor_helmet");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.chest with jujutsucraft:insect_armor_chestplate");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.chest with gaigegaigekaigecraft:insect_armor_chestplate");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "item replace entity @s armor.legs with jujutsucraft:insect_armor_leggings");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.legs with gaigegaigekaigecraft:insect_armor_leggings");
             }
          }
 

@@ -8,7 +8,7 @@ public class KeySpaceOnKeyReleasedProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128379_("PRESS_SPACE", false);
+         entity.getPersistentData().putBoolean("PRESS_SPACE", false);
       }
    }
 }

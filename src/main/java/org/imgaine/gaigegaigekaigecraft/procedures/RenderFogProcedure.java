@@ -44,10 +44,10 @@ public class RenderFogProcedure {
    public static void renderFog(ViewportEvent.RenderFog event) {
       provider = event;
       if (provider.getMode() == FogMode.FOG_TERRAIN) {
-         ClientLevel level = Minecraft.m_91087_().f_91073_;
-         Entity entity = provider.getCamera().m_90592_();
+         ClientLevel level = Minecraft.getInstance().level;
+         Entity entity = provider.getCamera().getEntity();
          if (level != null && entity != null) {
-            Vec3 pos = entity.m_20318_((float)provider.getPartialTick());
+            Vec3 pos = entity.getPosition((float)provider.getPartialTick());
             execute(provider, entity);
          }
       }
@@ -66,16 +66,16 @@ public class RenderFogProcedure {
             double distance = 0.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt0 = (LivingEntity)entity;
-               if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = entity.getPersistentData().m_128459_("skill_domain") + 10.0;
+               if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = entity.getPersistentData().getDouble("skill_domain") + 10.0;
                   break label61;
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get()).m_19564_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get()).getAmplifier();
                   break label61;
                }
             }

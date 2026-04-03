@@ -22,6 +22,6 @@ public class ClothesDagonArmorRenderer extends GeoArmorRenderer<ClothesDagonItem
    }
 
    public RenderType getRenderType(ClothesDagonItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.getTextureLocation(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 }

@@ -36,15 +36,15 @@ public class BuildHospital1Procedure {
       double sy = 0.0;
       double sz = 0.0;
       if (world instanceof Level _level) {
-         if (!_level.m_5776_()) {
-            _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+         if (!_level.isClientSide()) {
+            _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F);
          } else {
-            _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+            _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("ambient.cave")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
          }
       }
 
       if (world instanceof ServerLevel _level) {
-         _level.m_8767_(ParticleTypes.f_123746_, x, y, z, 25, 0.25, 0.25, 0.25, 0.1);
+         _level.sendParticles(ParticleTypes.SOUL, x, y, z, 25, 0.25, 0.25, 0.25, 0.1);
       }
 
       boss_flag = false;
@@ -60,7 +60,7 @@ public class BuildHospital1Procedure {
             z_pos = z + (Math.random() - 0.5) * 48.0 * 0.8;
 
             for(int index2 = 0; index2 < 24; ++index2) {
-               if (world.m_46859_(BlockPos.m_274561_(x_pos, y_pos, z_pos)) && !world.m_46859_(BlockPos.m_274561_(x_pos, y_pos - 1.0, z_pos)) && Math.random() < 0.5) {
+               if (world.isEmptyBlock(BlockPos.containing(x_pos, y_pos, z_pos)) && !world.isEmptyBlock(BlockPos.containing(x_pos, y_pos - 1.0, z_pos)) && Math.random() < 0.5) {
                   SUCCESS = true;
                   sx = x_pos - entity_width * 0.5;
 
@@ -71,7 +71,7 @@ public class BuildHospital1Procedure {
                         sy = y_pos;
 
                         for(int index5 = 0; index5 < (int)Math.round(entity_height); ++index5) {
-                           if (world.m_8055_(BlockPos.m_274561_(sx, sy, sz)).m_60815_()) {
+                           if (world.getBlockState(BlockPos.containing(sx, sy, sz)).canOcclude()) {
                               SUCCESS = false;
                               break;
                            }
@@ -116,15 +116,15 @@ public class BuildHospital1Procedure {
          }
 
          if (world instanceof ServerLevel _level) {
-            Commands var10000 = _level.m_7654_().m_129892_();
-            CommandSourceStack var10001 = (new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_();
+            Commands var10000 = _level.getServer().getCommands();
+            CommandSourceStack var10001 = (new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput();
             long var10002 = Math.round(grade);
-            var10000.m_230957_(var10001, "summon jujutsucraft:cursed_spirit_grade_" + var10002 + Math.round(kind));
+            var10000.performPrefixedCommand(var10001, "summon gaigegaigekaigecraft:cursed_spirit_grade_" + var10002 + Math.round(kind));
          }
       }
 
       if (world instanceof ServerLevel _level) {
-         _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(x, y, z), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "setblock ~ ~ ~ air");
+         _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "setblock ~ ~ ~ air");
       }
 
    }

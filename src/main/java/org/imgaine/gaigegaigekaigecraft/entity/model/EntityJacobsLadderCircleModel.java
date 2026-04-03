@@ -9,14 +9,14 @@ public class EntityJacobsLadderCircleModel extends GeoModel<EntityJacobsLadderCi
    }
 
    public ResourceLocation getAnimationResource(EntityJacobsLadderCircleEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/jacobs_ladder.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/jacobs_ladder.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityJacobsLadderCircleEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/jacobs_ladder.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/jacobs_ladder.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityJacobsLadderCircleEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

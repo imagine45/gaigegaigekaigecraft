@@ -3,6 +3,8 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import org.imgaine.gaigegaigekaigecraft.InlineMethodHandler;
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade01Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.DivineDogTotalityEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.JogoEntity;
@@ -45,10 +47,7 @@ import net.minecraft.world.entity.EquipmentSlot.Type;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ClipContext.Block;
-import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -58,8 +57,10 @@ public class SixEyesOnEffectActiveTickProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
-         boolean logic_a = false;
          String color_name = "";
+         ItemStack item_inside = ItemStack.EMPTY;
+         boolean logic_a = false;
+         boolean SUCCESS = false;
          double x_pos = 0.0;
          double y_pos = 0.0;
          double z_pos = 0.0;
@@ -69,11 +70,14 @@ public class SixEyesOnEffectActiveTickProcedure {
          double num_loop = 0.0;
          double speed = 0.0;
          double amount = 0.0;
-         if (entity.m_6084_()) {
+         double CT1 = 0.0;
+         double CT2 = 0.0;
+         double dis = 0.0;
+         if (entity.isAlive()) {
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               if (!_entity.m_9236_().m_5776_()) {
-                  _entity.m_7292_(new MobEffectInstance(MobEffects.f_19611_, 219, 0, false, false));
+               if (!_entity.level().isClientSide()) {
+                  _entity.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 219, 0, false, false));
                }
             }
 
@@ -81,56 +85,59 @@ public class SixEyesOnEffectActiveTickProcedure {
                ItemStack var10000;
                if (entity instanceof LivingEntity) {
                   LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var10000 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+                  var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                } else {
-                  var10000 = ItemStack.f_41583_;
+                  var10000 = ItemStack.EMPTY;
                }
 
-               if (!var10000.m_204117_(ItemTags.create(new ResourceLocation("forge:blindfold")))) {
-                  if (Math.random() < 0.5) {
+               if (!var10000.is(ItemTags.create(new ResourceLocation("forge:blindfold")))) {
+                  if (Math.random() < 0.25) {
                      Vec3 _center = new Vec3(x, y, z);
-                     List<Entity> _entfound = world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(16.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList();
-                     Iterator var31 = _entfound.iterator();
+                     List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(16.0), (e) -> true);
+                     Iterator var39 = _entfound.iterator();
 
                      while(true) {
                         Entity entityiterator;
                         while(true) {
-                           if (!var31.hasNext()) {
+                           if (!var39.hasNext()) {
                               return;
                            }
 
-                           entityiterator = (Entity)var31.next();
+                           entityiterator = (Entity)var39.next();
                            if (entity != entityiterator) {
+                              int var88;
                               label345: {
                                  color = 0.0;
                                  amount = 1.0;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _livEnt6 = (LivingEntity)entityiterator;
-                                    if (_livEnt6.m_21023_(MobEffects.f_19600_)) {
+                                    if (_livEnt6.hasEffect(MobEffects.DAMAGE_BOOST)) {
                                        label341: {
                                           if (entityiterator instanceof LivingEntity) {
                                              LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                             if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                                var77 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                                             if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                                var88 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                                                 break label341;
                                              }
                                           }
 
-                                          var77 = 0;
+                                          var88 = 0;
                                        }
 
-                                       ++var77;
+                                       ++var88;
                                        break label345;
                                     }
                                  }
 
-                                 var77 = 0;
+                                 var88 = 0;
                               }
 
-                              level_strength = (double)var77;
+                              level_strength = (double)var88;
+                              CT1 = ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique;
+                              CT2 = ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2;
                               if (entityiterator instanceof LivingEntity) {
                                  LivingEntity _livEnt8 = (LivingEntity)entityiterator;
-                                 if (_livEnt8.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                                 if (_livEnt8.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
                                     color = 2.0;
                                     amount = 4.0;
                                     break;
@@ -142,26 +149,26 @@ public class SixEyesOnEffectActiveTickProcedure {
                                     if (((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePower == 0.0) {
                                        break label441;
                                     }
-                                 } else if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:no_curse_power")))) {
+                                 } else if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:no_curse_power")))) {
                                     break label441;
                                  }
 
                                  if (entityiterator instanceof ItemEntity) {
                                     if (entityiterator instanceof ItemEntity) {
                                        ItemEntity _itemEnt = (ItemEntity)entityiterator;
-                                       var10000 = _itemEnt.m_32055_();
+                                       var10000 = _itemEnt.getItem();
                                     } else {
-                                       var10000 = ItemStack.f_41583_;
+                                       var10000 = ItemStack.EMPTY;
                                     }
 
-                                    if (!var10000.m_204117_(ItemTags.create(new ResourceLocation("forge:cursed_tool")))) {
+                                    if (!var10000.is(ItemTags.create(new ResourceLocation("forge:cursed_tool")))) {
                                        break label441;
                                     }
                                  }
 
                                  label442: {
                                     if (entityiterator instanceof Player) {
-                                       if (((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 5.0 || ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 5.0) {
+                                       if (CT1 == 5.0 || CT2 == 5.0) {
                                           break label442;
                                        }
                                     } else if (entityiterator instanceof OkkotsuYutaEntity || entityiterator instanceof RikaEntity || entityiterator instanceof OkkotsuYutaCullingGameEntity || entityiterator instanceof Rika2Entity) {
@@ -170,7 +177,7 @@ public class SixEyesOnEffectActiveTickProcedure {
 
                                     label444: {
                                        if (entityiterator instanceof Player) {
-                                          if (((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 7.0 || ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 7.0) {
+                                          if (CT1 == 7.0 || CT2 == 7.0) {
                                              break label444;
                                           }
                                        } else if (entityiterator instanceof KashimoHajimeEntity || entityiterator instanceof NueEntity || entityiterator instanceof MergedBeastAgitoEntity) {
@@ -179,7 +186,7 @@ public class SixEyesOnEffectActiveTickProcedure {
 
                                        label376: {
                                           if (entityiterator instanceof Player) {
-                                             if (((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 4.0 || ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 4.0 || ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 15.0 || ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 15.0 || ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 43.0 || ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 43.0) {
+                                             if (CT1 == 4.0 || CT2 == 4.0 || CT1 == 15.0 || CT2 == 15.0 || CT1 == 43.0 || CT2 == 43.0) {
                                                 break label376;
                                              }
                                           } else if (entityiterator instanceof RozetsuEntity || entityiterator instanceof RozetsuShikigamiEntity || entityiterator instanceof RozetsuShikigamiVessel2Entity || entityiterator instanceof RozetsuShikigamiVesselEntity || entityiterator instanceof JogoEntity || entityiterator instanceof MahitoEntity) {
@@ -215,21 +222,22 @@ public class SixEyesOnEffectActiveTickProcedure {
 
                         if (amount > 0.0) {
                            num_loop = (double)Math.max(Math.round(level_strength / 16.0), 1L) * amount;
+                           item_inside = ReturnInsideItemProcedure.execute(entityiterator).copy();
 
                            for(int index0 = 0; index0 < (int)Math.max(num_loop, 1.0); ++index0) {
-                              x_pos = entityiterator.m_20185_() + (double)entityiterator.m_20205_() * (Math.random() - 0.5);
-                              y_pos = entityiterator.m_20186_() + (double)entityiterator.m_20206_() * Math.random();
-                              z_pos = entityiterator.m_20189_() + (double)entityiterator.m_20205_() * (Math.random() - 0.5);
+                              x_pos = entityiterator.getX() + (double)entityiterator.getBbWidth() * (Math.random() - 0.5);
+                              y_pos = entityiterator.getY() + (double)entityiterator.getBbHeight() * Math.random();
+                              z_pos = entityiterator.getZ() + (double)entityiterator.getBbWidth() * (Math.random() - 0.5);
                               speed = level_strength / 64.0 * amount * Math.random();
                               if (color == 1.0) {
-                                 color_name = "jujutsucraft:particle_curse_power_red";
+                                 color_name = "gaigegaigekaigecraft:particle_curse_power_red";
                               } else if (color == 2.0) {
-                                 color_name = "jujutsucraft:particle_curse_power_orange";
+                                 color_name = "gaigegaigekaigecraft:particle_curse_power_orange";
                               } else if (color == 3.0) {
-                                 color_name = "jujutsucraft:particle_thunder_blue";
+                                 color_name = "gaigegaigekaigecraft:particle_thunder_blue";
                                  if (entityiterator instanceof MergedBeastAgitoEntity) {
                                     if (Math.random() < 0.2) {
-                                       color_name = "jujutsucraft:particle_curse_power_blue";
+                                       color_name = "gaigegaigekaigecraft:particle_curse_power_blue";
                                     }
 
                                     if (Math.random() < 0.2) {
@@ -239,25 +247,25 @@ public class SixEyesOnEffectActiveTickProcedure {
                               } else if (color == 4.0) {
                                  color_name = "minecraft:happy_villager";
                               } else if (color == 5.0) {
-                                 color_name = "jujutsucraft:particle_curse_power_purple";
+                                 color_name = "gaigegaigekaigecraft:particle_curse_power_purple";
                               } else {
-                                 color_name = "jujutsucraft:particle_curse_power_blue";
+                                 color_name = "gaigegaigekaigecraft:particle_curse_power_blue";
                               }
 
-                              if (ReturnInsideItemProcedure.execute(entityiterator).m_41720_() == JujutsucraftModItems.SUKUNA_FINGER.get() && Math.random() < 0.1) {
-                                 color_name = "jujutsucraft:particle_curse_power_orange";
+                              if (item_inside.getItem() == JujutsucraftModItems.SUKUNA_FINGER.get() && Math.random() < 0.1) {
+                                 color_name = "gaigegaigekaigecraft:particle_curse_power_orange";
                               }
 
-                              if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:death_painting"))) && Math.random() < 0.1) {
-                                 color_name = "jujutsucraft:particle_blood_red";
+                              if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:death_painting"))) && Math.random() < 0.1) {
+                                 color_name = "gaigegaigekaigecraft:particle_blood_red";
                               }
 
-                              if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:ten_shadows_technique"))) && Math.random() < 0.1) {
+                              if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:ten_shadows_technique"))) && Math.random() < 0.1) {
                                  color_name = "minecraft:squid_ink";
                               }
 
-                              if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                 entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "particle " + color_name + " " + x_pos + " " + y_pos + " " + z_pos + " 0.1 0.1 0.1 " + speed + " 1 normal @s");
+                              if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                 entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "particle " + color_name + " " + x_pos + " " + y_pos + " " + z_pos + " 0.1 0.1 0.1 " + speed + " 2 normal @s");
                               }
                            }
                         }
@@ -265,168 +273,160 @@ public class SixEyesOnEffectActiveTickProcedure {
                   } else {
                      for(int index1 = 0; index1 < 8; ++index1) {
                         distance += 2.0;
-                        x_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(distance)), Block.VISUAL, Fluid.NONE, entity)).m_82425_().m_123341_();
-                        y_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(distance)), Block.VISUAL, Fluid.NONE, entity)).m_82425_().m_123342_();
-                        z_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(distance)), Block.VISUAL, Fluid.NONE, entity)).m_82425_().m_123343_();
+                        x_pos = entity.getX() + entity.getLookAngle().x * distance;
+                        y_pos = entity.getY() + (double)entity.getBbHeight() * 0.9 + entity.getLookAngle().y * distance;
+                        z_pos = entity.getZ() + entity.getLookAngle().z * distance;
                         logic_a = false;
                         Vec3 _center = new Vec3(x_pos, y_pos, z_pos);
 
-                        for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                           if (entityiterator != entity && (entityiterator == (Entity)world.m_6443_(LivingEntity.class, AABB.m_165882_(new Vec3(x_pos, y_pos, z_pos), 4.0, 4.0, 4.0), (e) -> true).stream().sorted(((<undefinedtype>)(new Object() {
-                              Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                                 return Comparator.comparingDouble((_entcnd) -> _entcnd.m_20275_(_x, _y, _z));
-                              }
-                           })).compareDistOf(x_pos, y_pos, z_pos)).findFirst().orElse((Object)null) || entityiterator == (Entity)world.m_6443_(ItemEntity.class, AABB.m_165882_(new Vec3(x_pos, y_pos, z_pos), 4.0, 4.0, 4.0), (e) -> true).stream().sorted(((<undefinedtype>)(new Object() {
-                              Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                                 return Comparator.comparingDouble((_entcnd) -> _entcnd.m_20275_(_x, _y, _z));
-                              }
-                           })).compareDistOf(x_pos, y_pos, z_pos)).findFirst().orElse((Object)null))) {
+                        for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(2.0), (e) -> true)) {
+                           if (entityiterator != entity && (entityiterator == (Entity)world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(new Vec3(x_pos, y_pos, z_pos), 4.0, 4.0, 4.0), (e) -> true).stream().sorted(InlineMethodHandler.compareDistOf(x_pos, y_pos, z_pos)).findFirst().orElse((LivingEntity)null) || entityiterator == (Entity)world.getEntitiesOfClass(ItemEntity.class, AABB.ofSize(new Vec3(x_pos, y_pos, z_pos), 4.0, 4.0, 4.0), (e) -> true).stream().sorted(InlineMethodHandler.compareDistOf(x_pos, y_pos, z_pos)).findFirst().orElse((ItemEntity) null))) {
                               logic_a = true;
-                              entity.getPersistentData().m_128379_("flag_sixEyes", true);
-                              if (!entity.getPersistentData().m_128461_("DataNameOld").equals(entityiterator.m_20149_())) {
-                                 entity.getPersistentData().m_128359_("DataNameOld", entityiterator.m_20149_());
-                                 entity.getPersistentData().m_128347_("cnt_sixEyes", 0.0);
+                              entity.getPersistentData().putBoolean("flag_sixEyes", true);
+                              if (!entity.getPersistentData().getString("DataNameOld").equals(entityiterator.getStringUUID())) {
+                                 entity.getPersistentData().putString("DataNameOld", entityiterator.getStringUUID());
+                                 entity.getPersistentData().putDouble("cnt_sixEyes", 0.0);
                               }
 
-                              entity.getPersistentData().m_128359_("DataSixEyes1", entityiterator.m_5446_().getString());
-                              CompoundTag var79 = entity.getPersistentData();
-                              String var88;
+                              entity.getPersistentData().putString("DataSixEyes1", entityiterator.getDisplayName().getString());
+                              CompoundTag var90 = entity.getPersistentData();
+                              String var99;
                               if (entityiterator instanceof LivingEntity) {
                                  float var10002;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    var10002 = _livEnt.m_21223_();
+                                    var10002 = _livEnt.getHealth();
                                  } else {
                                     var10002 = -1.0F;
                                  }
 
-                                 int var87 = Math.round(var10002);
+                                 int var98 = Math.round(var10002);
                                  float var10003;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    var10003 = _livEnt.m_21233_();
+                                    var10003 = _livEnt.getMaxHealth();
                                  } else {
                                     var10003 = -1.0F;
                                  }
 
-                                 var88 = "Health: " + var87 + "/" + Math.round(var10003);
+                                 var99 = "Health: " + var98 + "/" + Math.round(var10003);
                               } else {
-                                 var88 = "";
+                                 var99 = "";
                               }
 
-                              var79.m_128359_("DataSixEyes2", var88);
-                              var79 = entity.getPersistentData();
-                              ItemStack var89;
+                              var90.putString("DataSixEyes2", var99);
+                              var90 = entity.getPersistentData();
+                              ItemStack var100;
                               if (entityiterator instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                 var89 = _livEnt.m_21205_();
+                                 var100 = _livEnt.getMainHandItem();
                               } else {
-                                 var89 = ItemStack.f_41583_;
+                                 var100 = ItemStack.EMPTY;
                               }
 
-                              String var90;
-                              if (var89.m_41720_() == ItemStack.f_41583_.m_41720_()) {
-                                 var90 = "";
+                              String var101;
+                              if (var100.getItem() == ItemStack.EMPTY.getItem()) {
+                                 var101 = "";
                               } else {
-                                 ItemStack var91;
+                                 ItemStack var102;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    var91 = _livEnt.m_21205_();
+                                    var102 = _livEnt.getMainHandItem();
                                  } else {
-                                    var91 = ItemStack.f_41583_;
+                                    var102 = ItemStack.EMPTY;
                                  }
 
-                                 var90 = "Main Hand: " + var91.m_41611_().getString();
+                                 var101 = "Main Hand: " + var102.getDisplayName().getString();
                               }
 
-                              var79.m_128359_("DataSixEyes4", var90);
-                              var79 = entity.getPersistentData();
-                              ItemStack var92;
+                              var90.putString("DataSixEyes4", var101);
+                              var90 = entity.getPersistentData();
+                              ItemStack var103;
                               if (entityiterator instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                 var92 = _livEnt.m_21206_();
+                                 var103 = _livEnt.getOffhandItem();
                               } else {
-                                 var92 = ItemStack.f_41583_;
+                                 var103 = ItemStack.EMPTY;
                               }
 
-                              String var93;
-                              if (var92.m_41720_() == ItemStack.f_41583_.m_41720_()) {
-                                 var93 = "";
+                              String var104;
+                              if (var103.getItem() == ItemStack.EMPTY.getItem()) {
+                                 var104 = "";
                               } else {
-                                 ItemStack var94;
+                                 ItemStack var105;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    var94 = _livEnt.m_21206_();
+                                    var105 = _livEnt.getOffhandItem();
                                  } else {
-                                    var94 = ItemStack.f_41583_;
+                                    var105 = ItemStack.EMPTY;
                                  }
 
-                                 var93 = "Off Hand: " + var94.m_41611_().getString();
+                                 var104 = "Off Hand: " + var105.getDisplayName().getString();
                               }
 
-                              var79.m_128359_("DataSixEyes5", var93);
+                              var90.putString("DataSixEyes5", var104);
                               num_loop = 0.0;
 
                               for(int index2 = 0; index2 < 4; ++index2) {
-                                 var79 = entity.getPersistentData();
+                                 var90 = entity.getPersistentData();
                                  String var10001 = "DataSixEyes" + Math.round(num_loop + 6.0);
-                                 ItemStack var95;
+                                 ItemStack var106;
                                  if (entityiterator instanceof LivingEntity) {
                                     LivingEntity _entGetArmor = (LivingEntity)entityiterator;
-                                    var95 = _entGetArmor.m_6844_(EquipmentSlot.m_20744_(Type.ARMOR, (int)(3.0 - num_loop)));
+                                    var106 = _entGetArmor.getItemBySlot(EquipmentSlot.byTypeAndIndex(Type.ARMOR, (int)(3.0 - num_loop)));
                                  } else {
-                                    var95 = ItemStack.f_41583_;
+                                    var106 = ItemStack.EMPTY;
                                  }
 
-                                 String var96;
-                                 if (var95.m_41720_() == ItemStack.f_41583_.m_41720_()) {
-                                    var96 = "";
+                                 String var107;
+                                 if (var106.getItem() == ItemStack.EMPTY.getItem()) {
+                                    var107 = "";
                                  } else {
-                                    long var97 = Math.round(num_loop + 1.0);
-                                    ItemStack var101;
+                                    long var108 = Math.round(num_loop + 1.0);
+                                    ItemStack var112;
                                     if (entityiterator instanceof LivingEntity) {
                                        LivingEntity _entGetArmor = (LivingEntity)entityiterator;
-                                       var101 = _entGetArmor.m_6844_(EquipmentSlot.m_20744_(Type.ARMOR, (int)(3.0 - num_loop)));
+                                       var112 = _entGetArmor.getItemBySlot(EquipmentSlot.byTypeAndIndex(Type.ARMOR, (int)(3.0 - num_loop)));
                                     } else {
-                                       var101 = ItemStack.f_41583_;
+                                       var112 = ItemStack.EMPTY;
                                     }
 
-                                    var96 = "Armor" + var97 + ": " + var101.m_41611_().getString();
+                                    var107 = "Armor" + var108 + ": " + var112.getDisplayName().getString();
                                  }
 
-                                 var79.m_128359_(var10001, var96);
+                                 var90.putString(var10001, var107);
                                  ++num_loop;
                               }
 
-                              ItemStack var83;
+                              ItemStack var94;
                               if (entityiterator instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                 var83 = _livEnt.m_21205_();
+                                 var94 = _livEnt.getMainHandItem();
                               } else {
-                                 var83 = ItemStack.f_41583_;
+                                 var94 = ItemStack.EMPTY;
                               }
 
-                              if (var83.m_41720_() == JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get()) {
-                                 CompoundTag var84 = entity.getPersistentData();
-                                 CompoundTag var98 = entity.getPersistentData();
-                                 var84.m_128359_("DataSixEyes4", "§c" + var98.m_128461_("DataSixEyes4"));
+                              if (var94.getItem() == JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get()) {
+                                 CompoundTag var95 = entity.getPersistentData();
+                                 CompoundTag var109 = entity.getPersistentData();
+                                 var95.putString("DataSixEyes4", "§c" + var109.getString("DataSixEyes4"));
                               }
 
-                              entity.getPersistentData().m_128359_("DataSixEyes10", "");
+                              entity.getPersistentData().putString("DataSixEyes10", "");
                               if (entityiterator instanceof DivineDogTotalityEntity) {
-                                 CompoundTag var85 = entity.getPersistentData();
-                                 var93 = Component.m_237115_("entity.jujutsucraft.divine_dog_white").getString();
-                                 var85.m_128359_("DataSixEyes10", "§7" + var93 + ", " + Component.m_237115_("entity.jujutsucraft.divine_dog_black").getString());
+                                 CompoundTag var96 = entity.getPersistentData();
+                                 var104 = Component.translatable("entity.gaigegaigekaigecraft.divine_dog_white").getString();
+                                 var96.putString("DataSixEyes10", "§7" + var104 + ", " + Component.translatable("entity.gaigegaigekaigecraft.divine_dog_black").getString());
                               } else if (entityiterator instanceof MergedBeastAgitoEntity) {
-                                 CompoundTag var86 = entity.getPersistentData();
-                                 var93 = Component.m_237115_("entity.jujutsucraft.nue").getString();
-                                 var86.m_128359_("DataSixEyes10", "§7" + var93 + ", " + Component.m_237115_("entity.jujutsucraft.great_serpent").getString() + ", " + Component.m_237115_("entity.jujutsucraft.round_deer").getString() + ", " + Component.m_237115_("entity.jujutsucraft.tiger_funeral").getString());
+                                 CompoundTag var97 = entity.getPersistentData();
+                                 var104 = Component.translatable("entity.gaigegaigekaigecraft.nue").getString();
+                                 var97.putString("DataSixEyes10", "§7" + var104 + ", " + Component.translatable("entity.gaigegaigekaigecraft.great_serpent").getString() + ", " + Component.translatable("entity.gaigegaigekaigecraft.round_deer").getString() + ", " + Component.translatable("entity.gaigegaigekaigecraft.tiger_funeral").getString());
                               }
 
                               if (entityiterator instanceof SukunaEntity) {
-                                 entity.getPersistentData().m_128359_("DataSixEyes10", "§7" + Component.m_237115_("item.jujutsucraft.itadori_yuji_paper").getString());
+                                 entity.getPersistentData().putString("DataSixEyes10", "§7" + Component.translatable("gui.gaigegaigekaigecraft.select_technique.button_itadori1").getString());
                               } else if (entityiterator instanceof SukunaFushiguroEntity || entityiterator instanceof SukunaPerfectEntity) {
-                                 entity.getPersistentData().m_128359_("DataSixEyes10", "§7" + Component.m_237115_("gui.jujutsucraft.select_technique.button_megumi_fushiguro1").getString());
+                                 entity.getPersistentData().putString("DataSixEyes10", "§7" + Component.translatable("gui.gaigegaigekaigecraft.select_technique.button_megumi_fushiguro1").getString());
                               }
                               break;
                            }
@@ -437,37 +437,37 @@ public class SixEyesOnEffectActiveTickProcedure {
                         }
                      }
 
-                     if (entity.getPersistentData().m_128471_("flag_sixEyes")) {
-                        entity.getPersistentData().m_128347_("cnt_sixEyes", Math.max(entity.getPersistentData().m_128459_("cnt_sixEyes"), 0.0) + 1.0);
-                        if (entity.getPersistentData().m_128459_("cnt_sixEyes") > 3.0) {
-                           entity.getPersistentData().m_128379_("flag_sixEyes", false);
+                     if (entity.getPersistentData().getBoolean("flag_sixEyes")) {
+                        entity.getPersistentData().putDouble("cnt_sixEyes", Math.max(entity.getPersistentData().getDouble("cnt_sixEyes"), 0.0) + 1.0);
+                        if (entity.getPersistentData().getDouble("cnt_sixEyes") > 3.0) {
+                           entity.getPersistentData().putBoolean("flag_sixEyes", false);
                         } else {
                            num_loop = 0.0;
 
                            for(int index3 = 0; index3 < 11; ++index3) {
-                              if (!entity.getPersistentData().m_128461_("DataSixEyes" + Math.round(num_loop)).contains("§k")) {
-                                 entity.getPersistentData().m_128359_("DataSixEyes" + Math.round(num_loop), "§k" + entity.getPersistentData().m_128461_("DataSixEyes" + Math.round(num_loop)));
+                              if (!entity.getPersistentData().getString("DataSixEyes" + Math.round(num_loop)).contains("§k")) {
+                                 entity.getPersistentData().putString("DataSixEyes" + Math.round(num_loop), "§k" + entity.getPersistentData().getString("DataSixEyes" + Math.round(num_loop)));
                               }
 
                               ++num_loop;
                            }
                         }
                      } else {
-                        entity.getPersistentData().m_128347_("cnt_sixEyes", Math.min(entity.getPersistentData().m_128459_("cnt_sixEyes"), 0.0) - 1.0);
-                        if (entity.getPersistentData().m_128459_("cnt_sixEyes") < -15.0) {
+                        entity.getPersistentData().putDouble("cnt_sixEyes", Math.min(entity.getPersistentData().getDouble("cnt_sixEyes"), 0.0) - 1.0);
+                        if (entity.getPersistentData().getDouble("cnt_sixEyes") < -15.0) {
                            num_loop = 0.0;
-                           entity.getPersistentData().m_128359_("DataNameOld", "");
+                           entity.getPersistentData().putString("DataNameOld", "");
 
                            for(int index4 = 0; index4 < 11; ++index4) {
-                              entity.getPersistentData().m_128359_("DataSixEyes" + Math.round(num_loop), "");
+                              entity.getPersistentData().putString("DataSixEyes" + Math.round(num_loop), "");
                               ++num_loop;
                            }
-                        } else if (entity.getPersistentData().m_128459_("cnt_sixEyes") < -12.0) {
+                        } else if (entity.getPersistentData().getDouble("cnt_sixEyes") < -12.0) {
                            num_loop = 0.0;
 
                            for(int index5 = 0; index5 < 11; ++index5) {
-                              if (!entity.getPersistentData().m_128461_("DataSixEyes" + Math.round(num_loop)).contains("§k")) {
-                                 entity.getPersistentData().m_128359_("DataSixEyes" + Math.round(num_loop), "§k" + entity.getPersistentData().m_128461_("DataSixEyes" + Math.round(num_loop)));
+                              if (!entity.getPersistentData().getString("DataSixEyes" + Math.round(num_loop)).contains("§k")) {
+                                 entity.getPersistentData().putString("DataSixEyes" + Math.round(num_loop), "§k" + entity.getPersistentData().getString("DataSixEyes" + Math.round(num_loop)));
                               }
 
                               ++num_loop;
@@ -477,11 +477,11 @@ public class SixEyesOnEffectActiveTickProcedure {
                   }
                } else {
                   num_loop = 0.0;
-                  if (!entity.getPersistentData().m_128461_("DataNameOld").equals("")) {
-                     entity.getPersistentData().m_128359_("DataNameOld", "");
+                  if (!entity.getPersistentData().getString("DataNameOld").equals("")) {
+                     entity.getPersistentData().putString("DataNameOld", "");
 
                      for(int index6 = 0; index6 < 11; ++index6) {
-                        entity.getPersistentData().m_128359_("DataSixEyes" + Math.round(num_loop), "");
+                        entity.getPersistentData().putString("DataSixEyes" + Math.round(num_loop), "");
                         ++num_loop;
                      }
                   }

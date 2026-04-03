@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModParticleTypes;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -9,6 +8,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -39,7 +40,7 @@ public class KashimoDomainActiveProcedure {
          double num2;
          double range;
          double var10000;
-         label250: {
+         label243: {
             boolean logic_attack = false;
             boolean logic_a = false;
             double repeat_num = 0.0;
@@ -69,9 +70,9 @@ public class KashimoDomainActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
-                  break label250;
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
+                  break label243;
                }
             }
 
@@ -79,31 +80,31 @@ public class KashimoDomainActiveProcedure {
          }
 
          double var88 = var10000;
-         double var61 = entity.getPersistentData().m_128459_("skill");
-         if (!entity.getPersistentData().m_128471_("Failed")) {
-            double var63 = entity.getPersistentData().m_128459_("x_pos_doma");
-            double var77 = entity.getPersistentData().m_128459_("y_pos_doma");
-            double var89 = entity.getPersistentData().m_128459_("z_pos_doma");
+         double var61 = entity.getPersistentData().getDouble("skill");
+         if (!entity.getPersistentData().getBoolean("Failed")) {
+            double var63 = entity.getPersistentData().getDouble("x_pos_doma");
+            double var77 = entity.getPersistentData().getDouble("y_pos_doma");
+            double var89 = entity.getPersistentData().getDouble("z_pos_doma");
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), var63, var77 + 0.0, var89, 15, range * 0.175, 0.1, range * 0.175, 0.05);
+               _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), var63, var77 - 0.75, var89, 15, range * 0.175, 0.1, range * 0.175, 0.05);
             }
 
             if (var88 % 20.0 == 0.0) {
                boolean var56 = false;
-               entity.getPersistentData().m_128347_("skill", 705.0);
+               entity.getPersistentData().putDouble("skill", 705.0);
                Vec3 _center = new Vec3(var63, var77, var89);
 
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                  if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator) && entityiterator.getPersistentData().m_128459_("Thunder") >= 6.0) {
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
+                  if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator) && entityiterator.getPersistentData().getDouble("Thunder") >= 6.0) {
                      boolean var58 = true;
                      var56 = true;
-                     power = Math.min(entityiterator.getPersistentData().m_128459_("Thunder"), 16.0) - 6.0;
-                     dis = Math.sqrt(Math.pow(entityiterator.m_20185_() - var63, 2.0) + Math.pow(entityiterator.m_20186_() - (var77 + range * 0.5 - 2.0), 2.0) + Math.pow(entityiterator.m_20189_() - var89, 2.0));
-                     x_target = entityiterator.m_20185_();
-                     y_target = entityiterator.m_20186_();
-                     z_target = entityiterator.m_20189_();
-                     entityiterator.getPersistentData().m_128347_("Thunder", 0.0);
+                     power = Math.min(entityiterator.getPersistentData().getDouble("Thunder"), 16.0) - 6.0;
+                     dis = Math.sqrt(Math.pow(entityiterator.getX() - var63, 2.0) + Math.pow(entityiterator.getY() - (var77 + range * 0.5 - 2.0), 2.0) + Math.pow(entityiterator.getZ() - var89, 2.0));
+                     x_target = entityiterator.getX();
+                     y_target = entityiterator.getY();
+                     z_target = entityiterator.getZ();
+                     entityiterator.getPersistentData().putDouble("Thunder", 0.0);
                      break;
                   }
                }
@@ -125,7 +126,7 @@ public class KashimoDomainActiveProcedure {
                         var94 /= dis * 4.0;
                         var98 /= dis * 4.0;
                         if (var102 < var59) {
-                           if (var102 % 4.0 == 1.0 || world.m_8055_(BlockPos.m_274561_(var63 + var70 * 2.0, var77 + var94 * 2.0, var89 + var98 * 2.0)).m_60815_()) {
+                           if (var102 % 4.0 == 1.0 || world.getBlockState(BlockPos.containing(var63 + var70 * 2.0, var77 + var94 * 2.0, var89 + var98 * 2.0)).canOcclude()) {
                               for(int index1 = 0; index1 < 32; ++index1) {
                                  var70 = (Math.random() - 0.5) * dis * 3.0;
                                  var94 = (Math.random() - 0.5) * dis * 3.0;
@@ -152,7 +153,7 @@ public class KashimoDomainActiveProcedure {
                                  var56 = true;
 
                                  for(int index2 = 0; index2 < 2; ++index2) {
-                                    if (world.m_8055_(BlockPos.m_274561_(var69, var60, var87)).m_60815_()) {
+                                    if (world.getBlockState(BlockPos.containing(var69, var60, var87)).canOcclude()) {
                                        var56 = false;
                                        break;
                                     }
@@ -174,42 +175,43 @@ public class KashimoDomainActiveProcedure {
                         }
                      }
 
-                     if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                        entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "particle dust 0.973 0.220 1.000 1 " + var63 + " " + var77 + " " + var89 + " 0 0 0 1 1 force");
+                     if (world instanceof ServerLevel) {
+                        ServerLevel _level = (ServerLevel)world;
+                        _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(var63, var77, var89), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "particle dust 0.973 0.220 1.000 1 ~ ~ ~ 0 0 0 1 1 force");
                      }
 
                      if (var102 % 2.0 == 0.0) {
                         if (world instanceof ServerLevel) {
                            ServerLevel _level = (ServerLevel)world;
-                           _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var63, var77, var89, 1, 0.1, 0.1, 0.1, 0.0);
+                           _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var63, var77, var89, 1, 0.1, 0.1, 0.1, 0.0);
                         }
 
                         if (var102 % 4.0 == 0.0) {
                            if (world instanceof ServerLevel) {
                               ServerLevel _level = (ServerLevel)world;
-                              _level.m_8767_(ParticleTypes.f_123747_, var63, var77, var89, 1, 0.1, 0.1, 0.1, 0.0);
+                              _level.sendParticles(ParticleTypes.FLASH, var63, var77, var89, 1, 0.1, 0.1, 0.1, 0.0);
                            }
 
-                           entity.getPersistentData().m_128347_("Damage", 30.0 * var84);
-                           entity.getPersistentData().m_128347_("Range", 5.0);
-                           entity.getPersistentData().m_128347_("knockback", 0.1);
-                           entity.getPersistentData().m_128347_("projectile_type", 1.0);
-                           entity.getPersistentData().m_128347_("effect", 1.0);
+                           entity.getPersistentData().putDouble("Damage", 30.0 * var84);
+                           entity.getPersistentData().putDouble("Range", 5.0);
+                           entity.getPersistentData().putDouble("knockback", 0.1);
+                           entity.getPersistentData().putDouble("projectile_type", 1.0);
+                           entity.getPersistentData().putDouble("effect", 1.0);
                            RangeAttackProcedure.execute(world, var63, var77, var89, entity);
-                           if (world.m_8055_(BlockPos.m_274561_(var63, var77, var89)).m_60815_()) {
+                           if (world.getBlockState(BlockPos.containing(var63, var77, var89)).canOcclude()) {
                               if (world instanceof ServerLevel) {
                                  ServerLevel _level = (ServerLevel)world;
-                                 _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var63, var77, var89, (int)(4.0 * var84), 0.25, 0.25, 0.25, 0.5 * var84);
+                                 _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var63, var77, var89, (int)(4.0 * var84), 0.25, 0.25, 0.25, 0.5 * var84);
                               }
 
                               if (world instanceof ServerLevel) {
                                  ServerLevel _level = (ServerLevel)world;
-                                 _level.m_8767_(ParticleTypes.f_123813_, var63, var77, var89, (int)(4.0 * var84), 0.25, 0.25, 0.25, 0.5 * var84);
+                                 _level.sendParticles(ParticleTypes.EXPLOSION, var63, var77, var89, (int)(4.0 * var84), 0.25, 0.25, 0.25, 0.5 * var84);
                               }
 
                               if (world instanceof ServerLevel) {
                                  ServerLevel _level = (ServerLevel)world;
-                                 _level.m_8767_(ParticleTypes.f_123796_, var63, var77, var89, (int)(4.0 * var84), 0.25, 0.25, 0.25, 0.5 * var84);
+                                 _level.sendParticles(ParticleTypes.CLOUD, var63, var77, var89, (int)(4.0 * var84), 0.25, 0.25, 0.25, 0.5 * var84);
                               }
                            }
                         }
@@ -234,131 +236,131 @@ public class KashimoDomainActiveProcedure {
 
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:electric_shock")), SoundSource.NEUTRAL, (float)var84, 1.5F);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:electric_shock")), SoundSource.NEUTRAL, (float)var84, 1.5F);
                      } else {
-                        _level.m_7785_(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:electric_shock")), SoundSource.NEUTRAL, (float)var84, 1.5F, false);
+                        _level.playLocalSound(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:electric_shock")), SoundSource.NEUTRAL, (float)var84, 1.5F, false);
                      }
                   }
 
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 1.0F);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 1.0F);
                      } else {
-                        _level.m_7785_(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 1.0F, false);
+                        _level.playLocalSound(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 1.0F, false);
                      }
                   }
 
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 0.5F);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 0.5F);
                      } else {
-                        _level.m_7785_(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 0.5F, false);
+                        _level.playLocalSound(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.thunder")), SoundSource.NEUTRAL, (float)var84, 0.5F, false);
                      }
                   }
 
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 1.0F);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 1.0F);
                      } else {
-                        _level.m_7785_(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 1.0F, false);
+                        _level.playLocalSound(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 1.0F, false);
                      }
                   }
 
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 0.5F);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var63, var77, var89), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 0.5F);
                      } else {
-                        _level.m_7785_(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 0.5F, false);
+                        _level.playLocalSound(var63, var77, var89, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.lightning_bolt.impact")), SoundSource.NEUTRAL, (float)var84, 0.5F, false);
                      }
                   }
 
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var63, var77, var89, (int)(50.0 * var84), 0.5, 0.5, 0.5, 1.0 * var84);
+                     _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var63, var77, var89, (int)(50.0 * var84), 0.5, 0.5, 0.5, 1.0 * var84);
                   }
                }
             }
          }
 
-         double var64 = entity.getPersistentData().m_128459_("x_pos_doma");
-         double var79 = entity.getPersistentData().m_128459_("y_pos_doma");
-         double var90 = entity.getPersistentData().m_128459_("z_pos_doma");
+         double var64 = entity.getPersistentData().getDouble("x_pos_doma");
+         double var79 = entity.getPersistentData().getDouble("y_pos_doma");
+         double var90 = entity.getPersistentData().getDouble("z_pos_doma");
          if (world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), var64, var79 + range / 2.0 * 0.7, var90, 5, range * 0.125, 0.1, range * 0.125, 0.05);
+            _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), var64, var79 + range / 2.0 * 0.7, var90, 5, range * 0.125, 0.1, range * 0.125, 0.05);
          }
 
-         if (var88 % 10.0 == 0.0 || entity.getPersistentData().m_128471_("StartDomainAttack")) {
+         if (var88 % 10.0 == 0.0 || entity.getPersistentData().getBoolean("StartDomainAttack")) {
             if (Math.random() < 0.5) {
                num1 = Math.toRadians(Math.random() * 360.0);
                num2 = Math.random() * range - range / 2.0;
-               var64 = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(num1) * num2;
-               var79 = entity.getPersistentData().m_128459_("y_pos_doma");
-               var90 = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(num1) * num2;
+               var64 = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(num1) * num2;
+               var79 = entity.getPersistentData().getDouble("y_pos_doma");
+               var90 = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(num1) * num2;
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var64, var79, var90, 10, 0.25, 4.0, 0.25, 0.0);
+                  _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var64, var79, var90, 10, 0.25, 4.0, 0.25, 0.0);
                }
 
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(var64, var79, var90), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:electric_shock")), SoundSource.NEUTRAL, 0.1F, 1.0F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(var64, var79, var90), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:electric_shock")), SoundSource.NEUTRAL, 0.1F, 1.0F);
                   } else {
-                     _level.m_7785_(var64, var79, var90, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:electric_shock")), SoundSource.NEUTRAL, 0.1F, 1.0F, false);
+                     _level.playLocalSound(var64, var79, var90, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:electric_shock")), SoundSource.NEUTRAL, 0.1F, 1.0F, false);
                   }
                }
             }
 
-            if (var88 % 30.0 == 0.0 || entity.getPersistentData().m_128471_("StartDomainAttack")) {
-               entity.getPersistentData().m_128379_("StartDomainAttack", false);
-               entity.getPersistentData().m_128347_("skill", 1.0);
-               entity.getPersistentData().m_128347_("Damage", 1.0);
-               entity.getPersistentData().m_128347_("Range", range);
-               entity.getPersistentData().m_128379_("swing", false);
-               entity.getPersistentData().m_128379_("attack", true);
-               entity.getPersistentData().m_128379_("DomainAttack", true);
-               RangeAttackProcedure.execute(world, entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma"), entity);
+            if (var88 % 30.0 == 0.0 || entity.getPersistentData().getBoolean("StartDomainAttack")) {
+               entity.getPersistentData().putBoolean("StartDomainAttack", false);
+               entity.getPersistentData().putDouble("skill", 1.0);
+               entity.getPersistentData().putDouble("Damage", 1.0);
+               entity.getPersistentData().putDouble("Range", range);
+               entity.getPersistentData().putBoolean("swing", false);
+               entity.getPersistentData().putBoolean("attack", true);
+               entity.getPersistentData().putBoolean("DomainAttack", true);
+               RangeAttackProcedure.execute(world, entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"), entity);
             }
          }
 
          if (var88 % 10.0 == 0.0) {
             num1 = Math.toRadians(Math.random() * 720.0);
-            var64 = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 5.0);
-            var79 = entity.getPersistentData().m_128459_("y_pos_doma");
-            var90 = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 5.0);
+            var64 = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 5.0);
+            var79 = entity.getPersistentData().getDouble("y_pos_doma");
+            var90 = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 5.0);
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var64, var79, var90, 10, 0.1, 4.0, 0.1, 0.1);
+               _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var64, var79, var90, 10, 0.1, 4.0, 0.1, 0.1);
             }
          }
 
-         if (entity.getPersistentData().m_128459_("cnt2_forDomain") > 20.0) {
-            entity.getPersistentData().m_128347_("cnt1_forDomain", Math.toRadians((Math.random() - 0.5) * 360.0));
-            entity.getPersistentData().m_128347_("cnt2_forDomain", 0.0);
+         if (entity.getPersistentData().getDouble("cnt2_forDomain") > 20.0) {
+            entity.getPersistentData().putDouble("cnt1_forDomain", Math.toRadians((Math.random() - 0.5) * 360.0));
+            entity.getPersistentData().putDouble("cnt2_forDomain", 0.0);
          }
 
-         num1 = entity.getPersistentData().m_128459_("cnt1_forDomain");
-         num2 = entity.getPersistentData().m_128459_("cnt2_forDomain");
+         num1 = entity.getPersistentData().getDouble("cnt1_forDomain");
+         num2 = entity.getPersistentData().getDouble("cnt2_forDomain");
 
          for(int index3 = 0; index3 < 40; ++index3) {
-            var64 = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(num1) * num2;
-            var79 = entity.getPersistentData().m_128459_("y_pos_doma") + range * 0.5 - num2;
-            var90 = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(num1) * num2;
+            var64 = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(num1) * num2;
+            var79 = entity.getPersistentData().getDouble("y_pos_doma") + range * 0.5 - num2;
+            var90 = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(num1) * num2;
             if (Math.random() < 0.25 + num2 / (range * 0.5)) {
                if (Math.random() < 0.3 && world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var64, var79, var90, 1, 0.0, 0.05, 0.0, 0.0);
+                  _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_BLUE.get(), var64, var79, var90, 1, 0.0, 0.05, 0.0, 0.0);
                }
 
                if (Math.random() < 0.1 && world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123747_, var64, var79, var90, 1, 0.0, 0.05, 0.0, 0.0);
+                  _level.sendParticles(ParticleTypes.FLASH, var64, var79, var90, 1, 0.0, 0.05, 0.0, 0.0);
                }
             }
 
@@ -370,9 +372,9 @@ public class KashimoDomainActiveProcedure {
             }
          }
 
-         entity.getPersistentData().m_128347_("cnt1_forDomain", num1);
-         entity.getPersistentData().m_128347_("cnt2_forDomain", num2);
-         entity.getPersistentData().m_128347_("skill", var61);
+         entity.getPersistentData().putDouble("cnt1_forDomain", num1);
+         entity.getPersistentData().putDouble("cnt2_forDomain", num2);
+         entity.getPersistentData().putDouble("skill", var61);
       }
    }
 }

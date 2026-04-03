@@ -8,7 +8,7 @@ public class BroomToolInHandTickProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         entity.f_19789_ = 0.0F;
+         entity.fallDistance = 0.0F;
       }
    }
 }

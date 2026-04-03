@@ -1,7 +1,7 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade010Entity;
-import org.imgaine.gaigegaigekaigecraft.entity.EightHandledSwrodDivergentSilaDivineGeneralMahoragaEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.EightHandledSwordDivergentSilaDivineGeneralMahoragaEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 
 public class CursedToolsAbilityProcedure {
@@ -32,328 +31,158 @@ public class CursedToolsAbilityProcedure {
          boolean mahorage = false;
          String STR1 = "";
          Entity entity_a = null;
+         ItemStack equipment_item = ItemStack.EMPTY;
          if (entityiterator instanceof LivingEntity) {
-            if (entity.getPersistentData().m_128471_("attack")) {
-               label296: {
-                  if (entity instanceof Player) {
-                     Player _plrCldCheck3 = (Player)entity;
-                     ItemCooldowns var10000 = _plrCldCheck3.m_36335_();
-                     ItemStack var10001;
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _livEnt = (LivingEntity)entity;
-                        var10001 = _livEnt.m_21205_();
-                     } else {
-                        var10001 = ItemStack.f_41583_;
-                     }
+            JujutsucraftModVariables.PlayerVariables pVars = null;
+            if (entity instanceof Player) {
+               pVars = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse((JujutsucraftModVariables.PlayerVariables) null);
+            }
 
-                     if (var10000.m_41519_(var10001.m_41720_())) {
-                        break label296;
-                     }
-                  }
-
-                  ItemStack var45;
+            if (entity.getPersistentData().getBoolean("attack")) {
+               label190: {
+                  ItemStack var10000;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     var45 = _livEnt.m_21205_();
+                     var10000 = _livEnt.getMainHandItem();
                   } else {
-                     var45 = ItemStack.f_41583_;
+                     var10000 = ItemStack.EMPTY;
                   }
 
-                  if (var45.m_204117_(ItemTags.create(new ResourceLocation("forge:cursed_tool")))) {
-                     label297: {
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _livEnt = (LivingEntity)entity;
-                           var45 = _livEnt.m_21205_();
-                        } else {
-                           var45 = ItemStack.f_41583_;
+                  equipment_item = var10000.copy();
+                  if (entity instanceof Player) {
+                     Player _plrCldCheck3 = (Player)entity;
+                     if (_plrCldCheck3.getCooldowns().isOnCooldown(equipment_item.getItem())) {
+                        break label190;
+                     }
+                  }
+
+                  if (equipment_item.is(ItemTags.create(new ResourceLocation("forge:cursed_tool"))) && (equipment_item.getItem() == JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get() || equipment_item.getItem() == JujutsucraftModItems.BLACK_ROPE.get())) {
+                     if (entityiterator instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entityiterator;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CANCEL_CURSED_TECHNIQUE.get(), 1, 0));
                         }
+                     }
 
-                        if (var45.m_41720_() != JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get()) {
-                           if (entity instanceof LivingEntity) {
-                              LivingEntity _livEnt = (LivingEntity)entity;
-                              var45 = _livEnt.m_21205_();
-                           } else {
-                              var45 = ItemStack.f_41583_;
-                           }
-
-                           if (var45.m_41720_() != JujutsucraftModItems.BLACK_ROPE.get()) {
-                              break label297;
-                           }
+                     if (entityiterator instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entityiterator;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 10, 0));
                         }
+                     }
 
-                        if (entityiterator instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entityiterator;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CANCEL_CURSED_TECHNIQUE.get(), 1, 0));
-                           }
-                        }
+                     if (entityiterator instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entityiterator;
+                        _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
+                     }
 
-                        if (entityiterator instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entityiterator;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get(), 10, 0));
-                           }
-                        }
-
-                        if (entityiterator instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entityiterator;
-                           _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
-                        }
-
-                        if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && entityiterator instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entityiterator;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              MobEffectInstance var63;
-                              MobEffect var10003;
-                              int var10005;
-                              label269: {
-                                 var63 = new MobEffectInstance;
-                                 var10003 = MobEffects.f_19613_;
-                                 if (entityiterator instanceof LivingEntity) {
-                                    LivingEntity _livEnt = (LivingEntity)entityiterator;
-                                    if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                       var10005 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                                       break label269;
-                                    }
+                     if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && entityiterator instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entityiterator;
+                        if (!_entity.level().isClientSide()) {
+                           MobEffectInstance var10001;
+                           MobEffect var10003;
+                           int var10005;
+                           label165: {
+                              var10003 = MobEffects.WEAKNESS;
+                              if (entityiterator instanceof LivingEntity) {
+                                 LivingEntity _livEnt = (LivingEntity)entityiterator;
+                                 if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                    var10005 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                    break label165;
                                  }
-
-                                 var10005 = 0;
                               }
 
-                              var63.<init>(var10003, 10, var10005, false, false);
-                              _entity.m_7292_(var63);
+                              var10005 = 0;
                            }
+
+                           var10001 = new MobEffectInstance(var10003, 10, var10005, false, false);
+                           _entity.addEffect(var10001);
                         }
                      }
                   }
                }
             }
 
-            if (entity instanceof Player && entity instanceof Player) {
-               Player _plrCldCheck18 = (Player)entity;
-               ItemCooldowns var48 = _plrCldCheck18.m_36335_();
-               ItemStack var64;
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var64 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-               } else {
-                  var64 = ItemStack.f_41583_;
-               }
-
-               if (var48.m_41519_(var64.m_41720_())) {
-                  return;
-               }
-            }
-
-            ItemStack var49;
+            ItemStack var31;
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var31 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var49 = ItemStack.f_41583_;
+               var31 = ItemStack.EMPTY;
             }
 
-            if (var49.m_41720_() != JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get()) {
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-               } else {
-                  var49 = ItemStack.f_41583_;
-               }
-
-               if (var49.m_41720_() != JujutsucraftModItems.MAHORAGA_BODY_HELMET.get()) {
+            equipment_item = var31.copy();
+            if (entity instanceof Player && entity instanceof Player) {
+               Player _plrCldCheck15 = (Player)entity;
+               if (_plrCldCheck15.getCooldowns().isOnCooldown(equipment_item.getItem())) {
                   return;
                }
             }
 
-            mahorage = entity instanceof Player ? ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 16.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 16.0 : entity instanceof EightHandledSwrodDivergentSilaDivineGeneralMahoragaEntity || entity instanceof CursedSpiritGrade010Entity;
-            NUM1 = 0.0;
-            STR1 = "";
-            if (NUM1 == 0.0 && entityiterator instanceof LivingEntity) {
-               LivingEntity _livEnt26 = (LivingEntity)entityiterator;
-               if (_livEnt26.m_21023_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get()) && entity.getPersistentData().m_128471_("attack")) {
-                  STR1 = "skill205";
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                  } else {
-                     var49 = ItemStack.f_41583_;
-                  }
-
-                  if (var49.m_41784_().m_128459_(STR1) == 0.0) {
-                     NUM1 = 1.0;
-                  } else {
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _entGetArmor = (LivingEntity)entity;
-                        var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                     } else {
-                        var49 = ItemStack.f_41583_;
-                     }
-
-                     if (var49.m_41784_().m_128459_(STR1) >= 100.0 && mahorage) {
+            if (equipment_item.getItem() == JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get() || equipment_item.getItem() == JujutsucraftModItems.MAHORAGA_BODY_HELMET.get()) {
+               mahorage = entity instanceof Player ? pVars.PlayerCurseTechnique == 16.0 || pVars.PlayerCurseTechnique2 == 16.0 : entity instanceof EightHandledSwordDivergentSilaDivineGeneralMahoragaEntity || entity instanceof CursedSpiritGrade010Entity;
+               NUM1 = 0.0;
+               STR1 = "";
+               if (NUM1 == 0.0 && entityiterator instanceof LivingEntity) {
+                  LivingEntity _livEnt21 = (LivingEntity)entityiterator;
+                  if (_livEnt21.hasEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get()) && entity.getPersistentData().getBoolean("attack")) {
+                     STR1 = "skill205";
+                     if (equipment_item.getOrCreateTag().getDouble(STR1) == 0.0) {
+                        NUM1 = 1.0;
+                     } else if (equipment_item.getOrCreateTag().getDouble(STR1) >= 100.0 && mahorage) {
                         STR1 = "";
                         if (entityiterator instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entityiterator;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get(), 1, 1));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get(), 1, 1));
                            }
                         }
 
-                        if (entity instanceof LivingEntity) {
-                           LivingEntity _entity = (LivingEntity)entity;
-                           _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
+                        if (entityiterator instanceof LivingEntity) {
+                           LivingEntity _entity = (LivingEntity)entityiterator;
+                           _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get());
                         }
                      }
                   }
                }
-            }
 
-            if (NUM1 == 0.0 && STR1.equals("") && mahorage) {
-               STR1 = "toLiving";
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _entGetArmor = (LivingEntity)entity;
-                  var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-               } else {
-                  var49 = ItemStack.f_41583_;
+               if (NUM1 == 0.0 && STR1.equals("") && mahorage) {
+                  STR1 = "toLiving";
+                  if (equipment_item.getOrCreateTag().getDouble(STR1) == 0.0) {
+                     NUM1 = 1.0;
+                  }
                }
 
-               if (var49.m_41784_().m_128459_(STR1) == 0.0) {
-                  NUM1 = 1.0;
-               } else {
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                  } else {
-                     var49 = ItemStack.f_41583_;
-                  }
-
-                  if (var49.m_41784_().m_128459_(STR1) >= 100.0) {
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _entGetArmor = (LivingEntity)entity;
-                        var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                     } else {
-                        var49 = ItemStack.f_41583_;
-                     }
-
-                     NUM1 = (double)Math.round(Math.floor(var49.m_41784_().m_128459_(STR1) / 100.0) * 2.5);
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _livEnt = (LivingEntity)entity;
-                        var49 = _livEnt.m_21205_();
-                     } else {
-                        var49 = ItemStack.f_41583_;
-                     }
-
-                     if (var49.m_41792_()) {
+               if (NUM1 > 0.0) {
+                  for(int index0 = 0; index0 < 800; ++index0) {
+                     if (equipment_item.getOrCreateTag().getString("DATA" + Math.round(NUM1)).equals("") || equipment_item.getOrCreateTag().getString("DATA" + Math.round(NUM1)).equals(STR1)) {
                         if (entity instanceof LivingEntity) {
-                           LivingEntity _livEnt = (LivingEntity)entity;
-                           var49 = _livEnt.m_21205_();
+                           LivingEntity _entGetArmor = (LivingEntity)entity;
+                           var31 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
                         } else {
-                           var49 = ItemStack.f_41583_;
+                           var31 = ItemStack.EMPTY;
                         }
 
-                        double var65;
-                        label292: {
-                           var58 = var49.m_41784_();
-                           if (entityiterator.getPersistentData().m_128471_("CursedSpirit")) {
-                              ItemStack var10002;
-                              if (entity instanceof LivingEntity) {
-                                 LivingEntity _livEnt = (LivingEntity)entity;
-                                 var10002 = _livEnt.m_21205_();
-                              } else {
-                                 var10002 = ItemStack.f_41583_;
-                              }
-
-                              if (var10002.m_41720_() == JujutsucraftModItems.SWORD_OF_EXTERMINATION.get()) {
-                                 double var66 = NUM1 * -1.0;
-                                 ItemStack var68;
-                                 if (entity instanceof LivingEntity) {
-                                    LivingEntity _livEnt = (LivingEntity)entity;
-                                    var68 = _livEnt.m_21205_();
-                                 } else {
-                                    var68 = ItemStack.f_41583_;
-                                 }
-
-                                 var65 = Math.min(var66, var68.m_41784_().m_128459_("CursePower"));
-                                 break label292;
-                              }
-                           }
-
-                           ItemStack var67;
-                           if (entity instanceof LivingEntity) {
-                              LivingEntity _livEnt = (LivingEntity)entity;
-                              var67 = _livEnt.m_21205_();
-                           } else {
-                              var67 = ItemStack.f_41583_;
-                           }
-
-                           var65 = Math.max(NUM1, var67.m_41784_().m_128459_("CursePower"));
+                        var31.getOrCreateTag().putString("DATA" + Math.round(NUM1), STR1);
+                        if (entity instanceof LivingEntity) {
+                           LivingEntity _entGetArmor = (LivingEntity)entity;
+                           var31 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
+                        } else {
+                           var31 = ItemStack.EMPTY;
                         }
 
-                        var58.m_128347_("CursePower", var65);
-                     }
-
-                     NUM1 = 0.0;
-                  }
-               }
-            }
-
-            if (NUM1 > 0.0) {
-               int index0 = 0;
-
-               label294: {
-                  while(true) {
-                     if (index0 >= 800) {
-                        break label294;
-                     }
-
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _entGetArmor = (LivingEntity)entity;
-                        var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                     } else {
-                        var49 = ItemStack.f_41583_;
-                     }
-
-                     if (var49.m_41784_().m_128461_("DATA" + Math.round(NUM1)).equals("")) {
-                        break;
-                     }
-
-                     if (entity instanceof LivingEntity) {
-                        LivingEntity _entGetArmor = (LivingEntity)entity;
-                        var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                     } else {
-                        var49 = ItemStack.f_41583_;
-                     }
-
-                     if (var49.m_41784_().m_128461_("DATA" + Math.round(NUM1)).equals(STR1)) {
+                        var31.getOrCreateTag().putDouble(STR1, 1.0);
                         break;
                      }
 
                      ++NUM1;
-                     ++index0;
                   }
 
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                  } else {
-                     var49 = ItemStack.f_41583_;
-                  }
-
-                  var49.m_41784_().m_128359_("DATA" + Math.round(NUM1), STR1);
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var49 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
-                  } else {
-                     var49 = ItemStack.f_41583_;
-                  }
-
-                  var49.m_41784_().m_128347_(STR1, 1.0);
-               }
-
-               if (entity instanceof Player) {
-                  Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.adaptation_start").getString()), false);
+                  if (entity instanceof Player) {
+                     Player _player = (Player)entity;
+                     if (!_player.level().isClientSide()) {
+                        _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.adaptation_start").getString()), false);
+                     }
                   }
                }
             }

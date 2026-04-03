@@ -9,14 +9,14 @@ public class ShikigamiPterosaurModel extends GeoModel<ShikigamiPterosaurEntity> 
    }
 
    public ResourceLocation getAnimationResource(ShikigamiPterosaurEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/shikigami_dhruvrakdawala2.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/shikigami_dhruvrakdawala2.animation.json");
    }
 
    public ResourceLocation getModelResource(ShikigamiPterosaurEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/shikigami_dhruvrakdawala2.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/shikigami_dhruvrakdawala2.geo.json");
    }
 
    public ResourceLocation getTextureResource(ShikigamiPterosaurEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

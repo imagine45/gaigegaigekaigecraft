@@ -52,125 +52,125 @@ public class KechizuEntity extends Monster {
 
    public KechizuEntity(EntityType<KechizuEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 30;
-      this.m_21557_(false);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 30;
+      this.setNoAi(false);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new MeleeAttackGoal(this, 1.0, true) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = KechizuEntity.this.m_20185_();
-            double y = KechizuEntity.this.m_20186_();
-            double z = KechizuEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = KechizuEntity.this.getX();
+            double y = KechizuEntity.this.getY();
+            double z = KechizuEntity.this.getZ();
             Entity entity = KechizuEntity.this;
-            Level world = KechizuEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = KechizuEntity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(2, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = KechizuEntity.this.m_20185_();
-            double y = KechizuEntity.this.m_20186_();
-            double z = KechizuEntity.this.m_20189_();
+      this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = KechizuEntity.this.getX();
+            double y = KechizuEntity.this.getY();
+            double z = KechizuEntity.this.getZ();
             Entity entity = KechizuEntity.this;
-            Level world = KechizuEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = KechizuEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = KechizuEntity.this.m_20185_();
-            double y = KechizuEntity.this.m_20186_();
-            double z = KechizuEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = KechizuEntity.this.getX();
+            double y = KechizuEntity.this.getY();
+            double z = KechizuEntity.this.getZ();
             Entity entity = KechizuEntity.this;
-            Level world = KechizuEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
-         }
-      });
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = KechizuEntity.this.m_20185_();
-            double y = KechizuEntity.this.m_20186_();
-            double z = KechizuEntity.this.m_20189_();
-            Entity entity = KechizuEntity.this;
-            Level world = KechizuEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
-         }
-
-         public boolean m_8045_() {
-            double x = KechizuEntity.this.m_20185_();
-            double y = KechizuEntity.this.m_20186_();
-            double z = KechizuEntity.this.m_20189_();
-            Entity entity = KechizuEntity.this;
-            Level world = KechizuEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = KechizuEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(5, new RandomStrollGoal(this, 1.0));
-      this.f_21345_.m_25352_(6, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(7, new FloatGoal(this));
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = KechizuEntity.this.getX();
+            double y = KechizuEntity.this.getY();
+            double z = KechizuEntity.this.getZ();
+            Entity entity = KechizuEntity.this;
+            Level world = KechizuEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
+         }
+
+         public boolean canContinueToUse() {
+            double x = KechizuEntity.this.getX();
+            double y = KechizuEntity.this.getY();
+            double z = KechizuEntity.this.getZ();
+            Entity entity = KechizuEntity.this;
+            Level world = KechizuEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
+         }
+      });
+      this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
+      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(7, new FloatGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   protected void m_7472_(DamageSource source, int looting, boolean recentlyHitIn) {
-      super.m_7472_(source, looting, recentlyHitIn);
-      this.m_19983_(new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get()));
+   protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
+      super.dropCustomDeathLoot(source, looting, recentlyHitIn);
+      this.spawnAtLocation(new ItemStack((ItemLike)JujutsucraftModItems.DEATH_PAINTING.get()));
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_6469_(DamageSource damagesource, float amount) {
-      return !(damagesource.m_7640_() instanceof ThrownPotion) && !(damagesource.m_7640_() instanceof AreaEffectCloud) ? super.m_6469_(damagesource, amount) : false;
+   public boolean hurt(DamageSource damagesource, float amount) {
+      return !(damagesource.getDirectEntity() instanceof ThrownPotion) && !(damagesource.getDirectEntity() instanceof AreaEffectCloud) ? super.hurt(damagesource, amount) : false;
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AIKechizuProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AIKechizuProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
    }
 
    public static void init() {
-      SpawnPlacements.m_21754_((EntityType)JujutsucraftModEntities.KECHIZU.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
-         int x = pos.m_123341_();
-         int y = pos.m_123342_();
-         int z = pos.m_123343_();
+      SpawnPlacements.register((EntityType)JujutsucraftModEntities.KECHIZU.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
+         int x = pos.getX();
+         int y = pos.getY();
+         int z = pos.getZ();
          return SpawnLevel4Procedure.execute(world);
       });
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 100.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 8.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 0.5);
-      builder = builder.m_22268_(Attributes.f_22282_, 2.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 100.0);
+      builder = builder.add(Attributes.ARMOR, 8.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 2.0);
       return builder;
    }
 }

@@ -13,15 +13,15 @@ public class PandaNormalModel extends GeoModel<PandaNormalEntity> {
    }
 
    public ResourceLocation getAnimationResource(PandaNormalEntity entity) {
-      return (Integer)entity.m_20088_().m_135370_(PandaNormalEntity.DATA_form) == 1 ? new ResourceLocation("jujutsucraft", "animations/panda_gorilla.animation.json") : new ResourceLocation("jujutsucraft", "animations/panda_normal.animation.json");
+      return (Integer)entity.getEntityData().get(PandaNormalEntity.DATA_form) == 1 ? new ResourceLocation("gaigegaigekaigecraft", "animations/panda_gorilla.animation.json") : new ResourceLocation("gaigegaigekaigecraft", "animations/panda_normal.animation.json");
    }
 
    public ResourceLocation getModelResource(PandaNormalEntity entity) {
-      return (Integer)entity.m_20088_().m_135370_(PandaNormalEntity.DATA_form) == 1 ? new ResourceLocation("jujutsucraft", "geo/panda_gorilla.geo.json") : new ResourceLocation("jujutsucraft", "geo/panda_normal.geo.json");
+      return (Integer)entity.getEntityData().get(PandaNormalEntity.DATA_form) == 1 ? new ResourceLocation("gaigegaigekaigecraft", "geo/panda_gorilla.geo.json") : new ResourceLocation("gaigegaigekaigecraft", "geo/panda_normal.geo.json");
    }
 
    public ResourceLocation getTextureResource(PandaNormalEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(PandaNormalEntity animatable, long instanceId, AnimationState animationState) {

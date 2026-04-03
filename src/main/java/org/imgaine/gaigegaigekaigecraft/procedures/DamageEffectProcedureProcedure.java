@@ -37,12 +37,12 @@ public class DamageEffectProcedureProcedure {
                double soundPitch = 0.0;
                if (entityiterator instanceof LivingEntity) {
                   LivingEntity _livEnt0 = (LivingEntity)entityiterator;
-                  if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
+                  if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.GUARD.get())) {
                      break label98;
                   }
                }
 
-               if (entityiterator.getPersistentData().m_128459_("skill") == 0.0 || !(entityiterator.getPersistentData().m_128459_("Damage") > 0.0) || !entityiterator.getPersistentData().m_128471_("attack")) {
+               if (entityiterator.getPersistentData().getDouble("skill") == 0.0 || !(entityiterator.getPersistentData().getDouble("Damage") > 0.0) || !entityiterator.getPersistentData().getBoolean("attack")) {
                   var10000 = false;
                   break label92;
                }
@@ -56,71 +56,71 @@ public class DamageEffectProcedureProcedure {
          boolean var27 = LogicSwordProcedure.execute(entityiterator);
          boolean var25 = LogicIronBodyProcedure.execute(entityiterator);
          double var28 = (double)Math.round(Math.min(1.0 + (damage_amount - 20.0) / 40.0, 4.0));
-         double var29 = entityiterator.m_20185_();
-         double var30 = entityiterator.m_20186_();
-         double var31 = entityiterator.m_20189_();
+         double var29 = entityiterator.getX();
+         double var30 = entityiterator.getY();
+         double var31 = entityiterator.getZ();
 
          for(int index0 = 0; index0 < (int)var28; ++index0) {
             if (var26) {
                if (var27 && var24) {
-                  double var34 = Mth.m_216263_(RandomSource.m_216327_(), 0.9, 1.1);
+                  double var34 = Mth.nextDouble(RandomSource.create(), 0.9, 1.1);
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:guard_sword")), SoundSource.NEUTRAL, 1.0F, (float)var34);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:guard_sword")), SoundSource.NEUTRAL, 1.0F, (float)var34);
                      } else {
-                        _level.m_7785_(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:guard_sword")), SoundSource.NEUTRAL, 1.0F, (float)var34, false);
+                        _level.playLocalSound(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:guard_sword")), SoundSource.NEUTRAL, 1.0F, (float)var34, false);
                      }
                   }
                } else if (var25) {
-                  double var32 = Mth.m_216263_(RandomSource.m_216327_(), 1.0, 1.2);
+                  double var32 = Mth.nextDouble(RandomSource.create(), 1.0, 1.2);
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var32);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var32);
                      } else {
-                        _level.m_7785_(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var32, false);
+                        _level.playLocalSound(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var32, false);
                      }
                   }
                } else {
-                  double var33 = Mth.m_216263_(RandomSource.m_216327_(), 0.75, 1.25);
+                  double var33 = Mth.nextDouble(RandomSource.create(), 0.75, 1.25);
                   if (world instanceof Level) {
                      Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_5594_((Player)null, BlockPos.m_274561_(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:crush")), SoundSource.NEUTRAL, 0.5F, (float)var33);
+                     if (!_level.isClientSide()) {
+                        _level.playSound((Player)null, BlockPos.containing(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:crush")), SoundSource.NEUTRAL, 0.5F, (float)var33);
                      } else {
-                        _level.m_7785_(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:crush")), SoundSource.NEUTRAL, 0.5F, (float)var33, false);
+                        _level.playLocalSound(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:crush")), SoundSource.NEUTRAL, 0.5F, (float)var33, false);
                      }
                   }
                }
             } else if (var27 && var24) {
-               double var37 = Mth.m_216263_(RandomSource.m_216327_(), 1.25, 1.5);
+               double var37 = Mth.nextDouble(RandomSource.create(), 1.25, 1.5);
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var37);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var37);
                   } else {
-                     _level.m_7785_(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var37, false);
+                     _level.playLocalSound(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var37, false);
                   }
                }
             } else if (var25) {
-               double var35 = Mth.m_216263_(RandomSource.m_216327_(), 0.8, 1.0);
+               double var35 = Mth.nextDouble(RandomSource.create(), 0.8, 1.0);
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var35);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var35);
                   } else {
-                     _level.m_7785_(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var35, false);
+                     _level.playLocalSound(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, (float)var35, false);
                   }
                }
             } else {
-               double var36 = Mth.m_216263_(RandomSource.m_216327_(), 0.5, 1.0);
+               double var36 = Mth.nextDouble(RandomSource.create(), 0.5, 1.0);
                if (world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var36);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(var29, var30, var31), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var36);
                   } else {
-                     _level.m_7785_(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var36, false);
+                     _level.playLocalSound(var29, var30, var31, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:strong_hit")), SoundSource.NEUTRAL, 1.0F, (float)var36, false);
                   }
                }
             }

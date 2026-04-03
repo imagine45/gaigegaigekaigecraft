@@ -1,17 +1,16 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.HashMap;
-import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.world.entity.Entity;
 
 public class ButtonMakiProcedure {
    public ButtonMakiProcedure() {
    }
 
-   public static boolean execute(HashMap guistate) {
-      if (guistate == null) {
+   public static boolean execute(Entity entity) {
+      if (entity == null) {
          return false;
       } else {
-         return !guistate.containsKey("checkbox:cursed_spirit") || !((Checkbox)guistate.get("checkbox:cursed_spirit")).m_93840_();
+         return !entity.getPersistentData().getBoolean("CursedSpirit");
       }
    }
 }

@@ -18,28 +18,28 @@ public class WoodenSpear1DisplayConditionProcedure {
          label42: {
             if (entity instanceof WoodenSpear1Entity) {
                WoodenSpear1Entity _datEntL0 = (WoodenSpear1Entity)entity;
-               if ((Boolean)_datEntL0.m_20088_().m_135370_(WoodenSpear1Entity.DATA_stone)) {
+               if ((Boolean)_datEntL0.getEntityData().get(WoodenSpear1Entity.DATA_stone)) {
                   break label42;
                }
             }
 
             if (entity instanceof WoodenSpear2Entity) {
                WoodenSpear2Entity _datEntL1 = (WoodenSpear2Entity)entity;
-               if ((Boolean)_datEntL1.m_20088_().m_135370_(WoodenSpear2Entity.DATA_stone)) {
+               if ((Boolean)_datEntL1.getEntityData().get(WoodenSpear2Entity.DATA_stone)) {
                   break label42;
                }
             }
 
             if (entity instanceof RockFragmentEntity) {
                RockFragmentEntity _datEntL2 = (RockFragmentEntity)entity;
-               if ((Boolean)_datEntL2.m_20088_().m_135370_(RockFragmentEntity.DATA_Magma)) {
+               if ((Boolean)_datEntL2.getEntityData().get(RockFragmentEntity.DATA_Magma)) {
                   break label42;
                }
             }
 
             if (entity instanceof EntityHandEntity) {
                EntityHandEntity _datEntL3 = (EntityHandEntity)entity;
-               if ((Boolean)_datEntL3.m_20088_().m_135370_(EntityHandEntity.DATA_Magma)) {
+               if ((Boolean)_datEntL3.getEntityData().get(EntityHandEntity.DATA_Magma)) {
                   break label42;
                }
             }

@@ -1,14 +1,22 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade13Entity;
+import org.imgaine.gaigegaigekaigecraft.entity.CursedSpiritGrade23Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.GetoSuguruEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.KenjakuEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.OkkotsuYutaCullingGameEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.OkkotsuYutaEntity;
+import org.imgaine.gaigegaigekaigecraft.entity.Rika2Entity;
+import org.imgaine.gaigegaigekaigecraft.entity.RikaEntity;
+import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -29,8 +37,15 @@ public class GetoSpawnCurseRandomProcedure {
    public GetoSpawnCurseRandomProcedure() {
    }
 
-   public static void execute(LevelAccessor world, Entity entity) {
+   public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
+         boolean haveGrade0 = false;
+         boolean haveGrade1 = false;
+         boolean target = false;
+         boolean strong_enemy = false;
+         boolean schoolDays = false;
+         boolean Kenjaku = false;
+         boolean player = false;
          double amount = 0.0;
          double strength = 0.0;
          double kind = 0.0;
@@ -45,27 +60,22 @@ public class GetoSpawnCurseRandomProcedure {
          double pitch = 0.0;
          double y_pos = 0.0;
          double level_strength2 = 0.0;
-         boolean haveGrade0 = false;
-         boolean haveGrade1 = false;
-         boolean target = false;
-         boolean strong_enemy = false;
-         boolean schoolDays = false;
-         boolean Kenjaku = false;
-         boolean player = false;
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-         if (entity.getPersistentData().m_128459_("friend_num") == 0.0) {
-            entity.getPersistentData().m_128347_("friend_num", Math.random());
+         double count_spirit = 0.0;
+         double speed = 0.0;
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+         if (entity.getPersistentData().getDouble("friend_num") == 0.0) {
+            entity.getPersistentData().putDouble("friend_num", Math.random());
          }
 
          double var10000;
-         label602: {
-            yaw = (double)entity.m_146908_();
-            pitch = (double)entity.m_146909_();
+         label721: {
+            yaw = (double)entity.getYRot();
+            pitch = (double)entity.getXRot();
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                  var10000 = (double)_livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                  break label602;
+               if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                  var10000 = (double)_livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                  break label721;
                }
             }
 
@@ -76,95 +86,95 @@ public class GetoSpawnCurseRandomProcedure {
          player = entity instanceof Player;
          schoolDays = entity instanceof GetoSuguruEntity;
          Kenjaku = entity instanceof KenjakuEntity;
-         LivingEntity var99;
+         LivingEntity var123;
          if (entity instanceof Mob) {
             Mob _mobEnt = (Mob)entity;
-            var99 = _mobEnt.m_5448_();
+            var123 = _mobEnt.getTarget();
          } else {
-            var99 = null;
+            var123 = null;
          }
 
-         target = var99 instanceof LivingEntity;
+         target = var123 instanceof LivingEntity;
          if (target) {
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var99 = _mobEnt.m_5448_();
+               var123 = _mobEnt.getTarget();
             } else {
-               var99 = null;
+               var123 = null;
             }
-
-            label593: {
-               LivingEntity var39 = var99;
-               if (var39 instanceof LivingEntity) {
-                  LivingEntity _livEnt = var39;
-                  if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                     var101 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                     break label593;
+            int var125;
+            label712: {
+               LivingEntity var49 = var123;
+               if (var49 instanceof LivingEntity) {
+                  LivingEntity _livEnt = var49;
+                  if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                     var125 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                     break label712;
                   }
                }
 
-               var101 = 0;
+               var125 = 0;
             }
 
-            strong_enemy = (double)var101 >= strength * 0.5 || entity.getPersistentData().m_128459_("cnt_target") > 400.0;
+            strong_enemy = (double)var125 >= strength * 0.5 || entity.getPersistentData().getDouble("cnt_target") > 400.0;
          }
 
-         if (entity.getPersistentData().m_128459_("cnt2") == 0.0) {
-            entity.getPersistentData().m_128347_("cnt2", 1.0);
-            loop_num = 1.0;
-            haveGrade0 = false;
-            haveGrade1 = false;
-            num1 = 0.0;
-            int index0 = 0;
+         if (entity.getPersistentData().getDouble("cnt2") == 0.0) {
+            entity.getPersistentData().putDouble("cnt2", 1.0);
+            if (entity.getPersistentData().getDouble("skill") == 1815.0) {
+               if (entity.getPersistentData().getDouble("grade03") >= 0.0) {
+                  entity.getPersistentData().putDouble("grade03", -1.0);
+                  grade = 0.0;
+                  kind = 3.0;
+                  amount = 1.0;
+                  spawnType = 1.0;
+                  loop_num = 0.0;
+               }
+            } else {
+               Vec3 _center = new Vec3(x, y, z);
 
-            label580: {
-               while(true) {
-                  if (index0 >= 10) {
-                     break label580;
-                  }
-
-                  ++num1;
-                  if (!(num1 <= 9.0)) {
-                     break label580;
-                  }
-
-                  if (entity.getPersistentData().m_128459_("grade1" + Math.round(num1)) >= 0.0) {
-                     if (schoolDays) {
-                        if (num1 != 6.0) {
-                           break;
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(64.0), (e) -> true)) {
+                  if (entity != entityiterator && !(entityiterator instanceof RikaEntity) && !(entityiterator instanceof Rika2Entity) && entityiterator.getPersistentData().getBoolean("CursedSpirit") && entity.getPersistentData().getDouble("friend_num") == entityiterator.getPersistentData().getDouble("friend_num_worker") && entityiterator.getPersistentData().getString("OWNER_UUID").equals(entity.getStringUUID())) {
+                     int var10001;
+                     label689: {
+                        if (entityiterator instanceof LivingEntity) {
+                           LivingEntity _livEnt = (LivingEntity)entityiterator;
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var10001 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                              break label689;
+                           }
                         }
-                     } else if (num1 != 3.0 && num1 != 9.0 && (!Kenjaku || num1 != 1.0)) {
-                        break;
-                     }
-                  }
 
-                  ++index0;
+                        var10001 = 0;
+                     }
+
+                     count_spirit += (double)var10001;
+                  }
                }
 
-               haveGrade1 = true;
-            }
+               loop_num = 1.0;
+               haveGrade0 = false;
+               haveGrade1 = false;
+               num1 = 0.0;
+               int index0 = 0;
 
-            if (!schoolDays) {
-               label629: {
-                  num1 = 2.0;
-                  index0 = 0;
-
+               label680: {
                   while(true) {
                      if (index0 >= 10) {
-                        break label629;
+                        break label680;
                      }
 
                      ++num1;
-                     if (!(num1 <= 8.0)) {
-                        break label629;
+                     if (!(num1 <= 9.0)) {
+                        break label680;
                      }
 
-                     if (entity.getPersistentData().m_128459_("grade0" + Math.round(num1)) >= 0.0) {
-                        if (Kenjaku) {
-                           if (num1 != 3.0 && num1 != 8.0) {
+                     if (entity.getPersistentData().getDouble("grade1" + Math.round(num1)) >= 0.0) {
+                        if (schoolDays) {
+                           if (num1 != 6.0) {
                               break;
                            }
-                        } else if (num1 != 4.0 && num1 != 5.0 && num1 != 6.0 && num1 != 7.0) {
+                        } else if (num1 != 3.0 && num1 != 9.0 && (!Kenjaku || num1 != 1.0)) {
                            break;
                         }
                      }
@@ -172,510 +182,637 @@ public class GetoSpawnCurseRandomProcedure {
                      ++index0;
                   }
 
-                  haveGrade0 = true;
+                  haveGrade1 = true;
                }
-            }
 
-            if (!(Math.random() < 0.2) && !strong_enemy || !haveGrade1 || entity.getPersistentData().m_128459_("num_grade1") != 0.0 && !(Math.random() > 0.5 + entity.getPersistentData().m_128459_("num_grade1") * 0.2)) {
-               if (!(Math.random() < 0.1) && !strong_enemy || !haveGrade0 || entity.getPersistentData().m_128459_("num_grade0") != 0.0 && !(Math.random() > 0.5 + entity.getPersistentData().m_128459_("num_grade0") * 0.2)) {
+               if (!schoolDays) {
+                  label750: {
+                     num1 = 2.0;
+                     index0 = 0;
+
+                     while(true) {
+                        if (index0 >= 10) {
+                           break label750;
+                        }
+
+                        ++num1;
+                        if (!(num1 <= 8.0)) {
+                           break label750;
+                        }
+
+                        if (entity.getPersistentData().getDouble("grade0" + Math.round(num1)) >= 0.0) {
+                           if (Kenjaku) {
+                              if (num1 != 3.0 && num1 != 8.0) {
+                                 break;
+                              }
+                           } else if (num1 != 4.0 && num1 != 5.0 && num1 != 6.0 && num1 != 7.0) {
+                              break;
+                           }
+                        }
+
+                        ++index0;
+                     }
+
+                     haveGrade0 = true;
+                  }
+               }
+
+               label758: {
+                  if ((Math.random() < 0.2 || strong_enemy) && haveGrade1 && (entity.getPersistentData().getDouble("num_grade1") == 0.0 || Math.random() > 0.5 + entity.getPersistentData().getDouble("num_grade1") * 0.2)) {
+                     LivingEntity var138;
+                     if (entity instanceof Mob) {
+                        Mob _mobEnt = (Mob)entity;
+                        var138 = _mobEnt.getTarget();
+                     } else {
+                        var138 = null;
+                     }
+                     int var139;
+                     label629: {
+                        LivingEntity _mobEnt = var138;
+                        if (_mobEnt instanceof LivingEntity) {
+                           LivingEntity _livEnt = _mobEnt;
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var139 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                              break label629;
+                           }
+                        }
+
+                        var139 = 0;
+                     }
+
+                     if (count_spirit < (double)(var139 * 1)) {
+                        grade = 1.0;
+                        break label758;
+                     }
+                  }
+
+                  if ((Math.random() < 0.1 || strong_enemy) && haveGrade0 && (entity.getPersistentData().getDouble("num_grade0") == 0.0 || Math.random() > 0.5 + entity.getPersistentData().getDouble("num_grade0") * 0.2)) {
+                     LivingEntity var140;
+                     if (entity instanceof Mob) {
+                        Mob _mobEnt = (Mob)entity;
+                        var140 = _mobEnt.getTarget();
+                     } else {
+                        var140 = null;
+                     }
+                     int var141;
+                     label613: {
+                        LivingEntity _mobEnt = var140;
+                        if (_mobEnt instanceof LivingEntity) {
+                           LivingEntity _livEnt = _mobEnt;
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var141 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                              break label613;
+                           }
+                        }
+
+                        var141 = 0;
+                     }
+
+                     if (count_spirit < (double)(var141 * 1)) {
+                        grade = 0.0;
+                        break label758;
+                     }
+                  }
+
                   if (Math.random() < 0.3) {
                      grade = 2.0;
                   } else {
                      grade = 3.0;
                   }
-               } else {
-                  grade = 0.0;
                }
-            } else {
-               grade = 1.0;
-            }
 
-            if (grade != 3.0) {
-               if (grade == 2.0) {
-                  for(int index3 = 0; index3 < 256; ++index3) {
-                     kind = Math.ceil(Math.random() * 12.0);
-                     if (kind == 1.0) {
-                        amount = 1.0;
-                        spawnType = 0.0;
-                        break;
-                     }
-
-                     if (kind != 2.0) {
-                        if (kind == 3.0) {
+               if (grade != 3.0) {
+                  if (grade == 2.0) {
+                     for(int index3 = 0; index3 < 256; ++index3) {
+                        kind = Math.ceil(Math.random() * 17.0);
+                        if (kind == 1.0) {
                            amount = 1.0;
                            spawnType = 0.0;
                            break;
                         }
 
-                        if (kind == 4.0 && Kenjaku) {
-                           amount = 2.0;
-                           spawnType = 0.0;
-                           break;
-                        }
-
-                        if (kind == 5.0) {
-                           amount = 1.0;
-                           spawnType = 0.0;
-                           break;
-                        }
-
-                        if (kind == 6.0) {
-                           amount = 1.0;
-                           spawnType = 0.0;
-                           break;
-                        }
-
-                        if (kind != 7.0) {
-                           if (kind == 8.0) {
+                        if (kind != 2.0) {
+                           if (kind == 3.0) {
                               amount = 1.0;
                               spawnType = 0.0;
                               break;
                            }
 
-                           if (kind == 9.0) {
-                              amount = 1.0;
-                              spawnType = 0.0;
-                              break;
-                           }
-
-                           if (kind == 10.0) {
+                           if (kind == 4.0 && Kenjaku) {
                               amount = 2.0;
                               spawnType = 0.0;
                               break;
                            }
 
-                           if (kind == 11.0) {
+                           if (kind == 5.0) {
                               amount = 1.0;
                               spawnType = 0.0;
                               break;
                            }
 
-                           if (kind == 12.0) {
+                           if (kind == 6.0) {
                               amount = 1.0;
                               spawnType = 0.0;
+                              break;
+                           }
+
+                           if (kind != 7.0) {
+                              if (kind == 8.0) {
+                                 amount = 1.0;
+                                 spawnType = 0.0;
+                                 break;
+                              }
+
+                              if (kind == 9.0) {
+                                 amount = 1.0;
+                                 spawnType = 0.0;
+                                 break;
+                              }
+
+                              if (kind == 10.0) {
+                                 amount = 2.0;
+                                 spawnType = 0.0;
+                                 break;
+                              }
+
+                              if (kind == 11.0) {
+                                 amount = 1.0;
+                                 spawnType = 0.0;
+                                 break;
+                              }
+
+                              if (kind == 12.0) {
+                                 amount = 1.0;
+                                 spawnType = 0.0;
+                                 break;
+                              }
+
+                              if (kind == 13.0) {
+                                 amount = 1.0;
+                                 spawnType = 0.0;
+                                 break;
+                              }
+
+                              if (kind == 14.0) {
+                                 amount = 1.0;
+                                 spawnType = 0.0;
+                                 break;
+                              }
+
+                              if (kind != 15.0) {
+                                 if (kind == 16.0) {
+                                    amount = 1.0;
+                                    spawnType = 0.0;
+                                    break;
+                                 }
+
+                                 if (kind == 17.0) {
+                                    amount = 1.0;
+                                    spawnType = 0.0;
+                                    break;
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  } else if (grade == 1.0) {
+                     for(int index4 = 0; index4 < 256; ++index4) {
+                        kind = (double)Math.round(Math.ceil(Math.random() * 9.0));
+                        if (kind == 1.0 && entity.getPersistentData().getDouble("grade11") >= 0.0) {
+                           amount = 1.0;
+                           spawnType = 0.0;
+                           entity.getPersistentData().putDouble("grade11", -1.0);
+                           break;
+                        }
+
+                        if (kind == 2.0 && entity.getPersistentData().getDouble("grade12") >= 0.0) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade12", -1.0);
+                           break;
+                        }
+
+                        if (kind == 3.0 && entity.getPersistentData().getDouble("grade13") >= 0.0 && schoolDays) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade13", -1.0);
+                           break;
+                        }
+
+                        if (kind == 4.0 && entity.getPersistentData().getDouble("grade14") >= 0.0) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade14", -1.0);
+                           break;
+                        }
+
+                        if (kind == 5.0 && entity.getPersistentData().getDouble("grade15") >= 0.0) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade15", -1.0);
+                           break;
+                        }
+
+                        if (kind == 6.0 && entity.getPersistentData().getDouble("grade16") >= 0.0) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade16", -1.0);
+                           break;
+                        }
+
+                        if (kind == 7.0 && entity.getPersistentData().getDouble("grade17") >= 0.0) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade17", -1.0);
+                           break;
+                        }
+
+                        if (kind == 8.0 && entity.getPersistentData().getDouble("grade18") >= 0.0) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade18", -1.0);
+                           break;
+                        }
+
+                        if (kind == 9.0 && entity.getPersistentData().getDouble("grade19") >= 0.0 && schoolDays) {
+                           amount = 1.0;
+                           spawnType = 1.0;
+                           entity.getPersistentData().putDouble("grade19", -1.0);
+                           break;
+                        }
+                     }
+                  } else if (grade == 0.0) {
+                     for(int index5 = 0; index5 < 256; ++index5) {
+                        kind = (double)Math.round(Math.ceil(Math.random() * 9.0));
+                        if (kind != 1.0 && kind != 2.0 && kind != 9.0) {
+                           if (kind == 3.0 && entity.getPersistentData().getDouble("grade03") >= 0.0 && !Kenjaku) {
+                              if (entity instanceof Mob) {
+                                 Mob _mobEnt = (Mob)entity;
+                                 var123 = _mobEnt.getTarget();
+                              } else {
+                                 var123 = null;
+                              }
+
+                              if (!(var123 instanceof OkkotsuYutaEntity)) {
+                                 if (entity instanceof Mob) {
+                                    Mob _mobEnt = (Mob)entity;
+                                    var123 = _mobEnt.getTarget();
+                                 } else {
+                                    var123 = null;
+                                 }
+
+                                 if (!(var123 instanceof OkkotsuYutaCullingGameEntity)) {
+                                    amount = 1.0;
+                                    spawnType = 1.0;
+                                    entity.getPersistentData().putDouble("grade03", -1.0);
+                                    break;
+                                 }
+                              }
+                           }
+
+                           if (kind == 4.0 && entity.getPersistentData().getDouble("grade04") >= 0.0 && Kenjaku) {
+                              amount = 1.0;
+                              spawnType = 1.0;
+                              entity.getPersistentData().putDouble("grade04", -1.0);
+                              break;
+                           }
+
+                           if (kind == 5.0 && entity.getPersistentData().getDouble("grade05") >= 0.0 && Kenjaku) {
+                              amount = 1.0;
+                              spawnType = 1.0;
+                              entity.getPersistentData().putDouble("grade05", -1.0);
+                              break;
+                           }
+
+                           if (kind == 6.0 && entity.getPersistentData().getDouble("grade06") >= 0.0 && Kenjaku) {
+                              amount = 1.0;
+                              spawnType = 1.0;
+                              entity.getPersistentData().putDouble("grade06", -1.0);
+                              break;
+                           }
+
+                           if (kind == 7.0 && entity.getPersistentData().getDouble("grade07") >= 0.0 && Kenjaku) {
+                              amount = 1.0;
+                              spawnType = 1.0;
+                              entity.getPersistentData().putDouble("grade07", -1.0);
+                              break;
+                           }
+
+                           if (kind == 8.0 && entity.getPersistentData().getDouble("grade08") >= 0.0 && !Kenjaku) {
+                              amount = 1.0;
+                              spawnType = 1.0;
+                              entity.getPersistentData().putDouble("grade08", -1.0);
                               break;
                            }
                         }
                      }
                   }
-               } else if (grade == 1.0) {
-                  for(int index4 = 0; index4 < 256; ++index4) {
-                     kind = (double)Math.round(Math.ceil(Math.random() * 9.0));
-                     if (kind == 1.0 && entity.getPersistentData().m_128459_("grade11") >= 0.0) {
-                        amount = 1.0;
-                        spawnType = 0.0;
-                        entity.getPersistentData().m_128347_("grade11", -1.0);
+               } else {
+                  index0 = 0;
+
+                  while(index0 < 256) {
+                     kind = Math.ceil(Math.random() * 22.0);
+                     if (kind == 4.0) {
+                        amount = 6.0;
+                        spawnType = 2.0;
                         break;
                      }
 
-                     if (kind == 2.0 && entity.getPersistentData().m_128459_("grade12") >= 0.0) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade12", -1.0);
-                        break;
-                     }
+                     if (kind != 6.0 && kind != 14.0 && kind != 15.0 && kind != 17.0) {
+                        if (kind != 8.0 && kind != 10.0 && kind != 13.0 && kind != 22.0) {
+                           if (kind != 11.0 && kind != 12.0) {
+                              if (kind != 9.0 && kind != 13.0 && kind != 18.0) {
+                                 ++index0;
+                                 continue;
+                              }
 
-                     if (kind == 3.0 && entity.getPersistentData().m_128459_("grade13") >= 0.0 && schoolDays) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade13", -1.0);
-                        break;
-                     }
-
-                     if (kind == 4.0 && entity.getPersistentData().m_128459_("grade14") >= 0.0) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade14", -1.0);
-                        break;
-                     }
-
-                     if (kind == 5.0 && entity.getPersistentData().m_128459_("grade15") >= 0.0) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade15", -1.0);
-                        break;
-                     }
-
-                     if (kind == 6.0 && entity.getPersistentData().m_128459_("grade16") >= 0.0) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade16", -1.0);
-                        break;
-                     }
-
-                     if (kind == 7.0 && entity.getPersistentData().m_128459_("grade17") >= 0.0) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade17", -1.0);
-                        break;
-                     }
-
-                     if (kind == 8.0 && entity.getPersistentData().m_128459_("grade18") >= 0.0) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade18", -1.0);
-                        break;
-                     }
-
-                     if (kind == 9.0 && entity.getPersistentData().m_128459_("grade19") >= 0.0 && schoolDays) {
-                        amount = 1.0;
-                        spawnType = 1.0;
-                        entity.getPersistentData().m_128347_("grade19", -1.0);
-                        break;
-                     }
-                  }
-               } else if (grade == 0.0) {
-                  for(int index5 = 0; index5 < 256; ++index5) {
-                     kind = (double)Math.round(Math.ceil(Math.random() * 9.0));
-                     if (kind != 1.0 && kind != 2.0 && kind != 9.0) {
-                        if (kind == 3.0 && entity.getPersistentData().m_128459_("grade03") >= 0.0 && !Kenjaku) {
-                           amount = 1.0;
-                           spawnType = 1.0;
-                           entity.getPersistentData().m_128347_("grade03", -1.0);
-                           break;
-                        }
-
-                        if (kind == 4.0 && entity.getPersistentData().m_128459_("grade04") >= 0.0 && Kenjaku) {
-                           amount = 1.0;
-                           spawnType = 1.0;
-                           entity.getPersistentData().m_128347_("grade04", -1.0);
-                           break;
-                        }
-
-                        if (kind == 5.0 && entity.getPersistentData().m_128459_("grade05") >= 0.0 && Kenjaku) {
-                           amount = 1.0;
-                           spawnType = 1.0;
-                           entity.getPersistentData().m_128347_("grade05", -1.0);
-                           break;
-                        }
-
-                        if (kind == 6.0 && entity.getPersistentData().m_128459_("grade06") >= 0.0 && Kenjaku) {
-                           amount = 1.0;
-                           spawnType = 1.0;
-                           entity.getPersistentData().m_128347_("grade06", -1.0);
-                           break;
-                        }
-
-                        if (kind == 7.0 && entity.getPersistentData().m_128459_("grade07") >= 0.0 && Kenjaku) {
-                           amount = 1.0;
-                           spawnType = 1.0;
-                           entity.getPersistentData().m_128347_("grade07", -1.0);
-                           break;
-                        }
-
-                        if (kind == 8.0 && entity.getPersistentData().m_128459_("grade08") >= 0.0 && !Kenjaku) {
-                           amount = 1.0;
-                           spawnType = 1.0;
-                           entity.getPersistentData().m_128347_("grade08", -1.0);
-                           break;
-                        }
-                     }
-                  }
-               }
-            } else {
-               index0 = 0;
-
-               while(index0 < 256) {
-                  kind = Math.ceil(Math.random() * 20.0);
-                  if (kind == 4.0) {
-                     amount = 6.0;
-                     spawnType = 2.0;
-                     break;
-                  }
-
-                  if (kind != 6.0 && kind != 14.0 && kind != 15.0 && kind != 17.0) {
-                     if (kind != 8.0 && kind != 10.0 && kind != 13.0) {
-                        if (kind != 11.0 && kind != 12.0) {
-                           if (kind != 9.0 && kind != 13.0 && kind != 18.0) {
-                              ++index0;
-                              continue;
+                              amount = 8.0;
+                              spawnType = 0.0;
+                              break;
                            }
 
-                           amount = 8.0;
+                           amount = 1.0;
                            spawnType = 0.0;
                            break;
                         }
 
-                        amount = 1.0;
+                        amount = 2.0;
                         spawnType = 0.0;
                         break;
                      }
 
                      amount = 2.0;
                      spawnType = 0.0;
+                     loop_num = 8.0;
                      break;
                   }
-
-                  amount = 2.0;
-                  spawnType = 0.0;
-                  loop_num = 8.0;
-                  break;
                }
-            }
 
-            entity.getPersistentData().m_128347_("cnt3", grade);
-            entity.getPersistentData().m_128347_("cnt4", kind);
-            entity.getPersistentData().m_128347_("cnt5", amount);
-            entity.getPersistentData().m_128347_("cnt7", spawnType);
-            entity.getPersistentData().m_128347_("cnt8", loop_num);
+               entity.getPersistentData().putDouble("cnt3", grade);
+               entity.getPersistentData().putDouble("cnt4", kind);
+               entity.getPersistentData().putDouble("cnt5", amount);
+               entity.getPersistentData().putDouble("cnt7", spawnType);
+               entity.getPersistentData().putDouble("cnt8", loop_num);
+            }
          } else {
-            grade = entity.getPersistentData().m_128459_("cnt3");
-            kind = entity.getPersistentData().m_128459_("cnt4");
-            amount = entity.getPersistentData().m_128459_("cnt5");
-            spawnType = entity.getPersistentData().m_128459_("cnt7");
-            loop_num = entity.getPersistentData().m_128459_("cnt8");
+            grade = entity.getPersistentData().getDouble("cnt3");
+            kind = entity.getPersistentData().getDouble("cnt4");
+            amount = entity.getPersistentData().getDouble("cnt5");
+            spawnType = entity.getPersistentData().getDouble("cnt7");
+            loop_num = entity.getPersistentData().getDouble("cnt8");
          }
+
+         speed = 6.5;
 
          for(int index6 = 0; index6 < (int)Math.round(amount); ++index6) {
             if (spawnType == 1.0) {
-               entity.m_146922_((float)(yaw + (Math.random() - 0.5) * 90.0));
-               entity.m_146926_((float)Math.min(pitch, 0.0));
-               entity.m_5618_(entity.m_146908_());
-               entity.m_5616_(entity.m_146908_());
-               entity.f_19859_ = entity.m_146908_();
-               entity.f_19860_ = entity.m_146909_();
+               entity.setYRot((float)(yaw + (Math.random() - 0.5) * 90.0));
+               entity.setXRot((float)Math.min(pitch, 0.0));
+               entity.setYBodyRot(entity.getYRot());
+               entity.setYHeadRot(entity.getYRot());
+               entity.yRotO = entity.getYRot();
+               entity.xRotO = entity.getXRot();
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.f_20884_ = _entity.m_146908_();
-                  _entity.f_20886_ = _entity.m_146908_();
+                  _entity.yBodyRotO = _entity.getYRot();
+                  _entity.yHeadRotO = _entity.getYRot();
                }
 
-               x_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(-4.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123341_();
-               y_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123342_();
-               z_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(-4.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123343_();
+               x_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(-4.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getX();
+               y_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(0.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getY();
+               z_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(-4.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getZ();
             } else if (spawnType == 2.0) {
                if (target) {
                   if (entity instanceof Mob) {
                      Mob _mobEnt = (Mob)entity;
-                     var99 = _mobEnt.m_5448_();
-                  } else {
-                     var99 = null;
-                  }
-
-                  Level var103 = ((Entity)var99).m_9236_();
-                  ClipContext var10001 = new ClipContext;
-                  LivingEntity var10003;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var10003 = _mobEnt.m_5448_();
-                  } else {
-                     var10003 = null;
-                  }
-
-                  Vec3 var116 = ((Entity)var10003).m_20299_(1.0F);
-                  LivingEntity var10004;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var10004 = _mobEnt.m_5448_();
-                  } else {
-                     var10004 = null;
-                  }
-
-                  Vec3 var121 = ((Entity)var10004).m_20299_(1.0F);
-                  LivingEntity var10005;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var10005 = _mobEnt.m_5448_();
-                  } else {
-                     var10005 = null;
-                  }
-
-                  var121 = var121.m_82549_(((Entity)var10005).m_20252_(1.0F).m_82490_(0.0));
-                  ClipContext.Block var129 = Block.OUTLINE;
-                  ClipContext.Fluid var10006 = Fluid.NONE;
-                  LivingEntity var10007;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var10007 = _mobEnt.m_5448_();
-                  } else {
-                     var10007 = null;
-                  }
-
-                  var10001.<init>(var116, var121, var129, var10006, var10007);
-                  x_pos = (double)var103.m_45547_(var10001).m_82425_().m_123341_() + (Math.random() - 0.5) * 12.0;
-                  LivingEntity var104;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var104 = _mobEnt.m_5448_();
-                  } else {
-                     var104 = null;
-                  }
-
-                  Level var105 = ((Entity)var104).m_9236_();
-                  var10001 = new ClipContext;
-                  LivingEntity var117;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var117 = _mobEnt.m_5448_();
-                  } else {
-                     var117 = null;
-                  }
-
-                  Vec3 var118 = ((Entity)var117).m_20299_(1.0F);
-                  LivingEntity var123;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var123 = _mobEnt.m_5448_();
+                     var123 = _mobEnt.getTarget();
                   } else {
                      var123 = null;
                   }
 
-                  Vec3 var124 = ((Entity)var123).m_20299_(1.0F);
+                  Level var129 = ((Entity)var123).level();
+                  ClipContext var142;
+                  LivingEntity var10003;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var10003 = _mobEnt.getTarget();
+                  } else {
+                     var10003 = null;
+                  }
+
+                  Vec3 var147 = ((Entity)var10003).getEyePosition(1.0F);
+                  LivingEntity var10004;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var10004 = _mobEnt.getTarget();
+                  } else {
+                     var10004 = null;
+                  }
+
+                  Vec3 var152 = ((Entity)var10004).getEyePosition(1.0F);
+                  LivingEntity var10005;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var10005 = _mobEnt.getTarget();
+                  } else {
+                     var10005 = null;
+                  }
+
+                  var152 = var152.add(((Entity)var10005).getViewVector(1.0F).scale(0.0));
+                  ClipContext.Block var160 = Block.OUTLINE;
+                  ClipContext.Fluid var10006 = Fluid.NONE;
+                  LivingEntity var10007;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var10007 = _mobEnt.getTarget();
+                  } else {
+                     var10007 = null;
+                  }
+
+                  var142 = new ClipContext(var147, var152, var160, var10006, var10007);
+                  x_pos = (double)var129.clip(var142).getBlockPos().getX() + (Math.random() - 0.5) * 12.0;
                   LivingEntity var130;
                   if (entity instanceof Mob) {
                      Mob _mobEnt = (Mob)entity;
-                     var130 = _mobEnt.m_5448_();
+                     var130 = _mobEnt.getTarget();
                   } else {
                      var130 = null;
                   }
 
-                  var124 = var124.m_82549_(((Entity)var130).m_20252_(1.0F).m_82490_(0.0));
-                  ClipContext.Block var131 = Block.OUTLINE;
+                  Level var131 = ((Entity)var130).level();
+                  LivingEntity var148;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var148 = _mobEnt.getTarget();
+                  } else {
+                     var148 = null;
+                  }
+
+                  Vec3 var149 = ((Entity)var148).getEyePosition(1.0F);
+                  LivingEntity var154;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var154 = _mobEnt.getTarget();
+                  } else {
+                     var154 = null;
+                  }
+
+                  Vec3 var155 = ((Entity)var154).getEyePosition(1.0F);
+                  LivingEntity var161;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var161 = _mobEnt.getTarget();
+                  } else {
+                     var161 = null;
+                  }
+
+                  var155 = var155.add(((Entity)var161).getViewVector(1.0F).scale(0.0));
+                  ClipContext.Block var162 = Block.OUTLINE;
                   var10006 = Fluid.NONE;
                   if (entity instanceof Mob) {
                      Mob _mobEnt = (Mob)entity;
-                     var10007 = _mobEnt.m_5448_();
+                     var10007 = _mobEnt.getTarget();
                   } else {
                      var10007 = null;
                   }
 
-                  var10001.<init>(var118, var124, var131, var10006, var10007);
-                  y_pos = (double)var105.m_45547_(var10001).m_82425_().m_123342_();
-                  LivingEntity var106;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var106 = _mobEnt.m_5448_();
-                  } else {
-                     var106 = null;
-                  }
-
-                  Level var107 = ((Entity)var106).m_9236_();
-                  var10001 = new ClipContext;
-                  LivingEntity var119;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var119 = _mobEnt.m_5448_();
-                  } else {
-                     var119 = null;
-                  }
-
-                  Vec3 var120 = ((Entity)var119).m_20299_(1.0F);
-                  LivingEntity var126;
-                  if (entity instanceof Mob) {
-                     Mob _mobEnt = (Mob)entity;
-                     var126 = _mobEnt.m_5448_();
-                  } else {
-                     var126 = null;
-                  }
-
-                  Vec3 var127 = ((Entity)var126).m_20299_(1.0F);
+                  var142= new ClipContext(var149, var155, var162, var10006, var10007);
+                  y_pos = (double)var131.clip(var142).getBlockPos().getY();
                   LivingEntity var132;
                   if (entity instanceof Mob) {
                      Mob _mobEnt = (Mob)entity;
-                     var132 = _mobEnt.m_5448_();
+                     var132 = _mobEnt.getTarget();
                   } else {
                      var132 = null;
                   }
 
-                  var127 = var127.m_82549_(((Entity)var132).m_20252_(1.0F).m_82490_(0.0));
-                  ClipContext.Block var133 = Block.OUTLINE;
+                  Level var133 = ((Entity)var132).level();
+                  LivingEntity var150;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var150 = _mobEnt.getTarget();
+                  } else {
+                     var150 = null;
+                  }
+
+                  Vec3 var151 = ((Entity)var150).getEyePosition(1.0F);
+                  LivingEntity var157;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var157 = _mobEnt.getTarget();
+                  } else {
+                     var157 = null;
+                  }
+
+                  Vec3 var158 = ((Entity)var157).getEyePosition(1.0F);
+                  LivingEntity var163;
+                  if (entity instanceof Mob) {
+                     Mob _mobEnt = (Mob)entity;
+                     var163 = _mobEnt.getTarget();
+                  } else {
+                     var163 = null;
+                  }
+
+                  var158 = var158.add(((Entity)var163).getViewVector(1.0F).scale(0.0));
+                  ClipContext.Block var164 = Block.OUTLINE;
                   var10006 = Fluid.NONE;
                   if (entity instanceof Mob) {
                      Mob _mobEnt = (Mob)entity;
-                     var10007 = _mobEnt.m_5448_();
+                     var10007 = _mobEnt.getTarget();
                   } else {
                      var10007 = null;
                   }
 
-                  var10001.<init>(var120, var127, var133, var10006, var10007);
-                  z_pos = (double)var107.m_45547_(var10001).m_82425_().m_123343_() + (Math.random() - 0.5) * 12.0;
+                  var142 = new ClipContext(var151, var158, var164, var10006, var10007);
+                  z_pos = (double)var133.clip(var142).getBlockPos().getZ() + (Math.random() - 0.5) * 12.0;
                } else {
-                  x_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(48.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123341_() + (Math.random() - 0.5) * 12.0;
-                  y_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(48.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123342_();
-                  z_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(48.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123343_() + (Math.random() - 0.5) * 12.0;
+                  x_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(48.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getX() + (Math.random() - 0.5) * 12.0;
+                  y_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(48.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getY();
+                  z_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(48.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getZ() + (Math.random() - 0.5) * 12.0;
                }
             } else {
-               entity.m_146922_((float)(yaw + (Math.random() - 0.5) * 180.0));
-               entity.m_146926_((float)Math.min(pitch, 0.0));
-               entity.m_5618_(entity.m_146908_());
-               entity.m_5616_(entity.m_146908_());
-               entity.f_19859_ = entity.m_146908_();
-               entity.f_19860_ = entity.m_146909_();
+               entity.setYRot((float)(yaw + (Math.random() - 0.5) * 180.0));
+               entity.setXRot((float)Math.min(pitch, 0.0));
+               entity.setYBodyRot(entity.getYRot());
+               entity.setYHeadRot(entity.getYRot());
+               entity.yRotO = entity.getYRot();
+               entity.xRotO = entity.getXRot();
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.f_20884_ = _entity.m_146908_();
-                  _entity.f_20886_ = _entity.m_146908_();
+                  _entity.yBodyRotO = _entity.getYRot();
+                  _entity.yHeadRotO = _entity.getYRot();
                }
 
-               x_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(4.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123341_();
-               y_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123342_();
-               z_pos = (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(4.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123343_();
+               x_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(4.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getX();
+               y_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(0.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getY();
+               z_pos = (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(4.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getZ();
             }
 
             y_pos += Math.random() * 0.1;
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               Commands var108 = _level.m_7654_().m_129892_();
-               CommandSourceStack var114 = (new CommandSourceStack(CommandSource.f_80164_, new Vec3(x_pos, y_pos, z_pos), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_();
+               Commands var134 = _level.getServer().getCommands();
+               CommandSourceStack var145 = (new CommandSourceStack(CommandSource.NULL, new Vec3(x_pos, y_pos, z_pos), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput();
                long var10002 = Math.round(grade);
-               var108.m_230957_(var114, "summon jujutsucraft:cursed_spirit_grade_" + var10002 + Math.round(kind));
+               var134.performPrefixedCommand(var145, "summon gaigegaigekaigecraft:cursed_spirit_grade_" + var10002 + Math.round(kind));
             }
 
-            if (entity.m_6084_()) {
-               label388: {
+            if (entity.isAlive()) {
+               int var136;
+               label463: {
                   if (entity instanceof LivingEntity) {
-                     LivingEntity _livEnt82 = (LivingEntity)entity;
-                     if (_livEnt82.m_21023_(MobEffects.f_19600_)) {
-                        label383: {
+                     LivingEntity _livEnt103 = (LivingEntity)entity;
+                     if (_livEnt103.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        label458: {
                            if (entity instanceof LivingEntity) {
                               LivingEntity _livEnt = (LivingEntity)entity;
-                              if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                                 var110 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
-                                 break label383;
+                              if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                                 var136 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
+                                 break label458;
                               }
                            }
 
-                           var110 = 0;
+                           var136 = 0;
                         }
 
-                        ++var110;
-                        break label388;
+                        ++var136;
+                        break label463;
                      }
                   }
 
-                  var110 = 0;
+                  var136 = 0;
                }
 
-               level_strength = (double)var110;
+               level_strength = (double)var136;
                Vec3 _center = new Vec3(x_pos, y_pos, z_pos);
 
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                  if (entityiterator.getPersistentData().m_128459_("friend_num") == 0.0) {
-                     entityiterator.getPersistentData().m_128359_("OWNER_UUID", entity.m_20149_());
-                     entityiterator.getPersistentData().m_128347_("friend_num", entity.getPersistentData().m_128459_("friend_num"));
-                     entityiterator.getPersistentData().m_128347_("friend_num_worker", entity.getPersistentData().m_128459_("friend_num"));
-                     entityiterator.m_146922_((float)yaw);
-                     entityiterator.m_146926_((float)pitch);
-                     entityiterator.m_5618_(entityiterator.m_146908_());
-                     entityiterator.m_5616_(entityiterator.m_146908_());
-                     entityiterator.f_19859_ = entityiterator.m_146908_();
-                     entityiterator.f_19860_ = entityiterator.m_146909_();
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(0.5), (e) -> true)) {
+                  if (entityiterator.getPersistentData().getDouble("friend_num") == 0.0) {
+                     entityiterator.getPersistentData().putString("OWNER_UUID", entity.getStringUUID());
+                     entityiterator.getPersistentData().putDouble("friend_num", entity.getPersistentData().getDouble("friend_num"));
+                     entityiterator.getPersistentData().putDouble("friend_num_worker", entity.getPersistentData().getDouble("friend_num"));
+                     entityiterator.setYRot((float)yaw);
+                     entityiterator.setXRot((float)pitch);
+                     entityiterator.setYBodyRot(entityiterator.getYRot());
+                     entityiterator.setYHeadRot(entityiterator.getYRot());
+                     entityiterator.yRotO = entityiterator.getYRot();
+                     entityiterator.xRotO = entityiterator.getXRot();
                      if (entityiterator instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entityiterator;
-                        _entity.f_20884_ = _entity.m_146908_();
-                        _entity.f_20886_ = _entity.m_146908_();
+                        _entity.yBodyRotO = _entity.getYRot();
+                        _entity.yHeadRotO = _entity.getYRot();
                      }
 
                      if (entityiterator instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entityiterator;
-                        if (!_entity.m_9236_().m_5776_()) {
-                           _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 1, 9, false, false));
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1, 9, false, false));
                         }
                      }
 
                      if (entity instanceof LivingEntity) {
-                        LivingEntity _livingEntity93 = (LivingEntity)entity;
-                        if (_livingEntity93.m_21204_().m_22171_(Attributes.f_22281_)) {
+                        LivingEntity _livingEntity114 = (LivingEntity)entity;
+                        if (_livingEntity114.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
                            if (grade == 0.0) {
                               level_strength2 = 13.0;
                            } else if (grade == 1.0) {
@@ -689,31 +826,60 @@ public class GetoSpawnCurseRandomProcedure {
                            }
 
                            if (entityiterator instanceof LivingEntity) {
-                              LivingEntity _livingEntity95 = (LivingEntity)entityiterator;
-                              if (_livingEntity95.m_21204_().m_22171_(Attributes.f_22281_)) {
-                                 double var115;
-                                 label365: {
-                                    var111 = _livingEntity95.getAttribute_(Attributes.f_22281_);
+                              LivingEntity _livingEntity116 = (LivingEntity)entityiterator;
+                              if (_livingEntity116.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                                 double var146;
+                                 AttributeInstance var137;
+                                 label440: {
+                                    var137 = _livingEntity116.getAttribute(Attributes.ATTACK_DAMAGE);
                                     if (entityiterator instanceof LivingEntity) {
-                                       LivingEntity _livingEntity94 = (LivingEntity)entityiterator;
-                                       if (_livingEntity94.m_21204_().m_22171_(Attributes.f_22281_)) {
-                                          var115 = _livingEntity94.getAttribute_(Attributes.f_22281_).m_22115_();
-                                          break label365;
+                                       LivingEntity _livingEntity115 = (LivingEntity)entityiterator;
+                                       if (_livingEntity115.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                                          var146 = _livingEntity115.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+                                          break label440;
                                        }
                                     }
 
-                                    var115 = 0.0;
+                                    var146 = 0.0;
                                  }
 
-                                 var111.m_22100_(Math.max(var115, level_strength * 3.0 * 0.5 * ((Math.max(level_strength * 3.0, 1.0) - Math.max(level_strength2 * 3.0, 1.0)) / Math.max(level_strength * 3.0, 1.0))));
+                                 var137.setBaseValue(Math.max(var146, level_strength * 3.0 * 0.5 * ((Math.max(level_strength * 3.0, 1.0) - Math.max(level_strength2 * 3.0, 1.0)) / Math.max(level_strength * 3.0, 1.0))));
                               }
                            }
                         }
                      }
 
-                     entityiterator.getPersistentData().m_128379_("JujutsuSorcerer", entity.getPersistentData().m_128471_("JujutsuSorcerer"));
-                     entityiterator.getPersistentData().m_128379_("CurseUser", entity.getPersistentData().m_128471_("CurseUser"));
-                     entityiterator.getPersistentData().m_128379_("Player", player);
+                     entityiterator.getPersistentData().putBoolean("JujutsuSorcerer", entity.getPersistentData().getBoolean("JujutsuSorcerer"));
+                     entityiterator.getPersistentData().putBoolean("CurseUser", entity.getPersistentData().getBoolean("CurseUser"));
+                     entityiterator.getPersistentData().putBoolean("Player", player);
+                     if (!(entityiterator instanceof CursedSpiritGrade13Entity) && !(entityiterator instanceof CursedSpiritGrade23Entity)) {
+                        break;
+                     }
+
+                     entityiterator.push(entityiterator.getLookAngle().x * speed, entityiterator.getLookAngle().y * speed, entityiterator.getLookAngle().z * speed);
+                     entityiterator.setDeltaMovement(new Vec3(entityiterator.getLookAngle().x * speed, entityiterator.getLookAngle().y * speed, entityiterator.getLookAngle().z * speed));
+                     if (entityiterator instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entityiterator;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), 50, 0, false, false));
+                        }
+                     }
+
+                     if (entityiterator instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entityiterator;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                        }
+                     }
+
+                     entityiterator.getPersistentData().putDouble("skill", 1706.0);
+                     entityiterator.getPersistentData().putDouble("cnt1", 6.0);
+                     entityiterator.getPersistentData().putDouble("cnt6", -2.5);
+                     entityiterator.getPersistentData().putDouble("yaw", (double)entityiterator.getYRot());
+                     entityiterator.getPersistentData().putDouble("pitch", (double)entityiterator.getXRot());
+                     entityiterator.getPersistentData().putDouble("x_power", entityiterator.getLookAngle().x * speed * 0.5);
+                     entityiterator.getPersistentData().putDouble("y_power", entityiterator.getLookAngle().y * speed * 0.5);
+                     entityiterator.getPersistentData().putDouble("z_power", entityiterator.getLookAngle().z * speed * 0.5);
                      break;
                   }
                }
@@ -721,24 +887,24 @@ public class GetoSpawnCurseRandomProcedure {
 
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123765_, x_pos, y_pos, z_pos, 25, 0.5, 0.5, 0.5, 0.0);
+               _level.sendParticles(ParticleTypes.SQUID_INK, x_pos, y_pos, z_pos, 25, 0.5, 0.5, 0.5, 0.0);
             }
          }
 
-         entity.m_146922_((float)yaw);
-         entity.m_146926_((float)pitch);
-         entity.m_5618_(entity.m_146908_());
-         entity.m_5616_(entity.m_146908_());
-         entity.f_19859_ = entity.m_146908_();
-         entity.f_19860_ = entity.m_146909_();
+         entity.setYRot((float)yaw);
+         entity.setXRot((float)pitch);
+         entity.setYBodyRot(entity.getYRot());
+         entity.setYHeadRot(entity.getYRot());
+         entity.yRotO = entity.getYRot();
+         entity.xRotO = entity.getXRot();
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.f_20884_ = _entity.m_146908_();
-            _entity.f_20886_ = _entity.m_146908_();
+            _entity.yBodyRotO = _entity.getYRot();
+            _entity.yHeadRotO = _entity.getYRot();
          }
 
-         if (entity.getPersistentData().m_128459_("cnt1") >= loop_num) {
-            entity.getPersistentData().m_128347_("skill", 0.0);
+         if (entity.getPersistentData().getDouble("cnt1") >= loop_num) {
+            entity.getPersistentData().putDouble("skill", 0.0);
          }
 
       }

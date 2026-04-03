@@ -31,59 +31,60 @@ public class ReturnEnergyColorProcedure {
       if (entity == null) {
          return 0.0;
       } else {
-         double curse_energy_color = 0.0;
-         curse_energy_color = 1.0;
-         if (entity instanceof Player) {
-            if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 5.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 5.0) {
-               curse_energy_color = 3.0;
-            }
-
-            if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 4.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 4.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 15.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 15.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 43.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 43.0) {
-               curse_energy_color = 5.0;
-            }
-
-            if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePowerMAX <= 150.0) {
-               curse_energy_color = 0.0;
-            }
-         } else {
-            if (entity instanceof OkkotsuYutaEntity || entity instanceof OkkotsuYutaCullingGameEntity || entity instanceof RikaEntity || entity instanceof Rika2Entity) {
-               curse_energy_color = 3.0;
-            }
-
-            if (entity instanceof RozetsuEntity || entity instanceof RozetsuShikigamiEntity || entity instanceof RozetsuShikigamiVessel2Entity || entity instanceof RozetsuShikigamiVesselEntity || entity instanceof JogoEntity || entity instanceof MahitoEntity) {
-               curse_energy_color = 5.0;
-            }
-
-            if (entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:no_curse_power"))) || entity instanceof ZeninMakiEntity) {
-               curse_energy_color = 0.0;
-            }
-         }
-
-         label53: {
-            label52: {
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _livEnt13 = (LivingEntity)entity;
-                  if (_livEnt13.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
-                     break label52;
-                  }
-               }
-
-               if (!(entity instanceof CursedSpiritGrade01Entity)) {
-                  break label53;
-               }
-            }
-
-            curse_energy_color = 2.0;
-         }
-
+         double T1 = 0.0;
+         double T2 = 0.0;
          if (entity instanceof LivingEntity) {
-            LivingEntity _livEnt15 = (LivingEntity)entity;
-            if (_livEnt15.m_21023_((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
-               curse_energy_color = 4.0;
+            LivingEntity _livEnt0 = (LivingEntity)entity;
+            if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+               return 2.0;
             }
          }
 
-         return curse_energy_color;
+         if (!(entity instanceof CursedSpiritGrade01Entity)) {
+            if (entity instanceof LivingEntity) {
+               LivingEntity _livEnt2 = (LivingEntity)entity;
+               if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.JACKPOT.get())) {
+                  return 4.0;
+               }
+            }
+
+            if (entity instanceof Player) {
+               JujutsucraftModVariables.PlayerVariables pVars = null;
+               if (entity instanceof Player) {
+                  pVars = (JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse((JujutsucraftModVariables.PlayerVariables) null);
+               }
+
+               T1 = pVars.PlayerCurseTechnique;
+               T2 = pVars.PlayerCurseTechnique2;
+               if (pVars.PlayerCursePowerMAX <= 150.0) {
+                  return 0.0;
+               }
+
+               if (T1 == 5.0 || T2 == 5.0) {
+                  return 3.0;
+               }
+
+               if (T1 == 4.0 || T2 == 4.0 || T1 == 15.0 || T2 == 15.0 || T1 == 43.0 || T2 == 43.0) {
+                  return 5.0;
+               }
+            } else {
+               if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:no_curse_power"))) || entity instanceof ZeninMakiEntity) {
+                  return 0.0;
+               }
+
+               if (entity instanceof OkkotsuYutaEntity || entity instanceof OkkotsuYutaCullingGameEntity || entity instanceof RikaEntity || entity instanceof Rika2Entity) {
+                  return 3.0;
+               }
+
+               if (entity instanceof RozetsuEntity || entity instanceof RozetsuShikigamiEntity || entity instanceof RozetsuShikigamiVessel2Entity || entity instanceof RozetsuShikigamiVesselEntity || entity instanceof JogoEntity || entity instanceof MahitoEntity) {
+                  return 5.0;
+               }
+            }
+
+            return 1.0;
+         } else {
+            return 2.0;
+         }
       }
    }
 }

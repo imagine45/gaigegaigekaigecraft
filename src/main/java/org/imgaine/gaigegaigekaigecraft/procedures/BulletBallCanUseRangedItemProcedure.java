@@ -13,27 +13,27 @@ public class BulletBallCanUseRangedItemProcedure {
 
    public static void execute(Entity entity, ItemStack itemstack) {
       if (entity != null) {
-         if (entity instanceof LivingEntity) {
-            LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-               label23: {
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _livEnt1 = (LivingEntity)entity;
-                     if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
-                        break label23;
-                     }
-                  }
-
-                  if (!entity.getPersistentData().m_128471_("Failed") && entity.getPersistentData().m_128459_("Reserve") == 0.0) {
-                     return;
-                  }
-               }
-
-               if (entity instanceof Player) {
-                  Player _player = (Player)entity;
-                  _player.m_36335_().m_41524_(itemstack.m_41720_(), 5);
+         label32: {
+            if (entity instanceof LivingEntity) {
+               LivingEntity _livEnt0 = (LivingEntity)entity;
+               if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+                  break label32;
                }
             }
+
+            if (!(entity instanceof LivingEntity)) {
+               return;
+            }
+
+            LivingEntity _livEnt1 = (LivingEntity)entity;
+            if (!_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()) || !entity.getPersistentData().getBoolean("Failed") && entity.getPersistentData().getDouble("Reserve") == 0.0) {
+               return;
+            }
+         }
+
+         if (entity instanceof Player) {
+            Player _player = (Player)entity;
+            _player.getCooldowns().addCooldown(itemstack.getItem(), 5);
          }
 
       }

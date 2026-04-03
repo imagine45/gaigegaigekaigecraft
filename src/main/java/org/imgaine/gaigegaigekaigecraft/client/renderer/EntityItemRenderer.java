@@ -10,11 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EntityItemRenderer extends HumanoidMobRenderer<EntityItemEntity, HumanoidModel<EntityItemEntity>> {
    public EntityItemRenderer(EntityRendererProvider.Context context) {
-      super(context, new HumanoidModel(context.m_174023_(ModelLayers.f_171162_)), 0.2F);
-      this.m_115326_(new HumanoidArmorLayer(this, new HumanoidModel(context.m_174023_(ModelLayers.f_171164_)), new HumanoidModel(context.m_174023_(ModelLayers.f_171165_)), context.m_266367_()));
+      super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.2F);
+      this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
    }
 
    public ResourceLocation getTextureLocation(EntityItemEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/clear.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/clear.png");
    }
 }

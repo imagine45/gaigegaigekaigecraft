@@ -25,10 +25,10 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
             label113: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt0 = (LivingEntity)entity;
-                  if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
+                  if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get());
+                        _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get());
                      }
 
                      if (!(entity instanceof Player)) {
@@ -36,17 +36,17 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                      }
 
                      Player _player = (Player)entity;
-                     if (_player.m_9236_().m_5776_()) {
+                     if (_player.level().isClientSide()) {
                         break label113;
                      }
 
                      String var15;
                      boolean var16;
                      label77: {
-                        var15 = Component.m_237115_("effect.domain_amplification").getString();
+                        var15 = Component.translatable("effect.domain_amplification").getString();
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt3 = (LivingEntity)entity;
-                           if (_livEnt3.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
+                           if (_livEnt3.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
                               var16 = true;
                               break label77;
                            }
@@ -55,7 +55,7 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                         var16 = false;
                      }
 
-                     _player.m_5661_(Component.m_237113_(var15 + ": " + var16), false);
+                     _player.displayClientMessage(Component.literal(var15 + ": " + var16), false);
                      break label113;
                   }
                }
@@ -65,7 +65,7 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                      label118: {
                         if (entity instanceof ServerPlayer) {
                            ServerPlayer _plr6 = (ServerPlayer)entity;
-                           if (_plr6.m_9236_() instanceof ServerLevel && _plr6.m_8960_().m_135996_(_plr6.f_8924_.m_129889_().m_136041_(new ResourceLocation("jujutsucraft:mastery_domain_amplification"))).m_8193_()) {
+                           if (_plr6.level() instanceof ServerLevel && _plr6.getAdvancements().getOrStartProgress(_plr6.server.getAdvancements().getAdvancement(new ResourceLocation("gaigegaigekaigecraft:mastery_domain_amplification"))).isDone()) {
                               break label118;
                            }
                         }
@@ -75,7 +75,7 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                         }
 
                         LivingEntity _livEnt7 = (LivingEntity)entity;
-                        if (!_livEnt7.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                        if (!_livEnt7.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
                            break label119;
                         }
                      }
@@ -85,8 +85,8 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                   label91: {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                           var10000 = (double)_livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                        if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                           var10000 = (double)_livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                            break label91;
                         }
                      }
@@ -95,8 +95,8 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                   }
 
                   level = var10000;
-                  if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                     entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "effect give @s jujutsucraft:domain_amplification infinite " + Math.round(level) + " false");
+                  if (!entity.level().isClientSide() && entity.getServer() != null) {
+                     entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "effect give @s gaigegaigekaigecraft:domain_amplification infinite " + Math.round(level) + " false");
                   }
 
                   if (!(entity instanceof Player)) {
@@ -104,17 +104,17 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                   }
 
                   Player _player = (Player)entity;
-                  if (_player.m_9236_().m_5776_()) {
+                  if (_player.level().isClientSide()) {
                      break label113;
                   }
 
                   String var10001;
                   boolean var10002;
                   label85: {
-                     var10001 = Component.m_237115_("effect.domain_amplification").getString();
+                     var10001 = Component.translatable("effect.domain_amplification").getString();
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt11 = (LivingEntity)entity;
-                        if (_livEnt11.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
+                        if (_livEnt11.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
                            var10002 = true;
                            break label85;
                         }
@@ -123,20 +123,20 @@ public class KeyDomainAmplificationOnKeyPressedProcedure {
                      var10002 = false;
                   }
 
-                  _player.m_5661_(Component.m_237113_(var10001 + ": " + var10002), false);
+                  _player.displayClientMessage(Component.literal(var10001 + ": " + var10002), false);
                   break label113;
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_(Component.m_237115_("jujutsu.message.not_mastered").getString()), false);
+                  if (!_player.level().isClientSide()) {
+                     _player.displayClientMessage(Component.literal(Component.translatable("jujutsu.message.not_mastered").getString()), false);
                   }
                }
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "playsound ui.button.click master @s");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "playsound ui.button.click master @s");
             }
          }
 

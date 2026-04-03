@@ -1,7 +1,13 @@
 package org.imgaine.gaigegaigekaigecraft.item;
 
 import java.util.List;
+import org.imgaine.gaigegaigekaigecraft.procedures.DragonBoneRightclickedProcedure;
+import org.imgaine.gaigegaigekaigecraft.procedures.DragonBoneToolInHandTickProcedure;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -13,35 +19,50 @@ import net.minecraft.world.level.Level;
 public class DragonBoneItem extends SwordItem {
    public DragonBoneItem() {
       super(new Tier() {
-         public int m_6609_() {
+         public int getUses() {
             return 660;
          }
 
-         public float m_6624_() {
+         public float getSpeed() {
             return 4.0F;
          }
 
-         public float m_6631_() {
+         public float getAttackDamageBonus() {
             return 1.0F;
          }
 
-         public int m_6604_() {
+         public int getLevel() {
             return 1;
          }
 
-         public int m_6601_() {
+         public int getEnchantmentValue() {
             return 2;
          }
 
-         public Ingredient m_6282_() {
-            return Ingredient.m_151265_();
+         public Ingredient getRepairIngredient() {
+            return Ingredient.of();
          }
       }, 3, -2.6F, new Item.Properties());
    }
 
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.dragon_bone.description_0"));
-      list.add(Component.m_237115_("item.jujutsucraft.dragon_bone.description_1"));
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      DragonBoneRightclickedProcedure.execute(world, entity);
+      return ar;
+   }
+
+   public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, level, list, flag);
+      list.add(Component.translatable("item.gaigegaigekaigecraft.dragon_bone.description_0"));
+      list.add(Component.translatable("item.gaigegaigekaigecraft.dragon_bone.description_1"));
+      list.add(Component.translatable("item.gaigegaigekaigecraft.dragon_bone.description_2"));
+   }
+
+   public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+      super.inventoryTick(itemstack, world, entity, slot, selected);
+      if (selected) {
+         DragonBoneToolInHandTickProcedure.execute(world, entity, itemstack);
+      }
+
    }
 }

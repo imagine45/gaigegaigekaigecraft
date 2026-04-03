@@ -11,15 +11,15 @@ import net.minecraft.resources.ResourceLocation;
 
 public class Killer1Renderer extends HumanoidMobRenderer<Killer1Entity, HumanoidModel<Killer1Entity>> {
    public Killer1Renderer(EntityRendererProvider.Context context) {
-      super(context, new HumanoidModel(context.m_174023_(ModelLayers.f_171162_)), 0.0F);
-      this.m_115326_(new HumanoidArmorLayer(this, new HumanoidModel(context.m_174023_(ModelLayers.f_171164_)), new HumanoidModel(context.m_174023_(ModelLayers.f_171165_)), context.m_266367_()));
+      super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.0F);
+      this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
    }
 
    protected void scale(Killer1Entity entity, PoseStack poseStack, float f) {
-      poseStack.m_85841_(1.5F, 1.5F, 1.5F);
+      poseStack.scale(1.5F, 1.5F, 1.5F);
    }
 
    public ResourceLocation getTextureLocation(Killer1Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/killer1.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/killer1.png");
    }
 }

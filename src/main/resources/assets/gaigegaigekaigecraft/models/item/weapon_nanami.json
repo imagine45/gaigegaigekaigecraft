@@ -1,0 +1,7 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/wepon_nanami",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/wepon_nanami",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

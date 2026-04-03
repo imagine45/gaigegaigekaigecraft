@@ -1,14 +1,13 @@
 {
   "replace": false,
   "values": [
-    "jujutsucraft:broom",
-    "jujutsucraft:itadori_arm",
-    "jujutsucraft:hammer",
-    "jujutsucraft:gavel_big",
-    "jujutsucraft:gavel_long",
-    "jujutsucraft:garuda_item_ball",
-    "jujutsucraft:fester_life_blade",
-    "jujutsucraft:nyoi_staff",
-    "jujutsucraft:weapon_nanami"
+    "gaigegaigekaigecraft:daitengu_fan",
+    "gaigegaigekaigecraft:broom",
+    "gaigegaigekaigecraft:itadori_arm",
+    "gaigegaigekaigecraft:hammer",
+    "gaigegaigekaigecraft:garuda_item_ball",
+    "gaigegaigekaigecraft:fester_life_blade",
+    "gaigegaigekaigecraft:nyoi_staff",
+    "gaigegaigekaigecraft:weapon_nanami"
   ]
 }

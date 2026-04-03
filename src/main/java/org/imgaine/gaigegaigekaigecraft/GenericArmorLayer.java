@@ -75,25 +75,25 @@ public class GenericArmorLayer<T extends LivingEntity & GeoAnimatable> extends I
          case "LeftLeg2":
          case "armorLeftLeg":
          case "armorLeftBoot":
-            return baseModel.f_102814_;
+            return baseModel.leftLeg;
          case "RightLeg":
          case "RightLeg2":
          case "armorRightLeg":
          case "armorRightBoot":
-            return baseModel.f_102813_;
+            return baseModel.rightLeg;
          case "RightArm":
          case "armorRightArm":
-            return baseModel.f_102811_;
+            return baseModel.rightArm;
          case "LeftArm":
          case "armorLeftArm":
-            return baseModel.f_102812_;
+            return baseModel.leftArm;
          case "Body":
          case "armorBody":
-            return baseModel.f_102810_;
+            return baseModel.body;
          case "Head":
          case "hat":
          case "armorHead":
-            return baseModel.f_102808_;
+            return baseModel.head;
          default:
             return super.getModelPartForBone(bone, slot, stack, animatable, baseModel);
       }

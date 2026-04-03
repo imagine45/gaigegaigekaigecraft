@@ -15,24 +15,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class Modellaser<T extends Entity> extends EntityModel<T> {
-   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("jujutsucraft", "modellaser"), "main");
+   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("gaigegaigekaigecraft", "modellaser"), "main");
    public final ModelPart group;
 
    public Modellaser(ModelPart root) {
-      this.group = root.m_171324_("group");
+      this.group = root.getChild("group");
    }
 
    public static LayerDefinition createBodyLayer() {
       MeshDefinition meshdefinition = new MeshDefinition();
-      PartDefinition partdefinition = meshdefinition.m_171576_();
-      partdefinition.m_171599_("group", CubeListBuilder.m_171558_().m_171514_(0, 6).m_171488_(-3.5F, -3.5F, -10.0F, 7.0F, 7.0F, 34.0F, new CubeDeformation(0.0F)), PartPose.m_171419_(0.0F, 20.5F, 0.0F));
-      return LayerDefinition.m_171565_(meshdefinition, 32, 32);
+      PartDefinition partdefinition = meshdefinition.getRoot();
+      partdefinition.addOrReplaceChild("group", CubeListBuilder.create().texOffs(0, 6).addBox(-3.5F, -3.5F, -10.0F, 7.0F, 7.0F, 34.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.5F, 0.0F));
+      return LayerDefinition.create(meshdefinition, 32, 32);
    }
 
-   public void m_7695_(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      this.group.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+   public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      this.group.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
    }
 
-   public void m_6973_(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+   public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
    }
 }

@@ -1,20 +1,15 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
-import java.util.UUID;
-import java.util.function.BiFunction;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ClipContext.Block;
-import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -32,55 +27,44 @@ public class BulletDomainHit2Procedure {
          double range = 0.0;
          double dis = 0.0;
          Entity entity_a = null;
-         entity.getPersistentData().m_128347_("cnt_bullet_hit", entity.getPersistentData().m_128459_("cnt_bullet_hit") + 1.0);
-         if (entity.getPersistentData().m_128459_("cnt_bullet_hit") > 1.0) {
-            entity.getPersistentData().m_128347_("cnt_bullet_hit", -15.0);
-            if (entity.getPersistentData().m_128459_("NameRanged_ranged") != 0.0 && LogicOwnerExistProcedure.execute(world, entity)) {
-               entity_a = (new BiFunction<LevelAccessor, String, Entity>() {
-                  public Entity apply(LevelAccessor levelAccessor, String uuid) {
-                     if (levelAccessor instanceof ServerLevel serverLevel) {
-                        try {
-                           return serverLevel.m_8791_(UUID.fromString(uuid));
-                        } catch (Exception var5) {
-                        }
-                     }
-
-                     return null;
-                  }
-               }).apply(world, entity.getPersistentData().m_128461_("OWNER_UUID"));
-               if (entity.getPersistentData().m_128459_("NameRanged_ranged") == entity_a.getPersistentData().m_128459_("NameRanged") && !entity_a.getPersistentData().m_128471_("Failed") && entity_a instanceof LivingEntity) {
+         entity.getPersistentData().putDouble("cnt_bullet_hit", entity.getPersistentData().getDouble("cnt_bullet_hit") + 1.0);
+         if (entity.getPersistentData().getDouble("cnt_bullet_hit") > 1.0) {
+            entity.getPersistentData().putDouble("cnt_bullet_hit", -15.0);
+            if (entity.getPersistentData().getDouble("NameRanged_ranged") != 0.0 && LogicOwnerExistProcedure.execute(world, entity)) {
+               entity_a = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("OWNER_UUID"));
+               if (entity.getPersistentData().getDouble("NameRanged_ranged") == entity_a.getPersistentData().getDouble("NameRanged") && !entity_a.getPersistentData().getBoolean("Failed") && entity_a instanceof LivingEntity) {
                   LivingEntity _livEnt10 = (LivingEntity)entity_a;
-                  if (_livEnt10.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                     double var10000;
-                     int var10001;
+                  if (_livEnt10.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                     AABB var10002;
+                     double var10003;
+                     int var10004;
                      label46: {
-                        var10000 = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius;
+                        Vec3 _center = new Vec3(entity_a.getPersistentData().getDouble("x_pos_doma"), entity_a.getPersistentData().getDouble("y_pos_doma"), entity_a.getPersistentData().getDouble("z_pos_doma"));
+                        var10002 = new AABB(_center, _center);
+                        var10003 = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius;
                         if (entity_a instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity_a;
-                           if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                              var10001 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19564_();
+                           if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                              var10004 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getAmplifier();
                               break label46;
                            }
                         }
 
-                        var10001 = 0;
+                        var10004 = 0;
                      }
 
-                     range = var10000 * (double)(var10001 > 0 ? 6 : 2);
-                     x_pos = entity_a.getPersistentData().m_128459_("x_pos_doma");
-                     y_pos = entity_a.getPersistentData().m_128459_("y_pos_doma");
-                     z_pos = entity_a.getPersistentData().m_128459_("z_pos_doma");
-                     Vec3 _center = new Vec3(x_pos, y_pos, z_pos);
-
-                     for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
+                     for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, var10002.inflate(var10003 * (double)(var10004 > 0 ? 6 : 2) / 2.0), (e) -> true)) {
                         if (entity != entityiterator && LogicAttackProcedure.execute(world, entity, entityiterator) && LogicAttackDomainProcedure.execute(world, entity, entityiterator)) {
-                           entity.m_6021_((double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123341_() - (entity.m_20184_().m_7096_() + Math.random() - 0.5), (double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123342_() - (entity.m_20184_().m_7098_() + Math.random() - 0.5), (double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123343_() - (entity.m_20184_().m_7094_() + Math.random() - 0.5));
+                           x_pos = entityiterator.getX() + (double)entityiterator.getBbWidth() * Mth.nextDouble(RandomSource.create(), -0.5, 0.5);
+                           y_pos = entityiterator.getY() + (double)entityiterator.getBbHeight() * Mth.nextDouble(RandomSource.create(), 0.0, 1.0);
+                           z_pos = entityiterator.getZ() + (double)entityiterator.getBbWidth() * Mth.nextDouble(RandomSource.create(), -0.5, 0.5);
+                           entity.teleportTo(x_pos - entity.getDeltaMovement().x(), y_pos - entity.getDeltaMovement().y(), z_pos - entity.getDeltaMovement().z());
                            if (entity instanceof ServerPlayer) {
                               ServerPlayer _serverPlayer = (ServerPlayer)entity;
-                              _serverPlayer.f_8906_.m_9774_((double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123341_() - (entity.m_20184_().m_7096_() + Math.random() - 0.5), (double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123342_() - (entity.m_20184_().m_7098_() + Math.random() - 0.5), (double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123343_() - (entity.m_20184_().m_7094_() + Math.random() - 0.5), entity.m_146908_(), entity.m_146909_());
+                              _serverPlayer.connection.teleport(x_pos - entity.getDeltaMovement().x(), y_pos - entity.getDeltaMovement().y(), z_pos - entity.getDeltaMovement().z(), entity.getYRot(), entity.getXRot());
                            }
 
-                           entity.m_7618_(Anchor.EYES, new Vec3((double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123341_(), (double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123342_(), (double)entityiterator.m_9236_().m_45547_(new ClipContext(entityiterator.m_20299_(1.0F), entityiterator.m_20299_(1.0F).m_82549_(entityiterator.m_20252_(1.0F).m_82490_(0.0)), Block.OUTLINE, Fluid.NONE, entityiterator)).m_82425_().m_123343_()));
+                           entity.lookAt(Anchor.EYES, new Vec3(x_pos, y_pos, z_pos));
                            break;
                         }
                      }

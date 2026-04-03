@@ -33,8 +33,8 @@ public class JunpeiDomainExpansionActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label50;
                }
             }
@@ -43,10 +43,10 @@ public class JunpeiDomainExpansionActiveProcedure {
          }
 
          double var31 = var10000;
-         double var38 = entity.getPersistentData().m_128459_("x_pos_doma");
-         double var40 = entity.getPersistentData().m_128459_("y_pos_doma");
-         double var39 = entity.getPersistentData().m_128459_("z_pos_doma");
-         if (!entity.getPersistentData().m_128471_("Failed")) {
+         double var38 = entity.getPersistentData().getDouble("x_pos_doma");
+         double var40 = entity.getPersistentData().getDouble("y_pos_doma");
+         double var39 = entity.getPersistentData().getDouble("z_pos_doma");
+         if (!entity.getPersistentData().getBoolean("Failed")) {
             double var33 = Math.toRadians(90.0 * (var31 % 4.0));
             double var29 = 4.0 * var31 % (range * 0.5 - 5.0);
 
@@ -59,7 +59,7 @@ public class JunpeiDomainExpansionActiveProcedure {
                      double var37 = var39 + Math.sin(var33) * var29;
                      if (world instanceof ServerLevel) {
                         ServerLevel _level = (ServerLevel)world;
-                        _level.m_8767_(ParticleTypes.f_123771_, var35, var36, var37, 1, 0.5, 1.0, 0.5, 0.05);
+                        _level.sendParticles(ParticleTypes.WITCH, var35, var36, var37, 1, 0.5, 1.0, 0.5, 0.05);
                      }
                   }
                }
@@ -67,22 +67,22 @@ public class JunpeiDomainExpansionActiveProcedure {
                ++var29;
             }
 
-            if (var31 % 40.0 == 0.0 || entity.getPersistentData().m_128471_("StartDomainAttack")) {
-               entity.getPersistentData().m_128379_("StartDomainAttack", false);
-               double var30 = entity.getPersistentData().m_128459_("skill");
-               double var34 = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", 100.0);
-               entity.getPersistentData().m_128347_("skill", 3505.0);
-               entity.getPersistentData().m_128347_("Damage", 3.0);
-               entity.getPersistentData().m_128347_("Range", range);
-               entity.getPersistentData().m_128347_("effect", 16.0);
-               entity.getPersistentData().m_128379_("swing", false);
-               entity.getPersistentData().m_128379_("attack", false);
-               entity.getPersistentData().m_128379_("onlyLiving", true);
-               entity.getPersistentData().m_128379_("DomainAttack", true);
+            if (var31 % 40.0 == 0.0 || entity.getPersistentData().getBoolean("StartDomainAttack")) {
+               entity.getPersistentData().putBoolean("StartDomainAttack", false);
+               double var30 = entity.getPersistentData().getDouble("skill");
+               double var34 = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", 100.0);
+               entity.getPersistentData().putDouble("skill", 3505.0);
+               entity.getPersistentData().putDouble("Damage", 3.0);
+               entity.getPersistentData().putDouble("Range", range);
+               entity.getPersistentData().putDouble("effect", 16.0);
+               entity.getPersistentData().putBoolean("swing", false);
+               entity.getPersistentData().putBoolean("attack", false);
+               entity.getPersistentData().putBoolean("onlyLiving", true);
+               entity.getPersistentData().putBoolean("DomainAttack", true);
                RangeAttackProcedure.execute(world, var38, var40, var39, entity);
-               entity.getPersistentData().m_128347_("skill", var30);
-               entity.getPersistentData().m_128347_("COOLDOWN_TICKS", var34);
+               entity.getPersistentData().putDouble("skill", var30);
+               entity.getPersistentData().putDouble("COOLDOWN_TICKS", var34);
             }
          }
 

@@ -16,10 +16,10 @@ public class PlayAnimationItemProcedure {
       if (entity != null && animation_name != null) {
          if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity)entity;
-            Item var5 = itemstack.m_41720_();
+            Item var5 = itemstack.getItem();
             if (var5 instanceof GeoItem) {
                GeoItem geoItem = (GeoItem)var5;
-               Level var6 = livingEntity.m_9236_();
+               Level var6 = livingEntity.level();
                if (var6 instanceof ServerLevel) {
                   ServerLevel serverLevel = (ServerLevel)var6;
                   geoItem.triggerAnim(livingEntity, GeoItem.getOrAssignId(itemstack, serverLevel), "popup_controller", animation_name);

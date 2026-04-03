@@ -16,8 +16,8 @@ import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 public class IgnoreGuardMobEffect extends MobEffect {
    public IgnoreGuardMobEffect() {
       super(MobEffectCategory.HARMFUL, -1);
-      this.m_19472_(Attributes.f_22284_, "fb2c5324-e908-36d9-a038-55e3fa9b1d9e", -1.0, Operation.MULTIPLY_TOTAL);
-      this.m_19472_(Attributes.f_22285_, "7ed73ed7-63a2-3a0e-adcf-6e804100104c", -1.0, Operation.MULTIPLY_TOTAL);
+      this.addAttributeModifier(Attributes.ARMOR, "fb2c5324-e908-36d9-a038-55e3fa9b1d9e", -1.0, Operation.MULTIPLY_TOTAL);
+      this.addAttributeModifier(Attributes.ARMOR_TOUGHNESS, "7ed73ed7-63a2-3a0e-adcf-6e804100104c", -1.0, Operation.MULTIPLY_TOTAL);
    }
 
    public List<ItemStack> getCurativeItems() {
@@ -25,7 +25,7 @@ public class IgnoreGuardMobEffect extends MobEffect {
       return cures;
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 

@@ -15,6 +15,7 @@ import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleCursePowerGreenP
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleCursePowerOrangeParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleCursePowerPurpleParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleCursePowerRedParticle;
+import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleCursePowerWhiteParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleDismantleItadoriParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleFangsParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleFireSparkParticle;
@@ -30,9 +31,11 @@ import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleNanami1Particle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleNanami2Particle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleRedParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleShockHitParticle;
+import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleSlashLargeParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleSlashParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleThunderBlueMiniParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleThunderBlueParticle;
+import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleThunderPurpleParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleUnlimitedVoidHoleParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleUnlimitedVoidParticle;
 import org.imgaine.gaigegaigekaigecraft.client.particle.ParticleWater2Particle;
@@ -95,5 +98,8 @@ public class JujutsucraftModParticles {
       event.registerSpriteSet((ParticleType)JujutsucraftModParticleTypes.PARTICLE_RED.get(), ParticleRedParticle::provider);
       event.registerSpriteSet((ParticleType)JujutsucraftModParticleTypes.PARTICLE_BLUE.get(), ParticleBlueParticle::provider);
       event.registerSpriteSet((ParticleType)JujutsucraftModParticleTypes.PARTICLE_FLAME_PURPLE.get(), ParticleFlamePurpleParticle::provider);
+      event.registerSpriteSet((ParticleType)JujutsucraftModParticleTypes.PARTICLE_SLASH_LARGE.get(), ParticleSlashLargeParticle::provider);
+      event.registerSpriteSet((ParticleType)JujutsucraftModParticleTypes.PARTICLE_CURSE_POWER_WHITE.get(), ParticleCursePowerWhiteParticle::provider);
+      event.registerSpriteSet((ParticleType)JujutsucraftModParticleTypes.PARTICLE_THUNDER_PURPLE.get(), ParticleThunderPurpleParticle::provider);
    }
 }

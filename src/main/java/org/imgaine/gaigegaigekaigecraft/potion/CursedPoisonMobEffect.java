@@ -16,17 +16,17 @@ public class CursedPoisonMobEffect extends MobEffect {
 
    public List<ItemStack> getCurativeItems() {
       ArrayList<ItemStack> cures = new ArrayList();
-      cures.add(new ItemStack(Items.f_42455_));
-      cures.add(new ItemStack(Items.f_42747_));
-      cures.add(new ItemStack(Items.f_42787_));
+      cures.add(new ItemStack(Items.MILK_BUCKET));
+      cures.add(new ItemStack(Items.TOTEM_OF_UNDYING));
+      cures.add(new ItemStack(Items.HONEY_BOTTLE));
       return cures;
    }
 
-   public void m_6742_(LivingEntity entity, int amplifier) {
-      CursedPoisonOnEffectActiveTickProcedure.execute(entity.m_9236_(), entity);
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
+      CursedPoisonOnEffectActiveTickProcedure.execute(entity.level(), entity);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

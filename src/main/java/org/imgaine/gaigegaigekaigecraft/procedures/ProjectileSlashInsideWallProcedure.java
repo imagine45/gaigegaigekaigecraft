@@ -29,10 +29,10 @@ public class ProjectileSlashInsideWallProcedure {
          z_pos = z;
          if (!logic_a) {
             if (vertical) {
-               yaw = Math.toRadians((double)(entity.m_146908_() + 90.0F));
-               pitch = Math.toRadians((double)(entity.m_146909_() + 90.0F));
+               yaw = Math.toRadians((double)(entity.getYRot() + 90.0F));
+               pitch = Math.toRadians((double)(entity.getXRot() + 90.0F));
             } else {
-               yaw = Math.toRadians((double)(entity.m_146908_() + 0.0F));
+               yaw = Math.toRadians((double)(entity.getYRot() + 0.0F));
                pitch = Math.toRadians(0.0);
             }
 
@@ -43,7 +43,7 @@ public class ProjectileSlashInsideWallProcedure {
                x_center = x_pos + Math.cos(yaw) * Math.cos(pitch) * distance;
                y_center = y_pos + Math.sin(pitch) * -1.0 * distance;
                z_center = z_pos + Math.sin(yaw) * Math.cos(pitch) * distance;
-               if (!world.m_46859_(BlockPos.m_274561_(x_center, y_center, z_center))) {
+               if (!world.isEmptyBlock(BlockPos.containing(x_center, y_center, z_center))) {
                   logic_a = true;
                   break;
                }
@@ -52,10 +52,10 @@ public class ProjectileSlashInsideWallProcedure {
 
          if (!logic_a) {
             if (vertical) {
-               yaw = Math.toRadians((double)(entity.m_146908_() + 90.0F));
-               pitch = Math.toRadians((double)(entity.m_146909_() - 90.0F));
+               yaw = Math.toRadians((double)(entity.getYRot() + 90.0F));
+               pitch = Math.toRadians((double)(entity.getXRot() - 90.0F));
             } else {
-               yaw = Math.toRadians((double)(entity.m_146908_() + 180.0F));
+               yaw = Math.toRadians((double)(entity.getYRot() + 180.0F));
                pitch = Math.toRadians(0.0);
             }
 
@@ -66,7 +66,7 @@ public class ProjectileSlashInsideWallProcedure {
                x_center = x_pos + Math.cos(yaw) * Math.cos(pitch) * distance;
                y_center = y_pos + Math.sin(pitch) * -1.0 * distance;
                z_center = z_pos + Math.sin(yaw) * Math.cos(pitch) * distance;
-               if (!world.m_46859_(BlockPos.m_274561_(x_center, y_center, z_center))) {
+               if (!world.isEmptyBlock(BlockPos.containing(x_center, y_center, z_center))) {
                   logic_a = true;
                   break;
                }

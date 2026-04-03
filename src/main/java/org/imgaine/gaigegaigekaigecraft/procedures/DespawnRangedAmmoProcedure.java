@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.entity.BlackHoleEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.MeteorEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.PureLoveCannonEntity;
@@ -24,23 +23,23 @@ public class DespawnRangedAmmoProcedure {
          boolean logic_a = false;
          Vec3 _center = new Vec3(x, y, z);
 
-         for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(128.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-            if (entity != entityiterator && entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && (entity.getPersistentData().m_128459_("NameRanged") != 0.0 && entity.getPersistentData().m_128459_("NameRanged") == entityiterator.getPersistentData().m_128459_("NameRanged_ranged") || entityiterator.getPersistentData().m_128461_("OWNER_UUID").equals(entity.m_20149_()))) {
+         for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(128.0), (e) -> true)) {
+            if (entity != entityiterator && entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && (entity.getPersistentData().getDouble("NameRanged") != 0.0 && entity.getPersistentData().getDouble("NameRanged") == entityiterator.getPersistentData().getDouble("NameRanged_ranged") || entityiterator.getPersistentData().getString("OWNER_UUID").equals(entity.getStringUUID()))) {
                logic_a = true;
                if (entityiterator instanceof PurpleEntity || entityiterator instanceof UzumakiEntity || entityiterator instanceof PureLoveCannonEntity || entityiterator instanceof MeteorEntity || entityiterator instanceof BlackHoleEntity) {
                   logic_a = false;
                }
 
-               if (!ForgeRegistries.ENTITY_TYPES.getKey(entityiterator.m_6095_()).toString().contains("jujutsucraft:")) {
+               if (!ForgeRegistries.ENTITY_TYPES.getKey(entityiterator.getType()).toString().contains("gaigegaigekaigecraft:")) {
                   logic_a = false;
                }
 
-               if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:no_cursed_technique")))) {
+               if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:no_cursed_technique")))) {
                   logic_a = false;
                }
 
-               if (logic_a && !entityiterator.m_9236_().m_5776_()) {
-                  entityiterator.m_146870_();
+               if (logic_a && !entityiterator.level().isClientSide()) {
+                  entityiterator.discard();
                }
             }
          }

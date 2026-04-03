@@ -9,14 +9,14 @@ public class EntityBroomModel extends GeoModel<EntityBroomEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityBroomEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/broom.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/broom.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityBroomEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/broom.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/broom.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityBroomEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

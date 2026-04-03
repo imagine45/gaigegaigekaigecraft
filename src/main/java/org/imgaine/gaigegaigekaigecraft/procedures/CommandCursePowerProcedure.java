@@ -15,7 +15,7 @@ public class CommandCursePowerProcedure {
 
    public static void execute(CommandContext<CommandSourceStack> arguments) {
       try {
-         for(Entity entityiterator : EntityArgument.m_91461_(arguments, "target")) {
+         for(Entity entityiterator : EntityArgument.getEntities(arguments, "target")) {
             double _setval = ((JujutsucraftModVariables.PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCursePower + DoubleArgumentType.getDouble(arguments, "amount");
             entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
                capability.PlayerCursePower = _setval;

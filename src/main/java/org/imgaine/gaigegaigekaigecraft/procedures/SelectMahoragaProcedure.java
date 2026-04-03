@@ -1,76 +1,26 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.HashMap;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 public class SelectMahoragaProcedure {
    public SelectMahoragaProcedure() {
    }
 
-   public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, HashMap guistate) {
-      if (entity != null && guistate != null) {
-         label39: {
-            if (entity instanceof Player) {
-               Player _playerHasItem = (Player)entity;
-               if (_playerHasItem.m_150109_().m_36063_(new ItemStack((ItemLike)JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get()))) {
-                  break label39;
-               }
-            }
-
-            if (entity instanceof Player) {
-               Player _player = (Player)entity;
-               ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get())).m_41777_();
-               _setstack.m_41764_(1);
-               ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
-            }
-         }
-
-         label34: {
-            if (entity instanceof Player) {
-               Player _playerHasItem = (Player)entity;
-               if (_playerHasItem.m_150109_().m_36063_(new ItemStack((ItemLike)JujutsucraftModItems.SWORD_OF_EXTERMINATION.get()))) {
-                  break label34;
-               }
-            }
-
-            if (entity instanceof Player) {
-               Player _player = (Player)entity;
-               ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.SWORD_OF_EXTERMINATION.get())).m_41777_();
-               _setstack.m_41764_(1);
-               ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
-            }
-         }
-
-         label29: {
-            if (entity instanceof Player) {
-               Player _playerHasItem = (Player)entity;
-               if (_playerHasItem.m_150109_().m_36063_(new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_ZENIN_2_LEGGINGS.get()))) {
-                  break label29;
-               }
-            }
-
-            if (entity instanceof Player) {
-               Player _player = (Player)entity;
-               ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_ZENIN_2_LEGGINGS.get())).m_41777_();
-               _setstack.m_41764_(1);
-               ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
-            }
-         }
-
+   public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
+      if (entity != null) {
          double _setval = 16.0;
          entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
             capability.PlayerCurseTechnique = _setval;
             capability.syncPlayerVariables(entity);
          });
-         SelectedProcedure.execute(world, x, y, z, entity, guistate);
+         SelectedProcedure.execute(world, x, y, z, entity);
+         SelectedArmorEquipProcedure.execute(entity, ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack((ItemLike)JujutsucraftModItems.MAHORAGA_WHEEL_HELMET.get()), new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_ZENIN_2_LEGGINGS.get()), ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack((ItemLike)JujutsucraftModItems.SWORD_OF_EXTERMINATION.get()), ItemStack.EMPTY);
       }
    }
 }

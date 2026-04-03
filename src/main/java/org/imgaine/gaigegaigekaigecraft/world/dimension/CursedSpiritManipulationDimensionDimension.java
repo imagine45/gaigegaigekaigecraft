@@ -27,15 +27,15 @@ public class CursedSpiritManipulationDimensionDimension {
       @OnlyIn(Dist.CLIENT)
       public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
          DimensionSpecialEffects customEffect = new DimensionSpecialEffects(0.0F / 0.0F, true, SkyType.NONE, false, false) {
-            public Vec3 m_5927_(Vec3 color, float sunHeight) {
+            public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
                return new Vec3(0.0, 0.0, 0.0);
             }
 
-            public boolean m_5781_(int x, int y) {
+            public boolean isFoggyAt(int x, int y) {
                return true;
             }
          };
-         event.register(new ResourceLocation("jujutsucraft:cursed_spirit_manipulation_dimension"), customEffect);
+         event.register(new ResourceLocation("gaigegaigekaigecraft:cursed_spirit_manipulation_dimension"), customEffect);
       }
    }
 }

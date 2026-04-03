@@ -25,11 +25,11 @@ public class TransformToSukunaProcedure {
          double power = 0.0;
          double y_pos = 0.0;
          double z_pos = 0.0;
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
          LivingEntity var10000;
          if (entity instanceof Mob) {
             Mob _mobEnt = (Mob)entity;
-            var10000 = _mobEnt.m_5448_();
+            var10000 = _mobEnt.getTarget();
          } else {
             var10000 = null;
          }
@@ -37,26 +37,26 @@ public class TransformToSukunaProcedure {
          if (var10000 instanceof LivingEntity) {
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
-            if (((Entity)var10000).m_6084_()) {
+            if (((Entity)var10000).isAlive()) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19597_, 5, 20, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 20, false, false));
                   }
                }
 
-               entity.getPersistentData().m_128379_("PRESS_Z", true);
+               entity.getPersistentData().putBoolean("PRESS_Z", true);
             }
          }
 
-         if (entity.getPersistentData().m_128471_("PRESS_Z")) {
-            power = (double)Math.round((20.0 - entity.getPersistentData().m_128459_("cnt1")) * 0.25);
-            STR1 = Component.m_237115_("jujutsu.message.long_press").getString();
+         if (entity.getPersistentData().getBoolean("PRESS_Z")) {
+            power = (double)Math.round((20.0 - entity.getPersistentData().getDouble("cnt1")) * 0.25);
+            STR1 = Component.translatable("jujutsu.message.long_press").getString();
 
             for(int index0 = 0; index0 < (int)power; ++index0) {
                STR1 = "■" + STR1 + "■";
@@ -64,16 +64,16 @@ public class TransformToSukunaProcedure {
 
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_(STR1), true);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal(STR1), true);
                }
             }
 
-            if (entity.getPersistentData().m_128459_("cnt1") >= 20.0) {
+            if (entity.getPersistentData().getDouble("cnt1") >= 20.0) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_(""), true);
+                  if (!_player.level().isClientSide()) {
+                     _player.displayClientMessage(Component.literal(""), true);
                   }
                }
 
@@ -82,8 +82,8 @@ public class TransformToSukunaProcedure {
                   level = Math.min(Math.max(level, 1.0), 20.0) - 1.0;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get(), 6000, (int)Math.round(level), false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get(), 6000, (int)Math.round(level), false, false));
                      }
                   }
                }
@@ -95,21 +95,21 @@ public class TransformToSukunaProcedure {
                   capability.syncPlayerVariables(entity);
                });
                KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-               entity.getPersistentData().m_128347_("skill", 0.0);
+               entity.getPersistentData().putDouble("skill", 0.0);
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.DEEP_CONCENTRATION.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.DEEP_CONCENTRATION.get());
                }
             }
          } else {
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_(""), true);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal(""), true);
                }
             }
 
-            entity.getPersistentData().m_128347_("skill", 0.0);
+            entity.getPersistentData().putDouble("skill", 0.0);
          }
 
       }

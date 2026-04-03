@@ -1,7 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.UUID;
-import java.util.function.BiFunction;
 import org.imgaine.gaigegaigekaigecraft.entity.NueEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.RabbitEscapeEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
@@ -27,59 +25,60 @@ public class FollowEntityProcedure {
          boolean logic_a = false;
          boolean despawn_flag = false;
          Entity entity_a = null;
-         if (entity.getPersistentData().m_128471_("Ambush")) {
+         if (entity.getPersistentData().getBoolean("Ambush")) {
             if (!(entity instanceof RabbitEscapeEntity)) {
-               entity.getPersistentData().m_128347_("cnt_follow", entity.getPersistentData().m_128459_("cnt_follow") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_follow") > 5.0) {
-                  entity.getPersistentData().m_128347_("cnt_follow", -25.0);
-                  if (entity.getPersistentData().m_128459_("friend_num") != 0.0) {
+               entity.getPersistentData().putDouble("cnt_follow", entity.getPersistentData().getDouble("cnt_follow") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_follow") > 5.0) {
+                  entity.getPersistentData().putDouble("cnt_follow", -25.0);
+                  if (entity.getPersistentData().getDouble("friend_num") != 0.0) {
                      logic_a = false;
                      if (LogicOwnerExistProcedure.execute(world, entity)) {
-                        entity_a = (new BiFunction<LevelAccessor, String, Entity>() {
-                           public Entity apply(LevelAccessor levelAccessor, String uuid) {
-                              if (levelAccessor instanceof ServerLevel serverLevel) {
-                                 try {
-                                    return serverLevel.m_8791_(UUID.fromString(uuid));
-                                 } catch (Exception var5) {
-                                 }
-                              }
-
-                              return null;
-                           }
-                        }).apply(world, entity.getPersistentData().m_128461_("OWNER_UUID"));
-                        if (entity.getPersistentData().m_128459_("friend_num") == entity_a.getPersistentData().m_128459_("friend_num")) {
+                        entity_a = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("OWNER_UUID"));
+                        if (entity.getPersistentData().getDouble("friend_num") == entity_a.getPersistentData().getDouble("friend_num")) {
                            logic_a = true;
-                           if (!entity.getPersistentData().m_128471_("domain_entity")) {
-                              NUM1 = Math.sqrt(Math.pow(entity_a.m_20185_() - entity.m_20185_(), 2.0) + Math.pow(entity_a.m_20186_() - entity.m_20186_(), 2.0) + Math.pow(entity_a.m_20189_() - entity.m_20189_(), 2.0));
+                           if (!entity.getPersistentData().getBoolean("domain_entity")) {
+                              NUM1 = Math.sqrt(Math.pow(entity_a.getX() - entity.getX(), 2.0) + Math.pow(entity_a.getY() - entity.getY(), 2.0) + Math.pow(entity_a.getZ() - entity.getZ(), 2.0));
                               distance_cap = 16.0;
-                              if (!(entity instanceof NueEntity) && !entity.m_20096_()) {
+                              if (!(entity instanceof NueEntity) && !entity.onGround()) {
                                  distance_cap = 48.0;
                               }
 
                               LivingEntity var10000;
                               if (entity instanceof Mob) {
                                  Mob _mobEnt = (Mob)entity;
-                                 var10000 = _mobEnt.m_5448_();
+                                 var10000 = _mobEnt.getTarget();
                               } else {
                                  var10000 = null;
                               }
 
-                              if (var10000 instanceof LivingEntity && entity.getPersistentData().m_128459_("cnt_target") > 6.0) {
+                              if (var10000 instanceof LivingEntity && entity.getPersistentData().getDouble("cnt_target") > 6.0) {
                                  distance_cap = 64.0;
                               }
 
-                              if (NUM1 > distance_cap && !entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                                 Commands var18 = entity.m_20194_().m_129892_();
-                                 CommandSourceStack var10001 = new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity);
-                                 double var10002 = entity_a.m_20185_();
-                                 var18.m_230957_(var10001, "spreadplayers " + var10002 + " " + entity_a.m_20189_() + " 4 8 false @s");
+                              if (NUM1 > distance_cap) {
+                                 if (world instanceof ServerLevel) {
+                                    ServerLevel _level = (ServerLevel)world;
+                                    _level.sendParticles(ParticleTypes.SQUID_INK, entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ(), (int)(10.0F * entity.getBbHeight() * entity.getBbWidth() * entity.getBbWidth()), 0.2 * (double)entity.getBbWidth(), 0.2 * (double)entity.getBbHeight(), 0.2 * (double)entity.getBbWidth(), 0.0);
+                                 }
+
+                                 if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                    Commands var20 = entity.getServer().getCommands();
+                                    CommandSourceStack var10001 = new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity);
+                                    double var10002 = entity_a.getX();
+                                    var20.performPrefixedCommand(var10001, "spreadplayers " + var10002 + " " + entity_a.getZ() + " 4 8 false @s");
+                                 }
+
+                                 if (world instanceof ServerLevel) {
+                                    ServerLevel _level = (ServerLevel)world;
+                                    _level.sendParticles(ParticleTypes.SQUID_INK, entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ(), (int)(10.0F * entity.getBbHeight() * entity.getBbWidth() * entity.getBbWidth()), 0.2 * (double)entity.getBbWidth(), 0.2 * (double)entity.getBbHeight(), 0.2 * (double)entity.getBbWidth(), 0.0);
+                                 }
                               }
                            } else {
-                              label132: {
+                              label141: {
                                  if (entity_a instanceof LivingEntity) {
-                                    LivingEntity _livEnt26 = (LivingEntity)entity_a;
-                                    if (_livEnt26.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                                       break label132;
+                                    LivingEntity _livEnt48 = (LivingEntity)entity_a;
+                                    if (_livEnt48.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                                       break label141;
                                     }
                                  }
 
@@ -88,84 +87,73 @@ public class FollowEntityProcedure {
                            }
                         }
                      } else {
-                        entity.getPersistentData().m_128379_("flag_despawn", true);
+                        entity.getPersistentData().putBoolean("flag_despawn", true);
                      }
 
-                     if (entity.getPersistentData().m_128471_("domain_entity") && (!logic_a || despawn_flag)) {
-                        entity.getPersistentData().m_128379_("flag_despawn", true);
+                     if (entity.getPersistentData().getBoolean("domain_entity") && (!logic_a || despawn_flag)) {
+                        entity.getPersistentData().putBoolean("flag_despawn", true);
                      }
                   }
                }
-            } else if (entity.getPersistentData().m_128459_("friend_num") != 0.0 && !LogicOwnerExistProcedure.execute(world, entity)) {
-               entity.getPersistentData().m_128379_("flag_despawn", true);
+            } else if (entity.getPersistentData().getDouble("friend_num") != 0.0 && !LogicOwnerExistProcedure.execute(world, entity)) {
+               entity.getPersistentData().putBoolean("flag_despawn", true);
             }
          } else {
-            LivingEntity var19;
+            LivingEntity var21;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var19 = _mobEnt.m_5448_();
+               var21 = _mobEnt.getTarget();
             } else {
-               var19 = null;
+               var21 = null;
             }
 
-            if (var19 instanceof LivingEntity && entity.getPersistentData().m_128459_("cnt_target") > 200.0) {
-               double var20 = entity.getPersistentData().m_128459_("friend_num2");
-               LivingEntity var21;
+            if (var21 instanceof LivingEntity && entity.getPersistentData().getDouble("cnt_target") > 200.0) {
+               double var22 = entity.getPersistentData().getDouble("friend_num2");
+               LivingEntity var23;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var21 = _mobEnt.m_5448_();
+                  var23 = _mobEnt.getTarget();
                } else {
-                  var21 = null;
+                  var23 = null;
                }
 
-               if (var20 != ((Entity)var21).getPersistentData().m_128459_("friend_num")) {
-                  entity.getPersistentData().m_128379_("failed_adjustment", true);
+               if (var22 != ((Entity)var23).getPersistentData().getDouble("friend_num")) {
+                  entity.getPersistentData().putBoolean("failed_adjustment", true);
                }
             }
          }
 
-         if (!entity.getPersistentData().m_128471_("Ambush")) {
-            if (entity.getPersistentData().m_128459_("cnt_target") > 6.0) {
-               entity.getPersistentData().m_128347_("cnt_noTarget", 0.0);
+         if (!entity.getPersistentData().getBoolean("Ambush")) {
+            if (entity.getPersistentData().getDouble("cnt_target") > 6.0) {
+               entity.getPersistentData().putDouble("cnt_noTarget", 0.0);
             } else {
-               entity.getPersistentData().m_128347_("cnt_noTarget", entity.getPersistentData().m_128459_("cnt_noTarget") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_noTarget") > 220.0) {
-                  entity.getPersistentData().m_128379_("flag_despawn", true);
-                  entity.getPersistentData().m_128347_("Ambush_Number", 0.0);
+               entity.getPersistentData().putDouble("cnt_noTarget", entity.getPersistentData().getDouble("cnt_noTarget") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_noTarget") > 220.0) {
+                  entity.getPersistentData().putBoolean("flag_despawn", true);
+                  entity.getPersistentData().putDouble("Ambush_Number", 0.0);
                }
             }
          } else if (!LogicOwnerExistProcedure.execute(world, entity)) {
-            entity.getPersistentData().m_128379_("flag_despawn", true);
-         } else if (!(new BiFunction<LevelAccessor, String, Entity>() {
-            public Entity apply(LevelAccessor levelAccessor, String uuid) {
-               if (levelAccessor instanceof ServerLevel serverLevel) {
-                  try {
-                     return serverLevel.m_8791_(UUID.fromString(uuid));
-                  } catch (Exception var5) {
-                  }
-               }
-
-               return null;
-            }
-         }).apply(world, entity.getPersistentData().m_128461_("OWNER_UUID")).m_6084_()) {
-            entity.getPersistentData().m_128379_("flag_despawn", true);
+            entity.getPersistentData().putBoolean("flag_despawn", true);
+         } else if (!GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("OWNER_UUID")).isAlive()) {
+            entity.getPersistentData().putBoolean("flag_despawn", true);
          }
 
-         if (entity.getPersistentData().m_128471_("flag_despawn")) {
-            if (entity.getPersistentData().m_128471_("Ambush")) {
-               entity.getPersistentData().m_128379_("Ambush", false);
-               entity.getPersistentData().m_128347_("Ambush_Number", 1.0);
+         if (entity.getPersistentData().getBoolean("flag_despawn")) {
+            if (entity.getPersistentData().getBoolean("Ambush")) {
+               entity.getPersistentData().putBoolean("Ambush", false);
+               entity.getPersistentData().putDouble("Ambush_Number", 1.0);
             }
 
-            entity.getPersistentData().m_128379_("Despawn", true);
+            entity.getPersistentData().putBoolean("Despawn", true);
             DieTenShadowsTechniqueProcedure.execute(world, entity);
             if (world instanceof ServerLevel) {
                ServerLevel _level = (ServerLevel)world;
-               _level.m_8767_(ParticleTypes.f_123765_, entity.m_20185_(), entity.m_20186_() + (double)entity.m_20206_() * 0.5, entity.m_20189_(), (int)(10.0F * entity.m_20206_() * entity.m_20205_() * entity.m_20205_()), 0.2 * (double)entity.m_20205_(), 0.2 * (double)entity.m_20206_(), 0.2 * (double)entity.m_20205_(), 0.0);
+               _level.sendParticles(ParticleTypes.SQUID_INK, entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ(), (int)(10.0F * entity.getBbHeight() * entity.getBbWidth() * entity.getBbWidth()), 0.2 * (double)entity.getBbWidth(), 0.2 * (double)entity.getBbHeight(), 0.2 * (double)entity.getBbWidth(), 0.0);
             }
 
-            if (!entity.m_9236_().m_5776_()) {
-               entity.m_146870_();
+            if (!entity.level().isClientSide()) {
+               entity.discard();
             }
          }
 

@@ -9,14 +9,14 @@ public class PlayfulCloudItemModel extends GeoModel<PlayfulCloudItem> {
    }
 
    public ResourceLocation getAnimationResource(PlayfulCloudItem animatable) {
-      return new ResourceLocation("jujutsucraft", "animations/playful_cloud.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/playful_cloud.animation.json");
    }
 
    public ResourceLocation getModelResource(PlayfulCloudItem animatable) {
-      return new ResourceLocation("jujutsucraft", "geo/playful_cloud.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/playful_cloud.geo.json");
    }
 
    public ResourceLocation getTextureResource(PlayfulCloudItem animatable) {
-      return new ResourceLocation("jujutsucraft", "textures/item/playful_cloud.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/playful_cloud.png");
    }
 }

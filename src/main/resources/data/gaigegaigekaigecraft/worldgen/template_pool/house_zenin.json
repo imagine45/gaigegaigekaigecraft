@@ -1,0 +1,17 @@
+{
+  "name": "gaigegaigekaigecraft:house_zenin",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "gaigegaigekaigecraft:house_zenin",
+        "projection": "rigid",
+        "processors": {
+          "processors": []
+        }
+      }
+    }
+  ]
+}

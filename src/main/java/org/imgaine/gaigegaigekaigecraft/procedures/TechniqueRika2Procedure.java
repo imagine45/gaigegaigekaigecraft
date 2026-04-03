@@ -1,16 +1,11 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.UUID;
-import java.util.function.BiFunction;
 import org.imgaine.gaigegaigekaigecraft.entity.Rika2Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.RikaEntity;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 
@@ -34,31 +29,14 @@ public class TechniqueRika2Procedure {
          double pitch2 = 0.0;
          double HP = 0.0;
          double power = 0.0;
-         entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-         LivingEntity var10000;
-         if (entity instanceof Mob) {
-            Mob _mobEnt = (Mob)entity;
-            var10000 = _mobEnt.m_5448_();
-         } else {
-            var10000 = null;
+         entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+         if (!(entity instanceof Player)) {
+            entity.getPersistentData().putBoolean("PRESS_Z", true);
          }
 
-         if (var10000 instanceof LivingEntity) {
-            if (entity instanceof Mob) {
-               Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
-            } else {
-               var10000 = null;
-            }
-
-            if (((Entity)var10000).m_6084_()) {
-               entity.getPersistentData().m_128379_("PRESS_Z", true);
-            }
-         }
-
-         if (entity.getPersistentData().m_128471_("PRESS_Z")) {
-            power = (double)Math.round((20.0 - entity.getPersistentData().m_128459_("cnt1")) * 0.25);
-            STR1 = Component.m_237115_("jujutsu.message.long_press").getString();
+         if (entity.getPersistentData().getBoolean("PRESS_Z")) {
+            power = (double)Math.round((20.0 - entity.getPersistentData().getDouble("cnt1")) * 0.25);
+            STR1 = Component.translatable("jujutsu.message.long_press").getString();
 
             for(int index0 = 0; index0 < (int)power; ++index0) {
                STR1 = "■" + STR1 + "■";
@@ -66,33 +44,22 @@ public class TechniqueRika2Procedure {
 
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_(STR1), true);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal(STR1), true);
                }
             }
 
-            if (entity.getPersistentData().m_128459_("cnt1") >= 20.0) {
+            if (entity.getPersistentData().getDouble("cnt1") >= 20.0) {
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  if (!_player.m_9236_().m_5776_()) {
-                     _player.m_5661_(Component.m_237113_(""), true);
+                  if (!_player.level().isClientSide()) {
+                     _player.displayClientMessage(Component.literal(""), true);
                   }
                }
 
-               entity_rika = (new BiFunction<LevelAccessor, String, Entity>() {
-                  public Entity apply(LevelAccessor levelAccessor, String uuid) {
-                     if (levelAccessor instanceof ServerLevel serverLevel) {
-                        try {
-                           return serverLevel.m_8791_(UUID.fromString(uuid));
-                        } catch (Exception var5) {
-                        }
-                     }
-
-                     return null;
-                  }
-               }).apply(world, entity.getPersistentData().m_128461_("RIKA_UUID"));
-               if ((entity_rika instanceof RikaEntity || entity_rika instanceof Rika2Entity) && entity.getPersistentData().m_128459_("friend_num") == entity_rika.getPersistentData().m_128459_("friend_num")) {
-                  entity_rika.getPersistentData().m_128347_("despawn_flag", 2.0);
+               entity_rika = GetEntityFromUUIDProcedure.execute(world, entity.getPersistentData().getString("RIKA_UUID"));
+               if ((entity_rika instanceof RikaEntity || entity_rika instanceof Rika2Entity) && entity.getPersistentData().getDouble("friend_num") == entity_rika.getPersistentData().getDouble("friend_num")) {
+                  entity_rika.getPersistentData().putDouble("despawn_flag", 2.0);
                }
 
                boolean _setval = true;
@@ -101,17 +68,17 @@ public class TechniqueRika2Procedure {
                   capability.syncPlayerVariables(entity);
                });
                KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-               entity.getPersistentData().m_128347_("skill", 0.0);
+               entity.getPersistentData().putDouble("skill", 0.0);
             }
          } else {
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               if (!_player.m_9236_().m_5776_()) {
-                  _player.m_5661_(Component.m_237113_(""), true);
+               if (!_player.level().isClientSide()) {
+                  _player.displayClientMessage(Component.literal(""), true);
                }
             }
 
-            entity.getPersistentData().m_128347_("skill", 0.0);
+            entity.getPersistentData().putDouble("skill", 0.0);
          }
 
       }

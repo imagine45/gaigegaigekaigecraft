@@ -13,15 +13,15 @@ public class ResonanceModel extends GeoModel<ResonanceEntity> {
    }
 
    public ResourceLocation getAnimationResource(ResonanceEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/resonance.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/resonance.animation.json");
    }
 
    public ResourceLocation getModelResource(ResonanceEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/resonance.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/resonance.geo.json");
    }
 
    public ResourceLocation getTextureResource(ResonanceEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(ResonanceEntity animatable, long instanceId, AnimationState animationState) {

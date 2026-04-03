@@ -26,26 +26,26 @@ public class Effect11Procedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          Entity entity_a = null;
-         x_pos = entityiterator.m_20185_();
-         y_pos = entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.5;
-         z_pos = entityiterator.m_20189_();
-         if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("minecraft:skeletons")))) {
+         x_pos = entityiterator.getX();
+         y_pos = entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5;
+         z_pos = entityiterator.getZ();
+         if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("minecraft:skeletons")))) {
             if (!(entity instanceof EntityWaterEntity)) {
-               world.m_46796_(2001, BlockPos.m_274561_(x_pos, y_pos, z_pos), Block.m_49956_(Blocks.f_50453_.m_49966_()));
+               world.levelEvent(2001, BlockPos.containing(x_pos, y_pos, z_pos), Block.getId(Blocks.BONE_BLOCK.defaultBlockState()));
             }
-         } else if (!entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:not_living")))) {
+         } else if (!entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:not_living")))) {
             if (!(entity instanceof EntityWaterEntity)) {
                Effect1Procedure.execute(world, entity, entityiterator);
             }
 
-            if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 10.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 10.0 || entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("jujutsucraft:death_painting"))) || entity.getPersistentData().m_128471_("death_painting")) {
+            if (((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 10.0 || ((JujutsucraftModVariables.PlayerVariables)entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 10.0 || entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("gaigegaigekaigecraft:death_painting"))) || entity.getPersistentData().getBoolean("death_painting") || entity.getPersistentData().getBoolean("CursedSpirit")) {
                int var10000;
-               label43: {
+               label44: {
                   if (entityiterator instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entityiterator;
-                     if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get())) {
-                        var10000 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get()).m_19557_();
-                        break label43;
+                     if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get())) {
+                        var10000 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get()).getDuration();
+                        break label44;
                      }
                   }
 
@@ -54,26 +54,25 @@ public class Effect11Procedure {
 
                if (var10000 < 1200 && entityiterator instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entityiterator;
-                  if (!_entity.m_9236_().m_5776_()) {
+                  if (!_entity.level().isClientSide()) {
                      MobEffectInstance var10001;
                      MobEffect var10003;
                      int var10004;
-                     label35: {
-                        var10001 = new MobEffectInstance;
+                     label36: {
                         var10003 = (MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get();
                         if (entityiterator instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entityiterator;
-                           if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get())) {
-                              var10004 = _livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get()).m_19557_();
-                              break label35;
+                           if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get())) {
+                              var10004 = _livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DEATH_PAINTING_BLOOD.get()).getDuration();
+                              break label36;
                            }
                         }
 
                         var10004 = 0;
                      }
 
-                     var10001.<init>(var10003, Math.min(var10004 + 400, 1200), 0);
-                     _entity.m_7292_(var10001);
+                     var10001 = new MobEffectInstance(var10003, Math.min(var10004 + 400, 1200), 0);
+                     _entity.addEffect(var10001);
                   }
                }
             }

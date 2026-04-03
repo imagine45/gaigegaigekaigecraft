@@ -1,5 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import net.minecraft.nbt.CompoundTag;
 import org.imgaine.gaigegaigekaigecraft.entity.FushiguroTojiEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.GojoSatoruEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.GojoSatoruSchoolDaysEntity;
@@ -29,27 +30,27 @@ public class AIFushiguroTojiProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
-         ItemStack setItemA = ItemStack.f_41583_;
+         ItemStack setItemA = ItemStack.EMPTY;
          boolean StrongEnemy = false;
          boolean awaked = false;
          double rnd = 0.0;
          double level_strength = 0.0;
          double level_resistance = 0.0;
          double level_physical_gifted = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             label222: {
                AIActiveProcedure.execute(world, x, y, z, entity);
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt1 = (LivingEntity)entity;
-                  if (_livEnt1.m_21023_(MobEffects.f_19600_)) {
+                  if (_livEnt1.hasEffect(MobEffects.DAMAGE_BOOST)) {
                      break label222;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, 29, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, 25, false, false));
                   }
                }
             }
@@ -57,15 +58,15 @@ public class AIFushiguroTojiProcedure {
             label217: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt3 = (LivingEntity)entity;
-                  if (_livEnt3.m_21023_(MobEffects.f_19606_)) {
+                  if (_livEnt3.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
                      break label217;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, 3, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, 3, false, false));
                   }
                }
             }
@@ -73,15 +74,15 @@ public class AIFushiguroTojiProcedure {
             label212: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt5 = (LivingEntity)entity;
-                  if (_livEnt5.m_21023_((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get())) {
+                  if (_livEnt5.hasEffect((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get())) {
                      break label212;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get(), 2147483647, 4, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.PHYSICAL_GIFTED_EFFECT.get(), 2147483647, 4, false, false));
                   }
                }
             }
@@ -89,57 +90,58 @@ public class AIFushiguroTojiProcedure {
             LivingEntity var10000;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var10000 = _mobEnt.m_5448_();
+               var10000 = _mobEnt.getTarget();
             } else {
                var10000 = null;
             }
 
             if (var10000 instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
-                  entity.getPersistentData().m_128347_("cnt_x", 5.0);
+               entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
+                  entity.getPersistentData().putDouble("cnt_x", 5.0);
                   ResetCounterProcedure.execute(entity);
                   CalculateAttackProcedure.execute(world, entity);
                   if (entity instanceof FushiguroTojiEntity) {
-                     if (!entity.getPersistentData().m_128471_("Armoury")) {
-                        entity.getPersistentData().m_128379_("Armoury", true);
+                     if (!entity.getPersistentData().getBoolean("Armoury")) {
+                        entity.getPersistentData().putBoolean("Armoury", true);
                         if (entity instanceof Player) {
                            Player _player = (Player)entity;
-                           _player.m_150109_().f_35975_.set(2, new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get()));
-                           _player.m_150109_().m_6596_();
+                           _player.getInventory().armor.set(2, new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get()));
+                           _player.getInventory().setChanged();
                         } else if (entity instanceof LivingEntity) {
                            LivingEntity _living = (LivingEntity)entity;
-                           _living.m_8061_(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get()));
+                           _living.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get()));
                         }
 
-                        entity.getPersistentData().m_128379_("HasWeapon1", true);
-                        entity.getPersistentData().m_128379_("HasWeapon2", true);
-                        entity.getPersistentData().m_128379_("HasWeapon3", true);
+                        entity.getPersistentData().putBoolean("HasWeapon1", true);
+                        entity.getPersistentData().putBoolean("HasWeapon2", true);
+                        entity.getPersistentData().putBoolean("HasWeapon3", true);
                      }
 
-                     if (entity.getPersistentData().m_128459_("skill") != 0.0) {
+                     if (entity.getPersistentData().getDouble("skill") != 0.0) {
                         ItemStack var47;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entGetArmor = (LivingEntity)entity;
-                           var47 = _entGetArmor.m_6844_(EquipmentSlot.CHEST);
+                           var47 = _entGetArmor.getItemBySlot(EquipmentSlot.CHEST);
                         } else {
-                           var47 = ItemStack.f_41583_;
+                           var47 = ItemStack.EMPTY;
                         }
 
-                        if (var47.m_41720_() == JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get()) {
+                        if (var47.getItem() == JujutsucraftModItems.CURSED_SPIRIT_ARMOURY_CHESTPLATE.get()) {
                            boolean var58;
+                           CompoundTag var48;
                            label198: {
                               var48 = entity.getPersistentData();
-                              if (!entity.getPersistentData().m_128471_("HasWeapon1")) {
+                              if (!entity.getPersistentData().getBoolean("HasWeapon1")) {
                                  ItemStack var10002;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var10002 = _livEnt.m_21205_();
+                                    var10002 = _livEnt.getMainHandItem();
                                  } else {
-                                    var10002 = ItemStack.f_41583_;
+                                    var10002 = ItemStack.EMPTY;
                                  }
 
-                                 if (var10002.m_41720_() != JujutsucraftModItems.PLAYFUL_CLOUD.get()) {
+                                 if (var10002.getItem() != JujutsucraftModItems.PLAYFUL_CLOUD.get()) {
                                     var58 = false;
                                     break label198;
                                  }
@@ -147,20 +149,20 @@ public class AIFushiguroTojiProcedure {
 
                               var58 = true;
                            }
-
+                           CompoundTag var49;
                            label192: {
-                              var48.m_128379_("HasWeapon1", var58);
+                              var48.putBoolean("HasWeapon1", var58);
                               var49 = entity.getPersistentData();
-                              if (!entity.getPersistentData().m_128471_("HasWeapon2")) {
+                              if (!entity.getPersistentData().getBoolean("HasWeapon2")) {
                                  ItemStack var59;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var59 = _livEnt.m_21205_();
+                                    var59 = _livEnt.getMainHandItem();
                                  } else {
-                                    var59 = ItemStack.f_41583_;
+                                    var59 = ItemStack.EMPTY;
                                  }
 
-                                 if (var59.m_41720_() != JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get()) {
+                                 if (var59.getItem() != JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get()) {
                                     var58 = false;
                                     break label192;
                                  }
@@ -168,20 +170,20 @@ public class AIFushiguroTojiProcedure {
 
                               var58 = true;
                            }
-
+                           CompoundTag var50;
                            label186: {
-                              var49.m_128379_("HasWeapon2", var58);
+                              var49.putBoolean("HasWeapon2", var58);
                               var50 = entity.getPersistentData();
-                              if (!entity.getPersistentData().m_128471_("HasWeapon3")) {
+                              if (!entity.getPersistentData().getBoolean("HasWeapon3")) {
                                  ItemStack var61;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var61 = _livEnt.m_21205_();
+                                    var61 = _livEnt.getMainHandItem();
                                  } else {
-                                    var61 = ItemStack.f_41583_;
+                                    var61 = ItemStack.EMPTY;
                                  }
 
-                                 if (var61.m_41720_() != JujutsucraftModItems.SPLIT_SOUL_KATANA.get()) {
+                                 if (var61.getItem() != JujutsucraftModItems.SPLIT_SOUL_KATANA.get()) {
                                     var58 = false;
                                     break label186;
                                  }
@@ -190,11 +192,11 @@ public class AIFushiguroTojiProcedure {
                               var58 = true;
                            }
 
-                           var50.m_128379_("HasWeapon3", var58);
+                           var50.putBoolean("HasWeapon3", var58);
                            LivingEntity var51;
                            if (entity instanceof Mob) {
                               Mob _mobEnt = (Mob)entity;
-                              var51 = _mobEnt.m_5448_();
+                              var51 = _mobEnt.getTarget();
                            } else {
                               var51 = null;
                            }
@@ -204,14 +206,14 @@ public class AIFushiguroTojiProcedure {
                                  LivingEntity var25 = var51;
                                  if (var25 instanceof LivingEntity) {
                                     LivingEntity _livEnt37 = var25;
-                                    if (_livEnt37.m_21023_((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
+                                    if (_livEnt37.hasEffect((MobEffect)JujutsucraftModMobEffects.INFINITY_EFFECT.get())) {
                                        break label231;
                                     }
                                  }
 
                                  if (entity instanceof Mob) {
                                     Mob _mobEnt = (Mob)entity;
-                                    var51 = _mobEnt.m_5448_();
+                                    var51 = _mobEnt.getTarget();
                                  } else {
                                     var51 = null;
                                  }
@@ -219,13 +221,13 @@ public class AIFushiguroTojiProcedure {
                                  if (!(var51 instanceof GojoSatoruSchoolDaysEntity)) {
                                     if (entity instanceof Mob) {
                                        Mob _mobEnt = (Mob)entity;
-                                       var51 = _mobEnt.m_5448_();
+                                       var51 = _mobEnt.getTarget();
                                     } else {
                                        var51 = null;
                                     }
 
                                     if (!(var51 instanceof GojoSatoruEntity)) {
-                                       setItemA = ItemStack.f_41583_.m_41777_();
+                                       setItemA = ItemStack.EMPTY.copy();
                                        int index0 = 0;
 
                                        while(true) {
@@ -236,25 +238,25 @@ public class AIFushiguroTojiProcedure {
                                           label166: {
                                              rnd = Math.ceil(Math.random() * 3.0);
                                              if (rnd == 1.0) {
-                                                if (entity.getPersistentData().m_128471_("HasWeapon1")) {
-                                                   entity.getPersistentData().m_128379_("HasWeapon1", false);
-                                                   setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.PLAYFUL_CLOUD.get())).m_41777_();
+                                                if (entity.getPersistentData().getBoolean("HasWeapon1")) {
+                                                   entity.getPersistentData().putBoolean("HasWeapon1", false);
+                                                   setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.PLAYFUL_CLOUD.get())).copy();
                                                 }
                                              } else if (rnd == 2.0) {
                                                 if (entity instanceof Mob) {
                                                    Mob _mobEnt = (Mob)entity;
-                                                   var51 = _mobEnt.m_5448_();
+                                                   var51 = _mobEnt.getTarget();
                                                 } else {
                                                    var51 = null;
                                                 }
 
-                                                if (((Entity)var51).m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:no_curse_power")))) {
+                                                if (((Entity)var51).getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:no_curse_power")))) {
                                                    break label166;
                                                 }
 
                                                 if (entity instanceof Mob) {
                                                    Mob _mobEnt = (Mob)entity;
-                                                   var51 = _mobEnt.m_5448_();
+                                                   var51 = _mobEnt.getTarget();
                                                 } else {
                                                    var51 = null;
                                                 }
@@ -262,7 +264,7 @@ public class AIFushiguroTojiProcedure {
                                                 if (var51 instanceof Player) {
                                                    if (entity instanceof Mob) {
                                                       Mob _mobEnt = (Mob)entity;
-                                                      var51 = _mobEnt.m_5448_();
+                                                      var51 = _mobEnt.getTarget();
                                                    } else {
                                                       var51 = null;
                                                    }
@@ -272,16 +274,16 @@ public class AIFushiguroTojiProcedure {
                                                    }
                                                 }
 
-                                                if (entity.getPersistentData().m_128471_("HasWeapon2")) {
-                                                   entity.getPersistentData().m_128379_("HasWeapon2", false);
-                                                   setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get())).m_41777_();
+                                                if (entity.getPersistentData().getBoolean("HasWeapon2")) {
+                                                   entity.getPersistentData().putBoolean("HasWeapon2", false);
+                                                   setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get())).copy();
                                                 }
-                                             } else if (rnd == 3.0 && entity.getPersistentData().m_128471_("HasWeapon3")) {
-                                                entity.getPersistentData().m_128379_("HasWeapon3", false);
-                                                setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.SPLIT_SOUL_KATANA.get())).m_41777_();
+                                             } else if (rnd == 3.0 && entity.getPersistentData().getBoolean("HasWeapon3")) {
+                                                entity.getPersistentData().putBoolean("HasWeapon3", false);
+                                                setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.SPLIT_SOUL_KATANA.get())).copy();
                                              }
 
-                                             if (setItemA.m_41720_() != ItemStack.f_41583_.m_41720_()) {
+                                             if (setItemA.getItem() != ItemStack.EMPTY.getItem()) {
                                                 break label230;
                                              }
                                           }
@@ -295,26 +297,26 @@ public class AIFushiguroTojiProcedure {
                               ItemStack var57;
                               if (entity instanceof LivingEntity) {
                                  LivingEntity _livEnt = (LivingEntity)entity;
-                                 var57 = _livEnt.m_21205_();
+                                 var57 = _livEnt.getMainHandItem();
                               } else {
-                                 var57 = ItemStack.f_41583_;
+                                 var57 = ItemStack.EMPTY;
                               }
 
-                              if (var57.m_41720_() != JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get() && entity.getPersistentData().m_128471_("HasWeapon2")) {
-                                 entity.getPersistentData().m_128379_("HasWeapon2", false);
+                              if (var57.getItem() != JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get() && entity.getPersistentData().getBoolean("HasWeapon2")) {
+                                 entity.getPersistentData().putBoolean("HasWeapon2", false);
                               }
 
-                              setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get())).m_41777_();
+                              setItemA = (new ItemStack((ItemLike)JujutsucraftModItems.INVERTED_SPEAR_OF_HEAVEN.get())).copy();
                            }
 
-                           if (setItemA.m_41720_() != ItemStack.f_41583_.m_41720_() && entity instanceof LivingEntity) {
+                           if (setItemA.getItem() != ItemStack.EMPTY.getItem() && entity instanceof LivingEntity) {
                               LivingEntity _entity = (LivingEntity)entity;
-                              ItemStack _setstack = setItemA.m_41777_();
-                              _setstack.m_41764_(1);
-                              _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
+                              ItemStack _setstack = setItemA.copy();
+                              _setstack.setCount(1);
+                              _entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
                               if (_entity instanceof Player) {
                                  Player _player = (Player)_entity;
-                                 _player.m_150109_().m_6596_();
+                                 _player.getInventory().setChanged();
                               }
                            }
                         }
@@ -322,7 +324,7 @@ public class AIFushiguroTojiProcedure {
                   }
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
             }
          }
 

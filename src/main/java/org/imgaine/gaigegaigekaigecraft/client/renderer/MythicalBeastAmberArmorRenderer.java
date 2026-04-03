@@ -22,6 +22,6 @@ public class MythicalBeastAmberArmorRenderer extends GeoArmorRenderer<MythicalBe
    }
 
    public RenderType getRenderType(MythicalBeastAmberItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-      return RenderType.m_110473_(this.getTextureLocation(animatable));
+      return RenderType.entityTranslucent(this.getTextureLocation(animatable));
    }
 }

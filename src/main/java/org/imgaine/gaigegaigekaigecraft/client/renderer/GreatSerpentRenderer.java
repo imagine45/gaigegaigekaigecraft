@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GreatSerpentRenderer extends MobRenderer<GreatSerpentEntity, ModelGreatSerpent<GreatSerpentEntity>> {
    public GreatSerpentRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelGreatSerpent(context.m_174023_(ModelGreatSerpent.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelGreatSerpent(context.bakeLayer(ModelGreatSerpent.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(GreatSerpentEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/greatserpent.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/greatserpent.png");
    }
 }

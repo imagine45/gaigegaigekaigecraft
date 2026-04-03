@@ -48,113 +48,113 @@ public class OgamiEntity extends Monster {
 
    public OgamiEntity(EntityType<OgamiEntity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 5;
-      this.m_21557_(false);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 5;
+      this.setNoAi(false);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.m_21573_().m_26575_().m_77355_(true);
-      this.f_21345_.m_25352_(1, new MeleeAttackGoal(this, 1.0, true) {
-         protected double m_6639_(LivingEntity entity) {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
+      this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = OgamiEntity.this.m_20185_();
-            double y = OgamiEntity.this.m_20186_();
-            double z = OgamiEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = OgamiEntity.this.getX();
+            double y = OgamiEntity.this.getY();
+            double z = OgamiEntity.this.getZ();
             Entity entity = OgamiEntity.this;
-            Level world = OgamiEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = OgamiEntity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(2, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = OgamiEntity.this.m_20185_();
-            double y = OgamiEntity.this.m_20186_();
-            double z = OgamiEntity.this.m_20189_();
+      this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = OgamiEntity.this.getX();
+            double y = OgamiEntity.this.getY();
+            double z = OgamiEntity.this.getZ();
             Entity entity = OgamiEntity.this;
-            Level world = OgamiEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = OgamiEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = OgamiEntity.this.m_20185_();
-            double y = OgamiEntity.this.m_20186_();
-            double z = OgamiEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = OgamiEntity.this.getX();
+            double y = OgamiEntity.this.getY();
+            double z = OgamiEntity.this.getZ();
             Entity entity = OgamiEntity.this;
-            Level world = OgamiEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = OgamiEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = OgamiEntity.this.m_20185_();
-            double y = OgamiEntity.this.m_20186_();
-            double z = OgamiEntity.this.m_20189_();
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = OgamiEntity.this.getX();
+            double y = OgamiEntity.this.getY();
+            double z = OgamiEntity.this.getZ();
             Entity entity = OgamiEntity.this;
-            Level world = OgamiEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = OgamiEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = OgamiEntity.this.m_20185_();
-            double y = OgamiEntity.this.m_20186_();
-            double z = OgamiEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = OgamiEntity.this.getX();
+            double y = OgamiEntity.this.getY();
+            double z = OgamiEntity.this.getZ();
             Entity entity = OgamiEntity.this;
-            Level world = OgamiEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = OgamiEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(5, new RandomStrollGoal(this, 1.0));
-      this.f_21345_.m_25352_(6, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(7, new FloatGoal(this));
-      this.f_21345_.m_25352_(8, new MoveBackToVillageGoal(this, 0.6, false));
-      this.f_21345_.m_25352_(9, new OpenDoorGoal(this, true));
-      this.f_21345_.m_25352_(10, new OpenDoorGoal(this, false));
+      this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
+      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(7, new FloatGoal(this));
+      this.goalSelector.addGoal(8, new MoveBackToVillageGoal(this, 0.6, false));
+      this.goalSelector.addGoal(9, new OpenDoorGoal(this, true));
+      this.goalSelector.addGoal(10, new OpenDoorGoal(this, false));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagCursedSpritCurseUsersProcedure.execute(world, this);
       return retval;
    }
 
    public static void init() {
-      SpawnPlacements.m_21754_((EntityType)JujutsucraftModEntities.OGAMI.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
-         int x = pos.m_123341_();
-         int y = pos.m_123342_();
-         int z = pos.m_123343_();
+      SpawnPlacements.register((EntityType)JujutsucraftModEntities.OGAMI.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
+         int x = pos.getX();
+         int y = pos.getY();
+         int z = pos.getZ();
          return SpawnLevel1Procedure.execute();
       });
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22276_, 26.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.0);
+      builder = builder.add(Attributes.MAX_HEALTH, 26.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
       return builder;
    }
 }

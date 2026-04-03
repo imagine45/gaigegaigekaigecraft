@@ -62,13 +62,13 @@ public class RenderSkyProcedure {
       poseStack = (PoseStack)params[3];
       projectionMatrix = (Matrix4f)params[5];
       setupFog = (Runnable)params[7];
-      FogRenderer.m_109036_();
+      FogRenderer.levelFogColor();
       setupFog.run();
-      Minecraft minecraft = Minecraft.m_91087_();
-      Entity entity = minecraft.f_91063_.m_109153_().m_90592_();
+      Minecraft minecraft = Minecraft.getInstance();
+      Entity entity = minecraft.gameRenderer.getMainCamera().getEntity();
       if (entity != null) {
-         ClientLevel level = minecraft.f_91073_;
-         Vec3 pos = entity.m_20318_(partialTick);
+         ClientLevel level = minecraft.level;
+         Vec3 pos = entity.getPosition(partialTick);
          return execute((Event)null, entity);
       } else {
          return false;
@@ -79,34 +79,34 @@ public class RenderSkyProcedure {
    }
 
    public static void renderAbyss(int color, boolean constant) {
-      Minecraft minecraft = Minecraft.m_91087_();
-      boolean visible = minecraft.f_91074_.m_20299_(partialTick).m_7098_() - minecraft.f_91073_.m_6106_().m_171687_(minecraft.f_91073_) < 0.0;
+      Minecraft minecraft = Minecraft.getInstance();
+      boolean visible = minecraft.player.getEyePosition(partialTick).y() - minecraft.level.getLevelData().getHorizonHeight(minecraft.level) < 0.0;
       if (visible || constant) {
          if (abyssBuffer != null) {
-            abyssBuffer.m_85921_();
+            abyssBuffer.bind();
          } else {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShader(GameRenderer::m_172808_);
-            BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-            bufferBuilder.m_166779_(Mode.TRIANGLE_FAN, DefaultVertexFormat.f_85814_);
-            bufferBuilder.m_5483_(0.0, -16.0, 0.0).m_5752_();
+            RenderSystem.setShader(GameRenderer::getPositionShader);
+            BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+            bufferBuilder.begin(Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION);
+            bufferBuilder.vertex(0.0, -16.0, 0.0).endVertex();
 
             for(int i = 0; i <= 8; ++i) {
-               bufferBuilder.m_5483_((double)(-512.0F * Mth.m_14089_((float)i * 45.0F * 0.017453292F)), -16.0, (double)(512.0F * Mth.m_14031_((float)i * 45.0F * 0.017453292F))).m_5752_();
+               bufferBuilder.vertex((double)(-512.0F * Mth.cos((float)i * 45.0F * 0.017453292F)), -16.0, (double)(512.0F * Mth.sin((float)i * 45.0F * 0.017453292F))).endVertex();
             }
 
             abyssBuffer = new VertexBuffer(Usage.STATIC);
-            abyssBuffer.m_85921_();
-            abyssBuffer.m_231221_(bufferBuilder.m_231175_());
+            abyssBuffer.bind();
+            abyssBuffer.upload(bufferBuilder.end());
          }
 
-         poseStack.m_85836_();
-         poseStack.m_252880_(0.0F, 12.0F, 0.0F);
+         poseStack.pushPose();
+         poseStack.translate(0.0F, 12.0F, 0.0F);
          RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, (float)(color >>> 24) / 255.0F);
-         abyssBuffer.m_253207_(poseStack.m_85850_().m_252922_(), projectionMatrix, GameRenderer.m_172808_());
-         VertexBuffer.m_85931_();
+         abyssBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, GameRenderer.getPositionShader());
+         VertexBuffer.unbind();
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         poseStack.m_85849_();
+         poseStack.popPose();
       }
 
    }
@@ -114,99 +114,99 @@ public class RenderSkyProcedure {
    public static void renderDeepSky(int color) {
       if (deepSkyBuffer == null) {
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         RenderSystem.setShader(GameRenderer::m_172808_);
-         BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-         bufferBuilder.m_166779_(Mode.TRIANGLE_FAN, DefaultVertexFormat.f_85814_);
-         bufferBuilder.m_5483_(0.0, 16.0, 0.0).m_5752_();
+         RenderSystem.setShader(GameRenderer::getPositionShader);
+         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+         bufferBuilder.begin(Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION);
+         bufferBuilder.vertex(0.0, 16.0, 0.0).endVertex();
 
          for(int i = 0; i <= 8; ++i) {
-            bufferBuilder.m_5483_((double)(512.0F * Mth.m_14089_(45.0F * (float)i * 0.017453292F)), 16.0, (double)(512.0F * Mth.m_14031_(45.0F * (float)i * 0.017453292F))).m_5752_();
+            bufferBuilder.vertex((double)(512.0F * Mth.cos(45.0F * (float)i * 0.017453292F)), 16.0, (double)(512.0F * Mth.sin(45.0F * (float)i * 0.017453292F))).endVertex();
          }
 
          deepSkyBuffer = new VertexBuffer(Usage.STATIC);
-         deepSkyBuffer.m_85921_();
-         deepSkyBuffer.m_231221_(bufferBuilder.m_231175_());
+         deepSkyBuffer.bind();
+         deepSkyBuffer.upload(bufferBuilder.end());
       } else {
-         deepSkyBuffer.m_85921_();
+         deepSkyBuffer.bind();
       }
 
       RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, (float)(color >>> 24) / 255.0F);
-      deepSkyBuffer.m_253207_(poseStack.m_85850_().m_252922_(), projectionMatrix, GameRenderer.m_172808_());
-      VertexBuffer.m_85931_();
+      deepSkyBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, GameRenderer.getPositionShader());
+      VertexBuffer.unbind();
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
    }
 
    public static void renderEndSky(float yaw, float pitch, float roll, int color, boolean constant) {
-      Minecraft minecraft = Minecraft.m_91087_();
-      Vec3 pos = minecraft.f_91063_.m_109153_().m_90583_();
-      boolean invisible = minecraft.f_91073_.m_104583_().m_5781_(Mth.m_14107_(pos.m_7096_()), Mth.m_14107_(pos.m_7098_())) || minecraft.f_91065_.m_93090_().m_93715_();
+      Minecraft minecraft = Minecraft.getInstance();
+      Vec3 pos = minecraft.gameRenderer.getMainCamera().getPosition();
+      boolean invisible = minecraft.level.effects().isFoggyAt(Mth.floor(pos.x()), Mth.floor(pos.y())) || minecraft.gui.getBossOverlay().shouldCreateWorldFog();
       if (!invisible || constant) {
-         poseStack.m_85836_();
-         poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-         poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-         poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-         Matrix4f matrix4f = poseStack.m_85850_().m_252922_();
+         poseStack.pushPose();
+         poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+         poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+         poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+         Matrix4f matrix4f = poseStack.last().pose();
          RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, (float)(color >>> 24) / 255.0F);
-         RenderSystem.setShader(GameRenderer::m_172817_);
-         BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-         bufferBuilder.m_166779_(Mode.QUADS, DefaultVertexFormat.f_85817_);
+         RenderSystem.setShader(GameRenderer::getPositionTexShader);
+         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+         bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
          for(int i = 0; i < 6; ++i) {
             switch (i) {
                case 0:
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, -100.0F, -100.0F).m_7421_(0.0F, 0.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, -100.0F, 100.0F).m_7421_(0.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, -100.0F, 100.0F).m_7421_(16.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, -100.0F, -100.0F).m_7421_(16.0F, 0.0F).m_5752_();
+                  bufferBuilder.vertex(matrix4f, -100.0F, -100.0F, -100.0F).uv(0.0F, 0.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, -100.0F, -100.0F, 100.0F).uv(0.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, -100.0F, 100.0F).uv(16.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, -100.0F, -100.0F).uv(16.0F, 0.0F).endVertex();
                   break;
                case 1:
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, -100.0F, 100.0F).m_7421_(0.0F, 0.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, 100.0F, 100.0F).m_7421_(0.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, 100.0F, 100.0F).m_7421_(16.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, -100.0F, 100.0F).m_7421_(16.0F, 0.0F).m_5752_();
+                  bufferBuilder.vertex(matrix4f, -100.0F, -100.0F, 100.0F).uv(0.0F, 0.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, -100.0F, 100.0F, 100.0F).uv(0.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, 100.0F, 100.0F).uv(16.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, -100.0F, 100.0F).uv(16.0F, 0.0F).endVertex();
                   break;
                case 2:
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, 100.0F, -100.0F).m_7421_(0.0F, 0.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, -100.0F, -100.0F).m_7421_(0.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, -100.0F, -100.0F).m_7421_(16.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, 100.0F, -100.0F).m_7421_(16.0F, 0.0F).m_5752_();
+                  bufferBuilder.vertex(matrix4f, -100.0F, 100.0F, -100.0F).uv(0.0F, 0.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, -100.0F, -100.0F, -100.0F).uv(0.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, -100.0F, -100.0F).uv(16.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, 100.0F, -100.0F).uv(16.0F, 0.0F).endVertex();
                   break;
                case 3:
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, 100.0F, 100.0F).m_7421_(0.0F, 0.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, 100.0F, -100.0F).m_7421_(0.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, 100.0F, -100.0F).m_7421_(16.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, 100.0F, 100.0F).m_7421_(16.0F, 0.0F).m_5752_();
+                  bufferBuilder.vertex(matrix4f, -100.0F, 100.0F, 100.0F).uv(0.0F, 0.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, -100.0F, 100.0F, -100.0F).uv(0.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, 100.0F, -100.0F).uv(16.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, 100.0F, 100.0F).uv(16.0F, 0.0F).endVertex();
                   break;
                case 4:
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, 100.0F, -100.0F).m_7421_(0.0F, 0.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, 100.0F, 100.0F).m_7421_(0.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, -100.0F, 100.0F).m_7421_(16.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, -100.0F, -100.0F, -100.0F).m_7421_(16.0F, 0.0F).m_5752_();
+                  bufferBuilder.vertex(matrix4f, -100.0F, 100.0F, -100.0F).uv(0.0F, 0.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, -100.0F, 100.0F, 100.0F).uv(0.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, -100.0F, -100.0F, 100.0F).uv(16.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, -100.0F, -100.0F, -100.0F).uv(16.0F, 0.0F).endVertex();
                   break;
                case 5:
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, -100.0F, -100.0F).m_7421_(0.0F, 0.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, -100.0F, 100.0F).m_7421_(0.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, 100.0F, 100.0F).m_7421_(16.0F, 16.0F).m_5752_();
-                  bufferBuilder.m_252986_(matrix4f, 100.0F, 100.0F, -100.0F).m_7421_(16.0F, 0.0F).m_5752_();
+                  bufferBuilder.vertex(matrix4f, 100.0F, -100.0F, -100.0F).uv(0.0F, 0.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, -100.0F, 100.0F).uv(0.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, 100.0F, 100.0F).uv(16.0F, 16.0F).endVertex();
+                  bufferBuilder.vertex(matrix4f, 100.0F, 100.0F, -100.0F).uv(16.0F, 0.0F).endVertex();
             }
          }
 
-         BufferUploader.m_231202_(bufferBuilder.m_231175_());
+         BufferUploader.drawWithShader(bufferBuilder.end());
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         poseStack.m_85849_();
+         poseStack.popPose();
       }
 
    }
 
    public static void renderMoon(float size, int color, boolean phase, boolean constant) {
-      ClientLevel level = Minecraft.m_91087_().f_91073_;
+      ClientLevel level = Minecraft.getInstance().level;
       float r = size / 2.0F;
       float u0 = 0.0F;
       float v0 = 0.0F;
       float u1 = 1.0F;
       float v1 = 1.0F;
       if (phase) {
-         int i0 = level.m_46941_();
+         int i0 = level.getMoonPhase();
          int i1 = i0 & 3;
          int i2 = i0 >> 2 & 1;
          u0 = (float)i1 / 4.0F;
@@ -217,36 +217,36 @@ public class RenderSkyProcedure {
 
       float alpha = (float)(color >>> 24) / 255.0F;
       if (!constant) {
-         alpha *= 1.0F - level.m_46722_(partialTick);
+         alpha *= 1.0F - level.getRainLevel(partialTick);
       }
 
-      poseStack.m_85836_();
-      poseStack.m_252781_(Axis.f_252403_.m_252977_(level.m_46942_(partialTick) * 360.0F));
-      Matrix4f matrix4f = poseStack.m_85850_().m_252922_();
+      poseStack.pushPose();
+      poseStack.mulPose(Axis.ZP.rotationDegrees(level.getTimeOfDay(partialTick) * 360.0F));
+      Matrix4f matrix4f = poseStack.last().pose();
       RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, alpha);
-      RenderSystem.setShader(GameRenderer::m_172817_);
-      BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-      bufferBuilder.m_166779_(Mode.QUADS, DefaultVertexFormat.f_85817_);
-      bufferBuilder.m_252986_(matrix4f, -r, -100.0F, -r).m_7421_(u1, v1).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, -r, -100.0F, r).m_7421_(u0, v1).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, r, -100.0F, r).m_7421_(u0, v0).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, r, -100.0F, -r).m_7421_(u1, v0).m_5752_();
-      BufferUploader.m_231202_(bufferBuilder.m_231175_());
+      RenderSystem.setShader(GameRenderer::getPositionTexShader);
+      BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+      bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+      bufferBuilder.vertex(matrix4f, -r, -100.0F, -r).uv(u1, v1).endVertex();
+      bufferBuilder.vertex(matrix4f, -r, -100.0F, r).uv(u0, v1).endVertex();
+      bufferBuilder.vertex(matrix4f, r, -100.0F, r).uv(u0, v0).endVertex();
+      bufferBuilder.vertex(matrix4f, r, -100.0F, -r).uv(u1, v0).endVertex();
+      BufferUploader.drawWithShader(bufferBuilder.end());
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    public static void renderSky(boolean deepSky, boolean sunlights, boolean sun, boolean moon, boolean stars, boolean abyss) {
-      Minecraft minecraft = Minecraft.m_91087_();
-      ClientLevel level = minecraft.f_91073_;
+      Minecraft minecraft = Minecraft.getInstance();
+      ClientLevel level = minecraft.level;
       if (deepSky) {
-         Vec3 color = level.m_171660_(minecraft.f_91063_.m_109153_().m_90583_(), partialTick);
+         Vec3 color = level.getSkyColor(minecraft.gameRenderer.getMainCamera().getPosition(), partialTick);
          RenderSystem.defaultBlendFunc();
-         renderDeepSky(-16777216 | (int)(color.m_7096_() * 255.0) << 16 | (int)(color.m_7098_() * 255.0) << 8 | (int)(color.m_7094_() * 255.0));
+         renderDeepSky(-16777216 | (int)(color.x() * 255.0) << 16 | (int)(color.y() * 255.0) << 8 | (int)(color.z() * 255.0));
       }
 
       if (sunlights) {
-         float[] color = level.m_104583_().m_7518_(level.m_46942_(partialTick), partialTick);
+         float[] color = level.effects().getSunriseColor(level.getTimeOfDay(partialTick), partialTick);
          if (color != null) {
             RenderSystem.defaultBlendFunc();
             renderSunlights((int)(color[3] * 255.0F) << 24 | (int)(color[0] * 255.0F) << 16 | (int)(color[1] * 255.0F) << 8 | (int)(color[2] * 255.0F));
@@ -266,9 +266,9 @@ public class RenderSkyProcedure {
       }
 
       if (stars) {
-         int color = (int)(level.m_104811_(partialTick) * 255.0F);
+         int color = (int)(level.getStarBrightness(partialTick) * 255.0F);
          RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE, SourceFactor.ONE, DestFactor.ZERO);
-         renderStars(1500, 10842, 90.0F, level.m_46942_(partialTick) * 360.0F, 0.0F, color << 24 | color << 16 | color << 8 | color, false);
+         renderStars(1500, 10842, 90.0F, level.getTimeOfDay(partialTick) * 360.0F, 0.0F, color << 24 | color << 16 | color << 8 | color, false);
       }
 
       if (abyss) {
@@ -279,98 +279,98 @@ public class RenderSkyProcedure {
    }
 
    public static void renderSkybox(float yaw, float pitch, float roll, int color, boolean constant) {
-      Minecraft minecraft = Minecraft.m_91087_();
-      Vec3 pos = minecraft.f_91063_.m_109153_().m_90583_();
-      boolean invisible = minecraft.f_91073_.m_104583_().m_5781_(Mth.m_14107_(pos.m_7096_()), Mth.m_14107_(pos.m_7098_())) || minecraft.f_91065_.m_93090_().m_93715_();
+      Minecraft minecraft = Minecraft.getInstance();
+      Vec3 pos = minecraft.gameRenderer.getMainCamera().getPosition();
+      boolean invisible = minecraft.level.effects().isFoggyAt(Mth.floor(pos.x()), Mth.floor(pos.y())) || minecraft.gui.getBossOverlay().shouldCreateWorldFog();
       if (!invisible || constant) {
          if (skyboxBuffer != null) {
-            skyboxBuffer.m_85921_();
+            skyboxBuffer.bind();
          } else {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShader(GameRenderer::m_172817_);
-            BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-            bufferBuilder.m_166779_(Mode.QUADS, DefaultVertexFormat.f_85817_);
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+            bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
             for(int i = 0; i < 6; ++i) {
                switch (i) {
                   case 0:
-                     bufferBuilder.m_5483_(-0.5, -0.5, -0.5).m_7421_(0.0F, 0.0F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, -0.5, 0.5).m_7421_(0.0F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, -0.5, 0.5).m_7421_(0.33333334F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, -0.5, -0.5).m_7421_(0.33333334F, 0.0F).m_5752_();
+                     bufferBuilder.vertex(-0.5, -0.5, -0.5).uv(0.0F, 0.0F).endVertex();
+                     bufferBuilder.vertex(-0.5, -0.5, 0.5).uv(0.0F, 0.5F).endVertex();
+                     bufferBuilder.vertex(0.5, -0.5, 0.5).uv(0.33333334F, 0.5F).endVertex();
+                     bufferBuilder.vertex(0.5, -0.5, -0.5).uv(0.33333334F, 0.0F).endVertex();
                      break;
                   case 1:
-                     bufferBuilder.m_5483_(-0.5, 0.5, 0.5).m_7421_(0.33333334F, 0.0F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, 0.5, -0.5).m_7421_(0.33333334F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, 0.5, -0.5).m_7421_(0.6666667F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, 0.5, 0.5).m_7421_(0.6666667F, 0.0F).m_5752_();
+                     bufferBuilder.vertex(-0.5, 0.5, 0.5).uv(0.33333334F, 0.0F).endVertex();
+                     bufferBuilder.vertex(-0.5, 0.5, -0.5).uv(0.33333334F, 0.5F).endVertex();
+                     bufferBuilder.vertex(0.5, 0.5, -0.5).uv(0.6666667F, 0.5F).endVertex();
+                     bufferBuilder.vertex(0.5, 0.5, 0.5).uv(0.6666667F, 0.0F).endVertex();
                      break;
                   case 2:
-                     bufferBuilder.m_5483_(0.5, 0.5, 0.5).m_7421_(0.6666667F, 0.0F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, -0.5, 0.5).m_7421_(0.6666667F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, -0.5, 0.5).m_7421_(1.0F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, 0.5, 0.5).m_7421_(1.0F, 0.0F).m_5752_();
+                     bufferBuilder.vertex(0.5, 0.5, 0.5).uv(0.6666667F, 0.0F).endVertex();
+                     bufferBuilder.vertex(0.5, -0.5, 0.5).uv(0.6666667F, 0.5F).endVertex();
+                     bufferBuilder.vertex(-0.5, -0.5, 0.5).uv(1.0F, 0.5F).endVertex();
+                     bufferBuilder.vertex(-0.5, 0.5, 0.5).uv(1.0F, 0.0F).endVertex();
                      break;
                   case 3:
-                     bufferBuilder.m_5483_(-0.5, 0.5, 0.5).m_7421_(0.0F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, -0.5, 0.5).m_7421_(0.0F, 1.0F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, -0.5, -0.5).m_7421_(0.33333334F, 1.0F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, 0.5, -0.5).m_7421_(0.33333334F, 0.5F).m_5752_();
+                     bufferBuilder.vertex(-0.5, 0.5, 0.5).uv(0.0F, 0.5F).endVertex();
+                     bufferBuilder.vertex(-0.5, -0.5, 0.5).uv(0.0F, 1.0F).endVertex();
+                     bufferBuilder.vertex(-0.5, -0.5, -0.5).uv(0.33333334F, 1.0F).endVertex();
+                     bufferBuilder.vertex(-0.5, 0.5, -0.5).uv(0.33333334F, 0.5F).endVertex();
                      break;
                   case 4:
-                     bufferBuilder.m_5483_(-0.5, 0.5, -0.5).m_7421_(0.33333334F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(-0.5, -0.5, -0.5).m_7421_(0.33333334F, 1.0F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, -0.5, -0.5).m_7421_(0.6666667F, 1.0F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, 0.5, -0.5).m_7421_(0.6666667F, 0.5F).m_5752_();
+                     bufferBuilder.vertex(-0.5, 0.5, -0.5).uv(0.33333334F, 0.5F).endVertex();
+                     bufferBuilder.vertex(-0.5, -0.5, -0.5).uv(0.33333334F, 1.0F).endVertex();
+                     bufferBuilder.vertex(0.5, -0.5, -0.5).uv(0.6666667F, 1.0F).endVertex();
+                     bufferBuilder.vertex(0.5, 0.5, -0.5).uv(0.6666667F, 0.5F).endVertex();
                      break;
                   case 5:
-                     bufferBuilder.m_5483_(0.5, 0.5, -0.5).m_7421_(0.6666667F, 0.5F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, -0.5, -0.5).m_7421_(0.6666667F, 1.0F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, -0.5, 0.5).m_7421_(1.0F, 1.0F).m_5752_();
-                     bufferBuilder.m_5483_(0.5, 0.5, 0.5).m_7421_(1.0F, 0.5F).m_5752_();
+                     bufferBuilder.vertex(0.5, 0.5, -0.5).uv(0.6666667F, 0.5F).endVertex();
+                     bufferBuilder.vertex(0.5, -0.5, -0.5).uv(0.6666667F, 1.0F).endVertex();
+                     bufferBuilder.vertex(0.5, -0.5, 0.5).uv(1.0F, 1.0F).endVertex();
+                     bufferBuilder.vertex(0.5, 0.5, 0.5).uv(1.0F, 0.5F).endVertex();
                }
             }
 
             skyboxBuffer = new VertexBuffer(Usage.STATIC);
-            skyboxBuffer.m_85921_();
-            skyboxBuffer.m_231221_(bufferBuilder.m_231175_());
+            skyboxBuffer.bind();
+            skyboxBuffer.upload(bufferBuilder.end());
          }
 
-         float size = (float)(minecraft.f_91066_.m_193772_() << 6);
-         poseStack.m_85836_();
-         poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-         poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-         poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-         poseStack.m_85841_(size, size, size);
+         float size = (float)(minecraft.options.getEffectiveRenderDistance() << 6);
+         poseStack.pushPose();
+         poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+         poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+         poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+         poseStack.scale(size, size, size);
          RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, (float)(color >>> 24) / 255.0F);
-         skyboxBuffer.m_253207_(poseStack.m_85850_().m_252922_(), projectionMatrix, GameRenderer.m_172817_());
-         VertexBuffer.m_85931_();
+         skyboxBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, GameRenderer.getPositionTexShader());
+         VertexBuffer.unbind();
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         poseStack.m_85849_();
+         poseStack.popPose();
       }
 
    }
 
    public static void renderStars(int amount, int seed, float yaw, float pitch, float roll, int color, boolean constant) {
       if (starBuffer != null && amount == RenderSkyProcedure.amount && seed == RenderSkyProcedure.seed) {
-         starBuffer.m_85921_();
+         starBuffer.bind();
       } else {
          RenderSkyProcedure.amount = amount;
          RenderSkyProcedure.seed = seed;
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         RenderSystem.setShader(GameRenderer::m_172808_);
-         BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-         bufferBuilder.m_166779_(Mode.QUADS, DefaultVertexFormat.f_85814_);
-         RandomSource randomsource = RandomSource.m_216335_((long)seed);
+         RenderSystem.setShader(GameRenderer::getPositionShader);
+         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+         bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION);
+         RandomSource randomsource = RandomSource.create((long)seed);
 
          for(int i = 0; i < amount; ++i) {
-            float f0 = randomsource.m_188501_() * 2.0F - 1.0F;
-            float f1 = randomsource.m_188501_() * 2.0F - 1.0F;
-            float f2 = randomsource.m_188501_() * 2.0F - 1.0F;
-            float f3 = 0.15F + 0.1F * randomsource.m_188501_();
+            float f0 = randomsource.nextFloat() * 2.0F - 1.0F;
+            float f1 = randomsource.nextFloat() * 2.0F - 1.0F;
+            float f2 = randomsource.nextFloat() * 2.0F - 1.0F;
+            float f3 = 0.15F + 0.1F * randomsource.nextFloat();
             float f4 = f0 * f0 + f1 * f1 + f2 * f2;
             if (f4 < 1.0F && f4 > 0.01F) {
-               f4 = 1.0F / Mth.m_14116_(f4);
+               f4 = 1.0F / Mth.sqrt(f4);
                f0 *= f4;
                f1 *= f4;
                f2 *= f4;
@@ -378,14 +378,14 @@ public class RenderSkyProcedure {
                float f6 = f1 * 100.0F;
                float f7 = f2 * 100.0F;
                float f8 = (float)Math.atan2((double)f0, (double)f2);
-               float f9 = Mth.m_14031_(f8);
-               float f10 = Mth.m_14089_(f8);
-               float f11 = (float)Math.atan2((double)Mth.m_14116_(f0 * f0 + f2 * f2), (double)f1);
-               float f12 = Mth.m_14031_(f11);
-               float f13 = Mth.m_14089_(f11);
-               float f14 = (float)randomsource.m_188500_() * 3.1415927F * 2.0F;
-               float f15 = Mth.m_14031_(f14);
-               float f16 = Mth.m_14089_(f14);
+               float f9 = Mth.sin(f8);
+               float f10 = Mth.cos(f8);
+               float f11 = (float)Math.atan2((double)Mth.sqrt(f0 * f0 + f2 * f2), (double)f1);
+               float f12 = Mth.sin(f11);
+               float f13 = Mth.cos(f11);
+               float f14 = (float)randomsource.nextDouble() * 3.1415927F * 2.0F;
+               float f15 = Mth.sin(f14);
+               float f16 = Mth.cos(f14);
 
                for(int j = 0; j < 4; ++j) {
                   float f17 = (float)((j & 2) - 1) * f3;
@@ -396,7 +396,7 @@ public class RenderSkyProcedure {
                   float f23 = f22 * f9 - f21 * f10;
                   float f24 = f20 * f12;
                   float f25 = f21 * f9 + f22 * f10;
-                  bufferBuilder.m_5483_((double)(f5 + f23), (double)(f6 + f24), (double)(f7 + f25)).m_5752_();
+                  bufferBuilder.vertex((double)(f5 + f23), (double)(f6 + f24), (double)(f7 + f25)).endVertex();
                }
             }
          }
@@ -406,84 +406,84 @@ public class RenderSkyProcedure {
          }
 
          starBuffer = new VertexBuffer(Usage.STATIC);
-         starBuffer.m_85921_();
-         starBuffer.m_231221_(bufferBuilder.m_231175_());
+         starBuffer.bind();
+         starBuffer.upload(bufferBuilder.end());
       }
 
       float alpha = (float)(color >>> 24) / 255.0F;
       if (!constant) {
-         alpha *= 1.0F - Minecraft.m_91087_().f_91073_.m_46722_(partialTick);
+         alpha *= 1.0F - Minecraft.getInstance().level.getRainLevel(partialTick);
       }
 
-      poseStack.m_85836_();
-      poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-      poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-      poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-      FogRenderer.m_109017_();
+      poseStack.pushPose();
+      poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+      poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+      poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+      FogRenderer.setupNoFog();
       RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, alpha);
-      starBuffer.m_253207_(poseStack.m_85850_().m_252922_(), projectionMatrix, GameRenderer.m_172808_());
-      VertexBuffer.m_85931_();
+      starBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, GameRenderer.getPositionShader());
+      VertexBuffer.unbind();
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
       setupFog.run();
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    public static void renderSun(float size, int color, boolean constant) {
-      ClientLevel level = Minecraft.m_91087_().f_91073_;
+      ClientLevel level = Minecraft.getInstance().level;
       float r = size / 2.0F;
       float alpha = (float)(color >>> 24) / 255.0F;
       if (!constant) {
-         alpha *= 1.0F - level.m_46722_(partialTick);
+         alpha *= 1.0F - level.getRainLevel(partialTick);
       }
 
-      poseStack.m_85836_();
-      poseStack.m_252781_(Axis.f_252403_.m_252977_(level.m_46942_(partialTick) * 360.0F));
-      Matrix4f matrix4f = poseStack.m_85850_().m_252922_();
+      poseStack.pushPose();
+      poseStack.mulPose(Axis.ZP.rotationDegrees(level.getTimeOfDay(partialTick) * 360.0F));
+      Matrix4f matrix4f = poseStack.last().pose();
       RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, alpha);
-      RenderSystem.setShader(GameRenderer::m_172817_);
-      BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-      bufferBuilder.m_166779_(Mode.QUADS, DefaultVertexFormat.f_85817_);
-      bufferBuilder.m_252986_(matrix4f, r, 100.0F, -r).m_7421_(0.0F, 0.0F).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, r, 100.0F, r).m_7421_(1.0F, 0.0F).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, -r, 100.0F, r).m_7421_(1.0F, 1.0F).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, -r, 100.0F, -r).m_7421_(0.0F, 1.0F).m_5752_();
-      BufferUploader.m_231202_(bufferBuilder.m_231175_());
+      RenderSystem.setShader(GameRenderer::getPositionTexShader);
+      BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+      bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+      bufferBuilder.vertex(matrix4f, r, 100.0F, -r).uv(0.0F, 0.0F).endVertex();
+      bufferBuilder.vertex(matrix4f, r, 100.0F, r).uv(1.0F, 0.0F).endVertex();
+      bufferBuilder.vertex(matrix4f, -r, 100.0F, r).uv(1.0F, 1.0F).endVertex();
+      bufferBuilder.vertex(matrix4f, -r, 100.0F, -r).uv(0.0F, 1.0F).endVertex();
+      BufferUploader.drawWithShader(bufferBuilder.end());
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    public static void renderSunlights(int color) {
-      ClientLevel level = Minecraft.m_91087_().f_91073_;
-      float[] rawColor = level.m_104583_().m_7518_(level.m_46942_(partialTick), partialTick);
+      ClientLevel level = Minecraft.getInstance().level;
+      float[] rawColor = level.effects().getSunriseColor(level.getTimeOfDay(partialTick), partialTick);
       if (rawColor != null) {
          int red = color >> 16 & 255;
          int green = color >> 8 & 255;
          int blue = color & 255;
          int alpha = (int)((float)(color >>> 24) * rawColor[3]);
-         Matrix4f matrix4f = poseStack.m_85850_().m_252922_();
+         Matrix4f matrix4f = poseStack.last().pose();
          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-         RenderSystem.setShader(GameRenderer::m_172811_);
-         BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-         bufferBuilder.m_166779_(Mode.TRIANGLE_FAN, DefaultVertexFormat.f_85815_);
-         boolean flag = Mth.m_14031_(level.m_46490_(partialTick)) < 0.0F;
+         RenderSystem.setShader(GameRenderer::getPositionColorShader);
+         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+         bufferBuilder.begin(Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
+         boolean flag = Mth.sin(level.getSunAngle(partialTick)) < 0.0F;
          if (flag) {
-            bufferBuilder.m_252986_(matrix4f, 100.0F, 0.0F, 0.0F).m_6122_(red, green, blue, alpha).m_5752_();
+            bufferBuilder.vertex(matrix4f, 100.0F, 0.0F, 0.0F).color(red, green, blue, alpha).endVertex();
          } else {
-            bufferBuilder.m_252986_(matrix4f, -100.0F, 0.0F, 0.0F).m_6122_(red, green, blue, alpha).m_5752_();
+            bufferBuilder.vertex(matrix4f, -100.0F, 0.0F, 0.0F).color(red, green, blue, alpha).endVertex();
          }
 
          for(int i = 0; i <= 16; ++i) {
             float deg = (float)i * 6.2831855F / 16.0F;
-            float sin = Mth.m_14031_(deg);
-            float cos = Mth.m_14089_(deg);
+            float sin = Mth.sin(deg);
+            float cos = Mth.cos(deg);
             if (flag) {
-               bufferBuilder.m_252986_(matrix4f, cos * 120.0F, cos * 40.0F * rawColor[3], -sin * 120.0F).m_6122_(red, green, blue, 0).m_5752_();
+               bufferBuilder.vertex(matrix4f, cos * 120.0F, cos * 40.0F * rawColor[3], -sin * 120.0F).color(red, green, blue, 0).endVertex();
             } else {
-               bufferBuilder.m_252986_(matrix4f, -cos * 120.0F, cos * 40.0F * rawColor[3], sin * 120.0F).m_6122_(red, green, blue, 0).m_5752_();
+               bufferBuilder.vertex(matrix4f, -cos * 120.0F, cos * 40.0F * rawColor[3], sin * 120.0F).color(red, green, blue, 0).endVertex();
             }
          }
 
-         BufferUploader.m_231202_(bufferBuilder.m_231175_());
+         BufferUploader.drawWithShader(bufferBuilder.end());
       }
 
    }
@@ -492,25 +492,25 @@ public class RenderSkyProcedure {
       float r = size / 2.0F;
       float alpha = (float)(color >>> 24) / 255.0F;
       if (!constant) {
-         alpha *= 1.0F - Minecraft.m_91087_().f_91073_.m_46722_(partialTick);
+         alpha *= 1.0F - Minecraft.getInstance().level.getRainLevel(partialTick);
       }
 
-      poseStack.m_85836_();
-      poseStack.m_252781_(Axis.f_252392_.m_252977_(yaw));
-      poseStack.m_252781_(Axis.f_252529_.m_252977_(pitch));
-      poseStack.m_252781_(Axis.f_252393_.m_252977_(roll));
-      Matrix4f matrix4f = poseStack.m_85850_().m_252922_();
+      poseStack.pushPose();
+      poseStack.mulPose(Axis.YN.rotationDegrees(yaw));
+      poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+      poseStack.mulPose(Axis.ZN.rotationDegrees(roll));
+      Matrix4f matrix4f = poseStack.last().pose();
       RenderSystem.setShaderColor((float)(color >> 16 & 255) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, alpha);
-      RenderSystem.setShader(GameRenderer::m_172817_);
-      BufferBuilder bufferBuilder = Tesselator.m_85913_().m_85915_();
-      bufferBuilder.m_166779_(Mode.QUADS, DefaultVertexFormat.f_85817_);
-      bufferBuilder.m_252986_(matrix4f, r, r, 100.0F).m_7421_(0.0F, 0.0F).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, r, -r, 100.0F).m_7421_(0.0F, 1.0F).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, -r, -r, 100.0F).m_7421_(1.0F, 1.0F).m_5752_();
-      bufferBuilder.m_252986_(matrix4f, -r, r, 100.0F).m_7421_(1.0F, 0.0F).m_5752_();
-      BufferUploader.m_231202_(bufferBuilder.m_231175_());
+      RenderSystem.setShader(GameRenderer::getPositionTexShader);
+      BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+      bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+      bufferBuilder.vertex(matrix4f, r, r, 100.0F).uv(0.0F, 0.0F).endVertex();
+      bufferBuilder.vertex(matrix4f, r, -r, 100.0F).uv(0.0F, 1.0F).endVertex();
+      bufferBuilder.vertex(matrix4f, -r, -r, 100.0F).uv(1.0F, 1.0F).endVertex();
+      bufferBuilder.vertex(matrix4f, -r, r, 100.0F).uv(1.0F, 0.0F).endVertex();
+      BufferUploader.drawWithShader(bufferBuilder.end());
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      poseStack.m_85849_();
+      poseStack.popPose();
    }
 
    @SubscribeEvent
@@ -544,16 +544,16 @@ public class RenderSkyProcedure {
             double distance = 0.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt0 = (LivingEntity)entity;
-               if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = entity.getPersistentData().m_128459_("skill_domain") + 10.0;
+               if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = entity.getPersistentData().getDouble("skill_domain") + 10.0;
                   break label38;
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get()).m_19564_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.NEUTRALIZATION.get()).getAmplifier();
                   break label38;
                }
             }
@@ -565,7 +565,7 @@ public class RenderSkyProcedure {
          if (var8 > 10.0) {
             var8 -= 10.0;
             if (var8 == 1.0 || var8 == 18.0) {
-               RenderSystem.setShaderTexture(0, new ResourceLocation("jujutsucraft:textures/tex_black.png"));
+               RenderSystem.setShaderTexture(0, new ResourceLocation("gaigegaigekaigecraft:textures/tex_black.png"));
                renderSunlights(-65536);
                renderSky(true, true, false, false, false, true);
                renderSkybox(0.0F, 0.0F, 0.0F, -65536, true);

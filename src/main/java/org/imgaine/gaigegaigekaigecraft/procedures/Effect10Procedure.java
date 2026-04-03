@@ -20,16 +20,16 @@ public class Effect10Procedure {
          double y_pos = 0.0;
          double z_pos = 0.0;
          Entity entity_a = null;
-         x_pos = entityiterator.m_20185_();
-         y_pos = entityiterator.m_20186_() + (double)entityiterator.m_20206_() * 0.5;
-         z_pos = entityiterator.m_20189_();
-         entityiterator.m_20254_(1);
+         x_pos = entityiterator.getX();
+         y_pos = entityiterator.getY() + (double)entityiterator.getBbHeight() * 0.5;
+         z_pos = entityiterator.getZ();
+         entityiterator.setSecondsOnFire(1);
          if (world instanceof Level) {
             Level _level = (Level)world;
-            if (!_level.m_5776_()) {
-               _level.m_5594_((Player)null, BlockPos.m_274561_(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:flame_explode")), SoundSource.NEUTRAL, 0.2F, 1.0F);
+            if (!_level.isClientSide()) {
+               _level.playSound((Player)null, BlockPos.containing(x_pos, y_pos, z_pos), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:flame_explode")), SoundSource.NEUTRAL, 0.2F, 1.0F);
             } else {
-               _level.m_7785_(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:flame_explode")), SoundSource.NEUTRAL, 0.2F, 1.0F, false);
+               _level.playLocalSound(x_pos, y_pos, z_pos, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:flame_explode")), SoundSource.NEUTRAL, 0.2F, 1.0F, false);
             }
          }
 

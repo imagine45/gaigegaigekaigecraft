@@ -12,15 +12,15 @@ public class DebuggerJrRightClickedInAirProcedure {
 
    public static void execute(Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128347_("skill", 2020.0);
-         entity.getPersistentData().m_128347_("cnt1", 0.0);
-         entity.getPersistentData().m_128347_("cnt2", 0.0);
-         entity.getPersistentData().m_128347_("cnt3", 0.0);
-         entity.getPersistentData().m_128347_("Damage", 0.0);
+         entity.getPersistentData().putDouble("skill", 2020.0);
+         entity.getPersistentData().putDouble("cnt1", 0.0);
+         entity.getPersistentData().putDouble("cnt2", 0.0);
+         entity.getPersistentData().putDouble("cnt3", 0.0);
+         entity.getPersistentData().putDouble("Damage", 0.0);
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            if (!_entity.m_9236_().m_5776_()) {
-               _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+            if (!_entity.level().isClientSide()) {
+               _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
             }
          }
 

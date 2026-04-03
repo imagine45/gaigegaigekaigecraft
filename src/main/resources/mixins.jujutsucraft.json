@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "org.imgaine.gaigegaigekaigecraft.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.gaigegaigekaigecraft.refmap.json",
+  "mixins": [],
+  "client": [],
+  "minVersion": "0.8"
+}

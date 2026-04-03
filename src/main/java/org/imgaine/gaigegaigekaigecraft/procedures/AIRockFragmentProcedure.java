@@ -1,5 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
+import org.imgaine.gaigegaigekaigecraft.entity.EntityCrystalEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.Gravestone3Entity;
 import org.imgaine.gaigegaigekaigecraft.entity.RockFragmentEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModParticleTypes;
@@ -35,189 +36,222 @@ public class AIRockFragmentProcedure {
          double entity_size = 0.0;
          double dis = 0.0;
          double CNT6 = 0.0;
-         entity_size = ReturnEntitySizeProcedure.execute(entity);
-         if (entity.getPersistentData().m_128459_("skill") != 1706.0) {
-            if (entity instanceof Gravestone3Entity && !entity.m_20096_()) {
-               entity.m_20256_(new Vec3(entity.m_20184_().m_7096_(), Math.min(entity.m_20184_().m_7098_(), -0.25), entity.m_20184_().m_7094_()));
-            }
-
-            entity.getPersistentData().m_128347_("cnt1", entity.getPersistentData().m_128459_("cnt1") + 1.0);
-            if (entity.getPersistentData().m_128459_("cnt1") == 1.0) {
-               entity.getPersistentData().m_128347_("yaw_fix", (Math.random() - 0.5) * 2.0);
-               entity.getPersistentData().m_128347_("pitch_fix", (Math.random() - 0.5) * 2.0);
-               entity.getPersistentData().m_128347_("cnt3", 5.0);
-               if (entity.getPersistentData().m_128459_("skill") >= 400.0 && entity.getPersistentData().m_128459_("skill") < 500.0) {
-                  if (entity instanceof RockFragmentEntity) {
-                     RockFragmentEntity _datEntSetL = (RockFragmentEntity)entity;
-                     _datEntSetL.m_20088_().m_135381_(RockFragmentEntity.DATA_Magma, true);
-                  }
-
-                  if (entity instanceof LivingEntity) {
-                     LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19607_, 2147483647, 0, false, false));
-                     }
-                  }
-
-                  entity.m_20254_(30);
-               }
-            }
-
-            if (entity.m_20096_()) {
-               entity.getPersistentData().m_128347_("cnt3", entity.getPersistentData().m_128459_("cnt3") > 0.0 ? entity.getPersistentData().m_128459_("cnt3") - 1.0 : 0.0);
-               if (entity instanceof Gravestone3Entity) {
-                  entity.getPersistentData().m_128347_("cnt_rock", entity.getPersistentData().m_128459_("cnt_rock") + 1.0);
-                  if (entity.getPersistentData().m_128459_("cnt_rock") > 4.0) {
-                     entity.getPersistentData().m_128347_("cnt_rock", 0.0);
-                     entity.getPersistentData().m_128347_("BlockRange", 3.0 * entity_size);
-                     entity.getPersistentData().m_128347_("BlockDamage", (double)(entity.m_20206_() * entity.m_20205_()) * 0.1);
-                     entity.getPersistentData().m_128379_("noParticle", true);
-                     BlockDestroyAllDirectionProcedure.execute(world, x, y, z, entity);
-                  }
-               }
-
-               if (entity.getPersistentData().m_128459_("cnt2") > 8.0) {
-                  if (world instanceof Level) {
-                     Level _level = (Level)world;
-                     if (!_level.m_5776_()) {
-                        _level.m_254849_((Entity)null, x, y, z, 0.0F, ExplosionInteraction.NONE);
-                     }
-                  }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_(ParticleTypes.f_123796_, x, y, z, (int)(4.0 * entity_size * entity_size), 0.25 * entity_size, 0.1 * entity_size, 0.25 * entity_size, 0.1 * entity_size);
-                  }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_(ParticleTypes.f_123813_, x, y, z, (int)(4.0 * entity_size * entity_size), 0.25 * entity_size, 0.1 * entity_size, 0.25 * entity_size, 0.1 * entity_size);
-                  }
-
-                  if (world instanceof ServerLevel) {
-                     ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), x, y, z, (int)(4.0 * entity_size * entity_size), 0.25 * entity_size, 0.1 * entity_size, 0.25 * entity_size, 0.1 * entity_size);
-                  }
-
-                  entity.getPersistentData().m_128347_("Damage", 10.0 * entity_size);
-                  entity.getPersistentData().m_128347_("Range", 3.0 * entity_size);
-                  entity.getPersistentData().m_128347_("knockback", 0.2);
-                  if (entity instanceof RockFragmentEntity) {
-                     RockFragmentEntity _datEntL40 = (RockFragmentEntity)entity;
-                     if ((Boolean)_datEntL40.m_20088_().m_135370_(RockFragmentEntity.DATA_Magma)) {
-                        entity.getPersistentData().m_128347_("effect", 10.0);
-                     }
-                  }
-
-                  RangeAttackProcedure.execute(world, x, y, z, entity);
-                  entity.getPersistentData().m_128347_("BlockRange", 3.0 * entity_size);
-                  entity.getPersistentData().m_128347_("BlockDamage", 2.0 * entity_size);
-                  entity.getPersistentData().m_128379_("noParticle", true);
-                  BlockDestroyAllDirectionProcedure.execute(world, x, y, z, entity);
-                  entity.getPersistentData().m_128347_("yaw_fix", (Math.random() - 0.5) * 2.0);
-                  entity.getPersistentData().m_128347_("pitch_fix", (Math.random() - 0.5) * 2.0);
-               } else {
-                  entity.getPersistentData().m_128347_("Damage", 0.0);
-               }
-
-               entity.getPersistentData().m_128347_("cnt2", 0.0);
-            } else {
-               entity.getPersistentData().m_128347_("cnt2", entity.getPersistentData().m_128459_("cnt2") + 1.0);
-               speed = Math.sqrt(entity.m_20184_().m_7096_() * entity.m_20184_().m_7096_() + entity.m_20184_().m_7094_() * entity.m_20184_().m_7094_() + entity.m_20184_().m_7098_() * entity.m_20184_().m_7098_());
-               if (!(entity.getPersistentData().m_128459_("cnt2") > 8.0) && !(speed > 1.0)) {
-                  entity.getPersistentData().m_128347_("Damage", 0.0);
-               } else {
-                  entity.getPersistentData().m_128347_("Damage", 10.0 * entity_size);
-                  entity.getPersistentData().m_128347_("Range", 3.0 * entity_size);
-                  entity.getPersistentData().m_128347_("knockback", 0.5);
-                  if (entity instanceof RockFragmentEntity) {
-                     RockFragmentEntity _datEntL61 = (RockFragmentEntity)entity;
-                     if ((Boolean)_datEntL61.m_20088_().m_135370_(RockFragmentEntity.DATA_Magma)) {
-                        entity.getPersistentData().m_128347_("effect", 10.0);
-                     }
-                  }
-
-                  RangeAttackProcedure.execute(world, entity.m_20185_(), entity.m_20186_() + (double)entity.m_20206_() * 0.5, entity.m_20189_(), entity);
-                  if (speed > 1.0) {
-                     x_power = entity.m_20184_().m_7096_() / speed;
-                     y_power = entity.m_20184_().m_7098_() / speed;
-                     z_power = entity.m_20184_().m_7094_() / speed;
-                     x_pos = entity.m_20185_();
-                     y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.5;
-                     z_pos = entity.m_20189_();
-
-                     for(int index0 = 0; index0 < (int)speed; ++index0) {
-                        entity.getPersistentData().m_128347_("Damage", Math.min(10.0 * entity_size * (1.0 + speed * 0.2), 15.0));
-                        entity.getPersistentData().m_128347_("Range", 3.0);
-                        entity.getPersistentData().m_128347_("knockback", Math.min(0.6 + speed * 0.2, 1.5));
-                        RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
-                        x_pos += x_power;
-                        y_pos += y_power;
-                        z_pos += z_power;
-                     }
-                  }
-
-                  speed = Math.sqrt(entity.m_20184_().m_7096_() * entity.m_20184_().m_7096_() + entity.m_20184_().m_7094_() * entity.m_20184_().m_7094_());
-                  if (entity instanceof RockFragmentEntity) {
-                     if (!(speed > 0.5) && !(entity.getPersistentData().m_128459_("cnt3") > 0.0)) {
-                        BulletDomainHit2Procedure.execute(world, entity);
-                     } else if (!entity.getPersistentData().m_128471_("Stop")) {
-                        for(int index1 = 0; index1 < 25; ++index1) {
-                           entity.m_146922_((float)((double)entity.m_146908_() + entity.getPersistentData().m_128459_("yaw_fix")));
-                           entity.m_146926_((float)((double)entity.m_146909_() + entity.getPersistentData().m_128459_("pitch_fix")));
-                           entity.m_5618_(entity.m_146908_());
-                           entity.m_5616_(entity.m_146908_());
-                           entity.f_19859_ = entity.m_146908_();
-                           entity.f_19860_ = entity.m_146909_();
-                           if (entity instanceof LivingEntity) {
-                              LivingEntity _entity = (LivingEntity)entity;
-                              _entity.f_20884_ = _entity.m_146908_();
-                              _entity.f_20886_ = _entity.m_146908_();
-                           }
-                        }
-                     } else {
-                        entity.getPersistentData().m_128379_("Stop", false);
-                     }
-                  }
-               }
-            }
+         int var10000;
+         if (entity instanceof EntityCrystalEntity) {
+            EntityCrystalEntity _datEntI = (EntityCrystalEntity)entity;
+            var10000 = (Integer)_datEntI.getEntityData().get(EntityCrystalEntity.DATA_mode);
+         } else {
+            var10000 = 0;
          }
 
-         if (!entity.m_6084_() || entity.getPersistentData().m_128459_("cnt1") > 200.0 || entity.getPersistentData().m_128459_("skill") == 0.0) {
-            x_pos = entity.m_20185_();
-            y_pos = entity.m_20186_() + (double)entity.m_20206_() * 0.5;
-            z_pos = entity.m_20189_();
-            if (!entity.m_6084_()) {
-               label133: {
-                  if (entity instanceof RockFragmentEntity) {
-                     RockFragmentEntity _datEntL99 = (RockFragmentEntity)entity;
-                     if ((Boolean)_datEntL99.m_20088_().m_135370_(RockFragmentEntity.DATA_Magma)) {
-                        if (world instanceof ServerLevel) {
-                           ServerLevel _level = (ServerLevel)world;
-                           _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_MAGMA.get(), x_pos, y_pos, z_pos, (int)(5.0 * entity_size * entity_size), 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size);
+         if (var10000 == 1) {
+            AICrystalExplodeProcedure.execute(world, entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ(), entity);
+         } else {
+            entity_size = ReturnEntitySizeProcedure.execute(entity);
+            CNT6 = 1.0 + entity.getPersistentData().getDouble("cnt6") * 0.1;
+            if (entity instanceof EntityCrystalEntity) {
+               entity.getPersistentData().putDouble("cnt_life", entity.getPersistentData().getDouble("cnt_life") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_life") < 6.0) {
+                  entity.fallDistance = 0.0F;
+                  entity.push(0.0, 0.0, 0.0);
+                  entity.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
+               }
+
+               if (entity.getPersistentData().getDouble("cnt_life") == 6.0) {
+                  entity.push(entity.getPersistentData().getDouble("x_power"), entity.getPersistentData().getDouble("y_power"), entity.getPersistentData().getDouble("z_power"));
+                  entity.setDeltaMovement(new Vec3(entity.getPersistentData().getDouble("x_power"), entity.getPersistentData().getDouble("y_power"), entity.getPersistentData().getDouble("z_power")));
+               }
+
+               if (entity.getPersistentData().getDouble("cnt_life") > 30.0 && !entity.level().isClientSide()) {
+                  entity.discard();
+               }
+            } else {
+               entity.getPersistentData().putDouble("cnt_life", Math.max(entity.getPersistentData().getDouble("cnt_life"), 20.0));
+            }
+
+            if (entity.getPersistentData().getDouble("cnt_life") >= 6.0 && entity.getPersistentData().getDouble("skill") != 1706.0) {
+               if (entity instanceof Gravestone3Entity && !entity.onGround()) {
+                  entity.setDeltaMovement(new Vec3(entity.getDeltaMovement().x(), Math.min(entity.getDeltaMovement().y(), -0.25), entity.getDeltaMovement().z()));
+               }
+
+               entity.getPersistentData().putDouble("cnt1", entity.getPersistentData().getDouble("cnt1") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt1") == 1.0) {
+                  entity.getPersistentData().putDouble("yaw_fix", (Math.random() - 0.5) * 2.0);
+                  entity.getPersistentData().putDouble("pitch_fix", (Math.random() - 0.5) * 2.0);
+                  entity.getPersistentData().putDouble("cnt3", 5.0);
+                  if (entity.getPersistentData().getDouble("skill") >= 400.0 && entity.getPersistentData().getDouble("skill") < 500.0) {
+                     if (entity instanceof RockFragmentEntity) {
+                        RockFragmentEntity _datEntSetL = (RockFragmentEntity)entity;
+                        _datEntSetL.getEntityData().set(RockFragmentEntity.DATA_Magma, true);
+                     }
+
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _entity = (LivingEntity)entity;
+                        if (!_entity.level().isClientSide()) {
+                           _entity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2147483647, 0, false, false));
                         }
-                        break label133;
+                     }
+
+                     entity.setSecondsOnFire(30);
+                  }
+               }
+
+               if (entity.onGround()) {
+                  entity.getPersistentData().putDouble("cnt3", entity.getPersistentData().getDouble("cnt3") > 0.0 ? entity.getPersistentData().getDouble("cnt3") - 1.0 : 0.0);
+                  if (entity instanceof Gravestone3Entity) {
+                     entity.getPersistentData().putDouble("cnt_rock", entity.getPersistentData().getDouble("cnt_rock") + 1.0);
+                     if (entity.getPersistentData().getDouble("cnt_rock") > 4.0) {
+                        entity.getPersistentData().putDouble("cnt_rock", 0.0);
+                        entity.getPersistentData().putDouble("BlockRange", 3.0 * entity_size);
+                        entity.getPersistentData().putDouble("BlockDamage", (double)(entity.getBbHeight() * entity.getBbWidth()) * 0.1 * CNT6);
+                        entity.getPersistentData().putBoolean("noParticle", true);
+                        BlockDestroyAllDirectionProcedure.execute(world, x, y, z, entity);
+                     }
+                  }
+
+                  if (entity.getPersistentData().getDouble("cnt2") > 8.0) {
+                     if (world instanceof Level) {
+                        Level _level = (Level)world;
+                        if (!_level.isClientSide()) {
+                           _level.explode((Entity)null, x, y, z, 0.0F, ExplosionInteraction.NONE);
+                        }
+                     }
+
+                     if (world instanceof ServerLevel) {
+                        ServerLevel _level = (ServerLevel)world;
+                        _level.sendParticles(ParticleTypes.CLOUD, x, y, z, (int)(4.0 * entity_size * entity_size), 0.25 * entity_size, 0.1 * entity_size, 0.25 * entity_size, 0.1 * entity_size);
+                     }
+
+                     if (world instanceof ServerLevel) {
+                        ServerLevel _level = (ServerLevel)world;
+                        _level.sendParticles(ParticleTypes.EXPLOSION, x, y, z, (int)(4.0 * entity_size * entity_size), 0.25 * entity_size, 0.1 * entity_size, 0.25 * entity_size, 0.1 * entity_size);
+                     }
+
+                     if (world instanceof ServerLevel) {
+                        ServerLevel _level = (ServerLevel)world;
+                        _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), x, y, z, (int)(4.0 * entity_size * entity_size), 0.25 * entity_size, 0.1 * entity_size, 0.25 * entity_size, 0.1 * entity_size);
+                     }
+
+                     entity.getPersistentData().putDouble("Damage", 10.0 * entity_size * CNT6);
+                     entity.getPersistentData().putDouble("Range", 3.0 * entity_size);
+                     entity.getPersistentData().putDouble("knockback", 0.2);
+                     if (entity instanceof RockFragmentEntity) {
+                        RockFragmentEntity _datEntL67 = (RockFragmentEntity)entity;
+                        if ((Boolean)_datEntL67.getEntityData().get(RockFragmentEntity.DATA_Magma)) {
+                           entity.getPersistentData().putDouble("effect", 10.0);
+                        }
+                     }
+
+                     RangeAttackProcedure.execute(world, x, y, z, entity);
+                     entity.getPersistentData().putDouble("BlockRange", 3.0 * entity_size);
+                     entity.getPersistentData().putDouble("BlockDamage", 2.0 * entity_size * CNT6);
+                     entity.getPersistentData().putBoolean("noParticle", true);
+                     BlockDestroyAllDirectionProcedure.execute(world, x, y, z, entity);
+                     entity.getPersistentData().putDouble("yaw_fix", (Math.random() - 0.5) * 2.0);
+                     entity.getPersistentData().putDouble("pitch_fix", (Math.random() - 0.5) * 2.0);
+                  } else {
+                     entity.getPersistentData().putDouble("Damage", 0.0);
+                  }
+
+                  entity.getPersistentData().putDouble("cnt2", 0.0);
+               } else {
+                  entity.getPersistentData().putDouble("cnt2", entity.getPersistentData().getDouble("cnt2") + 1.0);
+                  speed = Math.sqrt(entity.getDeltaMovement().x() * entity.getDeltaMovement().x() + entity.getDeltaMovement().z() * entity.getDeltaMovement().z() + entity.getDeltaMovement().y() * entity.getDeltaMovement().y());
+                  if (!(entity.getPersistentData().getDouble("cnt2") > 8.0) && !(speed > 1.0)) {
+                     entity.getPersistentData().putDouble("Damage", 0.0);
+                  } else {
+                     entity.getPersistentData().putDouble("Damage", 10.0 * entity_size * CNT6);
+                     entity.getPersistentData().putDouble("Range", 3.0 * entity_size);
+                     entity.getPersistentData().putDouble("knockback", 0.5);
+                     if (entity instanceof RockFragmentEntity) {
+                        RockFragmentEntity _datEntL88 = (RockFragmentEntity)entity;
+                        if ((Boolean)_datEntL88.getEntityData().get(RockFragmentEntity.DATA_Magma)) {
+                           entity.getPersistentData().putDouble("effect", 10.0);
+                        }
+                     }
+
+                     RangeAttackProcedure.execute(world, entity.getX(), entity.getY() + (double)entity.getBbHeight() * 0.5, entity.getZ(), entity);
+                     if (speed > 1.0) {
+                        x_power = entity.getDeltaMovement().x() / speed;
+                        y_power = entity.getDeltaMovement().y() / speed;
+                        z_power = entity.getDeltaMovement().z() / speed;
+                        x_pos = entity.getX();
+                        y_pos = entity.getY() + (double)entity.getBbHeight() * 0.5;
+                        z_pos = entity.getZ();
+
+                        for(int index0 = 0; index0 < (int)speed; ++index0) {
+                           entity.getPersistentData().putDouble("Damage", Math.min(10.0 * entity_size * (1.0 + speed * 0.2), 18.0) * CNT6);
+                           entity.getPersistentData().putDouble("Range", 3.0);
+                           entity.getPersistentData().putDouble("knockback", Math.min(0.6 + speed * 0.2, 1.5));
+                           RangeAttackProcedure.execute(world, x_pos, y_pos, z_pos, entity);
+                           x_pos += x_power;
+                           y_pos += y_power;
+                           z_pos += z_power;
+                        }
+                     }
+
+                     speed = Math.sqrt(entity.getDeltaMovement().x() * entity.getDeltaMovement().x() + entity.getDeltaMovement().z() * entity.getDeltaMovement().z());
+                     if (entity instanceof RockFragmentEntity) {
+                        if (!(speed > 0.5) && !(entity.getPersistentData().getDouble("cnt3") > 0.0)) {
+                           BulletDomainHit2Procedure.execute(world, entity);
+                        } else if (!entity.getPersistentData().getBoolean("Stop")) {
+                           for(int index1 = 0; index1 < 25; ++index1) {
+                              entity.setYRot((float)((double)entity.getYRot() + entity.getPersistentData().getDouble("yaw_fix")));
+                              entity.setXRot((float)((double)entity.getXRot() + entity.getPersistentData().getDouble("pitch_fix")));
+                              entity.setYBodyRot(entity.getYRot());
+                              entity.setYHeadRot(entity.getYRot());
+                              entity.yRotO = entity.getYRot();
+                              entity.xRotO = entity.getXRot();
+                              if (entity instanceof LivingEntity) {
+                                 LivingEntity _entity = (LivingEntity)entity;
+                                 _entity.yBodyRotO = _entity.getYRot();
+                                 _entity.yHeadRotO = _entity.getYRot();
+                              }
+                           }
+                        } else {
+                           entity.getPersistentData().putBoolean("Stop", false);
+                        }
+                     }
+                  }
+               }
+            }
+
+            if (!entity.isAlive() || entity.getPersistentData().getDouble("cnt1") > 200.0 || entity.getPersistentData().getDouble("skill") == 0.0) {
+               x_pos = entity.getX();
+               y_pos = entity.getY() + (double)entity.getBbHeight() * 0.5;
+               z_pos = entity.getZ();
+               if (!entity.isAlive()) {
+                  label155: {
+                     if (entity instanceof RockFragmentEntity) {
+                        RockFragmentEntity _datEntL126 = (RockFragmentEntity)entity;
+                        if ((Boolean)_datEntL126.getEntityData().get(RockFragmentEntity.DATA_Magma)) {
+                           if (world instanceof ServerLevel) {
+                              ServerLevel _level = (ServerLevel)world;
+                              _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_MAGMA.get(), x_pos, y_pos, z_pos, (int)(2.0 * entity_size * entity_size), 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size);
+                           }
+                           break label155;
+                        }
+                     }
+
+                     if (world instanceof ServerLevel) {
+                        ServerLevel _level = (ServerLevel)world;
+                        _level.sendParticles(ParticleTypes.CLOUD, x_pos, y_pos, z_pos, (int)(5.0 * entity_size * entity_size), 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size);
                      }
                   }
 
                   if (world instanceof ServerLevel) {
                      ServerLevel _level = (ServerLevel)world;
-                     _level.m_8767_(ParticleTypes.f_123796_, x_pos, y_pos, z_pos, (int)(10.0 * entity_size * entity_size), 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size);
+                     _level.sendParticles((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), x_pos, y_pos, z_pos, (int)(2.0 * entity_size * entity_size), 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size);
                   }
                }
 
-               if (world instanceof ServerLevel) {
-                  ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_((SimpleParticleType)JujutsucraftModParticleTypes.PARTICLE_BIG_SMOKE.get(), x_pos, y_pos, z_pos, (int)(10.0 * entity_size * entity_size), 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size, 0.25 * entity_size);
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "kill @s");
                }
-            }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "kill @s");
-            }
-
-            if (!entity.m_9236_().m_5776_()) {
-               entity.m_146870_();
+               if (!entity.level().isClientSide()) {
+                  entity.discard();
+               }
             }
          }
 

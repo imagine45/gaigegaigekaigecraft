@@ -20,21 +20,21 @@ public class Overlay1Overlay {
       priority = EventPriority.NORMAL
    )
    public static void eventHandler(RenderGuiEvent.Pre event) {
-      int w = event.getWindow().m_85445_();
-      int h = event.getWindow().m_85446_();
+      int w = event.getWindow().getGuiScaledWidth();
+      int h = event.getWindow().getGuiScaledHeight();
       Level world = null;
       double x = 0.0;
       double y = 0.0;
       double z = 0.0;
-      Player entity = Minecraft.m_91087_().f_91074_;
+      Player entity = Minecraft.getInstance().player;
       if (entity != null) {
-         world = entity.m_9236_();
-         x = entity.m_20185_();
-         y = entity.m_20186_();
-         z = entity.m_20189_();
+         world = entity.level();
+         x = entity.getX();
+         y = entity.getY();
+         z = entity.getZ();
       }
 
-      event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OOverlay1Procedure.execute(entity), w / 2 + 108, h / 2 + 86, -1, false);
-      event.getGuiGraphics().m_280056_(Minecraft.m_91087_().f_91062_, OOverlay2Procedure.execute(entity), w / 2 + 108, h / 2 + 95, -1, false);
+      event.getGuiGraphics().drawString(Minecraft.getInstance().font, OOverlay1Procedure.execute(entity), w / 2 + 108, h - 43, -1, false);
+      event.getGuiGraphics().drawString(Minecraft.getInstance().font, OOverlay2Procedure.execute(entity), w / 2 + 108, h - 34, -1, false);
    }
 }

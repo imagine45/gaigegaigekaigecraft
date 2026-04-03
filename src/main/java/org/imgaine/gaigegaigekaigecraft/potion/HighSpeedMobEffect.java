@@ -3,11 +3,13 @@ package org.imgaine.gaigegaigekaigecraft.potion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import org.imgaine.gaigegaigekaigecraft.procedures.HighSpeedOnEffectActiveTickProcedure;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 
@@ -21,7 +23,11 @@ public class HighSpeedMobEffect extends MobEffect {
       return cures;
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
+      HighSpeedOnEffectActiveTickProcedure.execute(entity.level(), entity, (double)amplifier);
+   }
+
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 

@@ -1,9 +1,10 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nullable;
+
+import net.minecraftforge.common.util.NonNullConsumer;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -38,6 +39,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 @EventBusSubscriber
 public class Test1Procedure {
@@ -46,8 +48,8 @@ public class Test1Procedure {
 
    @SubscribeEvent
    public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
-      if (event.getHand() == event.getEntity().m_7655_()) {
-         execute(event, event.getLevel(), (double)event.getPos().m_123341_(), (double)event.getPos().m_123342_(), (double)event.getPos().m_123343_(), event.getTarget(), event.getEntity());
+      if (event.getHand() == event.getEntity().getUsedItemHand()) {
+         execute(event, event.getLevel(), (double)event.getPos().getX(), (double)event.getPos().getY(), (double)event.getPos().getZ(), event.getTarget(), event.getEntity());
       }
    }
 
@@ -57,7 +59,7 @@ public class Test1Procedure {
 
    private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity, Entity sourceentity) {
       if (entity != null && sourceentity != null) {
-         ItemStack ITEM1 = ItemStack.f_41583_;
+         ItemStack ITEM1 = ItemStack.EMPTY;
          boolean SUCCESS = false;
          boolean Friend = false;
          boolean logic_a = false;
@@ -69,48 +71,48 @@ public class Test1Procedure {
          double NUM1 = 0.0;
          double NUM2 = 0.0;
          double NUM3 = 0.0;
-         if (sourceentity instanceof Player && entity.m_9236_().m_46472_() != ResourceKey.m_135785_(Registries.f_256858_, new ResourceLocation("jujutsucraft:cursed_spirit_manipulation_dimension"))) {
+         if (sourceentity instanceof Player && entity.level().dimension() != ResourceKey.create(Registries.DIMENSION, new ResourceLocation("gaigegaigekaigecraft:cursed_spirit_manipulation_dimension"))) {
             if (((JujutsucraftModVariables.PlayerVariables)sourceentity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique == 18.0 || ((JujutsucraftModVariables.PlayerVariables)sourceentity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new JujutsucraftModVariables.PlayerVariables())).PlayerCurseTechnique2 == 18.0) {
                label318: {
                   if (sourceentity instanceof LivingEntity) {
                      LivingEntity _livEnt4 = (LivingEntity)sourceentity;
-                     if (_livEnt4.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                     if (_livEnt4.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
                         break label318;
                      }
                   }
 
-                  if (!(entity instanceof Player) && entity.m_6084_() && entity.getPersistentData().m_128471_("CursedSpirit") && entity.getPersistentData().m_128459_("select") == 0.0) {
+                  if (!(entity instanceof Player) && entity.isAlive() && entity.getPersistentData().getBoolean("CursedSpirit") && entity.getPersistentData().getDouble("select") == 0.0) {
                      if (sourceentity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)sourceentity;
-                        _entity.m_21011_(InteractionHand.MAIN_HAND, true);
+                        _entity.swing(InteractionHand.MAIN_HAND, true);
                      }
 
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
+                        _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get());
                      }
 
                      int var10000;
                      label268: {
-                        Friend = sourceentity.m_20149_().equals(entity.getPersistentData().m_128461_("OWNER_UUID")) && sourceentity.getPersistentData().m_128459_("friend_num") != 0.0 && sourceentity.getPersistentData().m_128459_("friend_num") == entity.getPersistentData().m_128459_("friend_num_worker");
+                        Friend = sourceentity.getStringUUID().equals(entity.getPersistentData().getString("OWNER_UUID")) && sourceentity.getPersistentData().getDouble("friend_num") != 0.0 && sourceentity.getPersistentData().getDouble("friend_num") == entity.getPersistentData().getDouble("friend_num_worker");
                         logic_a = false;
                         if (sourceentity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)sourceentity;
-                           if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                              var10000 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var10000 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                               break label268;
                            }
                         }
 
                         var10000 = 0;
                      }
-
+                     double var64;
                      label263: {
                         NUM1 = (double)(var10000 + 1);
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                              var64 = (double)_livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                           if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                              var64 = (double)_livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                               break label263;
                            }
                         }
@@ -130,7 +132,7 @@ public class Test1Procedure {
                         double var10001;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           var10001 = (double)_livEnt.m_21223_();
+                           var10001 = (double)_livEnt.getHealth();
                         } else {
                            var10001 = -1.0;
                         }
@@ -139,7 +141,7 @@ public class Test1Procedure {
                         double var10002;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _livEnt = (LivingEntity)entity;
-                           var10002 = (double)_livEnt.m_21233_();
+                           var10002 = (double)_livEnt.getMaxHealth();
                         } else {
                            var10002 = -1.0;
                         }
@@ -150,19 +152,19 @@ public class Test1Procedure {
                         }
                      }
 
-                     if (entity.getPersistentData().m_128459_("friend_num_worker") != 0.0) {
+                     if (entity.getPersistentData().getDouble("friend_num_worker") != 0.0) {
                         logic_a = false;
                      }
 
-                     if (Friend && !sourceentity.m_6144_() && entity.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:rideable_entity")))) {
-                        sourceentity.m_20329_(entity);
+                     if (Friend && !sourceentity.isShiftKeyDown() && entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:rideable_entity")))) {
+                        sourceentity.startRiding(entity);
                      } else {
                         label323: {
                            if (!logic_a) {
                               label254: {
                                  if (sourceentity instanceof Player) {
                                     Player _plr = (Player)sourceentity;
-                                    if (_plr.m_150110_().f_35937_) {
+                                    if (_plr.getAbilities().instabuild) {
                                        break label254;
                                     }
                                  }
@@ -173,61 +175,66 @@ public class Test1Procedure {
                               }
                            }
 
-                           if (sourceentity.getPersistentData().m_128459_("friend_num") != entity.getPersistentData().m_128459_("friend_num_worker") || sourceentity.getPersistentData().m_128459_("friend_num") != entity.getPersistentData().m_128459_("friend_num")) {
-                              entity.getPersistentData().m_128347_("friend_num", 0.0);
-                              entity.getPersistentData().m_128347_("friend_num_worker", 0.0);
+                           if (sourceentity.getPersistentData().getDouble("friend_num") != entity.getPersistentData().getDouble("friend_num_worker") || sourceentity.getPersistentData().getDouble("friend_num") != entity.getPersistentData().getDouble("friend_num")) {
+                              entity.getPersistentData().putDouble("friend_num", 0.0);
+                              entity.getPersistentData().putDouble("friend_num_worker", 0.0);
                            }
 
                            x_pos = 0.0;
                            z_pos = 0.0;
-                           if (!sourceentity.m_9236_().m_5776_() && sourceentity.m_20194_() != null) {
-                              Commands var66 = sourceentity.m_20194_().m_129892_();
-                              CommandSourceStack var69 = new CommandSourceStack(CommandSource.f_80164_, sourceentity.m_20182_(), sourceentity.m_20155_(), sourceentity.m_9236_() instanceof ServerLevel ? (ServerLevel)sourceentity.m_9236_() : null, 4, sourceentity.m_7755_().getString(), sourceentity.m_5446_(), sourceentity.m_9236_().m_7654_(), sourceentity);
+                           if (!sourceentity.level().isClientSide() && sourceentity.getServer() != null) {
+                              Commands var66 = sourceentity.getServer().getCommands();
+                              CommandSourceStack var69 = new CommandSourceStack(CommandSource.NULL, sourceentity.position(), sourceentity.getRotationVector(), sourceentity.level() instanceof ServerLevel ? (ServerLevel)sourceentity.level() : null, 4, sourceentity.getName().getString(), sourceentity.getDisplayName(), sourceentity.level().getServer(), sourceentity);
                               long var71 = Math.round(x_pos);
-                              var66.m_230957_(var69, "execute in jujutsucraft:cursed_spirit_manipulation_dimension run forceload add " + var71 + " " + Math.round(z_pos) + " " + Math.round(x_pos) + " " + Math.round(z_pos));
+                              var66.performPrefixedCommand(var69, "execute in gaigegaigekaigecraft:cursed_spirit_manipulation_dimension run forceload add " + var71 + " " + Math.round(z_pos) + " " + Math.round(x_pos) + " " + Math.round(z_pos));
                            }
 
-                           Name = entity.m_5446_().getString().equals("") ? "No Name" : entity.m_5446_().getString();
+                           Name = entity.getDisplayName().getString().equals("") ? "No Name" : entity.getDisplayName().getString();
                            y_pos = 64.0 + Math.random() * 64.0;
                            NUM1 = 0.0;
 
                            for(int index0 = 0; index0 < 10000; ++index0) {
                               ++NUM1;
                               STR1 = "data_cursed_spirit_manipulation" + Math.round(NUM1);
-                              if (sourceentity.getPersistentData().m_128459_(STR1) == 0.0) {
+                              if (sourceentity.getPersistentData().getDouble(STR1) == 0.0) {
                                  break;
                               }
 
-                              if (sourceentity.getPersistentData().m_128461_(STR1 + "_name").equals(Name)) {
-                                 y_pos = sourceentity.getPersistentData().m_128459_(STR1);
+                              if (sourceentity.getPersistentData().getString(STR1 + "_name").equals(Name)) {
+                                 y_pos = sourceentity.getPersistentData().getDouble(STR1);
                                  break;
                               }
                            }
 
                            if (!Friend) {
-                              ITEM1 = (new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_BALL.get())).m_41777_();
-                              ITEM1.m_41784_().m_128359_("name_data", Name);
-                              ITEM1.m_41784_().m_128359_("owner_name_data", sourceentity.m_5446_().getString());
-                              ITEM1.m_41714_(Component.m_237113_(ITEM1.m_41784_().m_128461_("name_data")));
+                              ITEM1 = (new ItemStack((ItemLike)JujutsucraftModItems.CURSED_SPIRIT_BALL.get())).copy();
+                              ITEM1.getOrCreateTag().putString("name_data", Name);
+                              ITEM1.getOrCreateTag().putString("owner_name_data", sourceentity.getDisplayName().getString());
+                              ITEM1.setHoverName(Component.literal(ITEM1.getOrCreateTag().getString("name_data")));
                               AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                               LazyOptional var67 = sourceentity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                               Objects.requireNonNull(_iitemhandlerref);
-                              var67.ifPresent(_iitemhandlerref::set);
+                              var67.ifPresent(new NonNullConsumer<IItemHandler>() {
+                     @Override
+                     public void accept(@NotNull IItemHandler o) {
+                        _iitemhandlerref.set(o);
+                     }
+                  });
                               if (_iitemhandlerref.get() != null) {
                                  for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                                    ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                                    if (ITEM1.m_41611_().getString().equals(itemstackiterator.m_41611_().getString()) && ITEM1.m_41784_().m_128461_("name_data").equals(itemstackiterator.m_41784_().m_128461_("name_data")) && ITEM1.m_41784_().m_128461_("owner_name_data").equals(itemstackiterator.m_41784_().m_128461_("owner_name_data"))) {
-                                       y_pos = itemstackiterator.m_41784_().m_128459_("y_data");
+                                    ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                                    if (ITEM1.getDisplayName().getString().equals(itemstackiterator.getDisplayName().getString()) && ITEM1.getOrCreateTag().getString("name_data").equals(itemstackiterator.getOrCreateTag().getString("name_data")) && ITEM1.getOrCreateTag().getString("owner_name_data").equals(itemstackiterator.getOrCreateTag().getString("owner_name_data"))) {
+                                       y_pos = itemstackiterator.getOrCreateTag().getDouble("y_data");
                                        break;
                                     }
                                  }
                               }
 
-                              ITEM1.m_41784_().m_128347_("y_data", y_pos);
+                              ITEM1.getOrCreateTag().putDouble("y_data", y_pos);
                               if (sourceentity instanceof Player) {
                                  Player _player = (Player)sourceentity;
-                                 ItemStack _setstack = ITEM1.m_41777_();
-                                 _setstack.m_41764_(1);
+                                 ItemStack _setstack = ITEM1.copy();
+                                 _setstack.setCount(1);
                                  ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
                               }
 
@@ -236,36 +243,36 @@ public class Test1Procedure {
                                  float var70;
                                  if (entity instanceof LivingEntity) {
                                     LivingEntity _livEnt = (LivingEntity)entity;
-                                    var70 = _livEnt.m_21233_();
+                                    var70 = _livEnt.getMaxHealth();
                                  } else {
                                     var70 = -1.0F;
                                  }
 
-                                 _entity.m_21153_(var70);
+                                 _entity.setHealth(var70);
                               }
                            }
 
-                           entity.getPersistentData().m_128359_("owner_name_data", sourceentity.m_5446_().getString());
-                           if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                              entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "data merge entity @s {Invulnerable:1b,PersistenceRequired:1b,NoAI:1b}");
+                           entity.getPersistentData().putString("owner_name_data", sourceentity.getDisplayName().getString());
+                           if (!entity.level().isClientSide() && entity.getServer() != null) {
+                              entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "data merge entity @s {Invulnerable:1b,PersistenceRequired:1b,NoAI:1b}");
                            }
 
-                           if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-                              entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "execute in jujutsucraft:cursed_spirit_manipulation_dimension run tp @s " + x_pos + " " + y_pos + " " + z_pos);
+                           if (!entity.level().isClientSide() && entity.getServer() != null) {
+                              entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "execute in gaigegaigekaigecraft:cursed_spirit_manipulation_dimension run tp @s " + x_pos + " " + y_pos + " " + z_pos);
                            }
 
                            if (!Friend) {
-                              EntityDieProcedure.execute(world, x, y, z, new DamageSource(world.m_9598_().m_175515_(Registries.f_268580_).m_246971_(DamageTypes.f_286979_)), entity);
+                              EntityDieProcedure.execute(world, x, y, z, new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.GENERIC_KILL)), entity);
                            } else {
                               logic_a = false;
                               if (world instanceof ServerLevel) {
                                  ServerLevel _origLevel = (ServerLevel)world;
-                                 LevelAccessor var37 = _origLevel.m_7654_().m_129880_(ResourceKey.m_135785_(Registries.f_256858_, new ResourceLocation("jujutsucraft:cursed_spirit_manipulation_dimension")));
+                                 LevelAccessor var37 = _origLevel.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, new ResourceLocation("gaigegaigekaigecraft:cursed_spirit_manipulation_dimension")));
                                  if (var37 != null) {
                                     Vec3 _center = new Vec3(x_pos, y_pos, z_pos);
 
-                                    for(Entity entityiterator : var37.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                                       if (sourceentity != entityiterator && entity.m_5446_().getString().equals(entityiterator.m_5446_().getString()) && entityiterator.m_6084_() && sourceentity.getPersistentData().m_128459_("friend_num") == entityiterator.getPersistentData().m_128459_("friend_num_worker")) {
+                                    for(Entity entityiterator : var37.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(0.5), (e) -> true)) {
+                                       if (sourceentity != entityiterator && entity.getDisplayName().getString().equals(entityiterator.getDisplayName().getString()) && entityiterator.isAlive() && sourceentity.getPersistentData().getDouble("friend_num") == entityiterator.getPersistentData().getDouble("friend_num_worker")) {
                                           if (!logic_a) {
                                              logic_a = true;
                                              NUM1 = 0.0;
@@ -273,23 +280,23 @@ public class Test1Procedure {
                                              for(int index1 = 0; index1 < 10000; ++index1) {
                                                 ++NUM1;
                                                 STR1 = "data_cursed_spirit_manipulation" + Math.round(NUM1);
-                                                if (sourceentity.getPersistentData().m_128459_(STR1) == 0.0 || sourceentity.getPersistentData().m_128461_(STR1 + "_name").equals(entityiterator.m_5446_().getString())) {
-                                                   sourceentity.getPersistentData().m_128347_(STR1, y_pos);
-                                                   sourceentity.getPersistentData().m_128359_(STR1 + "_name", entityiterator.m_5446_().getString());
+                                                if (sourceentity.getPersistentData().getDouble(STR1) == 0.0 || sourceentity.getPersistentData().getString(STR1 + "_name").equals(entityiterator.getDisplayName().getString())) {
+                                                   sourceentity.getPersistentData().putDouble(STR1, y_pos);
+                                                   sourceentity.getPersistentData().putString(STR1 + "_name", entityiterator.getDisplayName().getString());
                                                    break;
                                                 }
                                              }
 
-                                             sourceentity.getPersistentData().m_128347_(STR1 + "_num", 0.0);
+                                             sourceentity.getPersistentData().putDouble(STR1 + "_num", 0.0);
                                           }
 
-                                          sourceentity.getPersistentData().m_128347_(STR1 + "_num", sourceentity.getPersistentData().m_128459_(STR1 + "_num") + 1.0);
+                                          sourceentity.getPersistentData().putDouble(STR1 + "_num", sourceentity.getPersistentData().getDouble(STR1 + "_num") + 1.0);
                                        }
                                     }
                                  }
                               }
 
-                              sourceentity.getPersistentData().m_128379_("UpdateSkills", true);
+                              sourceentity.getPersistentData().putBoolean("UpdateSkills", true);
                            }
                         }
                      }

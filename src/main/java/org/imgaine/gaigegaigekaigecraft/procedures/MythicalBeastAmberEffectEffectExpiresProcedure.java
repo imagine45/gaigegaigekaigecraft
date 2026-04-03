@@ -1,6 +1,6 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import org.imgaine.gaigegaigekaigecraft.JujutsucraftMod;
+import org.imgaine.gaigegaigekaigecraft.Gaigegaigekaigecraft;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,15 +25,15 @@ public class MythicalBeastAmberEffectEffectExpiresProcedure {
          num_level = amplifier + 1.0;
          if (num_level > 0.0 && entity instanceof LivingEntity) {
             LivingEntity _livingEntity1 = (LivingEntity)entity;
-            if (_livingEntity1.m_21204_().m_22171_(Attributes.f_22281_)) {
+            if (_livingEntity1.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
                AttributeInstance var10000;
                double var10001;
                label19: {
-                  var10000 = _livingEntity1.getAttribute_(Attributes.f_22281_);
+                  var10000 = _livingEntity1.getAttribute(Attributes.ATTACK_DAMAGE);
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livingEntity0 = (LivingEntity)entity;
-                     if (_livingEntity0.m_21204_().m_22171_(Attributes.f_22281_)) {
-                        var10001 = _livingEntity0.getAttribute_(Attributes.f_22281_).m_22115_();
+                     if (_livingEntity0.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+                        var10001 = _livingEntity0.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                         break label19;
                      }
                   }
@@ -41,30 +41,30 @@ public class MythicalBeastAmberEffectEffectExpiresProcedure {
                   var10001 = 0.0;
                }
 
-               var10000.m_22100_(var10001 - num_level * 1.2);
+               var10000.setBaseValue(var10001 - num_level * 1.0);
             }
          }
 
-         JujutsucraftMod.queueServerWork(1, () -> {
+         Gaigegaigekaigecraft.queueServerWork(1, () -> {
             if (entity instanceof LivingEntity _livEnt2) {
-               if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get())) {
+               if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.MYTHICAL_BEAST_AMBER_EFFECT.get())) {
                   return;
                }
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:mythical_beast_amber_head");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:mythical_beast_amber_head");
             }
 
-            if (!entity.m_9236_().m_5776_() && entity.m_20194_() != null) {
-               entity.m_20194_().m_129892_().m_230957_(new CommandSourceStack(CommandSource.f_80164_, entity.m_20182_(), entity.m_20155_(), entity.m_9236_() instanceof ServerLevel ? (ServerLevel)entity.m_9236_() : null, 4, entity.m_7755_().getString(), entity.m_5446_(), entity.m_9236_().m_7654_(), entity), "clear @s jujutsucraft:mythical_beast_amber_helmet");
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+               entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "clear @s gaigegaigekaigecraft:mythical_beast_amber_helmet");
             }
 
             if (entity instanceof LivingEntity _entity) {
-               _entity.m_21153_(0.0F);
+               _entity.setHealth(0.0F);
             }
 
-            entity.m_6469_(new DamageSource(world.m_9598_().m_175515_(Registries.f_268580_).m_246971_(DamageTypes.f_268433_)), 1.0F);
+            entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.GENERIC)), 1.0F);
          });
       }
    }

@@ -15,18 +15,18 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CursedSpiritGrade13Renderer extends MobRenderer<CursedSpiritGrade13Entity, Modelcursedspirit1_3<CursedSpiritGrade13Entity>> {
    public CursedSpiritGrade13Renderer(EntityRendererProvider.Context context) {
-      super(context, new Modelcursedspirit1_3(context.m_174023_(Modelcursedspirit1_3.LAYER_LOCATION)), 0.0F);
-      this.m_115326_(new RenderLayer<CursedSpiritGrade13Entity, Modelcursedspirit1_3<CursedSpiritGrade13Entity>>(this) {
-         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("jujutsucraft:textures/entities/cursedspirit1_3__glow.png");
+      super(context, new Modelcursedspirit1_3(context.bakeLayer(Modelcursedspirit1_3.LAYER_LOCATION)), 0.0F);
+      this.addLayer(new RenderLayer<CursedSpiritGrade13Entity, Modelcursedspirit1_3<CursedSpiritGrade13Entity>>(this) {
+         final ResourceLocation LAYER_TEXTURE = new ResourceLocation("gaigegaigekaigecraft:textures/entities/cursedspirit1_3__glow.png");
 
          public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, CursedSpiritGrade13Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            VertexConsumer vertexConsumer = bufferSource.m_6299_(RenderType.m_110488_(this.LAYER_TEXTURE));
-            ((Modelcursedspirit1_3)this.m_117386_()).m_7695_(poseStack, vertexConsumer, light, LivingEntityRenderer.m_115338_(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.eyes(this.LAYER_TEXTURE));
+            ((Modelcursedspirit1_3)this.getParentModel()).renderToBuffer(poseStack, vertexConsumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
          }
       });
    }
 
    public ResourceLocation getTextureLocation(CursedSpiritGrade13Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/cursedspirit1_3.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/cursedspirit1_3.png");
    }
 }

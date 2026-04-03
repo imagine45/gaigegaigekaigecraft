@@ -19,7 +19,7 @@ public class EffectReikiOnEffectActiveTickProcedure {
       if (entity != null) {
          boolean Player = false;
          boolean kashimo = false;
-         ItemStack item_a = ItemStack.f_41583_;
+         ItemStack item_a = ItemStack.EMPTY;
          double amount = 0.0;
          double x_pos = 0.0;
          double tick = 0.0;
@@ -31,18 +31,18 @@ public class EffectReikiOnEffectActiveTickProcedure {
          double pitch = 0.0;
          double y_pos = 0.0;
          double height = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             label54: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt1 = (LivingEntity)entity;
-                  if (_livEnt1.m_21023_((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
+                  if (_livEnt1.hasEffect((MobEffect)JujutsucraftModMobEffects.UNSTABLE.get())) {
                      break label54;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt2 = (LivingEntity)entity;
-                  if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
+                  if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_AMPLIFICATION.get())) {
                      break label54;
                   }
                }
@@ -50,22 +50,22 @@ public class EffectReikiOnEffectActiveTickProcedure {
                label34: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt4 = (LivingEntity)entity;
-                     if (_livEnt4.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+                     if (_livEnt4.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
                         break label34;
                      }
                   }
 
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entity = (LivingEntity)entity;
-                     if (!_entity.m_9236_().m_5776_()) {
-                        _entity.m_7292_(new MobEffectInstance(MobEffects.f_19596_, 2, 2, false, false));
+                     if (!_entity.level().isClientSide()) {
+                        _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2, 2, false, false));
                      }
                   }
                }
 
                if (world instanceof ServerLevel) {
                   ServerLevel _level = (ServerLevel)world;
-                  _level.m_8767_(ParticleTypes.f_123772_, entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), (int)(entity.m_20206_() + entity.m_20205_()), (double)entity.m_20205_() * 0.25, (double)entity.m_20206_() * 0.05, (double)entity.m_20205_() * 0.25, 0.0);
+                  _level.sendParticles(ParticleTypes.BUBBLE_POP, entity.getX(), entity.getY(), entity.getZ(), (int)(entity.getBbHeight() + entity.getBbWidth()), (double)entity.getBbWidth() * 0.25, (double)entity.getBbHeight() * 0.05, (double)entity.getBbWidth() * 0.25, 0.0);
                }
 
                return;
@@ -73,11 +73,11 @@ public class EffectReikiOnEffectActiveTickProcedure {
 
             if (entity instanceof LivingEntity) {
                LivingEntity _entity = (LivingEntity)entity;
-               _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.EFFECT_REIKI.get());
+               _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.EFFECT_REIKI.get());
             }
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.EFFECT_REIKI.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.EFFECT_REIKI.get());
          }
 
       }

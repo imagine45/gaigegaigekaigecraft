@@ -13,10 +13,10 @@ public class KeyReverseCursedTechniqueOnKeyReleasedProcedure {
       if (entity != null) {
          if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.REVERSE_CURSED_TECHNIQUE.get());
          }
 
-         entity.getPersistentData().m_128379_("PRESS_M", false);
+         entity.getPersistentData().putBoolean("PRESS_M", false);
       }
    }
 }

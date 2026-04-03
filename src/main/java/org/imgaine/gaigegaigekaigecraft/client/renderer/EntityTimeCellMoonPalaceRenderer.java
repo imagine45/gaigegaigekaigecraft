@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EntityTimeCellMoonPalaceRenderer extends MobRenderer<EntityTimeCellMoonPalaceEntity, ModelTimeCellMoonPalace<EntityTimeCellMoonPalaceEntity>> {
    public EntityTimeCellMoonPalaceRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelTimeCellMoonPalace(context.m_174023_(ModelTimeCellMoonPalace.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelTimeCellMoonPalace(context.bakeLayer(ModelTimeCellMoonPalace.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(EntityTimeCellMoonPalaceEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/timecellmoonpalace.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/timecellmoonpalace.png");
    }
 }

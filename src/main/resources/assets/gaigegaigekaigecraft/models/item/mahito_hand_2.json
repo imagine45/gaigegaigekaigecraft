@@ -1,0 +1,7 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/mahito_hand2",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/mahito_hand1",
+    "particle": "gaigegaigekaigecraft:item/icon_sword"
+  }
+}

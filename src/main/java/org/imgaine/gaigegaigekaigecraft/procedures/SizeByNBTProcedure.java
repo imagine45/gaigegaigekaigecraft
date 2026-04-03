@@ -16,11 +16,11 @@ public class SizeByNBTProcedure {
          double var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _livingEntity0 = (LivingEntity)entity;
-            if (_livingEntity0.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.SIZE.get())) {
+            if (_livingEntity0.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.SIZE.get())) {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livingEntity1 = (LivingEntity)entity;
-                  if (_livingEntity1.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.SIZE.get())) {
-                     var10000 = _livingEntity1.getAttribute_((Attribute)JujutsucraftModAttributes.SIZE.get()).m_22135_();
+                  if (_livingEntity1.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.SIZE.get())) {
+                     var10000 = _livingEntity1.getAttribute((Attribute)JujutsucraftModAttributes.SIZE.get()).getValue();
                      return var10000;
                   }
                }

@@ -56,186 +56,186 @@ public class CursedSpiritGrade311Entity extends Monster {
 
    public CursedSpiritGrade311Entity(EntityType<CursedSpiritGrade311Entity> type, Level world) {
       super(type, world);
-      this.m_274367_(0.6F);
-      this.f_21364_ = 15;
-      this.m_21557_(false);
-      this.f_21342_ = new FlyingMoveControl(this, 10, true);
+      this.setMaxUpStep(0.6F);
+      this.xpReward = 15;
+      this.setNoAi(false);
+      this.moveControl = new FlyingMoveControl(this, 10, true);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected PathNavigation m_6037_(Level world) {
+   protected PathNavigation createNavigation(Level world) {
       return new FlyingPathNavigation(this, world);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new Goal() {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new Goal() {
          {
-            this.m_7021_(EnumSet.of(Flag.MOVE));
+            this.setFlags(EnumSet.of(Flag.MOVE));
          }
 
-         public boolean m_8036_() {
-            if (CursedSpiritGrade311Entity.this.m_5448_() != null && !CursedSpiritGrade311Entity.this.m_21566_().m_24995_()) {
-               double x = CursedSpiritGrade311Entity.this.m_20185_();
-               double y = CursedSpiritGrade311Entity.this.m_20186_();
-               double z = CursedSpiritGrade311Entity.this.m_20189_();
+         public boolean canUse() {
+            if (CursedSpiritGrade311Entity.this.getTarget() != null && !CursedSpiritGrade311Entity.this.getMoveControl().hasWanted()) {
+               double x = CursedSpiritGrade311Entity.this.getX();
+               double y = CursedSpiritGrade311Entity.this.getY();
+               double z = CursedSpiritGrade311Entity.this.getZ();
                Entity entity = CursedSpiritGrade311Entity.this;
-               Level world = CursedSpiritGrade311Entity.this.m_9236_();
+               Level world = CursedSpiritGrade311Entity.this.level();
                return LogicAttackTargetProcedure.execute(entity);
             } else {
                return false;
             }
          }
 
-         public boolean m_8045_() {
-            return CursedSpiritGrade311Entity.this.m_21566_().m_24995_() && CursedSpiritGrade311Entity.this.m_5448_() != null && CursedSpiritGrade311Entity.this.m_5448_().m_6084_();
+         public boolean canContinueToUse() {
+            return CursedSpiritGrade311Entity.this.getMoveControl().hasWanted() && CursedSpiritGrade311Entity.this.getTarget() != null && CursedSpiritGrade311Entity.this.getTarget().isAlive();
          }
 
-         public void m_8056_() {
-            LivingEntity livingentity = CursedSpiritGrade311Entity.this.m_5448_();
-            Vec3 vec3d = livingentity.m_20299_(1.0F);
-            CursedSpiritGrade311Entity.this.f_21342_.m_6849_(vec3d.f_82479_, vec3d.f_82480_, vec3d.f_82481_, 2.0);
+         public void start() {
+            LivingEntity livingentity = CursedSpiritGrade311Entity.this.getTarget();
+            Vec3 vec3d = livingentity.getEyePosition(1.0F);
+            CursedSpiritGrade311Entity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 2.0);
          }
 
-         public void m_8037_() {
-            LivingEntity livingentity = CursedSpiritGrade311Entity.this.m_5448_();
-            if (CursedSpiritGrade311Entity.this.m_20191_().m_82381_(livingentity.m_20191_())) {
-               CursedSpiritGrade311Entity.this.m_7327_(livingentity);
+         public void tick() {
+            LivingEntity livingentity = CursedSpiritGrade311Entity.this.getTarget();
+            if (CursedSpiritGrade311Entity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
+               CursedSpiritGrade311Entity.this.doHurtTarget(livingentity);
             } else {
-               double d0 = CursedSpiritGrade311Entity.this.m_20280_(livingentity);
+               double d0 = CursedSpiritGrade311Entity.this.distanceToSqr(livingentity);
                if (d0 < 32.0) {
-                  Vec3 vec3d = livingentity.m_20299_(1.0F);
-                  CursedSpiritGrade311Entity.this.f_21342_.m_6849_(vec3d.f_82479_, vec3d.f_82480_, vec3d.f_82481_, 2.0);
+                  Vec3 vec3d = livingentity.getEyePosition(1.0F);
+                  CursedSpiritGrade311Entity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 2.0);
                }
             }
 
          }
       });
-      this.f_21345_.m_25352_(2, new MeleeAttackGoal(this, 2.0, false) {
-         protected double m_6639_(LivingEntity entity) {
-            return (double)(this.f_25540_.m_20205_() * this.f_25540_.m_20205_() + entity.m_20205_());
+      this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0, false) {
+         protected double getAttackReachSqr(LivingEntity entity) {
+            return (double)(this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth());
          }
 
-         public boolean m_8036_() {
-            double x = CursedSpiritGrade311Entity.this.m_20185_();
-            double y = CursedSpiritGrade311Entity.this.m_20186_();
-            double z = CursedSpiritGrade311Entity.this.m_20189_();
+         public boolean canUse() {
+            double x = CursedSpiritGrade311Entity.this.getX();
+            double y = CursedSpiritGrade311Entity.this.getY();
+            double z = CursedSpiritGrade311Entity.this.getZ();
             Entity entity = CursedSpiritGrade311Entity.this;
-            Level world = CursedSpiritGrade311Entity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = CursedSpiritGrade311Entity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(3, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = CursedSpiritGrade311Entity.this.m_20185_();
-            double y = CursedSpiritGrade311Entity.this.m_20186_();
-            double z = CursedSpiritGrade311Entity.this.m_20189_();
+      this.targetSelector.addGoal(3, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = CursedSpiritGrade311Entity.this.getX();
+            double y = CursedSpiritGrade311Entity.this.getY();
+            double z = CursedSpiritGrade311Entity.this.getZ();
             Entity entity = CursedSpiritGrade311Entity.this;
-            Level world = CursedSpiritGrade311Entity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = CursedSpiritGrade311Entity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = CursedSpiritGrade311Entity.this.m_20185_();
-            double y = CursedSpiritGrade311Entity.this.m_20186_();
-            double z = CursedSpiritGrade311Entity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CursedSpiritGrade311Entity.this.getX();
+            double y = CursedSpiritGrade311Entity.this.getY();
+            double z = CursedSpiritGrade311Entity.this.getZ();
             Entity entity = CursedSpiritGrade311Entity.this;
-            Level world = CursedSpiritGrade311Entity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = CursedSpiritGrade311Entity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21346_.m_25352_(5, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = CursedSpiritGrade311Entity.this.m_20185_();
-            double y = CursedSpiritGrade311Entity.this.m_20186_();
-            double z = CursedSpiritGrade311Entity.this.m_20189_();
+      this.targetSelector.addGoal(5, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = CursedSpiritGrade311Entity.this.getX();
+            double y = CursedSpiritGrade311Entity.this.getY();
+            double z = CursedSpiritGrade311Entity.this.getZ();
             Entity entity = CursedSpiritGrade311Entity.this;
-            Level world = CursedSpiritGrade311Entity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = CursedSpiritGrade311Entity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = CursedSpiritGrade311Entity.this.m_20185_();
-            double y = CursedSpiritGrade311Entity.this.m_20186_();
-            double z = CursedSpiritGrade311Entity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = CursedSpiritGrade311Entity.this.getX();
+            double y = CursedSpiritGrade311Entity.this.getY();
+            double z = CursedSpiritGrade311Entity.this.getZ();
             Entity entity = CursedSpiritGrade311Entity.this;
-            Level world = CursedSpiritGrade311Entity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = CursedSpiritGrade311Entity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(6, new FollowMobGoal(this, 1.5, 16.0F, 8.0F));
-      this.f_21345_.m_25352_(7, new RandomStrollGoal(this, 1.0, 20) {
-         protected Vec3 m_7037_() {
-            RandomSource random = CursedSpiritGrade311Entity.this.m_217043_();
-            double dir_x = CursedSpiritGrade311Entity.this.m_20185_() + (double)((random.m_188501_() * 2.0F - 1.0F) * 16.0F);
-            double dir_y = CursedSpiritGrade311Entity.this.m_20186_() + (double)((random.m_188501_() * 2.0F - 1.0F) * 16.0F);
-            double dir_z = CursedSpiritGrade311Entity.this.m_20189_() + (double)((random.m_188501_() * 2.0F - 1.0F) * 16.0F);
+      this.goalSelector.addGoal(6, new FollowMobGoal(this, 1.5, 16.0F, 8.0F));
+      this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0, 20) {
+         protected Vec3 getPosition() {
+            RandomSource random = CursedSpiritGrade311Entity.this.getRandom();
+            double dir_x = CursedSpiritGrade311Entity.this.getX() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double dir_y = CursedSpiritGrade311Entity.this.getY() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double dir_z = CursedSpiritGrade311Entity.this.getZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             return new Vec3(dir_x, dir_y, dir_z);
          }
       });
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_142535_(float l, float d, DamageSource source) {
+   public boolean causeFallDamage(float l, float d, DamageSource source) {
       return false;
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagCursedSpritProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AICursedSpirit3FishProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
+   public void baseTick() {
+      super.baseTick();
+      AICursedSpirit3FishProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
    }
 
-   protected void m_7840_(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+   protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
    }
 
-   public void m_20242_(boolean ignored) {
-      super.m_20242_(true);
+   public void setNoGravity(boolean ignored) {
+      super.setNoGravity(true);
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_20242_(true);
+   public void aiStep() {
+      super.aiStep();
+      this.setNoGravity(true);
    }
 
    public static void init() {
-      SpawnPlacements.m_21754_((EntityType)JujutsucraftModEntities.CURSED_SPIRIT_GRADE_311.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
-         int x = pos.m_123341_();
-         int y = pos.m_123342_();
-         int z = pos.m_123343_();
+      SpawnPlacements.register((EntityType)JujutsucraftModEntities.CURSED_SPIRIT_GRADE_311.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
+         int x = pos.getX();
+         int y = pos.getY();
+         int z = pos.getZ();
          return SpawnLevel1Procedure.execute();
       });
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 40.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 0.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 12.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 0.5);
-      builder = builder.m_22268_(Attributes.f_22280_, 0.3);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 40.0);
+      builder = builder.add(Attributes.ARMOR, 0.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 12.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+      builder = builder.add(Attributes.FLYING_SPEED, 0.3);
       return builder;
    }
 }

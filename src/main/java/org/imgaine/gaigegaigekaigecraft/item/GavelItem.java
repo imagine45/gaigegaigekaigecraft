@@ -35,7 +35,7 @@ public class GavelItem extends Item implements GeoItem {
    String prevAnim = "empty";
 
    public GavelItem() {
-      super((new Item.Properties()).m_41487_(1).m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).stacksTo(1).rarity(Rarity.COMMON));
    }
 
    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
@@ -93,24 +93,24 @@ public class GavelItem extends Item implements GeoItem {
       return this.cache;
    }
 
-   public Multimap<Attribute, AttributeModifier> m_7167_(EquipmentSlot equipmentSlot) {
+   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
       if (equipmentSlot == EquipmentSlot.MAINHAND) {
          ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-         builder.putAll(super.m_7167_(equipmentSlot));
-         builder.put(Attributes.f_22281_, new AttributeModifier(f_41374_, "Item modifier", 3.0, Operation.ADDITION));
-         builder.put(Attributes.f_22283_, new AttributeModifier(f_41375_, "Item modifier", -2.4, Operation.ADDITION));
+         builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
+         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", 3.0, Operation.ADDITION));
+         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", -2.4, Operation.ADDITION));
          return builder.build();
       } else {
-         return super.m_7167_(equipmentSlot);
+         return super.getDefaultAttributeModifiers(equipmentSlot);
       }
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      ItemStack itemstack = (ItemStack)ar.m_19095_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      ItemStack itemstack = (ItemStack)ar.getObject();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       GavelRightclickedProcedure.execute(world, x, y, z, entity);
       return ar;
    }

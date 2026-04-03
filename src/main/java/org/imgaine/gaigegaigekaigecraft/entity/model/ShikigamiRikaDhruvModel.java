@@ -13,15 +13,15 @@ public class ShikigamiRikaDhruvModel extends GeoModel<ShikigamiRikaDhruvEntity> 
    }
 
    public ResourceLocation getAnimationResource(ShikigamiRikaDhruvEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/shikigami_dhruvrakdawala3.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/shikigami_dhruvrakdawala3.animation.json");
    }
 
    public ResourceLocation getModelResource(ShikigamiRikaDhruvEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/shikigami_dhruvrakdawala3.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/shikigami_dhruvrakdawala3.geo.json");
    }
 
    public ResourceLocation getTextureResource(ShikigamiRikaDhruvEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(ShikigamiRikaDhruvEntity animatable, long instanceId, AnimationState animationState) {

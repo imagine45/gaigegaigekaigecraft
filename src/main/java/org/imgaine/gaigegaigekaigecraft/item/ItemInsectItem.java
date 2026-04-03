@@ -17,26 +17,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemInsectItem extends Item {
    public ItemInsectItem() {
-      super((new Item.Properties()).m_41487_(1).m_41486_().m_41497_(Rarity.RARE));
+      super((new Item.Properties()).stacksTo(1).fireResistant().rarity(Rarity.RARE));
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.EAT;
    }
 
    @OnlyIn(Dist.CLIENT)
-   public boolean m_5812_(ItemStack itemstack) {
+   public boolean isFoil(ItemStack itemstack) {
       return true;
    }
 
-   public void m_7373_(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
-      super.m_7373_(itemstack, level, list, flag);
-      list.add(Component.m_237115_("item.jujutsucraft.item_insect.description_0"));
+   public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+      super.appendHoverText(itemstack, level, list, flag);
+      list.add(Component.translatable("item.gaigegaigekaigecraft.item_insect.description_0"));
    }
 
-   public InteractionResultHolder<ItemStack> m_7203_(Level world, Player entity, InteractionHand hand) {
-      InteractionResultHolder<ItemStack> ar = super.m_7203_(world, entity, hand);
-      ItemInsectRightClickedInAirProcedure.execute(world, entity, (ItemStack)ar.m_19095_());
+   public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+      InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+      ItemInsectRightClickedInAirProcedure.execute(world, entity, (ItemStack)ar.getObject());
       return ar;
    }
 }

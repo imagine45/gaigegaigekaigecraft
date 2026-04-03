@@ -9,14 +9,14 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DivineDogBlackRenderer extends MobRenderer<DivineDogBlackEntity, ModelDivineDog<DivineDogBlackEntity>> {
    public DivineDogBlackRenderer(EntityRendererProvider.Context context) {
-      super(context, new ModelDivineDog(context.m_174023_(ModelDivineDog.LAYER_LOCATION)), 0.0F);
+      super(context, new ModelDivineDog(context.bakeLayer(ModelDivineDog.LAYER_LOCATION)), 0.0F);
    }
 
    protected void scale(DivineDogBlackEntity entity, PoseStack poseStack, float f) {
-      poseStack.m_85841_(1.2F, 1.2F, 1.2F);
+      poseStack.scale(1.2F, 1.2F, 1.2F);
    }
 
    public ResourceLocation getTextureLocation(DivineDogBlackEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/divinedogblack.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/divinedogblack.png");
    }
 }

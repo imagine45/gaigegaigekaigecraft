@@ -21,21 +21,21 @@ public class InsectArmorTechniqueMobEffect extends MobEffect {
       return cures;
    }
 
-   public void m_6385_(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-      super.m_6385_(entity, attributeMap, amplifier);
-      InsectArmorAppliedProcedure.execute(entity.m_9236_(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity, (double)amplifier);
+   public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+      super.addAttributeModifiers(entity, attributeMap, amplifier);
+      InsectArmorAppliedProcedure.execute(entity.level(), entity.getX(), entity.getY(), entity.getZ(), entity, (double)amplifier);
    }
 
-   public void m_6742_(LivingEntity entity, int amplifier) {
-      InsectArmorActivetickProcedure.execute(entity.m_9236_(), entity);
+   public void applyEffectTick(LivingEntity entity, int amplifier) {
+      InsectArmorActivetickProcedure.execute(entity.level(), entity);
    }
 
-   public void m_6386_(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-      super.m_6386_(entity, attributeMap, amplifier);
-      InsectArmorExpiresProcedure.execute(entity.m_9236_(), entity.m_20185_(), entity.m_20186_(), entity.m_20189_(), entity, (double)amplifier);
+   public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+      super.removeAttributeModifiers(entity, attributeMap, amplifier);
+      InsectArmorExpiresProcedure.execute(entity.level(), entity.getX(), entity.getY(), entity.getZ(), entity, (double)amplifier);
    }
 
-   public boolean m_6584_(int duration, int amplifier) {
+   public boolean isDurationEffectTick(int duration, int amplifier) {
       return true;
    }
 }

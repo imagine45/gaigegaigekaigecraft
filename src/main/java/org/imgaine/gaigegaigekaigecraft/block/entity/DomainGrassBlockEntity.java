@@ -30,42 +30,42 @@ public class DomainGrassBlockEntity extends RandomizableContainerBlockEntity imp
 
    public DomainGrassBlockEntity(BlockPos position, BlockState state) {
       super((BlockEntityType)JujutsucraftModBlockEntities.DOMAIN_GRASS.get(), position, state);
-      this.stacks = NonNullList.m_122780_(9, ItemStack.f_41583_);
+      this.stacks = NonNullList.withSize(9, ItemStack.EMPTY);
       this.handlers = SidedInvWrapper.create(this, Direction.values());
    }
 
-   public void m_142466_(CompoundTag compound) {
-      super.m_142466_(compound);
-      if (!this.m_59631_(compound)) {
-         this.stacks = NonNullList.m_122780_(this.m_6643_(), ItemStack.f_41583_);
+   public void load(CompoundTag compound) {
+      super.load(compound);
+      if (!this.tryLoadLootTable(compound)) {
+         this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
       }
 
-      ContainerHelper.m_18980_(compound, this.stacks);
+      ContainerHelper.loadAllItems(compound, this.stacks);
    }
 
-   public void m_183515_(CompoundTag compound) {
-      super.m_183515_(compound);
-      if (!this.m_59634_(compound)) {
-         ContainerHelper.m_18973_(compound, this.stacks);
+   public void saveAdditional(CompoundTag compound) {
+      super.saveAdditional(compound);
+      if (!this.trySaveLootTable(compound)) {
+         ContainerHelper.saveAllItems(compound, this.stacks);
       }
 
    }
 
    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-      return ClientboundBlockEntityDataPacket.m_195640_(this);
+      return ClientboundBlockEntityDataPacket.create(this);
    }
 
-   public CompoundTag m_5995_() {
-      return this.m_187480_();
+   public CompoundTag getUpdateTag() {
+      return this.saveWithFullMetadata();
    }
 
-   public int m_6643_() {
+   public int getContainerSize() {
       return this.stacks.size();
    }
 
-   public boolean m_7983_() {
+   public boolean isEmpty() {
       for(ItemStack itemstack : this.stacks) {
-         if (!itemstack.m_41619_()) {
+         if (!itemstack.isEmpty()) {
             return false;
          }
       }
@@ -73,52 +73,52 @@ public class DomainGrassBlockEntity extends RandomizableContainerBlockEntity imp
       return true;
    }
 
-   public Component m_6820_() {
-      return Component.m_237113_("domain_grass");
+   public Component getDefaultName() {
+      return Component.literal("domain_grass");
    }
 
-   public int m_6893_() {
+   public int getMaxStackSize() {
       return 64;
    }
 
-   public AbstractContainerMenu m_6555_(int id, Inventory inventory) {
-      return ChestMenu.m_39255_(id, inventory);
+   public AbstractContainerMenu createMenu(int id, Inventory inventory) {
+      return ChestMenu.threeRows(id, inventory);
    }
 
-   public Component m_5446_() {
-      return Component.m_237113_("Domain Grass");
+   public Component getDisplayName() {
+      return Component.literal("Domain Grass");
    }
 
-   protected NonNullList<ItemStack> m_7086_() {
+   protected NonNullList<ItemStack> getItems() {
       return this.stacks;
    }
 
-   protected void m_6520_(NonNullList<ItemStack> stacks) {
+   protected void setItems(NonNullList<ItemStack> stacks) {
       this.stacks = stacks;
    }
 
-   public boolean m_7013_(int index, ItemStack stack) {
+   public boolean canPlaceItem(int index, ItemStack stack) {
       return true;
    }
 
-   public int[] m_7071_(Direction side) {
-      return IntStream.range(0, this.m_6643_()).toArray();
+   public int[] getSlotsForFace(Direction side) {
+      return IntStream.range(0, this.getContainerSize()).toArray();
    }
 
-   public boolean m_7155_(int index, ItemStack stack, @Nullable Direction direction) {
-      return this.m_7013_(index, stack);
+   public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
+      return this.canPlaceItem(index, stack);
    }
 
-   public boolean m_7157_(int index, ItemStack stack, Direction direction) {
+   public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
       return true;
    }
 
    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-      return !this.f_58859_ && facing != null && capability == ForgeCapabilities.ITEM_HANDLER ? this.handlers[facing.ordinal()].cast() : super.getCapability(capability, facing);
+      return !this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER ? this.handlers[facing.ordinal()].cast() : super.getCapability(capability, facing);
    }
 
-   public void m_7651_() {
-      super.m_7651_();
+   public void setRemoved() {
+      super.setRemoved();
 
       for(LazyOptional<? extends IItemHandler> handler : this.handlers) {
          handler.invalidate();

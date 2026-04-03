@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CursedSpiritGrade314Renderer extends MobRenderer<CursedSpiritGrade314Entity, Modelcursedspirit3_14<CursedSpiritGrade314Entity>> {
    public CursedSpiritGrade314Renderer(EntityRendererProvider.Context context) {
-      super(context, new Modelcursedspirit3_14(context.m_174023_(Modelcursedspirit3_14.LAYER_LOCATION)), 0.0F);
+      super(context, new Modelcursedspirit3_14(context.bakeLayer(Modelcursedspirit3_14.LAYER_LOCATION)), 0.0F);
    }
 
    public ResourceLocation getTextureLocation(CursedSpiritGrade314Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/cursedspirit3_14.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/cursedspirit3_14.png");
    }
 }

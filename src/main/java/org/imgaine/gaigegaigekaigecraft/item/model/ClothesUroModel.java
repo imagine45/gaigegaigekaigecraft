@@ -9,14 +9,14 @@ public class ClothesUroModel extends GeoModel<ClothesUroItem> {
    }
 
    public ResourceLocation getAnimationResource(ClothesUroItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/clothes_uro.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/clothes_uro.animation.json");
    }
 
    public ResourceLocation getModelResource(ClothesUroItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/clothes_uro.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/clothes_uro.geo.json");
    }
 
    public ResourceLocation getTextureResource(ClothesUroItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/clothes_uro.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/clothes_uro.png");
    }
 }

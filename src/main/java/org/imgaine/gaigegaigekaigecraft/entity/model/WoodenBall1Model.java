@@ -13,15 +13,15 @@ public class WoodenBall1Model extends GeoModel<WoodenBall1Entity> {
    }
 
    public ResourceLocation getAnimationResource(WoodenBall1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/wooden_ball.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/wooden_ball.animation.json");
    }
 
    public ResourceLocation getModelResource(WoodenBall1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/wooden_ball.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/wooden_ball.geo.json");
    }
 
    public ResourceLocation getTextureResource(WoodenBall1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(WoodenBall1Entity animatable, long instanceId, AnimationState animationState) {

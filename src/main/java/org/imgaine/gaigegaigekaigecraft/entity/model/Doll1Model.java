@@ -13,15 +13,15 @@ public class Doll1Model extends GeoModel<Doll1Entity> {
    }
 
    public ResourceLocation getAnimationResource(Doll1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/doll1.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/doll1.animation.json");
    }
 
    public ResourceLocation getModelResource(Doll1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/doll1.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/doll1.geo.json");
    }
 
    public ResourceLocation getTextureResource(Doll1Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(Doll1Entity animatable, long instanceId, AnimationState animationState) {

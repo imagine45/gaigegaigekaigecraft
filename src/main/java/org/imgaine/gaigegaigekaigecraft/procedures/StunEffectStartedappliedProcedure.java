@@ -20,16 +20,16 @@ public class StunEffectStartedappliedProcedure {
             label48: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.GUARD.get());
+                  _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.GUARD.get());
                }
 
-               entity.getPersistentData().m_128347_("skill", 1.0);
+               entity.getPersistentData().putDouble("skill", 1.0);
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt2 = (LivingEntity)entity;
-                  if (_livEnt2.m_21023_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
+                  if (_livEnt2.hasEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get())) {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entity;
-                        _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+                        _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
                      }
                      break label48;
                   }
@@ -39,19 +39,19 @@ public class StunEffectStartedappliedProcedure {
             }
          }
 
-         skill = entity.getPersistentData().m_128459_("skill");
+         skill = entity.getPersistentData().getDouble("skill");
          if (skill == 0.0 || skill <= -900.0) {
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity5 = (LivingEntity)entity;
-               if (_livingEntity5.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
-                  _livingEntity5.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).m_22100_(-2.0);
+               if (_livingEntity5.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get())) {
+                  _livingEntity5.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_1.get()).setBaseValue(-2.0);
                }
             }
 
             if (entity instanceof LivingEntity) {
                LivingEntity _livingEntity6 = (LivingEntity)entity;
-               if (_livingEntity6.m_21204_().m_22171_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
-                  _livingEntity6.getAttribute_((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).m_22100_(0.0);
+               if (_livingEntity6.getAttributes().hasAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get())) {
+                  _livingEntity6.getAttribute((Attribute)JujutsucraftModAttributes.ANIMATION_2.get()).setBaseValue(0.0);
                }
             }
 

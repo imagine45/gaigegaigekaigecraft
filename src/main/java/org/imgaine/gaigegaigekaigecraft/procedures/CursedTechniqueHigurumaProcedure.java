@@ -2,17 +2,11 @@ package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
-import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 public class CursedTechniqueHigurumaProcedure {
    public CursedTechniqueHigurumaProcedure() {
@@ -22,61 +16,138 @@ public class CursedTechniqueHigurumaProcedure {
       if (entity != null) {
          double level = 0.0;
          double skill = 0.0;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 2700.0);
-         if (skill == 4.0) {
-            AttackOverheadProcedure.execute(world, x, y, z, entity);
-         } else if (skill == 5.0) {
-            if (entity instanceof Player) {
-               ItemStack var10000;
-               if (entity instanceof LivingEntity) {
-                  LivingEntity _livEnt = (LivingEntity)entity;
-                  var10000 = _livEnt.m_21205_();
+         boolean have_gavel = false;
+         ItemStack item_mainHand = ItemStack.EMPTY;
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 2700.0);
+         ItemStack var10000;
+         if (entity instanceof LivingEntity) {
+            LivingEntity _livEnt = (LivingEntity)entity;
+            var10000 = _livEnt.getMainHandItem();
+         } else {
+            var10000 = ItemStack.EMPTY;
+         }
+
+         item_mainHand = var10000.copy();
+         have_gavel = item_mainHand.getItem() == JujutsucraftModItems.GAVEL.get() || item_mainHand.getItem() == JujutsucraftModItems.GAVEL_LONG.get() || item_mainHand.getItem() == JujutsucraftModItems.GAVEL_BIG.get();
+         if (skill == 5.0) {
+            GetGavelProcedure.execute(world, x, y, z, entity);
+            entity.getPersistentData().putDouble("skill", 0.0);
+         } else if (skill != 6.0 && skill != 7.0) {
+            if (skill != 8.0 && skill != 9.0) {
+               if (skill != 10.0 && skill != 11.0) {
+                  if (skill == 19.0) {
+                     SkillJudgementProcedure.execute(world, x, y, z, entity);
+                  } else if (skill == 20.0) {
+                     DeadlySentencingProcedure.execute(world, x, y, z, entity);
+                  } else if (entity instanceof LivingEntity) {
+                     LivingEntity _entity = (LivingEntity)entity;
+                     _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+                  }
                } else {
-                  var10000 = ItemStack.f_41583_;
+                  if (!have_gavel) {
+                     GetGavelProcedure.execute(world, x, y, z, entity);
+                  }
+
+                  for(int index2 = 0; index2 < 5; ++index2) {
+                     if (entity instanceof LivingEntity) {
+                        LivingEntity _livEnt = (LivingEntity)entity;
+                        var10000 = _livEnt.getMainHandItem();
+                     } else {
+                        var10000 = ItemStack.EMPTY;
+                     }
+
+                     item_mainHand = var10000.copy();
+                     if (item_mainHand.getItem() == JujutsucraftModItems.GAVEL_BIG.get()) {
+                        break;
+                     }
+
+                     GavelRightClicked2Procedure.execute(world, x, y, z, entity);
+                  }
+
+                  if (item_mainHand.getItem() == JujutsucraftModItems.GAVEL_BIG.get()) {
+                     if (skill == 10.0) {
+                        AttackStrongMahitoProcedure.execute(world, x, y, z, entity);
+                     } else {
+                        AttackOverheadHigurumaProcedure.execute(world, x, y, z, entity);
+                     }
+                  } else {
+                     entity.getPersistentData().putDouble("skill", 0.0);
+                  }
+               }
+            } else {
+               if (!have_gavel) {
+                  GetGavelProcedure.execute(world, x, y, z, entity);
                }
 
-               if (var10000.m_41720_() == ItemStack.f_41583_.m_41720_()) {
+               for(int index1 = 0; index1 < 5; ++index1) {
                   if (entity instanceof LivingEntity) {
-                     LivingEntity _entity = (LivingEntity)entity;
-                     ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL.get())).m_41777_();
-                     _setstack.m_41764_(1);
-                     _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
-                     if (_entity instanceof Player) {
-                        Player _player = (Player)_entity;
-                        _player.m_150109_().m_6596_();
-                     }
+                     LivingEntity _livEnt = (LivingEntity)entity;
+                     var10000 = _livEnt.getMainHandItem();
+                  } else {
+                     var10000 = ItemStack.EMPTY;
                   }
-               } else if (entity instanceof Player) {
-                  Player _player = (Player)entity;
-                  ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL.get())).m_41777_();
-                  _setstack.m_41764_(1);
-                  ItemHandlerHelper.giveItemToPlayer(_player, _setstack);
+
+                  item_mainHand = var10000.copy();
+                  if (item_mainHand.getItem() == JujutsucraftModItems.GAVEL_LONG.get()) {
+                     break;
+                  }
+
+                  GavelRightClicked2Procedure.execute(world, x, y, z, entity);
                }
-            } else if (entity instanceof LivingEntity) {
-               LivingEntity _entity = (LivingEntity)entity;
-               ItemStack _setstack = (new ItemStack((ItemLike)JujutsucraftModItems.GAVEL.get())).m_41777_();
-               _setstack.m_41764_(1);
-               _entity.m_21008_(InteractionHand.MAIN_HAND, _setstack);
-               if (_entity instanceof Player) {
-                  Player _player = (Player)_entity;
-                  _player.m_150109_().m_6596_();
+
+               if (item_mainHand.getItem() == JujutsucraftModItems.GAVEL_LONG.get()) {
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _livEnt = (LivingEntity)entity;
+                     var10000 = _livEnt.getMainHandItem();
+                  } else {
+                     var10000 = ItemStack.EMPTY;
+                  }
+
+                  var10000.getOrCreateTag().putDouble("Reach", 0.75 + entity.getPersistentData().getDouble("cnt1") * 0.2);
+                  if (skill == 8.0) {
+                     AttackContinueHigurumaProcedure.execute(world, entity);
+                  } else {
+                     AttackContinueHigurumaProcedure.execute(world, entity);
+                  }
+
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _livEnt = (LivingEntity)entity;
+                     var10000 = _livEnt.getMainHandItem();
+                  } else {
+                     var10000 = ItemStack.EMPTY;
+                  }
+
+                  SetAttributeMainhandProcedure.execute(var10000);
+               } else {
+                  entity.getPersistentData().putDouble("skill", 0.0);
+               }
+            }
+         } else if (skill == 6.0) {
+            AttackJumpProcedure.execute(world, x, y, z, entity);
+         } else {
+            if (entity.getPersistentData().getDouble("cnt1") == 0.0) {
+               if (!have_gavel) {
+                  GetGavelProcedure.execute(world, x, y, z, entity);
+               }
+
+               for(int index0 = 0; index0 < 5; ++index0) {
+                  if (entity instanceof LivingEntity) {
+                     LivingEntity _livEnt = (LivingEntity)entity;
+                     var10000 = _livEnt.getMainHandItem();
+                  } else {
+                     var10000 = ItemStack.EMPTY;
+                  }
+
+                  item_mainHand = var10000.copy();
+                  if (item_mainHand.getItem() == JujutsucraftModItems.GAVEL.get()) {
+                     break;
+                  }
+
+                  GavelRightClicked2Procedure.execute(world, x, y, z, entity);
                }
             }
 
-            boolean _setval = true;
-            entity.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).ifPresent((capability) -> {
-               capability.noChangeTechnique = _setval;
-               capability.syncPlayerVariables(entity);
-            });
-            KeyChangeTechniqueOnKeyPressedProcedure.execute(world, x, y, z, entity);
-            entity.getPersistentData().m_128347_("skill", 0.0);
-         } else if (skill == 19.0) {
-            SkillJudgementProcedure.execute(world, x, y, z, entity);
-         } else if (skill == 20.0) {
-            DeadlySentencingProcedure.execute(world, x, y, z, entity);
-         } else if (entity instanceof LivingEntity) {
-            LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            GavelThrowingProcedure.execute(world, entity);
          }
 
       }

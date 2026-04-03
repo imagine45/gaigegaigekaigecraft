@@ -1,0 +1,8 @@
+{
+  "parent": "gaigegaigekaigecraft:custom/mythicalbeastamber_head",
+  "textures": {
+    "0": "gaigegaigekaigecraft:block/curse_power",
+    "1": "gaigegaigekaigecraft:block/clear",
+    "particle": "gaigegaigekaigecraft:item/clear"
+  }
+}

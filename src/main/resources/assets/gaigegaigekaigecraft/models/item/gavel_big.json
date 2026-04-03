@@ -1,0 +1,6 @@
+{
+  "parent": "gaigegaigekaigecraft:displaysettings/gavel",
+  "textures": {
+    "layer0": "gaigegaigekaigecraft:item/gavel"
+  }
+}

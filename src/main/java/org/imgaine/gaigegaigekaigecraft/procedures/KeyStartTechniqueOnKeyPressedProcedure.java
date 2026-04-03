@@ -9,7 +9,7 @@ public class KeyStartTechniqueOnKeyPressedProcedure {
 
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
-         entity.getPersistentData().m_128379_("PRESS_Z", true);
+         entity.getPersistentData().putBoolean("PRESS_Z", true);
          StartCursedTechniqueProcedure.execute(world, x, y, z, entity);
       }
    }

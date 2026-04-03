@@ -20,8 +20,8 @@ public class CursedTechniqueInoProcedure {
       if (entity != null) {
          double level = 0.0;
          double skill = 0.0;
-         ItemStack item_a = ItemStack.f_41583_;
-         skill = (double)Math.round(entity.getPersistentData().m_128459_("skill") - 4000.0);
+         ItemStack item_a = ItemStack.EMPTY;
+         skill = (double)Math.round(entity.getPersistentData().getDouble("skill") - 4000.0);
          if (skill == 5.0) {
             SkillKaichiProcedure.execute(world, entity);
          } else if (skill == 6.0) {
@@ -34,38 +34,38 @@ public class CursedTechniqueInoProcedure {
             OtherDomainExpansionProcedure.execute(world, x, y, z, entity);
          } else if (entity instanceof LivingEntity) {
             LivingEntity _entity = (LivingEntity)entity;
-            _entity.m_21195_((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
+            _entity.removeEffect((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get());
          }
 
          ItemStack var10000;
          if (entity instanceof LivingEntity) {
             LivingEntity _entGetArmor = (LivingEntity)entity;
-            var10000 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+            var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
          } else {
-            var10000 = ItemStack.f_41583_;
+            var10000 = ItemStack.EMPTY;
          }
 
-         if (var10000.m_41720_() == JujutsucraftModItems.CLOTHES_INO_TAKUMA_1_HELMET.get()) {
-            item_a = (new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_INO_TAKUMA_2_HELMET.get())).m_41777_();
+         if (var10000.getItem() == JujutsucraftModItems.CLOTHES_INO_TAKUMA_1_HELMET.get()) {
+            item_a = (new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_INO_TAKUMA_2_HELMET.get())).copy();
             if (entity instanceof LivingEntity) {
                LivingEntity _entGetArmor = (LivingEntity)entity;
-               var10000 = _entGetArmor.m_6844_(EquipmentSlot.HEAD);
+               var10000 = _entGetArmor.getItemBySlot(EquipmentSlot.HEAD);
             } else {
-               var10000 = ItemStack.f_41583_;
+               var10000 = ItemStack.EMPTY;
             }
 
-            CompoundTag _nbtTag = var10000.m_41783_();
+            CompoundTag _nbtTag = var10000.getTag();
             if (_nbtTag != null) {
-               item_a.m_41751_(_nbtTag.m_6426_());
+               item_a.setTag(_nbtTag.copy());
             }
 
             if (entity instanceof Player) {
                Player _player = (Player)entity;
-               _player.m_150109_().f_35975_.set(3, item_a);
-               _player.m_150109_().m_6596_();
+               _player.getInventory().armor.set(3, item_a);
+               _player.getInventory().setChanged();
             } else if (entity instanceof LivingEntity) {
                LivingEntity _living = (LivingEntity)entity;
-               _living.m_8061_(EquipmentSlot.HEAD, item_a);
+               _living.setItemSlot(EquipmentSlot.HEAD, item_a);
             }
          }
 

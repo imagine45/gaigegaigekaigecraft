@@ -9,14 +9,14 @@ public class RozetsuModel extends GeoModel<RozetsuEntity> {
    }
 
    public ResourceLocation getAnimationResource(RozetsuEntity entity) {
-      return (Integer)entity.m_20088_().m_135370_(RozetsuEntity.DATA_form) == 1 ? new ResourceLocation("jujutsucraft", "animations/rozetsu2.animation.json") : new ResourceLocation("jujutsucraft", "animations/rozetsu.animation.json");
+      return (Integer)entity.getEntityData().get(RozetsuEntity.DATA_form) == 1 ? new ResourceLocation("gaigegaigekaigecraft", "animations/rozetsu2.animation.json") : new ResourceLocation("gaigegaigekaigecraft", "animations/rozetsu.animation.json");
    }
 
    public ResourceLocation getModelResource(RozetsuEntity entity) {
-      return (Integer)entity.m_20088_().m_135370_(RozetsuEntity.DATA_form) == 1 ? new ResourceLocation("jujutsucraft", "geo/rozetsu2.geo.json") : new ResourceLocation("jujutsucraft", "geo/rozetsu.geo.json");
+      return (Integer)entity.getEntityData().get(RozetsuEntity.DATA_form) == 1 ? new ResourceLocation("gaigegaigekaigecraft", "geo/rozetsu2.geo.json") : new ResourceLocation("gaigegaigekaigecraft", "geo/rozetsu.geo.json");
    }
 
    public ResourceLocation getTextureResource(RozetsuEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

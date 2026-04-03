@@ -28,7 +28,7 @@ public class DeathPaintingItem extends Item implements GeoItem {
    String prevAnim = "empty";
 
    public DeathPaintingItem() {
-      super((new Item.Properties()).m_41487_(9).m_41497_(Rarity.UNCOMMON).m_41489_((new FoodProperties.Builder()).m_38760_(2).m_38758_(1.0F).m_38765_().m_38767_()));
+      super((new Item.Properties()).stacksTo(9).rarity(Rarity.UNCOMMON).food((new FoodProperties.Builder()).nutrition(2).saturationMod(1.0F).alwaysEat().build()));
    }
 
    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
@@ -86,19 +86,19 @@ public class DeathPaintingItem extends Item implements GeoItem {
       return this.cache;
    }
 
-   public UseAnim m_6164_(ItemStack itemstack) {
+   public UseAnim getUseAnimation(ItemStack itemstack) {
       return UseAnim.DRINK;
    }
 
-   public int m_8105_(ItemStack itemstack) {
+   public int getUseDuration(ItemStack itemstack) {
       return 16;
    }
 
-   public ItemStack m_5922_(ItemStack itemstack, Level world, LivingEntity entity) {
-      ItemStack retval = super.m_5922_(itemstack, world, entity);
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+   public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
+      ItemStack retval = super.finishUsingItem(itemstack, world, entity);
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       DeathPaintingPlayerFinishesUsingItemProcedure.execute(world, x, y, z, entity);
       return retval;
    }

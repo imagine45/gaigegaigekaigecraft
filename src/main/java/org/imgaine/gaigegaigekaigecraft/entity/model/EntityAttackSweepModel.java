@@ -13,15 +13,15 @@ public class EntityAttackSweepModel extends GeoModel<EntityAttackSweepEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityAttackSweepEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/entity_sweep.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/entity_sweep.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityAttackSweepEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/entity_sweep.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/entity_sweep.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityAttackSweepEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 
    public void setCustomAnimations(EntityAttackSweepEntity animatable, long instanceId, AnimationState animationState) {

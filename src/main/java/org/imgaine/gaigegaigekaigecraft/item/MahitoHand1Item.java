@@ -48,7 +48,7 @@ public class MahitoHand1Item extends Item implements GeoItem {
    String prevAnim = "empty";
 
    public MahitoHand1Item() {
-      super((new Item.Properties()).m_41503_(1200).m_41497_(Rarity.COMMON));
+      super((new Item.Properties()).durability(1200).rarity(Rarity.COMMON));
       GeckoLibNetwork.registerSyncedAnimatable(this);
    }
 
@@ -107,8 +107,8 @@ public class MahitoHand1Item extends Item implements GeoItem {
    }
 
    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-      if (entity.m_21205_() == stack) {
-         Level var4 = entity.m_9236_();
+      if (entity.getMainHandItem() == stack) {
+         Level var4 = entity.level();
          if (var4 instanceof ServerLevel) {
             ServerLevel serverLevel = (ServerLevel)var4;
             String animName = "swing";
@@ -122,15 +122,15 @@ public class MahitoHand1Item extends Item implements GeoItem {
       return super.onEntitySwing(stack, entity);
    }
 
-   public void m_6883_(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-      super.m_6883_(itemstack, world, entity, slot, selected);
+   public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+      super.inventoryTick(itemstack, world, entity, slot, selected);
       String animName = "";
       if (!this.isSwinging && entity instanceof LivingEntity) {
-         Level var8 = entity.m_9236_();
+         Level var8 = entity.level();
          if (var8 instanceof ServerLevel) {
             ServerLevel serverLevel = (ServerLevel)var8;
             if (selected) {
-               animName = entity.m_20142_() ? "sprint" : "idle";
+               animName = entity.isSprinting() ? "sprint" : "idle";
             } else {
                animName = "idle";
             }
@@ -141,15 +141,15 @@ public class MahitoHand1Item extends Item implements GeoItem {
 
    }
 
-   public Multimap<Attribute, AttributeModifier> m_7167_(EquipmentSlot equipmentSlot) {
+   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
       if (equipmentSlot == EquipmentSlot.MAINHAND) {
          ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-         builder.putAll(super.m_7167_(equipmentSlot));
-         builder.put(Attributes.f_22281_, new AttributeModifier(f_41374_, "Item modifier", 2.0, Operation.ADDITION));
-         builder.put(Attributes.f_22283_, new AttributeModifier(f_41375_, "Item modifier", -2.4, Operation.ADDITION));
+         builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
+         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", 2.0, Operation.ADDITION));
+         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", -2.4, Operation.ADDITION));
          return builder.build();
       } else {
-         return super.m_7167_(equipmentSlot);
+         return super.getDefaultAttributeModifiers(equipmentSlot);
       }
    }
 

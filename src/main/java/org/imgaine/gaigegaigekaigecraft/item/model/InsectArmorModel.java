@@ -9,14 +9,14 @@ public class InsectArmorModel extends GeoModel<InsectArmorItem> {
    }
 
    public ResourceLocation getAnimationResource(InsectArmorItem object) {
-      return new ResourceLocation("jujutsucraft", "animations/insect_armor.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/insect_armor.animation.json");
    }
 
    public ResourceLocation getModelResource(InsectArmorItem object) {
-      return new ResourceLocation("jujutsucraft", "geo/insect_armor.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/insect_armor.geo.json");
    }
 
    public ResourceLocation getTextureResource(InsectArmorItem object) {
-      return new ResourceLocation("jujutsucraft", "textures/item/insect_armor.png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/item/insect_armor.png");
    }
 }

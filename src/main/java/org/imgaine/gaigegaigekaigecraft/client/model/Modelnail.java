@@ -15,25 +15,25 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class Modelnail<T extends Entity> extends EntityModel<T> {
-   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("jujutsucraft", "modelnail"), "main");
+   public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("gaigegaigekaigecraft", "modelnail"), "main");
    public final ModelPart body;
 
    public Modelnail(ModelPart root) {
-      this.body = root.m_171324_("body");
+      this.body = root.getChild("body");
    }
 
    public static LayerDefinition createBodyLayer() {
       MeshDefinition meshdefinition = new MeshDefinition();
-      PartDefinition partdefinition = meshdefinition.m_171576_();
-      PartDefinition body = partdefinition.m_171599_("body", CubeListBuilder.m_171558_(), PartPose.m_171419_(0.0F, 1.0F, 0.0F));
-      body.m_171599_("cube_r1", CubeListBuilder.m_171558_().m_171514_(8, 0).m_171488_(-1.0F, 1.45F, -1.0F, 2.0F, 1.0F, 2.0F, new CubeDeformation(-0.3F)).m_171514_(11, 0).m_171488_(-0.5F, -5.95F, -0.5F, 1.0F, 8.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.m_171423_(0.0F, 1.4F, 0.0F, 0.0F, 0.0F, 0.0F));
-      return LayerDefinition.m_171565_(meshdefinition, 16, 16);
+      PartDefinition partdefinition = meshdefinition.getRoot();
+      PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, 1.0F, 0.0F));
+      body.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(8, 0).addBox(-1.0F, 1.45F, -1.0F, 2.0F, 1.0F, 2.0F, new CubeDeformation(-0.3F)).texOffs(11, 0).addBox(-0.5F, -5.95F, -0.5F, 1.0F, 8.0F, 1.0F, new CubeDeformation(-0.3F)), PartPose.offsetAndRotation(0.0F, 1.4F, 0.0F, 0.0F, 0.0F, 0.0F));
+      return LayerDefinition.create(meshdefinition, 16, 16);
    }
 
-   public void m_7695_(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      this.body.m_104306_(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+   public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+      this.body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
    }
 
-   public void m_6973_(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+   public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
    }
 }

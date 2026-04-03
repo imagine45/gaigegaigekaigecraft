@@ -14,16 +14,16 @@ public class CommandHealProcedure {
 
    public static void execute(CommandContext<CommandSourceStack> arguments) {
       try {
-         for(Entity entityiterator : EntityArgument.m_91461_(arguments, "target")) {
+         for(Entity entityiterator : EntityArgument.getEntities(arguments, "target")) {
             if (entityiterator instanceof LivingEntity _entity) {
                float var10001;
                if (entityiterator instanceof LivingEntity _livEnt) {
-                  var10001 = _livEnt.m_21223_();
+                  var10001 = _livEnt.getHealth();
                } else {
                   var10001 = -1.0F;
                }
 
-               _entity.m_21153_((float)((double)var10001 + DoubleArgumentType.getDouble(arguments, "amount")));
+               _entity.setHealth((float)((double)var10001 + DoubleArgumentType.getDouble(arguments, "amount")));
             }
          }
       } catch (CommandSyntaxException e) {

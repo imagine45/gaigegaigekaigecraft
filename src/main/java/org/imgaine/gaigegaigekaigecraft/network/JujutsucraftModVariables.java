@@ -3,7 +3,7 @@ package org.imgaine.gaigegaigekaigecraft.network;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.Supplier;
-import org.imgaine.gaigegaigekaigecraft.JujutsucraftMod;
+import org.imgaine.gaigegaigekaigecraft.Gaigegaigekaigecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -48,8 +48,8 @@ public class JujutsucraftModVariables {
 
    @SubscribeEvent
    public static void init(FMLCommonSetupEvent event) {
-      JujutsucraftMod.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::buffer, SavedDataSyncMessage::new, SavedDataSyncMessage::handler);
-      JujutsucraftMod.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
+      Gaigegaigekaigecraft.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::buffer, SavedDataSyncMessage::new, SavedDataSyncMessage::handler);
+      Gaigegaigekaigecraft.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
    }
 
    @SubscribeEvent
@@ -59,7 +59,7 @@ public class JujutsucraftModVariables {
 
    @SubscribeEvent
    public static void registerMessage(FMLCommonSetupEvent event) {
-      JujutsucraftMod.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
+      Gaigegaigekaigecraft.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
    }
 
    @EventBusSubscriber
@@ -69,8 +69,8 @@ public class JujutsucraftModVariables {
 
       @SubscribeEvent
       public static void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
-         if (!event.getEntity().m_9236_().m_5776_()) {
-            for(Entity entityiterator : new ArrayList(event.getEntity().m_9236_().m_6907_())) {
+         if (!event.getEntity().level().isClientSide()) {
+            for(Entity entityiterator : new ArrayList<Entity>(event.getEntity().level().players())) {
                ((PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new PlayerVariables())).syncPlayerVariables(entityiterator);
             }
          }
@@ -79,8 +79,8 @@ public class JujutsucraftModVariables {
 
       @SubscribeEvent
       public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
-         if (!event.getEntity().m_9236_().m_5776_()) {
-            for(Entity entityiterator : new ArrayList(event.getEntity().m_9236_().m_6907_())) {
+         if (!event.getEntity().level().isClientSide()) {
+            for(Entity entityiterator : new ArrayList<Entity>(event.getEntity().level().players())) {
                ((PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new PlayerVariables())).syncPlayerVariables(entityiterator);
             }
          }
@@ -89,8 +89,8 @@ public class JujutsucraftModVariables {
 
       @SubscribeEvent
       public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
-         if (!event.getEntity().m_9236_().m_5776_()) {
-            for(Entity entityiterator : new ArrayList(event.getEntity().m_9236_().m_6907_())) {
+         if (!event.getEntity().level().isClientSide()) {
+            for(Entity entityiterator : new ArrayList<Entity>(event.getEntity().level().players())) {
                ((PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new PlayerVariables())).syncPlayerVariables(entityiterator);
             }
          }
@@ -138,8 +138,8 @@ public class JujutsucraftModVariables {
             clone.use_mainSkill = original.use_mainSkill;
          }
 
-         if (!event.getEntity().m_9236_().m_5776_()) {
-            for(Entity entityiterator : new ArrayList(event.getEntity().m_9236_().m_6907_())) {
+         if (!event.getEntity().level().isClientSide()) {
+            for(Entity entityiterator : new ArrayList<Entity>(event.getEntity().level().players())) {
                ((PlayerVariables)entityiterator.getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new PlayerVariables())).syncPlayerVariables(entityiterator);
             }
          }
@@ -148,15 +148,15 @@ public class JujutsucraftModVariables {
 
       @SubscribeEvent
       public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-         if (!event.getEntity().m_9236_().m_5776_()) {
-            SavedData mapdata = JujutsucraftModVariables.MapVariables.get(event.getEntity().m_9236_());
-            SavedData worlddata = JujutsucraftModVariables.WorldVariables.get(event.getEntity().m_9236_());
+         if (!event.getEntity().level().isClientSide()) {
+            SavedData mapdata = JujutsucraftModVariables.MapVariables.get(event.getEntity().level());
+            SavedData worlddata = JujutsucraftModVariables.WorldVariables.get(event.getEntity().level());
             if (mapdata != null) {
-               JujutsucraftMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.getEntity()), new SavedDataSyncMessage(0, mapdata));
+               Gaigegaigekaigecraft.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.getEntity()), new SavedDataSyncMessage(0, mapdata));
             }
 
             if (worlddata != null) {
-               JujutsucraftMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.getEntity()), new SavedDataSyncMessage(1, worlddata));
+               Gaigegaigekaigecraft.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.getEntity()), new SavedDataSyncMessage(1, worlddata));
             }
          }
 
@@ -164,10 +164,10 @@ public class JujutsucraftModVariables {
 
       @SubscribeEvent
       public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-         if (!event.getEntity().m_9236_().m_5776_()) {
-            SavedData worlddata = JujutsucraftModVariables.WorldVariables.get(event.getEntity().m_9236_());
+         if (!event.getEntity().level().isClientSide()) {
+            SavedData worlddata = JujutsucraftModVariables.WorldVariables.get(event.getEntity().level());
             if (worlddata != null) {
-               JujutsucraftMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.getEntity()), new SavedDataSyncMessage(1, worlddata));
+               Gaigegaigekaigecraft.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.getEntity()), new SavedDataSyncMessage(1, worlddata));
             }
          }
 
@@ -175,7 +175,7 @@ public class JujutsucraftModVariables {
    }
 
    public static class WorldVariables extends SavedData {
-      public static final String DATA_NAME = "jujutsucraft_worldvars";
+      public static final String DATA_NAME = "gaigegaigekaigecraft_worldvars";
       static WorldVariables clientSide = new WorldVariables();
 
       public WorldVariables() {
@@ -190,18 +190,18 @@ public class JujutsucraftModVariables {
       public void read(CompoundTag nbt) {
       }
 
-      public CompoundTag m_7176_(CompoundTag nbt) {
+      public CompoundTag save(CompoundTag nbt) {
          return nbt;
       }
 
       public void syncData(LevelAccessor world) {
-         this.m_77762_();
+         this.setDirty();
          if (world instanceof Level level) {
-            if (!level.m_5776_()) {
-               SimpleChannel var10000 = JujutsucraftMod.PACKET_HANDLER;
+            if (!level.isClientSide()) {
+               SimpleChannel var10000 = Gaigegaigekaigecraft.PACKET_HANDLER;
                PacketDistributor var10001 = PacketDistributor.DIMENSION;
                Objects.requireNonNull(level);
-               var10000.send(var10001.with(level::m_46472_), new SavedDataSyncMessage(1, this));
+               var10000.send(var10001.with(level::dimension), new SavedDataSyncMessage(1, this));
             }
          }
 
@@ -209,7 +209,7 @@ public class JujutsucraftModVariables {
 
       public static WorldVariables get(LevelAccessor world) {
          if (world instanceof ServerLevel level) {
-            return (WorldVariables)level.m_8895_().m_164861_((e) -> load(e), WorldVariables::new, "jujutsucraft_worldvars");
+            return (WorldVariables)level.getDataStorage().computeIfAbsent((e) -> load(e), WorldVariables::new, "gaigegaigekaigecraft_worldvars");
          } else {
             return clientSide;
          }
@@ -217,7 +217,7 @@ public class JujutsucraftModVariables {
    }
 
    public static class MapVariables extends SavedData {
-      public static final String DATA_NAME = "jujutsucraft_mapvars";
+      public static final String DATA_NAME = "gaigegaigekaigecraft_mapvars";
       public boolean BlastGame = false;
       public double DomainExpansionRadius = 22.0;
       public double STRONGEST_PLAYER = 0.0;
@@ -239,42 +239,42 @@ public class JujutsucraftModVariables {
 
       public void read(CompoundTag nbt) {
          if (nbt == null) {
-            nbt = this.m_7176_(new CompoundTag());
+            nbt = this.save(new CompoundTag());
          }
 
-         this.BlastGame = nbt.m_128471_("BlastGame");
-         this.DomainExpansionRadius = nbt.m_128459_("DomainExpansionRadius");
-         this.STRONGEST_PLAYER = nbt.m_128459_("STRONGEST_PLAYER");
-         this.BlastGameDistance = nbt.m_128459_("BlastGameDistance");
-         this.BlastGameXCenter = nbt.m_128459_("BlastGameXCenter");
-         this.BlastGameYCenter = nbt.m_128459_("BlastGameYCenter");
-         this.BlastGameZCenter = nbt.m_128459_("BlastGameZCenter");
-         this.config_doVanillaMobSpawning = nbt.m_128471_("config_doVanillaMobSpawning");
+         this.BlastGame = nbt.getBoolean("BlastGame");
+         this.DomainExpansionRadius = nbt.getDouble("DomainExpansionRadius");
+         this.STRONGEST_PLAYER = nbt.getDouble("STRONGEST_PLAYER");
+         this.BlastGameDistance = nbt.getDouble("BlastGameDistance");
+         this.BlastGameXCenter = nbt.getDouble("BlastGameXCenter");
+         this.BlastGameYCenter = nbt.getDouble("BlastGameYCenter");
+         this.BlastGameZCenter = nbt.getDouble("BlastGameZCenter");
+         this.config_doVanillaMobSpawning = nbt.getBoolean("config_doVanillaMobSpawning");
       }
 
-      public CompoundTag m_7176_(CompoundTag nbt) {
-         nbt.m_128379_("BlastGame", this.BlastGame);
-         nbt.m_128347_("DomainExpansionRadius", this.DomainExpansionRadius);
-         nbt.m_128347_("STRONGEST_PLAYER", this.STRONGEST_PLAYER);
-         nbt.m_128347_("BlastGameDistance", this.BlastGameDistance);
-         nbt.m_128347_("BlastGameXCenter", this.BlastGameXCenter);
-         nbt.m_128347_("BlastGameYCenter", this.BlastGameYCenter);
-         nbt.m_128347_("BlastGameZCenter", this.BlastGameZCenter);
-         nbt.m_128379_("config_doVanillaMobSpawning", this.config_doVanillaMobSpawning);
+      public CompoundTag save(CompoundTag nbt) {
+         nbt.putBoolean("BlastGame", this.BlastGame);
+         nbt.putDouble("DomainExpansionRadius", this.DomainExpansionRadius);
+         nbt.putDouble("STRONGEST_PLAYER", this.STRONGEST_PLAYER);
+         nbt.putDouble("BlastGameDistance", this.BlastGameDistance);
+         nbt.putDouble("BlastGameXCenter", this.BlastGameXCenter);
+         nbt.putDouble("BlastGameYCenter", this.BlastGameYCenter);
+         nbt.putDouble("BlastGameZCenter", this.BlastGameZCenter);
+         nbt.putBoolean("config_doVanillaMobSpawning", this.config_doVanillaMobSpawning);
          return nbt;
       }
 
       public void syncData(LevelAccessor world) {
-         this.m_77762_();
-         if (world instanceof Level && !world.m_5776_()) {
-            JujutsucraftMod.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
+         this.setDirty();
+         if (world instanceof Level && !world.isClientSide()) {
+            Gaigegaigekaigecraft.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
          }
 
       }
 
       public static MapVariables get(LevelAccessor world) {
          if (world instanceof ServerLevelAccessor serverLevelAcc) {
-            return (MapVariables)serverLevelAcc.m_6018_().m_7654_().m_129880_(Level.f_46428_).m_8895_().m_164861_((e) -> load(e), MapVariables::new, "jujutsucraft_mapvars");
+            return (MapVariables)serverLevelAcc.getLevel().getServer().getLevel(Level.OVERWORLD).getDataStorage().computeIfAbsent((e) -> load(e), MapVariables::new, "gaigegaigekaigecraft_mapvars");
          } else {
             return clientSide;
          }
@@ -287,7 +287,7 @@ public class JujutsucraftModVariables {
 
       public SavedDataSyncMessage(FriendlyByteBuf buffer) {
          this.type = buffer.readInt();
-         CompoundTag nbt = buffer.m_130260_();
+         CompoundTag nbt = buffer.readNbt();
          if (nbt != null) {
             this.data = (SavedData)(this.type == 0 ? new MapVariables() : new WorldVariables());
             SavedData var5 = this.data;
@@ -313,7 +313,7 @@ public class JujutsucraftModVariables {
       public static void buffer(SavedDataSyncMessage message, FriendlyByteBuf buffer) {
          buffer.writeInt(message.type);
          if (message.data != null) {
-            buffer.m_130079_(message.data.m_7176_(new CompoundTag()));
+            buffer.writeNbt(message.data.save(new CompoundTag()));
          }
 
       }
@@ -345,7 +345,7 @@ public class JujutsucraftModVariables {
       @SubscribeEvent
       public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
          if (event.getObject() instanceof Player && !(event.getObject() instanceof FakePlayer)) {
-            event.addCapability(new ResourceLocation("jujutsucraft", "player_variables"), new PlayerVariablesProvider());
+            event.addCapability(new ResourceLocation("gaigegaigekaigecraft", "player_variables"), new PlayerVariablesProvider());
          }
 
       }
@@ -393,62 +393,62 @@ public class JujutsucraftModVariables {
       public String OVERLAY1 = "";
       public String OVERLAY2 = "";
       public String OverlayCost = "Cost";
-      public String OverlayCursePower = "Curse Power";
+      public String OverlayCursePower = "Cursed Energy";
       public String PlayerSelectCurseTechniqueName = "";
       public ItemStack BodyItem;
       public boolean use_mainSkill;
 
       public PlayerVariables() {
-         this.BodyItem = ItemStack.f_41583_;
+         this.BodyItem = ItemStack.EMPTY;
          this.use_mainSkill = false;
       }
 
       public void syncPlayerVariables(Entity entity) {
          if (entity instanceof ServerPlayer serverPlayer) {
-            SimpleChannel var10000 = JujutsucraftMod.PACKET_HANDLER;
+            SimpleChannel var10000 = Gaigegaigekaigecraft.PACKET_HANDLER;
             PacketDistributor var10001 = PacketDistributor.DIMENSION;
-            Level var10002 = entity.m_9236_();
+            Level var10002 = entity.level();
             Objects.requireNonNull(var10002);
-            var10000.send(var10001.with(var10002::m_46472_), new PlayerVariablesSyncMessage(this, entity.m_19879_()));
+            var10000.send(var10001.with(var10002::dimension), new PlayerVariablesSyncMessage(this, entity.getId()));
          }
 
       }
 
       public Tag writeNBT() {
          CompoundTag nbt = new CompoundTag();
-         nbt.m_128379_("flag_shift", this.flag_shift);
-         nbt.m_128379_("flag_sukuna", this.flag_sukuna);
-         nbt.m_128379_("FlagSixEyes", this.FlagSixEyes);
-         nbt.m_128379_("noChangeTechnique", this.noChangeTechnique);
-         nbt.m_128379_("PassiveTechnique", this.PassiveTechnique);
-         nbt.m_128379_("PhysicalAttack", this.PhysicalAttack);
-         nbt.m_128379_("PlayerFlag_A", this.PlayerFlag_A);
-         nbt.m_128379_("PlayerFlag_B", this.PlayerFlag_B);
-         nbt.m_128379_("SecondTechnique", this.SecondTechnique);
-         nbt.m_128347_("cnt_curse1", this.cnt_curse1);
-         nbt.m_128347_("friend_num_keep", this.friend_num_keep);
-         nbt.m_128347_("PlayerCharge", this.PlayerCharge);
-         nbt.m_128347_("PlayerCursePower", this.PlayerCursePower);
-         nbt.m_128347_("PlayerCursePowerChange", this.PlayerCursePowerChange);
-         nbt.m_128347_("PlayerCursePowerFormer", this.PlayerCursePowerFormer);
-         nbt.m_128347_("PlayerCursePowerMAX", this.PlayerCursePowerMAX);
-         nbt.m_128347_("PlayerCurseTechnique", this.PlayerCurseTechnique);
-         nbt.m_128347_("PlayerCurseTechnique2", this.PlayerCurseTechnique2);
-         nbt.m_128347_("PlayerExperience", this.PlayerExperience);
-         nbt.m_128347_("PlayerFame", this.PlayerFame);
-         nbt.m_128347_("PlayerLevel", this.PlayerLevel);
-         nbt.m_128347_("PlayerProfession", this.PlayerProfession);
-         nbt.m_128347_("PlayerSelectCurseTechnique", this.PlayerSelectCurseTechnique);
-         nbt.m_128347_("PlayerSelectCurseTechniqueCost", this.PlayerSelectCurseTechniqueCost);
-         nbt.m_128347_("PlayerSelectCurseTechniqueCostOrgin", this.PlayerSelectCurseTechniqueCostOrgin);
-         nbt.m_128347_("PlayerTechniqueUsedNumber", this.PlayerTechniqueUsedNumber);
-         nbt.m_128359_("OVERLAY1", this.OVERLAY1);
-         nbt.m_128359_("OVERLAY2", this.OVERLAY2);
-         nbt.m_128359_("OverlayCost", this.OverlayCost);
-         nbt.m_128359_("OverlayCursePower", this.OverlayCursePower);
-         nbt.m_128359_("PlayerSelectCurseTechniqueName", this.PlayerSelectCurseTechniqueName);
-         nbt.m_128365_("BodyItem", this.BodyItem.m_41739_(new CompoundTag()));
-         nbt.m_128379_("use_mainSkill", this.use_mainSkill);
+         nbt.putBoolean("flag_shift", this.flag_shift);
+         nbt.putBoolean("flag_sukuna", this.flag_sukuna);
+         nbt.putBoolean("FlagSixEyes", this.FlagSixEyes);
+         nbt.putBoolean("noChangeTechnique", this.noChangeTechnique);
+         nbt.putBoolean("PassiveTechnique", this.PassiveTechnique);
+         nbt.putBoolean("PhysicalAttack", this.PhysicalAttack);
+         nbt.putBoolean("PlayerFlag_A", this.PlayerFlag_A);
+         nbt.putBoolean("PlayerFlag_B", this.PlayerFlag_B);
+         nbt.putBoolean("SecondTechnique", this.SecondTechnique);
+         nbt.putDouble("cnt_curse1", this.cnt_curse1);
+         nbt.putDouble("friend_num_keep", this.friend_num_keep);
+         nbt.putDouble("PlayerCharge", this.PlayerCharge);
+         nbt.putDouble("PlayerCursePower", this.PlayerCursePower);
+         nbt.putDouble("PlayerCursePowerChange", this.PlayerCursePowerChange);
+         nbt.putDouble("PlayerCursePowerFormer", this.PlayerCursePowerFormer);
+         nbt.putDouble("PlayerCursePowerMAX", this.PlayerCursePowerMAX);
+         nbt.putDouble("PlayerCurseTechnique", this.PlayerCurseTechnique);
+         nbt.putDouble("PlayerCurseTechnique2", this.PlayerCurseTechnique2);
+         nbt.putDouble("PlayerExperience", this.PlayerExperience);
+         nbt.putDouble("PlayerFame", this.PlayerFame);
+         nbt.putDouble("PlayerLevel", this.PlayerLevel);
+         nbt.putDouble("PlayerProfession", this.PlayerProfession);
+         nbt.putDouble("PlayerSelectCurseTechnique", this.PlayerSelectCurseTechnique);
+         nbt.putDouble("PlayerSelectCurseTechniqueCost", this.PlayerSelectCurseTechniqueCost);
+         nbt.putDouble("PlayerSelectCurseTechniqueCostOrgin", this.PlayerSelectCurseTechniqueCostOrgin);
+         nbt.putDouble("PlayerTechniqueUsedNumber", this.PlayerTechniqueUsedNumber);
+         nbt.putString("OVERLAY1", this.OVERLAY1);
+         nbt.putString("OVERLAY2", this.OVERLAY2);
+         nbt.putString("OverlayCost", this.OverlayCost);
+         nbt.putString("OverlayCursePower", this.OverlayCursePower);
+         nbt.putString("PlayerSelectCurseTechniqueName", this.PlayerSelectCurseTechniqueName);
+         nbt.put("BodyItem", this.BodyItem.save(new CompoundTag()));
+         nbt.putBoolean("use_mainSkill", this.use_mainSkill);
          return nbt;
       }
 
@@ -462,39 +462,39 @@ public class JujutsucraftModVariables {
             nbt = (CompoundTag)this.writeNBT();
          }
 
-         this.flag_shift = nbt.m_128471_("flag_shift");
-         this.flag_sukuna = nbt.m_128471_("flag_sukuna");
-         this.FlagSixEyes = nbt.m_128471_("FlagSixEyes");
-         this.noChangeTechnique = nbt.m_128471_("noChangeTechnique");
-         this.PassiveTechnique = nbt.m_128471_("PassiveTechnique");
-         this.PhysicalAttack = nbt.m_128471_("PhysicalAttack");
-         this.PlayerFlag_A = nbt.m_128471_("PlayerFlag_A");
-         this.PlayerFlag_B = nbt.m_128471_("PlayerFlag_B");
-         this.SecondTechnique = nbt.m_128471_("SecondTechnique");
-         this.cnt_curse1 = nbt.m_128459_("cnt_curse1");
-         this.friend_num_keep = nbt.m_128459_("friend_num_keep");
-         this.PlayerCharge = nbt.m_128459_("PlayerCharge");
-         this.PlayerCursePower = nbt.m_128459_("PlayerCursePower");
-         this.PlayerCursePowerChange = nbt.m_128459_("PlayerCursePowerChange");
-         this.PlayerCursePowerFormer = nbt.m_128459_("PlayerCursePowerFormer");
-         this.PlayerCursePowerMAX = nbt.m_128459_("PlayerCursePowerMAX");
-         this.PlayerCurseTechnique = nbt.m_128459_("PlayerCurseTechnique");
-         this.PlayerCurseTechnique2 = nbt.m_128459_("PlayerCurseTechnique2");
-         this.PlayerExperience = nbt.m_128459_("PlayerExperience");
-         this.PlayerFame = nbt.m_128459_("PlayerFame");
-         this.PlayerLevel = nbt.m_128459_("PlayerLevel");
-         this.PlayerProfession = nbt.m_128459_("PlayerProfession");
-         this.PlayerSelectCurseTechnique = nbt.m_128459_("PlayerSelectCurseTechnique");
-         this.PlayerSelectCurseTechniqueCost = nbt.m_128459_("PlayerSelectCurseTechniqueCost");
-         this.PlayerSelectCurseTechniqueCostOrgin = nbt.m_128459_("PlayerSelectCurseTechniqueCostOrgin");
-         this.PlayerTechniqueUsedNumber = nbt.m_128459_("PlayerTechniqueUsedNumber");
-         this.OVERLAY1 = nbt.m_128461_("OVERLAY1");
-         this.OVERLAY2 = nbt.m_128461_("OVERLAY2");
-         this.OverlayCost = nbt.m_128461_("OverlayCost");
-         this.OverlayCursePower = nbt.m_128461_("OverlayCursePower");
-         this.PlayerSelectCurseTechniqueName = nbt.m_128461_("PlayerSelectCurseTechniqueName");
-         this.BodyItem = ItemStack.m_41712_(nbt.m_128469_("BodyItem"));
-         this.use_mainSkill = nbt.m_128471_("use_mainSkill");
+         this.flag_shift = nbt.getBoolean("flag_shift");
+         this.flag_sukuna = nbt.getBoolean("flag_sukuna");
+         this.FlagSixEyes = nbt.getBoolean("FlagSixEyes");
+         this.noChangeTechnique = nbt.getBoolean("noChangeTechnique");
+         this.PassiveTechnique = nbt.getBoolean("PassiveTechnique");
+         this.PhysicalAttack = nbt.getBoolean("PhysicalAttack");
+         this.PlayerFlag_A = nbt.getBoolean("PlayerFlag_A");
+         this.PlayerFlag_B = nbt.getBoolean("PlayerFlag_B");
+         this.SecondTechnique = nbt.getBoolean("SecondTechnique");
+         this.cnt_curse1 = nbt.getDouble("cnt_curse1");
+         this.friend_num_keep = nbt.getDouble("friend_num_keep");
+         this.PlayerCharge = nbt.getDouble("PlayerCharge");
+         this.PlayerCursePower = nbt.getDouble("PlayerCursePower");
+         this.PlayerCursePowerChange = nbt.getDouble("PlayerCursePowerChange");
+         this.PlayerCursePowerFormer = nbt.getDouble("PlayerCursePowerFormer");
+         this.PlayerCursePowerMAX = nbt.getDouble("PlayerCursePowerMAX");
+         this.PlayerCurseTechnique = nbt.getDouble("PlayerCurseTechnique");
+         this.PlayerCurseTechnique2 = nbt.getDouble("PlayerCurseTechnique2");
+         this.PlayerExperience = nbt.getDouble("PlayerExperience");
+         this.PlayerFame = nbt.getDouble("PlayerFame");
+         this.PlayerLevel = nbt.getDouble("PlayerLevel");
+         this.PlayerProfession = nbt.getDouble("PlayerProfession");
+         this.PlayerSelectCurseTechnique = nbt.getDouble("PlayerSelectCurseTechnique");
+         this.PlayerSelectCurseTechniqueCost = nbt.getDouble("PlayerSelectCurseTechniqueCost");
+         this.PlayerSelectCurseTechniqueCostOrgin = nbt.getDouble("PlayerSelectCurseTechniqueCostOrgin");
+         this.PlayerTechniqueUsedNumber = nbt.getDouble("PlayerTechniqueUsedNumber");
+         this.OVERLAY1 = nbt.getString("OVERLAY1");
+         this.OVERLAY2 = nbt.getString("OVERLAY2");
+         this.OverlayCost = nbt.getString("OverlayCost");
+         this.OverlayCursePower = nbt.getString("OverlayCursePower");
+         this.PlayerSelectCurseTechniqueName = nbt.getString("PlayerSelectCurseTechniqueName");
+         this.BodyItem = ItemStack.of(nbt.getCompound("BodyItem"));
+         this.use_mainSkill = nbt.getBoolean("use_mainSkill");
       }
    }
 
@@ -504,7 +504,7 @@ public class JujutsucraftModVariables {
 
       public PlayerVariablesSyncMessage(FriendlyByteBuf buffer) {
          this.data = new PlayerVariables();
-         this.data.readNBT(buffer.m_130260_());
+         this.data.readNBT(buffer.readNbt());
          this.target = buffer.readInt();
       }
 
@@ -514,7 +514,7 @@ public class JujutsucraftModVariables {
       }
 
       public static void buffer(PlayerVariablesSyncMessage message, FriendlyByteBuf buffer) {
-         buffer.m_130079_((CompoundTag)message.data.writeNBT());
+         buffer.writeNbt((CompoundTag)message.data.writeNBT());
          buffer.writeInt(message.target);
       }
 
@@ -522,7 +522,7 @@ public class JujutsucraftModVariables {
          NetworkEvent.Context context = (NetworkEvent.Context)contextSupplier.get();
          context.enqueueWork(() -> {
             if (!context.getDirection().getReceptionSide().isServer()) {
-               PlayerVariables variables = (PlayerVariables)Minecraft.m_91087_().f_91074_.m_9236_().m_6815_(message.target).getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new PlayerVariables());
+               PlayerVariables variables = (PlayerVariables)Minecraft.getInstance().player.level().getEntity(message.target).getCapability(JujutsucraftModVariables.PLAYER_VARIABLES_CAPABILITY, (Direction)null).orElse(new PlayerVariables());
                variables.flag_shift = message.data.flag_shift;
                variables.flag_sukuna = message.data.flag_sukuna;
                variables.FlagSixEyes = message.data.FlagSixEyes;

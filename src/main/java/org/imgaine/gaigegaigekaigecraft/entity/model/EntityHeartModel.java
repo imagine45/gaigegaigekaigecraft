@@ -9,14 +9,14 @@ public class EntityHeartModel extends GeoModel<EntityHeartEntity> {
    }
 
    public ResourceLocation getAnimationResource(EntityHeartEntity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/heart.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/heart.animation.json");
    }
 
    public ResourceLocation getModelResource(EntityHeartEntity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/heart.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/heart.geo.json");
    }
 
    public ResourceLocation getTextureResource(EntityHeartEntity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

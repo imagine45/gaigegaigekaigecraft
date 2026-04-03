@@ -1,12 +1,17 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
 import java.util.Comparator;
+
+import org.imgaine.gaigegaigekaigecraft.InlineMethodHandler;
 import org.imgaine.gaigegaigekaigecraft.entity.GojoSatoruEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.MeiMeiEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.SukunaFushiguroEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.SukunaPerfectEntity;
 import org.imgaine.gaigegaigekaigecraft.entity.TodoAoiEntity;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -24,9 +30,9 @@ public class SetTagJujutsuSorcererProcedure {
    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
       if (entity != null) {
          SetTagProcedure.execute(world, entity);
-         entity.getPersistentData().m_128379_("JujutsuSorcerer", true);
+         entity.getPersistentData().putBoolean("JujutsuSorcerer", true);
          if (entity instanceof TodoAoiEntity) {
-            entity.getPersistentData().m_128347_("IQ", 530000.0);
+            entity.getPersistentData().putDouble("IQ", 530000.0);
          }
 
          if (entity instanceof MeiMeiEntity) {
@@ -34,130 +40,139 @@ public class SetTagJujutsuSorcererProcedure {
          }
 
          if (entity instanceof GojoSatoruEntity) {
-            if (world.m_6443_(SukunaFushiguroEntity.class, AABB.m_165882_(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).isEmpty() && world.m_6443_(SukunaPerfectEntity.class, AABB.m_165882_(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).isEmpty()) {
-               if (!world.m_6443_(SukunaFushiguroEntity.class, AABB.m_165882_(new Vec3(x, y, z), 256.0, 256.0, 256.0), (e) -> true).isEmpty()) {
-                  entity.getPersistentData().m_128379_("GojoNoUseInfinity", true);
+            if (world.getEntitiesOfClass(SukunaFushiguroEntity.class, AABB.ofSize(new Vec3(x, y, z), 64.0, 64.0, 64.0), (e) -> true).isEmpty() && world.getEntitiesOfClass(SukunaPerfectEntity.class, AABB.ofSize(new Vec3(x, y, z), 64.0, 64.0, 64.0), (e) -> true).isEmpty()) {
+               if (!world.getEntitiesOfClass(SukunaFushiguroEntity.class, AABB.ofSize(new Vec3(x, y, z), 256.0, 256.0, 256.0), (e) -> true).isEmpty()) {
+                  entity.getPersistentData().putBoolean("GojoNoUseInfinity", true);
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(3, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_HELMET.get()));
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(3, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_HELMET.get()));
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_HELMET.get()));
+                     _living.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_HELMET.get()));
                   }
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(2, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_CHESTPLATE.get()));
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(2, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_CHESTPLATE.get()));
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_CHESTPLATE.get()));
+                     _living.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_CHESTPLATE.get()));
                   }
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(1, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_LEGGINGS.get()));
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(1, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_LEGGINGS.get()));
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_LEGGINGS.get()));
+                     _living.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_DECISIVE_BATTLE_LEGGINGS.get()));
                   }
 
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(0, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(0, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.FEET, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
+                     _living.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
                   }
                } else if (Math.random() < 0.33) {
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(3, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_HELMET.get()));
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(3, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_HELMET.get()));
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_HELMET.get()));
+                     _living.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_HELMET.get()));
                   }
                } else if (Math.random() < 0.5) {
                   if (entity instanceof Player) {
                      Player _player = (Player)entity;
-                     _player.m_150109_().f_35975_.set(3, new ItemStack((ItemLike)JujutsucraftModItems.BLINDFOLD_BANDAGE_HELMET.get()));
-                     _player.m_150109_().m_6596_();
+                     _player.getInventory().armor.set(3, new ItemStack((ItemLike)JujutsucraftModItems.BLINDFOLD_BANDAGE_HELMET.get()));
+                     _player.getInventory().setChanged();
                   } else if (entity instanceof LivingEntity) {
                      LivingEntity _living = (LivingEntity)entity;
-                     _living.m_8061_(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.BLINDFOLD_BANDAGE_HELMET.get()));
+                     _living.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.BLINDFOLD_BANDAGE_HELMET.get()));
                   }
                } else if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(3, new ItemStack((ItemLike)JujutsucraftModItems.SUNGLASSES_HELMET.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, new ItemStack((ItemLike)JujutsucraftModItems.SUNGLASSES_HELMET.get()));
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.SUNGLASSES_HELMET.get()));
+                  _living.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike)JujutsucraftModItems.SUNGLASSES_HELMET.get()));
                }
             } else {
-               if (entity instanceof Player) {
-                  Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(3, ItemStack.f_41583_);
-                  _player.m_150109_().m_6596_();
-               } else if (entity instanceof LivingEntity) {
-                  LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.HEAD, ItemStack.f_41583_);
+               if (!entity.level().isClientSide() && entity.getServer() != null) {
+                  entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, entity.position(), entity.getRotationVector(), entity.level() instanceof ServerLevel ? (ServerLevel)entity.level() : null, 4, entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity), "item replace entity @s armor.head with air");
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(2, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_CHESTPLATE.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, ItemStack.EMPTY);
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_CHESTPLATE.get()));
+                  _living.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(1, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_LEGGINGS.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(3, new ItemStack(Blocks.AIR));
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_LEGGINGS.get()));
+                  _living.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
                }
 
                if (entity instanceof Player) {
                   Player _player = (Player)entity;
-                  _player.m_150109_().f_35975_.set(0, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
-                  _player.m_150109_().m_6596_();
+                  _player.getInventory().armor.set(2, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_CHESTPLATE.get()));
+                  _player.getInventory().setChanged();
                } else if (entity instanceof LivingEntity) {
                   LivingEntity _living = (LivingEntity)entity;
-                  _living.m_8061_(EquipmentSlot.FEET, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
+                  _living.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_CHESTPLATE.get()));
                }
 
-               if (world.m_6443_(SukunaPerfectEntity.class, AABB.m_165882_(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).isEmpty()) {
-                  if (world.m_6443_(SukunaFushiguroEntity.class, AABB.m_165882_(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).isEmpty()) {
+               if (entity instanceof Player) {
+                  Player _player = (Player)entity;
+                  _player.getInventory().armor.set(1, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_LEGGINGS.get()));
+                  _player.getInventory().setChanged();
+               } else if (entity instanceof LivingEntity) {
+                  LivingEntity _living = (LivingEntity)entity;
+                  _living.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike)JujutsucraftModItems.CLOTHES_FUSHIGURO_TOJI_LEGGINGS.get()));
+               }
+
+               if (entity instanceof Player) {
+                  Player _player = (Player)entity;
+                  _player.getInventory().armor.set(0, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
+                  _player.getInventory().setChanged();
+               } else if (entity instanceof LivingEntity) {
+                  LivingEntity _living = (LivingEntity)entity;
+                  _living.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike)JujutsucraftModItems.UNIFORM_GOJO_BOOTS.get()));
+               }
+
+               if (world.getEntitiesOfClass(SukunaPerfectEntity.class, AABB.ofSize(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).isEmpty()) {
+                  if (world.getEntitiesOfClass(SukunaFushiguroEntity.class, AABB.ofSize(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).isEmpty()) {
                      return;
                   }
 
-                  Entity _datEntSetL = (Entity)world.m_6443_(SukunaFushiguroEntity.class, AABB.m_165882_(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).stream().sorted(((<undefinedtype>)(new Object() {
-                     Comparator<Entity> compareDistOf(double _x, double _y, double _z) {
-                        return Comparator.comparingDouble((_entcnd) -> _entcnd.m_20275_(_x, _y, _z));
-                     }
-                  })).compareDistOf(x, y, z)).findFirst().orElse((Object)null);
+                  Entity _datEntSetL = (Entity)world.getEntitiesOfClass(SukunaFushiguroEntity.class, AABB.ofSize(new Vec3(x, y, z), 48.0, 48.0, 48.0), (e) -> true).stream().sorted(InlineMethodHandler.compareDistOf(x, y, z)).findFirst().orElse((SukunaFushiguroEntity) null);
                   if (!(_datEntSetL instanceof SukunaFushiguroEntity)) {
                      return;
                   }
 
-                  SukunaFushiguroEntity _datEntL15 = (SukunaFushiguroEntity)_datEntSetL;
-                  if (!(Boolean)_datEntL15.m_20088_().m_135370_(SukunaFushiguroEntity.DATA_perfect_mode)) {
+                  SukunaFushiguroEntity _datEntL17 = (SukunaFushiguroEntity)_datEntSetL;
+                  if (!(Boolean)_datEntL17.getEntityData().get(SukunaFushiguroEntity.DATA_perfect_mode)) {
                      return;
                   }
                }
 
                if (entity instanceof GojoSatoruEntity) {
                   GojoSatoruEntity _datEntSetL = (GojoSatoruEntity)entity;
-                  _datEntSetL.m_20088_().m_135381_(GojoSatoruEntity.DATA_ghost, true);
+                  _datEntSetL.getEntityData().set(GojoSatoruEntity.DATA_ghost, true);
                }
 
                if (entity instanceof GojoSatoruEntity) {
@@ -165,7 +180,7 @@ public class SetTagJujutsuSorcererProcedure {
                   animatable.setTexture("gojo_satoru_ghost");
                }
 
-               entity.getPersistentData().m_128347_("cnt_learn_domain", 1.0);
+               entity.getPersistentData().putDouble("cnt_learn_domain", 1.0);
             }
          }
 

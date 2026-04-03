@@ -21,27 +21,27 @@ public class ParticleDismantleItadoriParticle extends TextureSheetParticle {
    protected ParticleDismantleItadoriParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
       super(world, x, y, z);
       this.spriteSet = spriteSet;
-      this.m_107250_(8.0F, 8.0F);
-      this.f_107663_ *= 8.0F;
-      this.f_107225_ = Math.max(1, 8 + (this.f_107223_.m_188503_(8) - 4));
-      this.f_107226_ = 0.0F;
-      this.f_107219_ = false;
-      this.f_107215_ = vx * 1.0;
-      this.f_107216_ = vy * 1.0;
-      this.f_107217_ = vz * 1.0;
-      this.m_108335_(spriteSet);
+      this.setSize(8.0F, 8.0F);
+      this.quadSize *= 8.0F;
+      this.lifetime = Math.max(1, 8 + (this.random.nextInt(8) - 4));
+      this.gravity = 0.0F;
+      this.hasPhysics = false;
+      this.xd = vx * 1.0;
+      this.yd = vy * 1.0;
+      this.zd = vz * 1.0;
+      this.pickSprite(spriteSet);
    }
 
-   public int m_6355_(float partialTick) {
+   public int getLightColor(float partialTick) {
       return 15728880;
    }
 
-   public ParticleRenderType m_7556_() {
-      return ParticleRenderType.f_107432_;
+   public ParticleRenderType getRenderType() {
+      return ParticleRenderType.PARTICLE_SHEET_LIT;
    }
 
-   public void m_5989_() {
-      super.m_5989_();
+   public void tick() {
+      super.tick();
    }
 
    public static class ParticleDismantleItadoriParticleProvider implements ParticleProvider<SimpleParticleType> {

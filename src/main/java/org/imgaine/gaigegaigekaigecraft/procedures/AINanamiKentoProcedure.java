@@ -19,21 +19,21 @@ public class AINanamiKentoProcedure {
          double rnd = 0.0;
          double tick = 0.0;
          double distance = 0.0;
-         if (entity.m_6084_()) {
+         if (entity.isAlive()) {
             label131: {
                AIActiveProcedure.execute(world, x, y, z, entity);
-               entity.getPersistentData().m_128347_("cnt_nanami", entity.getPersistentData().m_128459_("cnt_nanami") + 1.0);
+               entity.getPersistentData().putDouble("cnt_nanami", entity.getPersistentData().getDouble("cnt_nanami") + 1.0);
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt3 = (LivingEntity)entity;
-                  if (_livEnt3.m_21023_(MobEffects.f_19600_)) {
+                  if (_livEnt3.hasEffect(MobEffects.DAMAGE_BOOST)) {
                      break label131;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 2147483647, 10, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2147483647, 10, false, false));
                   }
                }
             }
@@ -41,7 +41,7 @@ public class AINanamiKentoProcedure {
             label138: {
                if (world instanceof Level) {
                   Level _lvl5 = (Level)world;
-                  if (_lvl5.m_46461_()) {
+                  if (_lvl5.isDay()) {
                      break label138;
                   }
                }
@@ -50,8 +50,8 @@ public class AINanamiKentoProcedure {
                label124: {
                   if (entity instanceof LivingEntity) {
                      LivingEntity _livEnt = (LivingEntity)entity;
-                     if (_livEnt.m_21023_(MobEffects.f_19600_)) {
-                        var10000 = _livEnt.m_21124_(MobEffects.f_19600_).m_19564_();
+                     if (_livEnt.hasEffect(MobEffects.DAMAGE_BOOST)) {
+                        var10000 = _livEnt.getEffect(MobEffects.DAMAGE_BOOST).getAmplifier();
                         break label124;
                      }
                   }
@@ -61,8 +61,8 @@ public class AINanamiKentoProcedure {
 
                if (var10000 <= 11 && entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19600_, 100, 11, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 11, false, false));
                   }
                }
             }
@@ -70,15 +70,15 @@ public class AINanamiKentoProcedure {
             label116: {
                if (entity instanceof LivingEntity) {
                   LivingEntity _livEnt8 = (LivingEntity)entity;
-                  if (_livEnt8.m_21023_(MobEffects.f_19606_)) {
+                  if (_livEnt8.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
                      break label116;
                   }
                }
 
                if (entity instanceof LivingEntity) {
                   LivingEntity _entity = (LivingEntity)entity;
-                  if (!_entity.m_9236_().m_5776_()) {
-                     _entity.m_7292_(new MobEffectInstance(MobEffects.f_19606_, 2147483647, 3, false, false));
+                  if (!_entity.level().isClientSide()) {
+                     _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2147483647, 3, false, false));
                   }
                }
             }
@@ -86,27 +86,27 @@ public class AINanamiKentoProcedure {
             LivingEntity var33;
             if (entity instanceof Mob) {
                Mob _mobEnt = (Mob)entity;
-               var33 = _mobEnt.m_5448_();
+               var33 = _mobEnt.getTarget();
             } else {
                var33 = null;
             }
 
             if (var33 instanceof LivingEntity) {
-               entity.getPersistentData().m_128347_("cnt_x", entity.getPersistentData().m_128459_("cnt_x") + 1.0);
-               if (entity.getPersistentData().m_128459_("cnt_x") > 10.0 && entity.getPersistentData().m_128459_("skill") == 0.0) {
-                  entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", entity.getPersistentData().getDouble("cnt_x") + 1.0);
+               if (entity.getPersistentData().getDouble("cnt_x") > 10.0 && entity.getPersistentData().getDouble("skill") == 0.0) {
+                  entity.getPersistentData().putDouble("cnt_x", 0.0);
                   ResetCounterProcedure.execute(entity);
                   distance = GetDistanceProcedure.execute(entity);
-                  if (LogicStartPassiveProcedure.execute(entity) && entity.getPersistentData().m_128459_("cnt_nanami") > 0.0) {
-                     entity.getPersistentData().m_128347_("cnt_nanami", -60.0);
+                  if (LogicStartPassiveProcedure.execute(entity) && entity.getPersistentData().getDouble("cnt_nanami") > 0.0) {
+                     entity.getPersistentData().putDouble("cnt_nanami", -60.0);
                      WeaponNanamiRightClickedInAirProcedure.execute(world, entity);
                   }
 
-                  if (LogicStartProcedure.execute(entity) && Math.random() > 0.9 && distance < 12.0 && entity.getPersistentData().m_128459_("cnt_target") > 600.0) {
+                  if (LogicStartProcedure.execute(entity) && Math.random() > 0.9 && distance < 36.0 && entity.getPersistentData().getDouble("cnt_target") > 600.0) {
                      float var34;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        var34 = _livEnt.m_21223_();
+                        var34 = _livEnt.getHealth();
                      } else {
                         var34 = -1.0F;
                      }
@@ -115,7 +115,7 @@ public class AINanamiKentoProcedure {
                      float var10001;
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt = (LivingEntity)entity;
-                        var10001 = _livEnt.m_21233_();
+                        var10001 = _livEnt.getMaxHealth();
                      } else {
                         var10001 = -1.0F;
                      }
@@ -123,18 +123,18 @@ public class AINanamiKentoProcedure {
                      if (var35 < (double)var10001 * 0.5) {
                         rnd = 10.0;
                         tick = 200.0;
-                        entity.getPersistentData().m_128347_("skill", 1300.0 + rnd);
+                        entity.getPersistentData().putDouble("skill", 1300.0 + rnd);
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME.get(), (int)tick, 0, false, false));
                            }
                         }
 
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                               return;
                            }
                         }
@@ -146,25 +146,25 @@ public class AINanamiKentoProcedure {
                   label98: {
                      if (entity instanceof LivingEntity) {
                         LivingEntity _livEnt25 = (LivingEntity)entity;
-                        if (_livEnt25.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
+                        if (_livEnt25.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
                            break label98;
                         }
                      }
 
                      if (Math.random() < 0.2 && distance < 8.0) {
-                        entity.getPersistentData().m_128347_("skill", (double)Math.round(1306.0F));
+                        entity.getPersistentData().putDouble("skill", (double)Math.round(1307.0F));
                         tick = 50.0;
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.CURSED_TECHNIQUE.get(), 2147483647, 0, false, false));
                            }
                         }
 
                         if (entity instanceof LivingEntity) {
                            LivingEntity _entity = (LivingEntity)entity;
-                           if (!_entity.m_9236_().m_5776_()) {
-                              _entity.m_7292_(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)tick, 0, false, false));
+                           if (!_entity.level().isClientSide()) {
+                              _entity.addEffect(new MobEffectInstance((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get(), (int)tick, 0, false, false));
                               return;
                            }
                         }
@@ -176,7 +176,7 @@ public class AINanamiKentoProcedure {
                   CalculateAttackProcedure.execute(world, entity);
                }
             } else {
-               entity.getPersistentData().m_128347_("cnt_x", 0.0);
+               entity.getPersistentData().putDouble("cnt_x", 0.0);
             }
          }
 

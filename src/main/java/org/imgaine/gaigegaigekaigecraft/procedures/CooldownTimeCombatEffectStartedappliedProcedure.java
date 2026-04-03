@@ -18,8 +18,8 @@ public class CooldownTimeCombatEffectStartedappliedProcedure {
             double StartTimer = 0.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.COOLDOWN_TIME_COMBAT.get()).getDuration();
                   break label19;
                }
             }
@@ -30,10 +30,10 @@ public class CooldownTimeCombatEffectStartedappliedProcedure {
          double var4 = var10000;
          if (entity instanceof Player) {
             Player _player = (Player)entity;
-            _player.m_36335_().m_41524_(Items.f_42524_, (int)var4);
+            _player.getCooldowns().addCooldown(Items.CLOCK, (int)var4);
          }
 
-         entity.getPersistentData().m_128347_("COOLDOWN_TICKS", Math.max(entity.getPersistentData().m_128459_("COOLDOWN_TICKS"), (double)Math.round(var4)));
+         entity.getPersistentData().putDouble("COOLDOWN_TICKS", Math.max(entity.getPersistentData().getDouble("COOLDOWN_TICKS"), (double)Math.round(var4)));
       }
    }
 }

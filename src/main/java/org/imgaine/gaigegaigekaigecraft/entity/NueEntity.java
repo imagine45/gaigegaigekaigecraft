@@ -86,288 +86,288 @@ public class NueEntity extends Monster implements GeoEntity {
       this.cache = GeckoLibUtil.createInstanceCache(this);
       this.animationprocedure = "empty";
       this.prevAnim = "empty";
-      this.f_21364_ = 0;
-      this.m_21557_(false);
-      this.m_274367_(0.6F);
-      this.m_21530_();
-      this.f_21342_ = new FlyingMoveControl(this, 10, true);
+      this.xpReward = 0;
+      this.setNoAi(false);
+      this.setMaxUpStep(0.6F);
+      this.setPersistenceRequired();
+      this.moveControl = new FlyingMoveControl(this, 10, true);
    }
 
-   protected void m_8097_() {
-      super.m_8097_();
-      this.f_19804_.m_135372_(SHOOT, false);
-      this.f_19804_.m_135372_(ANIMATION, "undefined");
-      this.f_19804_.m_135372_(TEXTURE, "nue");
+   protected void defineSynchedData() {
+      super.defineSynchedData();
+      this.entityData.define(SHOOT, false);
+      this.entityData.define(ANIMATION, "undefined");
+      this.entityData.define(TEXTURE, "nue");
    }
 
    public void setTexture(String texture) {
-      this.f_19804_.m_135381_(TEXTURE, texture);
+      this.entityData.set(TEXTURE, texture);
    }
 
    public String getTexture() {
-      return (String)this.f_19804_.m_135370_(TEXTURE);
+      return (String)this.entityData.get(TEXTURE);
    }
 
-   public Packet<ClientGamePacketListener> m_5654_() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 
-   protected PathNavigation m_6037_(Level world) {
+   protected PathNavigation createNavigation(Level world) {
       return new FlyingPathNavigation(this, world);
    }
 
-   protected void m_8099_() {
-      super.m_8099_();
-      this.f_21345_.m_25352_(1, new Goal() {
+   protected void registerGoals() {
+      super.registerGoals();
+      this.goalSelector.addGoal(1, new Goal() {
          {
-            this.m_7021_(EnumSet.of(Flag.MOVE));
+            this.setFlags(EnumSet.of(Flag.MOVE));
          }
 
-         public boolean m_8036_() {
-            if (NueEntity.this.m_5448_() != null && !NueEntity.this.m_21566_().m_24995_()) {
-               double x = NueEntity.this.m_20185_();
-               double y = NueEntity.this.m_20186_();
-               double z = NueEntity.this.m_20189_();
+         public boolean canUse() {
+            if (NueEntity.this.getTarget() != null && !NueEntity.this.getMoveControl().hasWanted()) {
+               double x = NueEntity.this.getX();
+               double y = NueEntity.this.getY();
+               double z = NueEntity.this.getZ();
                Entity entity = NueEntity.this;
-               Level world = NueEntity.this.m_9236_();
+               Level world = NueEntity.this.level();
                return LogicAttackTargetProcedure.execute(entity);
             } else {
                return false;
             }
          }
 
-         public boolean m_8045_() {
-            return NueEntity.this.m_21566_().m_24995_() && NueEntity.this.m_5448_() != null && NueEntity.this.m_5448_().m_6084_();
+         public boolean canContinueToUse() {
+            return NueEntity.this.getMoveControl().hasWanted() && NueEntity.this.getTarget() != null && NueEntity.this.getTarget().isAlive();
          }
 
-         public void m_8056_() {
-            LivingEntity livingentity = NueEntity.this.m_5448_();
-            Vec3 vec3d = livingentity.m_20299_(1.0F);
-            NueEntity.this.f_21342_.m_6849_(vec3d.f_82479_, vec3d.f_82480_, vec3d.f_82481_, 2.0);
+         public void start() {
+            LivingEntity livingentity = NueEntity.this.getTarget();
+            Vec3 vec3d = livingentity.getEyePosition(1.0F);
+            NueEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 2.0);
          }
 
-         public void m_8037_() {
-            LivingEntity livingentity = NueEntity.this.m_5448_();
-            if (NueEntity.this.m_20191_().m_82381_(livingentity.m_20191_())) {
-               NueEntity.this.m_7327_(livingentity);
+         public void tick() {
+            LivingEntity livingentity = NueEntity.this.getTarget();
+            if (NueEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
+               NueEntity.this.doHurtTarget(livingentity);
             } else {
-               double d0 = NueEntity.this.m_20280_(livingentity);
+               double d0 = NueEntity.this.distanceToSqr(livingentity);
                if (d0 < 0.0) {
-                  Vec3 vec3d = livingentity.m_20299_(1.0F);
-                  NueEntity.this.f_21342_.m_6849_(vec3d.f_82479_, vec3d.f_82480_, vec3d.f_82481_, 2.0);
+                  Vec3 vec3d = livingentity.getEyePosition(1.0F);
+                  NueEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 2.0);
                }
             }
 
          }
       });
-      this.f_21345_.m_25352_(2, new MeleeAttackGoal(this, 1.4, true) {
-         protected double m_6639_(LivingEntity entity) {
+      this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.4, true) {
+         protected double getAttackReachSqr(LivingEntity entity) {
             return 0.0;
          }
 
-         public boolean m_8036_() {
-            double x = NueEntity.this.m_20185_();
-            double y = NueEntity.this.m_20186_();
-            double z = NueEntity.this.m_20189_();
+         public boolean canUse() {
+            double x = NueEntity.this.getX();
+            double y = NueEntity.this.getY();
+            double z = NueEntity.this.getZ();
             Entity entity = NueEntity.this;
-            Level world = NueEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetProcedure.execute(entity);
+            Level world = NueEntity.this.level();
+            return super.canUse() && LogicAttackTargetProcedure.execute(entity);
          }
       });
-      this.f_21346_.m_25352_(3, new HurtByTargetGoal(this, new Class[0]));
-      this.f_21346_.m_25352_(4, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
-         public boolean m_8036_() {
-            double x = NueEntity.this.m_20185_();
-            double y = NueEntity.this.m_20186_();
-            double z = NueEntity.this.m_20189_();
+      this.targetSelector.addGoal(3, new HurtByTargetGoal(this, new Class[0]));
+      this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Monster.class, false, false) {
+         public boolean canUse() {
+            double x = NueEntity.this.getX();
+            double y = NueEntity.this.getY();
+            double z = NueEntity.this.getZ();
             Entity entity = NueEntity.this;
-            Level world = NueEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = NueEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = NueEntity.this.m_20185_();
-            double y = NueEntity.this.m_20186_();
-            double z = NueEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = NueEntity.this.getX();
+            double y = NueEntity.this.getY();
+            double z = NueEntity.this.getZ();
             Entity entity = NueEntity.this;
-            Level world = NueEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = NueEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21346_.m_25352_(5, new NearestAttackableTargetGoal(this, Player.class, false, false) {
-         public boolean m_8036_() {
-            double x = NueEntity.this.m_20185_();
-            double y = NueEntity.this.m_20186_();
-            double z = NueEntity.this.m_20189_();
+      this.targetSelector.addGoal(5, new NearestAttackableTargetGoal(this, Player.class, false, false) {
+         public boolean canUse() {
+            double x = NueEntity.this.getX();
+            double y = NueEntity.this.getY();
+            double z = NueEntity.this.getZ();
             Entity entity = NueEntity.this;
-            Level world = NueEntity.this.m_9236_();
-            return super.m_8036_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = NueEntity.this.level();
+            return super.canUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
 
-         public boolean m_8045_() {
-            double x = NueEntity.this.m_20185_();
-            double y = NueEntity.this.m_20186_();
-            double z = NueEntity.this.m_20189_();
+         public boolean canContinueToUse() {
+            double x = NueEntity.this.getX();
+            double y = NueEntity.this.getY();
+            double z = NueEntity.this.getZ();
             Entity entity = NueEntity.this;
-            Level world = NueEntity.this.m_9236_();
-            return super.m_8045_() && LogicAttackTargetStartProcedure.execute(world, entity);
+            Level world = NueEntity.this.level();
+            return super.canContinueToUse() && LogicAttackTargetStartProcedure.execute(world, entity);
          }
       });
-      this.f_21345_.m_25352_(6, new RandomStrollGoal(this, 1.0));
-      this.f_21345_.m_25352_(7, new RandomLookAroundGoal(this));
-      this.f_21345_.m_25352_(8, new FloatGoal(this));
+      this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0));
+      this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+      this.goalSelector.addGoal(8, new FloatGoal(this));
    }
 
-   public MobType m_6336_() {
-      return MobType.f_21640_;
+   public MobType getMobType() {
+      return MobType.UNDEFINED;
    }
 
-   public boolean m_6785_(double distanceToClosestPlayer) {
+   public boolean removeWhenFarAway(double distanceToClosestPlayer) {
       return false;
    }
 
-   public double m_6048_() {
-      return super.m_6048_() + -2.5;
+   public double getPassengersRidingOffset() {
+      return super.getPassengersRidingOffset() + -2.5;
    }
 
-   public SoundEvent m_7975_(DamageSource ds) {
+   public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
    }
 
-   public SoundEvent m_5592_() {
+   public SoundEvent getDeathSound() {
       return (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
    }
 
-   public boolean m_142535_(float l, float d, DamageSource source) {
+   public boolean causeFallDamage(float l, float d, DamageSource source) {
       return false;
    }
 
-   public boolean m_6469_(DamageSource source, float amount) {
-      if (source.m_276093_(DamageTypes.f_268671_)) {
+   public boolean hurt(DamageSource source, float amount) {
+      if (source.is(DamageTypes.FALL)) {
          return false;
       } else {
-         return source.m_276093_(DamageTypes.f_268450_) ? false : super.m_6469_(source, amount);
+         return source.is(DamageTypes.LIGHTNING_BOLT) ? false : super.hurt(source, amount);
       }
    }
 
-   public void m_6667_(DamageSource source) {
-      super.m_6667_(source);
-      DieTenShadowsTechniqueProcedure.execute(this.m_9236_(), this);
+   public void die(DamageSource source) {
+      super.die(source);
+      DieTenShadowsTechniqueProcedure.execute(this.level(), this);
    }
 
-   public SpawnGroupData m_6518_(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-      SpawnGroupData retval = super.m_6518_(world, difficulty, reason, livingdata, tag);
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+      SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
       SetTagProcedure.execute(world, this);
       return retval;
    }
 
-   public void m_7380_(CompoundTag compound) {
-      super.m_7380_(compound);
-      compound.m_128359_("Texture", this.getTexture());
+   public void addAdditionalSaveData(CompoundTag compound) {
+      super.addAdditionalSaveData(compound);
+      compound.putString("Texture", this.getTexture());
    }
 
-   public void m_7378_(CompoundTag compound) {
-      super.m_7378_(compound);
-      if (compound.m_128441_("Texture")) {
-         this.setTexture(compound.m_128461_("Texture"));
+   public void readAdditionalSaveData(CompoundTag compound) {
+      super.readAdditionalSaveData(compound);
+      if (compound.contains("Texture")) {
+         this.setTexture(compound.getString("Texture"));
       }
 
    }
 
-   public InteractionResult m_6071_(Player sourceentity, InteractionHand hand) {
-      sourceentity.m_21120_(hand);
-      InteractionResult retval = InteractionResult.m_19078_(this.m_9236_().m_5776_());
-      super.m_6071_(sourceentity, hand);
-      sourceentity.m_20329_(this);
-      double x = this.m_20185_();
-      double y = this.m_20186_();
-      double z = this.m_20189_();
-      Level world = this.m_9236_();
+   public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
+      sourceentity.getItemInHand(hand);
+      InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+      super.mobInteract(sourceentity, hand);
+      sourceentity.startRiding(this);
+      double x = this.getX();
+      double y = this.getY();
+      double z = this.getZ();
+      Level world = this.level();
       TenShadowsTechniqueProcedure.execute(world, x, y, z, this, sourceentity);
       return retval;
    }
 
-   public void m_6075_() {
-      super.m_6075_();
-      AINueProcedure.execute(this.m_9236_(), this.m_20185_(), this.m_20186_(), this.m_20189_(), this);
-      this.m_6210_();
+   public void baseTick() {
+      super.baseTick();
+      AINueProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+      this.refreshDimensions();
    }
 
-   public EntityDimensions m_6972_(Pose p_33597_) {
-      Level world = this.m_9236_();
-      double x = this.m_20185_();
-      double y = ((Entity)this).m_20186_();
-      double z = ((Entity)this).m_20189_();
-      return super.m_6972_(p_33597_).m_20388_((float)SizeByNBTProcedure.execute(this));
+   public EntityDimensions getDimensions(Pose p_33597_) {
+      Level world = this.level();
+      double x = this.getX();
+      double y = ((Entity)this).getY();
+      double z = ((Entity)this).getZ();
+      return super.getDimensions(p_33597_).scale((float)SizeByNBTProcedure.execute(this));
    }
 
-   public void m_7023_(Vec3 dir) {
-      Entity entity = this.m_20197_().isEmpty() ? null : (Entity)this.m_20197_().get(0);
-      if (this.m_20160_()) {
-         this.m_146922_(entity.m_146908_());
-         this.f_19859_ = this.m_146908_();
-         this.m_146926_(entity.m_146909_() * 0.5F);
-         this.m_19915_(this.m_146908_(), this.m_146909_());
-         this.f_20883_ = entity.m_146908_();
-         this.f_20885_ = entity.m_146908_();
+   public void travel(Vec3 dir) {
+      Entity entity = this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+      if (this.isVehicle()) {
+         this.setYRot(entity.getYRot());
+         this.yRotO = this.getYRot();
+         this.setXRot(entity.getXRot() * 0.5F);
+         this.setRot(this.getYRot(), this.getXRot());
+         this.yBodyRot = entity.getYRot();
+         this.yHeadRot = entity.getYRot();
          if (entity instanceof LivingEntity) {
             LivingEntity passenger = (LivingEntity)entity;
-            this.m_7910_((float)this.m_21133_(Attributes.f_22279_));
-            float forward = passenger.f_20902_;
+            this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            float forward = passenger.zza;
             float strafe = 0.0F;
-            super.m_7023_(new Vec3((double)strafe, 0.0, (double)forward));
+            super.travel(new Vec3((double)strafe, 0.0, (double)forward));
          }
 
-         double d1 = this.m_20185_() - this.f_19854_;
-         double d0 = this.m_20189_() - this.f_19856_;
+         double d1 = this.getX() - this.xo;
+         double d0 = this.getZ() - this.zo;
          float f1 = (float)Math.sqrt(d1 * d1 + d0 * d0) * 4.0F;
          if (f1 > 1.0F) {
             f1 = 1.0F;
          }
 
-         this.f_267362_.m_267771_(this.f_267362_.m_267731_() + (f1 - this.f_267362_.m_267731_()) * 0.4F);
-         this.f_267362_.m_267590_(this.f_267362_.m_267756_() + this.f_267362_.m_267731_());
-         this.m_267651_(true);
+         this.walkAnimation.setSpeed(this.walkAnimation.speed() + (f1 - this.walkAnimation.speed()) * 0.4F);
+         this.walkAnimation.position(this.walkAnimation.position() + this.walkAnimation.speed());
+         this.calculateEntityAnimation(true);
       } else {
-         super.m_7023_(dir);
+         super.travel(dir);
       }
    }
 
-   protected void m_7840_(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+   protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
    }
 
-   public void m_20242_(boolean ignored) {
-      super.m_20242_(true);
+   public void setNoGravity(boolean ignored) {
+      super.setNoGravity(true);
    }
 
-   public void m_8107_() {
-      super.m_8107_();
-      this.m_20242_(true);
+   public void aiStep() {
+      super.aiStep();
+      this.setNoGravity(true);
    }
 
    public static void init() {
    }
 
    public static AttributeSupplier.Builder createAttributes() {
-      AttributeSupplier.Builder builder = Mob.m_21552_();
-      builder = builder.m_22268_(Attributes.f_22279_, 0.3);
-      builder = builder.m_22268_(Attributes.f_22276_, 125.0);
-      builder = builder.m_22268_(Attributes.f_22284_, 5.0);
-      builder = builder.m_22268_(Attributes.f_22281_, 1.0);
-      builder = builder.m_22268_(Attributes.f_22277_, 16.0);
-      builder = builder.m_22268_(Attributes.f_22278_, 0.25);
-      builder = builder.m_22268_(Attributes.f_22282_, 0.5);
-      builder = builder.m_22268_(Attributes.f_22280_, 0.3);
+      AttributeSupplier.Builder builder = Mob.createMobAttributes();
+      builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+      builder = builder.add(Attributes.MAX_HEALTH, 125.0);
+      builder = builder.add(Attributes.ARMOR, 5.0);
+      builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0);
+      builder = builder.add(Attributes.FOLLOW_RANGE, 16.0);
+      builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 0.25);
+      builder = builder.add(Attributes.ATTACK_KNOCKBACK, 0.5);
+      builder = builder.add(Attributes.FLYING_SPEED, 0.3);
       return builder;
    }
 
    private PlayState movementPredicate(AnimationState event) {
       if (this.animationprocedure.equals("empty")) {
          if (!event.isMoving() && event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F) {
-            if (this.m_21224_()) {
+            if (this.isDeadOrDying()) {
                return event.setAndContinue(RawAnimation.begin().thenPlay("death"));
             } else {
-               return this.m_6144_() ? event.setAndContinue(RawAnimation.begin().thenLoop("guard")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+               return this.isShiftKeyDown() ? event.setAndContinue(RawAnimation.begin().thenLoop("guard")) : event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
             }
          } else {
             return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
@@ -378,40 +378,47 @@ public class NueEntity extends Monster implements GeoEntity {
    }
 
    private PlayState procedurePredicate(AnimationState event) {
-      if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
+      String syncedAnim = (String)this.entityData.get(ANIMATION);
+      if (!syncedAnim.equals("undefined")) {
+         this.animationprocedure = syncedAnim;
+         this.entityData.set(ANIMATION, "undefined");
+      }
+
+      if (!this.animationprocedure.equals("empty") && !this.animationprocedure.equals("undefined")) {
          if (!this.animationprocedure.equals(this.prevAnim)) {
             event.getController().forceAnimationReset();
-         }
-
-         event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-         if (event.getController().getAnimationState() == State.STOPPED) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            this.prevAnim = this.animationprocedure;
+            return PlayState.CONTINUE;
+         } else if (event.getController().getAnimationState() == State.STOPPED) {
             this.animationprocedure = "empty";
-            event.getController().forceAnimationReset();
+            this.prevAnim = "empty";
+            return PlayState.STOP;
+         } else {
+            return PlayState.CONTINUE;
          }
-      } else if (this.animationprocedure.equals("empty")) {
+      } else {
          this.prevAnim = "empty";
          return PlayState.STOP;
       }
-
-      this.prevAnim = this.animationprocedure;
-      return PlayState.CONTINUE;
    }
 
-   protected void m_6153_() {
-      ++this.f_20919_;
-      if (this.f_20919_ == 20) {
-         this.m_142687_(RemovalReason.KILLED);
-         this.m_21226_();
+   protected void tickDeath() {
+      ++this.deathTime;
+      if (this.deathTime == 20) {
+         this.remove(RemovalReason.KILLED);
+         this.dropExperience();
       }
 
    }
 
    public String getSyncedAnimation() {
-      return (String)this.f_19804_.m_135370_(ANIMATION);
+      return (String)this.entityData.get(ANIMATION);
    }
 
    public void setAnimation(String animation) {
-      this.f_19804_.m_135381_(ANIMATION, animation);
+      this.entityData.set(ANIMATION, animation);
+      this.animationprocedure = animation;
    }
 
    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
@@ -424,8 +431,8 @@ public class NueEntity extends Monster implements GeoEntity {
    }
 
    static {
-      SHOOT = SynchedEntityData.m_135353_(NueEntity.class, EntityDataSerializers.f_135035_);
-      ANIMATION = SynchedEntityData.m_135353_(NueEntity.class, EntityDataSerializers.f_135030_);
-      TEXTURE = SynchedEntityData.m_135353_(NueEntity.class, EntityDataSerializers.f_135030_);
+      SHOOT = SynchedEntityData.defineId(NueEntity.class, EntityDataSerializers.BOOLEAN);
+      ANIMATION = SynchedEntityData.defineId(NueEntity.class, EntityDataSerializers.STRING);
+      TEXTURE = SynchedEntityData.defineId(NueEntity.class, EntityDataSerializers.STRING);
    }
 }

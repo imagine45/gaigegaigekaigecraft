@@ -1,8 +1,9 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import net.minecraftforge.common.util.NonNullConsumer;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModItems;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import org.imgaine.gaigegaigekaigecraft.network.JujutsucraftModVariables;
@@ -29,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class AuthenticMutualLoveActiveProcedure {
    public AuthenticMutualLoveActiveProcedure() {
@@ -42,7 +44,7 @@ public class AuthenticMutualLoveActiveProcedure {
          double var10000;
          label180: {
             String STR1 = "";
-            ItemStack item_a = ItemStack.f_41583_;
+            ItemStack item_a = ItemStack.EMPTY;
             boolean failed = false;
             boolean logic_attack = false;
             double old_skill = 0.0;
@@ -60,8 +62,8 @@ public class AuthenticMutualLoveActiveProcedure {
             range = JujutsucraftModVariables.MapVariables.get(world).DomainExpansionRadius * 2.0;
             if (entity instanceof LivingEntity) {
                LivingEntity _livEnt = (LivingEntity)entity;
-               if (_livEnt.m_21023_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
-                  var10000 = (double)_livEnt.m_21124_((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).m_19557_();
+               if (_livEnt.hasEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get())) {
+                  var10000 = (double)_livEnt.getEffect((MobEffect)JujutsucraftModMobEffects.DOMAIN_EXPANSION.get()).getDuration();
                   break label180;
                }
             }
@@ -70,27 +72,32 @@ public class AuthenticMutualLoveActiveProcedure {
          }
 
          double var50 = var10000;
-         if (!entity.getPersistentData().m_128471_("Failed")) {
-            double var46 = entity.getPersistentData().m_128459_("skill");
-            double var48 = entity.getPersistentData().m_128459_("COOLDOWN_TICKS");
+         if (!entity.getPersistentData().getBoolean("Failed")) {
+            double var46 = entity.getPersistentData().getDouble("skill");
+            double var48 = entity.getPersistentData().getDouble("COOLDOWN_TICKS");
             String var42 = "";
             boolean var45 = false;
             if (entity instanceof Player) {
                AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference();
                LazyOptional var78 = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, (Direction)null);
                Objects.requireNonNull(_iitemhandlerref);
-               var78.ifPresent(_iitemhandlerref::set);
+               var78.ifPresent(new NonNullConsumer<IItemHandler>() {
+                  @Override
+                  public void accept(@NotNull IItemHandler o) {
+                     _iitemhandlerref.set(o);
+                  }
+               });
                if (_iitemhandlerref.get() != null) {
                   for(int _idx = 0; _idx < ((IItemHandler)_iitemhandlerref.get()).getSlots(); ++_idx) {
-                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).m_41777_();
-                     if (itemstackiterator.m_41720_() == JujutsucraftModItems.COPIED_CURSED_TECHNIQUE.get() && itemstackiterator.m_41784_().m_128459_("skill") > 0.0) {
+                     ItemStack itemstackiterator = ((IItemHandler)_iitemhandlerref.get()).getStackInSlot(_idx).copy();
+                     if (itemstackiterator.getItem() == JujutsucraftModItems.COPIED_CURSED_TECHNIQUE.get() && itemstackiterator.getOrCreateTag().getDouble("skill") > 0.0) {
                         var45 = true;
-                        entity.getPersistentData().m_128347_("skill", itemstackiterator.m_41784_().m_128459_("skill"));
-                        entity.getPersistentData().m_128347_("effect", itemstackiterator.m_41784_().m_128459_("effect"));
-                        entity.getPersistentData().m_128347_("COOLDOWN_TICKS", itemstackiterator.m_41784_().m_128459_("COOLDOWN_TICKS"));
-                        num1 = itemstackiterator.m_41784_().m_128459_("COOLDOWN_TICKS");
-                        var42 = itemstackiterator.m_41784_().m_128461_("SHIKIGAMI_NAME");
-                        HP = itemstackiterator.m_41784_().m_128459_("SHIKIGAMI_HP");
+                        entity.getPersistentData().putDouble("skill", itemstackiterator.getOrCreateTag().getDouble("skill"));
+                        entity.getPersistentData().putDouble("effect", itemstackiterator.getOrCreateTag().getDouble("effect"));
+                        entity.getPersistentData().putDouble("COOLDOWN_TICKS", itemstackiterator.getOrCreateTag().getDouble("COOLDOWN_TICKS"));
+                        num1 = itemstackiterator.getOrCreateTag().getDouble("COOLDOWN_TICKS");
+                        var42 = itemstackiterator.getOrCreateTag().getString("SHIKIGAMI_NAME");
+                        HP = itemstackiterator.getOrCreateTag().getDouble("SHIKIGAMI_HP");
                         break;
                      }
                   }
@@ -102,20 +109,20 @@ public class AuthenticMutualLoveActiveProcedure {
                   ItemStack var73;
                   if (entity instanceof LivingEntity) {
                      LivingEntity _entGetArmor = (LivingEntity)entity;
-                     var73 = _entGetArmor.m_6844_(EquipmentSlot.m_20744_(Type.ARMOR, (int)num1));
+                     var73 = _entGetArmor.getItemBySlot(EquipmentSlot.byTypeAndIndex(Type.ARMOR, (int)num1));
                   } else {
-                     var73 = ItemStack.f_41583_;
+                     var73 = ItemStack.EMPTY;
                   }
 
-                  ItemStack var43 = var73.m_41777_();
-                  if (var43.m_41784_().m_128459_("skill") > 0.0) {
+                  ItemStack var43 = var73.copy();
+                  if (var43.getOrCreateTag().getDouble("skill") > 0.0) {
                      var45 = true;
-                     entity.getPersistentData().m_128347_("skill", var43.m_41784_().m_128459_("skill"));
-                     entity.getPersistentData().m_128347_("effect", var43.m_41784_().m_128459_("effect"));
-                     entity.getPersistentData().m_128347_("COOLDOWN_TICKS", var43.m_41784_().m_128459_("COOLDOWN_TICKS"));
-                     num1 = var43.m_41784_().m_128459_("COOLDOWN_TICKS");
-                     var42 = var43.m_41784_().m_128461_("SHIKIGAMI_NAME");
-                     HP = var43.m_41784_().m_128459_("SHIKIGAMI_HP");
+                     entity.getPersistentData().putDouble("skill", var43.getOrCreateTag().getDouble("skill"));
+                     entity.getPersistentData().putDouble("effect", var43.getOrCreateTag().getDouble("effect"));
+                     entity.getPersistentData().putDouble("COOLDOWN_TICKS", var43.getOrCreateTag().getDouble("COOLDOWN_TICKS"));
+                     num1 = var43.getOrCreateTag().getDouble("COOLDOWN_TICKS");
+                     var42 = var43.getOrCreateTag().getString("SHIKIGAMI_NAME");
+                     HP = var43.getOrCreateTag().getDouble("SHIKIGAMI_HP");
                      break;
                   }
 
@@ -128,7 +135,7 @@ public class AuthenticMutualLoveActiveProcedure {
                LivingEntity var74;
                if (entity instanceof Mob) {
                   Mob _mobEnt = (Mob)entity;
-                  var74 = _mobEnt.m_5448_();
+                  var74 = _mobEnt.getTarget();
                } else {
                   var74 = null;
                }
@@ -139,7 +146,7 @@ public class AuthenticMutualLoveActiveProcedure {
                         label189: {
                            if (entity instanceof Mob) {
                               Mob _mobEnt = (Mob)entity;
-                              var74 = _mobEnt.m_5448_();
+                              var74 = _mobEnt.getTarget();
                            } else {
                               var74 = null;
                            }
@@ -147,27 +154,27 @@ public class AuthenticMutualLoveActiveProcedure {
                            LivingEntity var41 = var74;
                            if (var41 instanceof LivingEntity) {
                               LivingEntity _livEnt39 = var41;
-                              if (_livEnt39.m_21023_((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
+                              if (_livEnt39.hasEffect((MobEffect)JujutsucraftModMobEffects.SUKUNA_EFFECT.get())) {
                                  break label189;
                               }
                            }
 
                            if (entity instanceof Mob) {
                               Mob _mobEnt = (Mob)entity;
-                              var74 = _mobEnt.m_5448_();
+                              var74 = _mobEnt.getTarget();
                            } else {
                               var74 = null;
                            }
 
-                           if (!((Entity)var74).getPersistentData().m_128471_("CursedSpirit")) {
+                           if (!((Entity)var74).getPersistentData().getBoolean("CursedSpirit")) {
                               if (entity instanceof Mob) {
                                  Mob _mobEnt = (Mob)entity;
-                                 var74 = _mobEnt.m_5448_();
+                                 var74 = _mobEnt.getTarget();
                               } else {
                                  var74 = null;
                               }
 
-                              if (!((Entity)var74).getPersistentData().m_128471_("CurseUser")) {
+                              if (!((Entity)var74).getPersistentData().getBoolean("CurseUser")) {
                                  break label197;
                               }
                            }
@@ -175,11 +182,11 @@ public class AuthenticMutualLoveActiveProcedure {
                      }
 
                      var45 = true;
-                     entity.getPersistentData().m_128347_("skill", 2815.0);
-                     entity.getPersistentData().m_128347_("effect", 0.0);
-                     entity.getPersistentData().m_128347_("COOLDOWN_TICKS", 350.0);
+                     entity.getPersistentData().putDouble("skill", 2815.0);
+                     entity.getPersistentData().putDouble("effect", 0.0);
+                     entity.getPersistentData().putDouble("COOLDOWN_TICKS", 350.0);
                      num1 = 350.0;
-                     var42 = "jujutsucraft:entity_jacobs_ladder_circle";
+                     var42 = "gaigegaigekaigecraft:entity_jacobs_ladder_circle";
                      HP = 200.0;
                   }
                }
@@ -187,45 +194,45 @@ public class AuthenticMutualLoveActiveProcedure {
 
             if (var45) {
                if (var42.isEmpty()) {
-                  if (entity.getPersistentData().m_128459_("skill") % 100.0 <= 20.0 && entity.getPersistentData().m_128459_("skill") >= 100.0 && (!(entity.getPersistentData().m_128459_("skill") >= 500.0) || !(entity.getPersistentData().m_128459_("skill") < 600.0))) {
-                     double var54 = entity.getPersistentData().m_128459_("skill_domain");
-                     entity.getPersistentData().m_128347_("skill_domain", Math.floor(entity.getPersistentData().m_128459_("skill") / 100.0));
+                  if (entity.getPersistentData().getDouble("skill") % 100.0 <= 20.0 && entity.getPersistentData().getDouble("skill") >= 100.0 && (!(entity.getPersistentData().getDouble("skill") >= 500.0) || !(entity.getPersistentData().getDouble("skill") < 600.0))) {
+                     double var54 = entity.getPersistentData().getDouble("skill_domain");
+                     entity.getPersistentData().putDouble("skill_domain", Math.floor(entity.getPersistentData().getDouble("skill") / 100.0));
                      DomainActiveProcedure.execute(world, x, y, z, entity);
-                     entity.getPersistentData().m_128347_("skill_domain", var54);
+                     entity.getPersistentData().putDouble("skill_domain", var54);
                   }
-               } else if (var50 % (double)Math.round(Math.max(Math.ceil(num1 / 75.0), 1.0) * 40.0) == 0.0 || entity.getPersistentData().m_128471_("StartDomainAttack")) {
+               } else if (var50 % (double)Math.round(Math.max(Math.ceil(num1 / 75.0), 1.0) * 40.0) == 0.0 || entity.getPersistentData().getBoolean("StartDomainAttack")) {
                   double var56 = Math.ceil(Math.max(250.0 - num1, 75.0) / 75.0);
                   boolean var44 = true;
-                  Vec3 _center = new Vec3(entity.getPersistentData().m_128459_("x_pos_doma"), entity.getPersistentData().m_128459_("y_pos_doma"), entity.getPersistentData().m_128459_("z_pos_doma"));
+                  Vec3 _center = new Vec3(entity.getPersistentData().getDouble("x_pos_doma"), entity.getPersistentData().getDouble("y_pos_doma"), entity.getPersistentData().getDouble("z_pos_doma"));
 
-                  for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(range / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                     if (entity != entityiterator && entityiterator instanceof LivingEntity && entityiterator.m_6084_() && LogicAttackDomainProcedure.execute(world, entity, entityiterator) && LogicAttackProcedure.execute(world, entity, entityiterator)) {
+                  for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(range / 2.0), (e) -> true)) {
+                     if (entity != entityiterator && entityiterator instanceof LivingEntity && entityiterator.isAlive() && LogicAttackDomainProcedure.execute(world, entity, entityiterator) && LogicAttackProcedure.execute(world, entity, entityiterator)) {
                         var44 = false;
                      }
                   }
 
                   if (var44) {
-                     entity.getPersistentData().m_128379_("StartDomainAttack", true);
+                     entity.getPersistentData().putBoolean("StartDomainAttack", true);
                   } else {
-                     entity.getPersistentData().m_128379_("StartDomainAttack", false);
+                     entity.getPersistentData().putBoolean("StartDomainAttack", false);
                      double var55 = 0.0;
 
                      for(int index1 = 0; index1 < (int)Math.round(var56); ++index1) {
                         ++var55;
                         if (Math.random() < 0.5 || var55 <= 1.0) {
                            num1 = Math.toRadians(Math.random() * 360.0);
-                           double var49 = entity.getPersistentData().m_128459_("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
-                           double var53 = entity.getPersistentData().m_128459_("y_pos_doma") + Math.random() * 0.5;
-                           double var51 = entity.getPersistentData().m_128459_("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
+                           double var49 = entity.getPersistentData().getDouble("x_pos_doma") + Math.sin(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
+                           double var53 = entity.getPersistentData().getDouble("y_pos_doma") + Math.random() * 0.5;
+                           double var51 = entity.getPersistentData().getDouble("z_pos_doma") + Math.cos(num1) * (range / 2.0 - 4.0) + Math.random() * 0.5;
                            if (world instanceof ServerLevel) {
                               ServerLevel _level = (ServerLevel)world;
-                              _level.m_7654_().m_129892_().m_230957_((new CommandSourceStack(CommandSource.f_80164_, new Vec3(var49, var53, var51), Vec2.f_82462_, _level, 4, "", Component.m_237113_(""), _level.m_7654_(), (Entity)null)).m_81324_(), "summon " + var42 + " ~ ~ ~ {Health:" + Math.round(HP) + "f,Attributes:[{Name:generic.max_health,Base:" + Math.round(HP) + "}],Rotation:[" + Math.toDegrees(num1) + "F,0F]}");
+                              _level.getServer().getCommands().performPrefixedCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(var49, var53, var51), Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), (Entity)null)).withSuppressedOutput(), "summon " + var42 + " ~ ~ ~ {Health:" + Math.round(HP) + "f,Attributes:[{Name:generic.max_health,Base:" + Math.round(HP) + "}],Rotation:[" + Math.toDegrees(num1) + "F,0F]}");
                            }
 
-                           Vec3 _center = new Vec3(var49, var53, var51);
+                           _center = new Vec3(var49, var53, var51);
 
-                           for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_(0.5), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
-                              if (entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo"))) && entityiterator.getPersistentData().m_128459_("NameRanged_ranged") == 0.0) {
+                           for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(0.5), (e) -> true)) {
+                              if (entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo"))) && entityiterator.getPersistentData().getDouble("NameRanged_ranged") == 0.0) {
                                  SetRangedAmmoProcedure.execute(entity, entityiterator);
                                  break;
                               }
@@ -236,8 +243,8 @@ public class AuthenticMutualLoveActiveProcedure {
                }
             }
 
-            entity.getPersistentData().m_128347_("skill", var46);
-            entity.getPersistentData().m_128347_("COOLDOWN_TICKS", var48);
+            entity.getPersistentData().putDouble("skill", var46);
+            entity.getPersistentData().putDouble("COOLDOWN_TICKS", var48);
          }
 
       }

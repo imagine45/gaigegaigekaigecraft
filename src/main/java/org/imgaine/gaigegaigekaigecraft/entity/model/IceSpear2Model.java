@@ -9,14 +9,14 @@ public class IceSpear2Model extends GeoModel<IceSpear2Entity> {
    }
 
    public ResourceLocation getAnimationResource(IceSpear2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "animations/ice_spear2.animation.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "animations/ice_spear2.animation.json");
    }
 
    public ResourceLocation getModelResource(IceSpear2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "geo/ice_spear2.geo.json");
+      return new ResourceLocation("gaigegaigekaigecraft", "geo/ice_spear2.geo.json");
    }
 
    public ResourceLocation getTextureResource(IceSpear2Entity entity) {
-      return new ResourceLocation("jujutsucraft", "textures/entities/" + entity.getTexture() + ".png");
+      return new ResourceLocation("gaigegaigekaigecraft", "textures/entities/" + entity.getTexture() + ".png");
    }
 }

@@ -1,6 +1,5 @@
 package org.imgaine.gaigegaigekaigecraft.procedures;
 
-import java.util.Comparator;
 import org.imgaine.gaigegaigekaigecraft.init.JujutsucraftModMobEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -39,25 +38,25 @@ public class HarisenEntitySwingsItemProcedure {
          double damage = 0.0;
          if (entity instanceof LivingEntity) {
             LivingEntity _livEnt0 = (LivingEntity)entity;
-            if (_livEnt0.m_21023_((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get())) {
-               if (entity.getPersistentData().m_128459_("friend_num") == 0.0) {
-                  entity.getPersistentData().m_128347_("friend_num", Math.random());
+            if (_livEnt0.hasEffect((MobEffect)JujutsucraftModMobEffects.COMEDIAN.get())) {
+               if (entity.getPersistentData().getDouble("friend_num") == 0.0) {
+                  entity.getPersistentData().putDouble("friend_num", Math.random());
                }
 
-               if (entity.getPersistentData().m_128459_("NameRanged") == 0.0) {
-                  entity.getPersistentData().m_128347_("NameRanged", Math.random());
+               if (entity.getPersistentData().getDouble("NameRanged") == 0.0) {
+                  entity.getPersistentData().putDouble("NameRanged", Math.random());
                }
 
                logic_a = false;
-               Vec3 _center = new Vec3((double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(3.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123341_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(3.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123342_(), (double)entity.m_9236_().m_45547_(new ClipContext(entity.m_20299_(1.0F), entity.m_20299_(1.0F).m_82549_(entity.m_20252_(1.0F).m_82490_(3.0)), Block.OUTLINE, Fluid.NONE, entity)).m_82425_().m_123343_());
+               Vec3 _center = new Vec3((double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(3.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getX(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(3.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getY(), (double)entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), entity.getEyePosition(1.0F).add(entity.getViewVector(1.0F).scale(3.0)), Block.OUTLINE, Fluid.NONE, entity)).getBlockPos().getZ());
 
-               for(Entity entityiterator : world.m_6443_(Entity.class, (new AABB(_center, _center)).m_82400_((double)(8.0F + entity.m_20205_()) / 2.0), (e) -> true).stream().sorted(Comparator.comparingDouble((_entcnd) -> _entcnd.m_20238_(_center))).toList()) {
+               for(Entity entityiterator : world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate((double)(8.0F + entity.getBbWidth()) / 2.0), (e) -> true)) {
                   if (entity != entityiterator) {
-                     if (!LogicAttackProcedure.execute(world, entity, entityiterator) || !entityiterator.m_6095_().m_204039_(TagKey.m_203882_(Registries.f_256939_, new ResourceLocation("forge:ranged_ammo")))) {
+                     if (!LogicAttackProcedure.execute(world, entity, entityiterator) || !entityiterator.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge:ranged_ammo")))) {
                         double var10000;
                         if (entityiterator instanceof Projectile) {
                            Projectile _projEnt = (Projectile)entityiterator;
-                           var10000 = _projEnt.m_20184_().m_82553_();
+                           var10000 = _projEnt.getDeltaMovement().length();
                         } else {
                            var10000 = 0.0;
                         }
@@ -67,23 +66,23 @@ public class HarisenEntitySwingsItemProcedure {
                         }
                      }
 
-                     entityiterator.getPersistentData().m_128359_("OWNER_UUID", "");
-                     entityiterator.getPersistentData().m_128347_("friend_num", entity.getPersistentData().m_128459_("friend_num"));
-                     entityiterator.getPersistentData().m_128347_("NameRanged_ranged", entity.getPersistentData().m_128459_("NameRanged"));
-                     entityiterator.getPersistentData().m_128347_("x_power", entity.m_20154_().f_82479_ * 3.0);
-                     entityiterator.getPersistentData().m_128347_("y_power", entity.m_20154_().f_82480_ * 3.0);
-                     entityiterator.getPersistentData().m_128347_("z_power", entity.m_20154_().f_82481_ * 3.0);
-                     entityiterator.m_20256_(new Vec3(entityiterator.getPersistentData().m_128459_("x_power"), entityiterator.getPersistentData().m_128459_("y_power"), entityiterator.getPersistentData().m_128459_("z_power")));
-                     entityiterator.m_146922_(entity.m_146908_());
-                     entityiterator.m_146926_(entity.m_146909_());
-                     entityiterator.m_5618_(entityiterator.m_146908_());
-                     entityiterator.m_5616_(entityiterator.m_146908_());
-                     entityiterator.f_19859_ = entityiterator.m_146908_();
-                     entityiterator.f_19860_ = entityiterator.m_146909_();
+                     entityiterator.getPersistentData().putString("OWNER_UUID", "");
+                     entityiterator.getPersistentData().putDouble("friend_num", entity.getPersistentData().getDouble("friend_num"));
+                     entityiterator.getPersistentData().putDouble("NameRanged_ranged", entity.getPersistentData().getDouble("NameRanged"));
+                     entityiterator.getPersistentData().putDouble("x_power", entity.getLookAngle().x * 3.0);
+                     entityiterator.getPersistentData().putDouble("y_power", entity.getLookAngle().y * 3.0);
+                     entityiterator.getPersistentData().putDouble("z_power", entity.getLookAngle().z * 3.0);
+                     entityiterator.setDeltaMovement(new Vec3(entityiterator.getPersistentData().getDouble("x_power"), entityiterator.getPersistentData().getDouble("y_power"), entityiterator.getPersistentData().getDouble("z_power")));
+                     entityiterator.setYRot(entity.getYRot());
+                     entityiterator.setXRot(entity.getXRot());
+                     entityiterator.setYBodyRot(entityiterator.getYRot());
+                     entityiterator.setYHeadRot(entityiterator.getYRot());
+                     entityiterator.yRotO = entityiterator.getYRot();
+                     entityiterator.xRotO = entityiterator.getXRot();
                      if (entityiterator instanceof LivingEntity) {
                         LivingEntity _entity = (LivingEntity)entityiterator;
-                        _entity.f_20884_ = _entity.m_146908_();
-                        _entity.f_20886_ = _entity.m_146908_();
+                        _entity.yBodyRotO = _entity.getYRot();
+                        _entity.yHeadRotO = _entity.getYRot();
                      }
 
                      logic_a = true;
@@ -92,10 +91,10 @@ public class HarisenEntitySwingsItemProcedure {
 
                if (logic_b && world instanceof Level) {
                   Level _level = (Level)world;
-                  if (!_level.m_5776_()) {
-                     _level.m_5594_((Player)null, BlockPos.m_274561_(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:guard_just")), SoundSource.NEUTRAL, 0.5F, 1.0F);
+                  if (!_level.isClientSide()) {
+                     _level.playSound((Player)null, BlockPos.containing(x, y, z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:guard_just")), SoundSource.NEUTRAL, 0.5F, 1.0F);
                   } else {
-                     _level.m_7785_(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("jujutsucraft:guard_just")), SoundSource.NEUTRAL, 0.5F, 1.0F, false);
+                     _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:guard_just")), SoundSource.NEUTRAL, 0.5F, 1.0F, false);
                   }
                }
             }

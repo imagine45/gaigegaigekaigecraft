@@ -11,19 +11,19 @@ import net.minecraft.world.level.Level;
 
 public class EntityMahitoHand3Renderer extends MobRenderer<EntityMahitoHand3Entity, ModelMahitoHand3<EntityMahitoHand3Entity>> {
    public EntityMahitoHand3Renderer(EntityRendererProvider.Context context) {
-      super(context, new ModelMahitoHand3(context.m_174023_(ModelMahitoHand3.LAYER_LOCATION)), 1.0F);
+      super(context, new ModelMahitoHand3(context.bakeLayer(ModelMahitoHand3.LAYER_LOCATION)), 1.0F);
    }
 
    protected void scale(EntityMahitoHand3Entity entity, PoseStack poseStack, float f) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.scale(scale, scale, scale);
    }
 
    public ResourceLocation getTextureLocation(EntityMahitoHand3Entity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/mahitohand3.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/mahitohand3.png");
    }
 }

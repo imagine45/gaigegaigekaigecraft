@@ -11,19 +11,19 @@ import net.minecraft.world.level.Level;
 
 public class UzumakiRenderer extends MobRenderer<UzumakiEntity, Modeluzumaki<UzumakiEntity>> {
    public UzumakiRenderer(EntityRendererProvider.Context context) {
-      super(context, new Modeluzumaki(context.m_174023_(Modeluzumaki.LAYER_LOCATION)), 0.0F);
+      super(context, new Modeluzumaki(context.bakeLayer(Modeluzumaki.LAYER_LOCATION)), 0.0F);
    }
 
    protected void scale(UzumakiEntity entity, PoseStack poseStack, float f) {
-      Level world = entity.m_9236_();
-      double x = entity.m_20185_();
-      double y = entity.m_20186_();
-      double z = entity.m_20189_();
+      Level world = entity.level();
+      double x = entity.getX();
+      double y = entity.getY();
+      double z = entity.getZ();
       float scale = (float)SizeByNBTProcedure.execute(entity);
-      poseStack.m_85841_(scale, scale, scale);
+      poseStack.scale(scale, scale, scale);
    }
 
    public ResourceLocation getTextureLocation(UzumakiEntity entity) {
-      return new ResourceLocation("jujutsucraft:textures/entities/uzumaki.png");
+      return new ResourceLocation("gaigegaigekaigecraft:textures/entities/uzumaki.png");
    }
 }
