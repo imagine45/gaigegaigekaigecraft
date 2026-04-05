@@ -75,7 +75,7 @@ public class Gaigegaigekaigecraft {
     @SubscribeEvent
     public void tick(TickEvent.ServerTickEvent event) {
         if (event.phase == Phase.END) {
-            List<AbstractMap.SimpleEntry<Runnable, Integer>> actions = new ArrayList();
+            List<AbstractMap.SimpleEntry<Runnable, Integer>> actions = new ArrayList<>();
             workQueue.forEach((work) -> {
                 work.setValue((Integer)work.getValue() - 1);
                 if ((Integer)work.getValue() == 0) {
