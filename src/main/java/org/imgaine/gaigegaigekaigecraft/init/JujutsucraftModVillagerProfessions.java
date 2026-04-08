@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import net.minecraft.sounds.SoundEvents;
 import org.imgaine.gaigegaigekaigecraft.Gaigegaigekaigecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -31,19 +33,25 @@ public class JujutsucraftModVillagerProfessions {
    private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap();
    public static final DeferredRegister<VillagerProfession> PROFESSIONS;
    public static final RegistryObject<VillagerProfession> PROFESSION_JUJUTSU_SORCERER;
+   public static final DeferredRegister<PoiType> POI_TYPE_DEFERRED_REGISTER =
+           DeferredRegister.create(ForgeRegistries.POI_TYPES, Gaigegaigekaigecraft.MODID);
+
+   public static final RegistryObject<PoiType> CURSE_POI = POI_TYPE_DEFERRED_REGISTER.register("curse_poi",
+           () -> new PoiType(ImmutableSet.copyOf(JujutsucraftModBlocks.CURSED_BLOCK.get().getStateDefinition().getPossibleStates()),
+                   1, 1));
 
    public JujutsucraftModVillagerProfessions() {
    }
 
-   private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEvent) {
+   /*private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEvent) {
       POI_TYPES.put(name, new ProfessionPoiType(block, (Holder)null));
       return PROFESSIONS.register(name, () -> {
          Predicate<Holder<PoiType>> poiPredicate = (poiTypeHolder) -> ((ProfessionPoiType)POI_TYPES.get(name)).poiType != null && poiTypeHolder.get() == ((ProfessionPoiType)POI_TYPES.get(name)).poiType.get();
          return new VillagerProfession("gaigegaigekaigecraft:" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), (SoundEvent)soundEvent.get());
       });
-   }
+   }*/
 
-   @SubscribeEvent
+   /*@SubscribeEvent
    public static void registerProfessionPointsOfInterest(RegisterEvent event) {
       event.register(Keys.POI_TYPES, (registerHelper) -> {
          for(Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
@@ -60,11 +68,14 @@ public class JujutsucraftModVillagerProfessions {
          }
 
       });
-   }
+   } */
 
    static {
       PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, "gaigegaigekaigecraft");
-      PROFESSION_JUJUTSU_SORCERER = registerProfession("profession_jujutsu_sorcerer", CursedBlockBlock::new, () -> (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:slow_motion_end")));
+      //PROFESSION_JUJUTSU_SORCERER = registerProfession("profession_jujutsu_sorcerer", CursedBlockBlock::new, () -> (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:slow_motion_end")));
+      PROFESSION_JUJUTSU_SORCERER = PROFESSIONS.register("profession_jujutsu_sorcerer", () -> new VillagerProfession("profession_jujutsu_sorcerer",
+              holder -> holder.get() == CURSE_POI.get(), holder -> holder.get() == CURSE_POI.get(),
+              ImmutableSet.of(), ImmutableSet.of(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("gaigegaigekaigecraft:slow_motion_end"))));
    }
 
    private static class ProfessionPoiType {

@@ -98,7 +98,7 @@ public class JujutsucraftModBlocks {
       DOMAIN_HOLE = REGISTRY.register("domain_hole", DomainHoleBlock::new);
    }*/
 
-   @EventBusSubscriber(
+  @EventBusSubscriber(
       bus = Bus.MOD,
       value = {Dist.CLIENT}
    )
